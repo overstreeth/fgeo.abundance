@@ -4,4 +4,4 @@
 ^inst/forestr-uncurated$
 ^README\.Rmd$
 ^README-.*\.png$
-^C:\Users\dora\Dropbox\git_repos\forestr\docs$
+^docs$
