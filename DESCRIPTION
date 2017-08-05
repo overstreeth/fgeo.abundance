@@ -15,27 +15,4 @@ URL: https://github.com/forestgeo/forestr
 BugReports: https://github.com/forestgeo/forestr/issues
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-Imports: assertive,
-    date,
-    graphics,
-    grDevices,
-    lme4,
-    MCMCpack,
-    mvtnorm,
-    splancs,
-    stats,
-    utils,
-    bci
-Suggests: devtools,
-    dplyr,
-    ggplot2,
-    knitr,
-    purrr,
-    readr,
-    rmarkdown,
-    sig,
-    stringr,
-    testthat,
-    tibble,
-    tidyr
 VignetteBuilder: knitr
