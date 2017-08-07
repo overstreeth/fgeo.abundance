@@ -6,3 +6,8 @@ test_that("outputs the same as ctfs::rowcol.to.index", {
   now <- to_id_rowcol(rowno = some_vector, colno = some_vector)
   expect_equal(before, now)
 })
+
+test_that("suspicious input throw warning", {
+  vector_with_na <- c(1:9, NA_real_)
+  expect_warning(to_id_rowcol(vector_with_na, 1:10))
+})
