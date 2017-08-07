@@ -195,19 +195,26 @@ ba=function(dbh,dbhunit='mm')
 #' @template gridsize_side
 #' @param rowno Row number.
 #' @param colno Column number.
+#' @aliases rowcol.to.index
 #'
 'rowcol.to.index'
 
-rowcol.to.index=function(rowno,colno,gridsize=20,plotdim=c(1000,500))
-{
- badrc=(rowno<=0 | colno<=0 | rowno>plotdim[2]/gridsize | colno>plotdim[1]/gridsize)
+to_id_rowcol <- function(rowno, 
+                         colno, 
+                         gridsize = 20, 
+                         plotdim = c(1000, 500)) {
+  badrc <- (rowno <= 0 | 
+    colno <= 0 | 
+    rowno > plotdim[2] / gridsize |
+    colno > plotdim[1] / gridsize
+  )
 
- rowno=rowno-1
- colno=colno-1
- maxrow=floor(plotdim[2]/gridsize)
- index=colno*maxrow+rowno+1
- if(length(badrc[badrc>0])) index[badrc]=NA
- return(index)
+  rowno = rowno - 1
+  colno = colno - 1
+  maxrow = floor(plotdim[2] / gridsize)
+  index = colno * maxrow + rowno + 1
+  if (length(badrc[badrc > 0])) {index[badrc] <- NA}
+  return(index)
 }
 
 
