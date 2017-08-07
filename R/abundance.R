@@ -203,19 +203,25 @@ to_id_rowcol <- function(rowno,
                          colno, 
                          gridsize, 
                          plotdim) {
-  if (anyNA(rowno)) {warning(paste0("`rowno` and output contain NA."))}
-  if (anyNA(colno)) {warning(paste0("`colno` and output contain NA."))}
-  badrc <- (rowno <= 0 | 
-    colno <= 0 | 
-    rowno > plotdim[2] / gridsize |
-    colno > plotdim[1] / gridsize
-  )
-
+  if (anyNA(rowno)) {warning("`rowno` and output contain NA or NaN.")}
+  if (any(is.infinite(rowno))) {warning("`rowno` contains infinite values.")}
+  
+  if (anyNA(colno)) {warning(paste0("`colno` and output contain NA or NaN."))}
+  if (any(is.infinite(colno))) {warning("`rowno` contains infinite values.")}
+  
+  stopifnot(assertive::is_non_empty(rowno))
+  stopifnot(assertive::is_non_empty(colno))
+  
+  badrc = (rowno <= 0 | colno <= 0 | rowno > plotdim[2]/gridsize | 
+    colno > plotdim[1]/gridsize)
   rowno = rowno - 1
   colno = colno - 1
-  maxrow = floor(plotdim[2] / gridsize)
+  maxrow = floor(plotdim[2]/gridsize)
   index = colno * maxrow + rowno + 1
-  if (length(badrc[badrc > 0])) {index[badrc] <- NA}
+  
+  if (length(badrc[badrc > 0])) 
+    index[badrc] = NA
+  
   return(index)
 }
 
