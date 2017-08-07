@@ -17,4 +17,6 @@ RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Suggests: testthat,
-    ctfs
+    ctfs,
+    assertive
+Imports: knitr

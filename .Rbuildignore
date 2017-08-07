@@ -6,3 +6,4 @@
 ^README-.*\.png$
 ^docs$
 ^\.Rprofile$
+^man-roxygen$
