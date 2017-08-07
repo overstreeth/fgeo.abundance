@@ -1,56 +1,4 @@
-#' Takes row and column numbers and identifies the quadrate number (index).
-#'
-#' @description
-#' Takes row and column numbers and identifies the quadrate number (index). The 
-#' row and column numbers are based on a `gridsize` that by default divides the 
-#' plot into 20 by 20 m squares. The g`ridsize` can be defined by the user so 
-#' other quadrate sizes can be used.
-#' 
-#' @inheritParams findborderquads
-#' @template gridsize_side
-#' @param rowno Row number.
-#' @param colno Column number.
-#'
-'rowcol.to.index'
-
-rowcol.to.index=function(rowno,colno,gridsize=20,plotdim=c(1000,500))
-{
- badrc=(rowno<=0 | colno<=0 | rowno>plotdim[2]/gridsize | colno>plotdim[1]/gridsize)
-
- rowno=rowno-1
- colno=colno-1
- maxrow=floor(plotdim[2]/gridsize)
- index=colno*maxrow+rowno+1
- if(length(badrc[badrc>0])) index[badrc]=NA
- return(index)
-}
-
-
-
-#' Assign any location(s) a single index identifying the quadrat.
-#'
-#' @description
-#'
-#' Assign any location(s) a single index identifying the quadrat. The index runs
-#' from 1 to the number of quadrats.
-#'
-#' @inheritParams gxgy.to.hectindex
-#' @inheritParams findborderquads
-#'
-'gxgy.to.index'
-
-gxgy.to.index=function(gx,gy,gridsize=20,plotdim=c(1000,500))
-{
- badgxgy=(gx<0 | gy<0 | gx>=plotdim[1] | gy>=plotdim[2] | is.na(gx) | is.na(gy))
-
- colno=1+floor(gx/gridsize)
- rowno=1+floor(gy/gridsize)
- if(length(badgxgy[badgxgy>0])) colno[badgxgy]=rowno[badgxgy]=NA
-
- return(rowcol.to.index(rowno,colno,gridsize,plotdim))
-}
-
-
+# abundance; abundance ----------------------------------------------------
 
 #' Abundance, basal area, or agb of every species by quadrat.
 #'
@@ -192,32 +140,6 @@ abundance <- function(censdata,type='abund',alivecode=c("A"),mindbh=NULL,dbhunit
 
 
 
-#' This function fills out an array of 2 dimensions, adding zeroes (or...
-#'
-#' @description
-#'
-#' This function fills out an array of 2 dimensions, adding zeroes (or other values) for extra columns
-#' and rows as named in class1 and class2. If a column (or row) is
-#' missing, it will be filled with the value given by fill. It is useful for results of table
-#' or tapply when some elements had no records. 
-#'
-#'
-'fill.dimension'
-
-fill.dimension=function(dataarray,class1,class2,fill=0)
-{
- result=data.frame(matrix(fill,nrow=length(class1),ncol=length(class2)))
- rownames(result)=class1
- colnames(result)=class2
-
- result[rownames(dataarray),colnames(dataarray)]=dataarray
- result[is.na(result)]=fill
- 
- return(result)
-}
-
-
-
 #' Returns the basal area summed over all submitted dbhs.
 #'
 #' @description
@@ -256,3 +178,109 @@ ba=function(dbh,dbhunit='mm')
   if(dbhunit=='mm') return(pi*(dbh/2000)^2)
   if(dbhunit=='cm') return(pi*(dbh/200)^2)
  }
+
+
+
+# spatial; quadfunc -------------------------------------------------------
+
+#' Takes row and column numbers and identifies the quadrate number (index).
+#'
+#' @description
+#' Takes row and column numbers and identifies the quadrate number (index). The 
+#' row and column numbers are based on a `gridsize` that by default divides the 
+#' plot into 20 by 20 m squares. The g`ridsize` can be defined by the user so 
+#' other quadrate sizes can be used.
+#' 
+#' @inheritParams findborderquads
+#' @template gridsize_side
+#' @param rowno Row number.
+#' @param colno Column number.
+#'
+'rowcol.to.index'
+
+rowcol.to.index=function(rowno,colno,gridsize=20,plotdim=c(1000,500))
+{
+ badrc=(rowno<=0 | colno<=0 | rowno>plotdim[2]/gridsize | colno>plotdim[1]/gridsize)
+
+ rowno=rowno-1
+ colno=colno-1
+ maxrow=floor(plotdim[2]/gridsize)
+ index=colno*maxrow+rowno+1
+ if(length(badrc[badrc>0])) index[badrc]=NA
+ return(index)
+}
+
+
+
+#' Assign any location(s) a single index identifying the quadrat.
+#'
+#' @description
+#'
+#' Assign any location(s) a single index identifying the quadrat. The index runs
+#' from 1 to the number of quadrats.
+#'
+#' @inheritParams gxgy.to.hectindex
+#' @inheritParams findborderquads
+#'
+'gxgy.to.index'
+
+gxgy.to.index=function(gx,gy,gridsize=20,plotdim=c(1000,500))
+{
+ badgxgy=(gx<0 | gy<0 | gx>=plotdim[1] | gy>=plotdim[2] | is.na(gx) | is.na(gy))
+
+ colno=1+floor(gx/gridsize)
+ rowno=1+floor(gy/gridsize)
+ if(length(badgxgy[badgxgy>0])) colno[badgxgy]=rowno[badgxgy]=NA
+
+ return(rowcol.to.index(rowno,colno,gridsize,plotdim))
+}
+
+
+
+# utilities; utilities ----------------------------------------------------
+
+#' This function fills out an array of 2 dimensions, adding zeroes (or...
+#'
+#' @description
+#'
+#' This function fills out an array of 2 dimensions, adding zeroes (or other values) for extra columns
+#' and rows as named in class1 and class2. If a column (or row) is
+#' missing, it will be filled with the value given by fill. It is useful for results of table
+#' or tapply when some elements had no records. 
+#'
+#'
+'fill.dimension'
+
+fill.dimension=function(dataarray,class1,class2,fill=0)
+{
+ result=data.frame(matrix(fill,nrow=length(class1),ncol=length(class2)))
+ rownames(result)=class1
+ colnames(result)=class2
+
+ result[rownames(dataarray),colnames(dataarray)]=dataarray
+ result[is.na(result)]=fill
+ 
+ return(result)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
