@@ -201,8 +201,8 @@ ba=function(dbh,dbhunit='mm')
 
 to_id_rowcol <- function(rowno, 
                          colno, 
-                         gridsize = 20, 
-                         plotdim = c(1000, 500)) {
+                         gridsize, 
+                         plotdim) {
   if (anyNA(rowno)) {warning(paste0("`rowno` and output contain NA."))}
   if (anyNA(colno)) {warning(paste0("`colno` and output contain NA."))}
   badrc <- (rowno <= 0 | 
@@ -216,8 +216,6 @@ to_id_rowcol <- function(rowno,
   maxrow = floor(plotdim[2] / gridsize)
   index = colno * maxrow + rowno + 1
   if (length(badrc[badrc > 0])) {index[badrc] <- NA}
-  
-  if (anyNA(index)) {warning(paste0("`returned value` contains NA."))}
   return(index)
 }
 
