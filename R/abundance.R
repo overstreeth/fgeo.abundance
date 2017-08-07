@@ -203,14 +203,14 @@ to_id_rowcol <- function(rowno,
                          colno, 
                          gridsize, 
                          plotdim) {
-  if (anyNA(rowno)) {warning("`rowno` and output contain NA or NaN.")}
-  if (any(is.infinite(rowno))) {warning("`rowno` contains infinite values.")}
-  
-  if (anyNA(colno)) {warning(paste0("`colno` and output contain NA or NaN."))}
-  if (any(is.infinite(colno))) {warning("`rowno` contains infinite values.")}
-  
+  stopifnot(gridsize > 0)
+  stopifnot(all(plotdim > 0))
   stopifnot(assertive::is_non_empty(rowno))
   stopifnot(assertive::is_non_empty(colno))
+  if (anyNA(rowno)) {warning("`rowno` and output contain NA or NaN.")}
+  if (anyNA(colno)) {warning("`colno` and output contain NA or NaN.")}
+  if (any(is.infinite(rowno))) {warning("`rowno` contains infinite values.")}
+  if (any(is.infinite(colno))) {warning("`rowno` contains infinite values.")}
   
   badrc = (rowno <= 0 | colno <= 0 | rowno > plotdim[2]/gridsize | 
     colno > plotdim[1]/gridsize)

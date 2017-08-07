@@ -17,7 +17,7 @@ test_that("outputs the same as ctfs::rowcol.to.index", {
   expect_equal(before, now)
 })
 
-test_that("suspicious input throw warning", {
+test_that("suspicious input throw warning or error", {
   vector_with_na <- c(1:9, NA_real_)
   expect_warning(
     to_id_rowcol(
@@ -67,6 +67,25 @@ test_that("suspicious input throw warning", {
       colno = vector_with_infinite, 
       gridsize = 20,
       plotdim = c(1000, 500)
+    )
+  )
+})
+
+test_that("0 in gridsize or plotdim throws error",  {
+  expect_error(
+    to_id_rowcol(
+      rowno = 0:10, 
+      colno = 0:10, 
+      gridsize = 0,
+      plotdim = c(1000, 500)
+    )
+  )
+  expect_error(
+    to_id_rowcol(
+      rowno = 0:10, 
+      colno = 0:10, 
+      gridsize = 20,
+      plotdim = c(1000, 0)
     )
   )
 })
