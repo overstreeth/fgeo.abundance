@@ -5,18 +5,22 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
   stopifnot(all(plotdim > 0))
 }
 
-validate_args_to_id_rowcol <- function(.row, .col) {
-  stopifnot(assertive::is_non_empty(.row))
-  stopifnot(assertive::is_non_empty(.col))
-  odd_row <- paste0(substitute(.row))
-  odd_col <- paste0(substitute(.col))
+validate_by_position <- function(first_arg, second_arg) {
+  stopifnot(assertive::is_non_empty(first_arg))
+  stopifnot(assertive::is_non_empty(second_arg))
+  
+  odd_first_arg <- paste0(substitute(first_arg))
+  odd_second_arg <- paste0(substitute(second_arg))
   msg_na_nan <- "and output contain NA or NaN."
-  if (anyNA(.row)) {warning(paste(odd_row, msg_na_nan))}
-  if (anyNA(.col)) {warning(paste(odd_row, msg_na_nan))}
+  if (anyNA(first_arg)) {warning(paste(odd_first_arg, msg_na_nan))}
+  if (anyNA(second_arg)) {warning(paste(odd_second_arg, msg_na_nan))}
+  
   msg_inf <- "contains infinite values."
-  if (any(is.infinite(.row))) {warning(paste(odd_row, msg_inf))}
-  if (any(is.infinite(.col))) {warning(paste(odd_col, msg_inf))}
+  if (any(is.infinite(first_arg))) {warning(paste(odd_first_arg, msg_inf))}
+  if (any(is.infinite(second_arg))) {warning(paste(odd_second_arg, msg_inf))}
 }
+
+
 
 #' Convert to quadrat indices.
 #' 
@@ -47,10 +51,10 @@ validate_args_to_id_rowcol <- function(.row, .col) {
 #' to_id_rowcol(.row = 1:10, .col = 6:15, gridsize = 20, plotdim = c(1000, 500))
 NULL
 
-#' @rdname to_id_rowcol
+#' @rdname to_id
 #' @export
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  validate_args_to_id_rowcol(.row = .row, .col = .col)
+  validate_by_position(first_arg = .row, second_arg = .col)
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
   
   badrc = (.row <= 0 | .col <= 0 | .row > plotdim[2]/gridsize | 
@@ -64,9 +68,10 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   return(index)
 }
 
-#' @rdname to_id_gxgy
+#' @rdname to_id
 #' @export
 to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
+  validate_by_position(first_arg = gx, second_arg = gy)
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
 
   badgxgy = (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |

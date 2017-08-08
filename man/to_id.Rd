@@ -4,15 +4,22 @@
 \alias{to_id}
 \alias{rowcol.to.index}
 \alias{gxgy.to.index}
+\alias{to_id_rowcol}
+\alias{to_id_gxgy}
 \title{Convert to quadrat indices.}
+\usage{
+to_id_rowcol(.row, .col, gridsize, plotdim)
+
+to_id_gxgy(gx, gy, gridsize, plotdim)
+}
 \arguments{
 \item{.row, .col}{Row and column number.}
-
-\item{gx, gy}{Tree x and y coordinate.}
 
 \item{gridsize}{Side of the square quadrate.}
 
 \item{plotdim}{The x and y dimensions of the plot.}
+
+\item{gx, gy}{Tree x and y coordinate.}
 }
 \value{
 A numeric vector of indices.
