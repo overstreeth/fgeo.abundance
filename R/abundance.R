@@ -36,7 +36,6 @@ validate_by_position <- function(first_arg, second_arg) {
 #' 
 #' @return A numeric vector of indices.
 #' 
-#' 
 #' @aliases rowcol.to.index gxgy.to.index
 #' @template author_condit
 #' @family converter functions
@@ -57,14 +56,14 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   validate_by_position(first_arg = .row, second_arg = .col)
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
   
-  badrc = (.row <= 0 | .col <= 0 | .row > plotdim[2]/gridsize | 
-    .col > plotdim[1]/gridsize)
-  .row = .row - 1
-  .col = .col - 1
-  maxrow = floor(plotdim[2]/gridsize)
-  index = .col * maxrow + .row + 1
-  if (length(badrc[badrc > 0])) 
-    index[badrc] = NA
+  badrc <- (.row <= 0 | .col <= 0 | .row > plotdim[2] / gridsize |
+      .col > plotdim[1] / gridsize)
+  .row <- .row - 1
+  .col <- .col - 1
+  maxrow <- floor(plotdim[2] / gridsize)
+  index <- .col * maxrow + .row + 1
+  if (length(badrc[badrc > 0]))
+    index[badrc] <- NA
   return(index)
 }
 
