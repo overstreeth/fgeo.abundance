@@ -58,12 +58,12 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   
   badrc <- (.row <= 0 | .col <= 0 | .row > plotdim[2] / gridsize |
       .col > plotdim[1] / gridsize)
-  .row <- .row - 1
-  .col <- .col - 1
+  diff <- 1
+  .row_minus_diff <- .row - diff
+  .col_minus_diff <- .col - diff
   maxrow <- floor(plotdim[2] / gridsize)
-  index <- .col * maxrow + .row + 1
-  if (length(badrc[badrc > 0]))
-    index[badrc] <- NA
+  index <- .col_minus_diff * maxrow + .row_minus_diff + diff
+  if (length(badrc[badrc > 0])) {index[badrc] <- NA}
   return(index)
 }
 
@@ -72,14 +72,15 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
   validate_by_position(first_arg = gx, second_arg = gy)
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
-
-  badgxgy = (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |
-      is.na(gx) | is.na(gy))
-  .col = 1 + floor(gx / gridsize)
-  .row = 1 + floor(gy / gridsize)
-  if(length(badgxgy[badgxgy > 0])) {
-    .col[badgxgy] = .row[badgxgy] = NA
+  
+  badgxgy <- (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |
+        is.na(gx) | is.na(gy))
+  .col_adjusted <- 1 + floor(gx / gridsize)
+  .row_adjusted <- 1 + floor(gy / gridsize)
+  if (length(badgxgy[badgxgy > 0])) {
+    .col_adjusted[badgxgy] <- NA
+    .row_adjusted[badgxgy] <- NA
   }
-  return(to_id_rowcol(.row, .col, gridsize, plotdim))
+  return(to_id_rowcol(.row_adjusted, .col_adjusted, gridsize, plotdim))
 }
 
