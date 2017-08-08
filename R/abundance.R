@@ -1,9 +1,11 @@
 # spatial; quadfunc -------------------------------------------------------
 
-
-validate_args_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
+validate_gridsize_plotdim <- function(gridsize, plotdim) {
   stopifnot(gridsize > 0)
   stopifnot(all(plotdim > 0))
+}
+
+validate_args_to_id_rowcol <- function(.row, .col) {
   stopifnot(assertive::is_non_empty(.row))
   stopifnot(assertive::is_non_empty(.col))
   odd_row <- paste0(substitute(.row))
@@ -16,28 +18,40 @@ validate_args_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   if (any(is.infinite(.col))) {warning(paste(odd_col, msg_inf))}
 }
 
-#' Takes row and column numbers and identifies the quadrate number (index).
-#'
-#' @description
-#' From row and column numbers (based on `gridsize`) outputs the corresponding
-#' quadrat number, i.e. index (id).
+#' Convert to quadrat indices.
 #' 
-#' @param .row Row number.
-#' @param .col Column number.
+#' These functions output quadrat indices from either row and column numbers
+#' ([to_id_rowcol]), or gx and gy coordinates ([to_id_gxgy]]). They replace
+#' [ctfs::rowcol.to.index] and [ctfs::gxgy.to.index], but these old names are 
+#' kept as aliases to help users find the newer names.
+#' 
+#' @param .row,.col Row and column number.
+#' @template gx_gy
 #' @template gridsize
 #' @template plotdim
 #' 
-#' @aliases rowcol.to.index
-#' @family converters
 #' @return A numeric vector of indices.
 #' 
-#' @export
-#'
+#' 
+#' @aliases rowcol.to.index gxgy.to.index
+#' @template author_condit
+#' @family converter functions
+#' @name to_id
 #' @examples
-#' to_id_rowcol(.row = 1:10, .col = 1:10, gridsize = 20, plotdim = c(1000, 500))
+#' library(dplyr)
+#' mini_cns <- bci::bci12full7 %>% 
+#'   select(gx, gy) %>% 
+#'   sample_n(10)
+#' to_id_gxgy(mini_cns$gx, mini_cns$gy, gridsize = 20, plotdim = c(1000, 500))
+#' 
+#' to_id_rowcol(.row = 1:10, .col = 6:15, gridsize = 20, plotdim = c(1000, 500))
+NULL
+
+#' @rdname to_id_rowcol
+#' @export
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  validate_args_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize, 
-    plotdim = plotdim)
+  validate_args_to_id_rowcol(.row = .row, .col = .col)
+  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
   
   badrc = (.row <= 0 | .col <= 0 | .row > plotdim[2]/gridsize | 
     .col > plotdim[1]/gridsize)
@@ -49,3 +63,19 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
     index[badrc] = NA
   return(index)
 }
+
+#' @rdname to_id_gxgy
+#' @export
+to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
+  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
+
+  badgxgy = (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |
+      is.na(gx) | is.na(gy))
+  .col = 1 + floor(gx / gridsize)
+  .row = 1 + floor(gy / gridsize)
+  if(length(badgxgy[badgxgy > 0])) {
+    .col[badgxgy] = .row[badgxgy] = NA
+  }
+  return(to_id_rowcol(.row, .col, gridsize, plotdim))
+}
+

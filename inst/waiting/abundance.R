@@ -181,30 +181,6 @@ ba=function(dbh,dbhunit='mm')
 
 
 
-# spatial; quadfunc -------------------------------------------------------
-
-#' Assign any location(s) a single index identifying the quadrat.
-#'
-#' @description
-#'
-#' Assign any location(s) a single index identifying the quadrat. The index runs
-#' from 1 to the number of quadrats.
-#'
-#' @inheritParams gxgy.to.hectindex
-#' @inheritParams findborderquads
-#'
-'gxgy.to.index'
-
-gxgy.to.index=function(gx,gy,gridsize=20,plotdim=c(1000,500))
-{
- badgxgy=(gx<0 | gy<0 | gx>=plotdim[1] | gy>=plotdim[2] | is.na(gx) | is.na(gy))
-
- colno=1+floor(gx/gridsize)
- rowno=1+floor(gy/gridsize)
- if(length(badgxgy[badgxgy>0])) colno[badgxgy]=rowno[badgxgy]=NA
-
- return(rowcol.to.index(rowno,colno,gridsize,plotdim))
-}
 
 
 

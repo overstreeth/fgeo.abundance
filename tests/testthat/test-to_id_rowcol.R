@@ -74,16 +74,16 @@ test_that("suspicious input throw warning or error", {
 test_that("0 in gridsize or plotdim throws error",  {
   expect_error(
     to_id_rowcol(
-      .row = 0:10, 
-      .col = 0:10, 
+      .row = 1:10, 
+      .col = 1:10, 
       gridsize = 0,
       plotdim = c(1000, 500)
     )
   )
   expect_error(
     to_id_rowcol(
-      .row = 0:10, 
-      .col = 0:10, 
+      .row = 1:10, 
+      .col = 1:10, 
       gridsize = 20,
       plotdim = c(1000, 0)
     )
