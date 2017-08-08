@@ -9,8 +9,8 @@ test_that("outputs the same as ctfs::rowcol.to.index", {
     plotdim = c(1000, 500)
   )
   now <- to_id_rowcol(
-    row_num = some_vector, 
-    col_num = some_vector,
+    .row = some_vector, 
+    .col = some_vector,
     gridsize = 20,
     plotdim = c(1000, 500)
   )
@@ -21,16 +21,16 @@ test_that("suspicious input throw warning or error", {
   vector_with_na <- c(1:9, NA_real_)
   expect_warning(
     to_id_rowcol(
-      row_num = vector_with_na, 
-      col_num = 1:10, 
+      .row = vector_with_na, 
+      .col = 1:10, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
   )
   expect_warning(
     to_id_rowcol(
-      row_num = 1:10, 
-      col_num = vector_with_na, 
+      .row = 1:10, 
+      .col = vector_with_na, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
@@ -38,16 +38,16 @@ test_that("suspicious input throw warning or error", {
   empty_numeric <- numeric(0)
   expect_error(
     to_id_rowcol(
-      row_num = 1:10, 
-      col_num = empty_numeric, 
+      .row = 1:10, 
+      .col = empty_numeric, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
   )
   expect_error(
     to_id_rowcol(
-      row_num = empty_numeric, 
-      col_num = 1:10, 
+      .row = empty_numeric, 
+      .col = 1:10, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
@@ -55,16 +55,16 @@ test_that("suspicious input throw warning or error", {
   vector_with_infinite <- c(1:9, Inf)
   expect_warning(
     to_id_rowcol(
-      row_num = vector_with_infinite, 
-      col_num = 1:10, 
+      .row = vector_with_infinite, 
+      .col = 1:10, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
   )
   expect_warning(
     to_id_rowcol(
-      row_num = 1:10, 
-      col_num = vector_with_infinite, 
+      .row = 1:10, 
+      .col = vector_with_infinite, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
@@ -74,16 +74,16 @@ test_that("suspicious input throw warning or error", {
 test_that("0 in gridsize or plotdim throws error",  {
   expect_error(
     to_id_rowcol(
-      row_num = 0:10, 
-      col_num = 0:10, 
+      .row = 0:10, 
+      .col = 0:10, 
       gridsize = 0,
       plotdim = c(1000, 500)
     )
   )
   expect_error(
     to_id_rowcol(
-      row_num = 0:10, 
-      col_num = 0:10, 
+      .row = 0:10, 
+      .col = 0:10, 
       gridsize = 20,
       plotdim = c(1000, 0)
     )

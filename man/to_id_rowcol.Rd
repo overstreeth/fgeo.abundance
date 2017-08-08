@@ -5,12 +5,12 @@
 \alias{rowcol.to.index}
 \title{Takes row and column numbers and identifies the quadrate number (index).}
 \usage{
-to_id_rowcol(row_num, col_num, gridsize, plotdim)
+to_id_rowcol(.row, .col, gridsize, plotdim)
 }
 \arguments{
-\item{row_num}{Row number.}
+\item{.row}{Row number.}
 
-\item{col_num}{Column number.}
+\item{.col}{Column number.}
 
 \item{gridsize}{Side of the square quadrate.}
 
@@ -24,5 +24,5 @@ From row and column numbers (based on \code{gridsize}) outputs the corresponding
 quadrat number, i.e. index (id).
 }
 \examples{
-to_id_rowcol(1:10, 1:10, gridsize = 20, plotdim = c(1000, 500))
+to_id_rowcol(.row = 1:10, .col = 1:10, gridsize = 20, plotdim = c(1000, 500))
 }
