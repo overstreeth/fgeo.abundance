@@ -13,9 +13,12 @@
 #' 
 #' @aliases rowcol.to.index
 #' @family converters
+#' @return A numeric vector of indices.
 #' 
 #' @export
 #'
+#' @examples
+#' to_id_rowcol(1:10, 1:10, gridsize = 20, plotdim = c(1000, 500))
 to_id_rowcol <- function(row_num, 
                          col_num, 
                          gridsize, 

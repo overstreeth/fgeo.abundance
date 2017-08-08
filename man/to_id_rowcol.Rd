@@ -16,7 +16,13 @@ to_id_rowcol(row_num, col_num, gridsize, plotdim)
 
 \item{plotdim}{The x and y dimensions of the plot.}
 }
+\value{
+A numeric vector of indices.
+}
 \description{
 From row and column numbers (based on \code{gridsize}) outputs the corresponding
 quadrat number, i.e. index (id).
+}
+\examples{
+to_id_rowcol(1:10, 1:10, gridsize = 20, plotdim = c(1000, 500))
 }
