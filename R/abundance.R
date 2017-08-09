@@ -5,20 +5,38 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
   stopifnot(all(plotdim > 0))
 }
 
-validate_by_position <- function(first_arg, second_arg) {
-  stopifnot(assertive::is_non_empty(first_arg))
-  stopifnot(assertive::is_non_empty(second_arg))
-  
-  odd_first_arg <- paste0(substitute(first_arg))
-  odd_second_arg <- paste0(substitute(second_arg))
-  msg_na_nan <- "and output contain NA or NaN."
-  if (anyNA(first_arg)) {warning(paste(odd_first_arg, msg_na_nan))}
-  if (anyNA(second_arg)) {warning(paste(odd_second_arg, msg_na_nan))}
-  
-  msg_inf <- "contains infinite values."
-  if (any(is.infinite(first_arg))) {warning(paste(odd_first_arg, msg_inf))}
-  if (any(is.infinite(second_arg))) {warning(paste(odd_second_arg, msg_inf))}
+warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
+  expr_list <- list(
+    quote(.row <= 0),
+    quote(.col <= 0),
+    quote(.row > plotdim[2] / gridsize),
+    quote(.col > plotdim[1] / gridsize)
+  )
+  is_bad_arg <- function(x) {
+    if (any(eval(x))) {
+      warning("Bad argument detected: ", deparse(x), call. = FALSE)
+      }
+  }
+  lapply(expr_list, is_bad_arg)
 }
+
+
+
+
+# validate_by_position <- function(first_arg, second_arg) {
+#   stopifnot(assertive::is_non_empty(first_arg))
+#   stopifnot(assertive::is_non_empty(second_arg))
+#   
+#   odd_first_arg <- paste0(substitute(first_arg))
+#   odd_second_arg <- paste0(substitute(second_arg))
+#   msg_na_nan <- "and output contain NA or NaN."
+#   if (anyNA(first_arg)) {warning(paste(odd_first_arg, msg_na_nan))}
+#   if (anyNA(second_arg)) {warning(paste(odd_second_arg, msg_na_nan))}
+#   
+#   msg_inf <- "contains infinite values."
+#   if (any(is.infinite(first_arg))) {warning(paste(odd_first_arg, msg_inf))}
+#   if (any(is.infinite(second_arg))) {warning(paste(odd_second_arg, msg_inf))}
+# }
 
 
 
@@ -53,7 +71,8 @@ NULL
 #' @rdname to_id
 #' @export
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  validate_by_position(first_arg = .row, second_arg = .col)
+  warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
+    plotdim = plotdim)
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
   
   badrc <- (.row <= 0 | .col <= 0 | .row > plotdim[2] / gridsize |
@@ -70,7 +89,7 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #' @rdname to_id
 #' @export
 to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
-  validate_by_position(first_arg = gx, second_arg = gy)
+  # validate_by_position(first_arg = gx, second_arg = gy)
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
   
   badgxgy <- (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |
