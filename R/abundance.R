@@ -8,77 +8,35 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
 }
 
 
-
-
-# validates one argument and prints an informative warning
-
-warn_na_inf_empty <- function(x) {
-  
-  warn_if_any_arg_is_odd <- function(x, msg) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(msg, deparse(x), call. = FALSE)
+# Helper to warn for odd arguments
+is_odd_argument <- function(.x, msg) {
+  if (any(eval(.x), na.rm = TRUE)) {
+    warning(msg, deparse(.x), call. = FALSE)
     }
-  }
-  
-  list_of_general_checks <- list(
-    quote(is.na(x)),
-    quote(is.infinite(x)),
-    quote(purrr::is_empty(x))
-  )
-  lapply(
-    list_of_general_checks, 
-    warn_if_any_arg_is_odd, 
-    msg = "This is (at least once) TRUE: "
-  )
 }
 
-myvar <- 1:10
-warn_na_inf_empty(x = myvar)
-
-
-
-
-
-
-
-
-
-# Throws warning if weird or bad arguments are detected.
-warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  warn_if_any_arg_is_odd <- function(x, msg) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(msg, deparse(x), call. = FALSE)
-    }
-  }
-  
-  list_of_bad_arg <- list(
-    quote(.row <= 0),
-    quote(.col <= 0),
-    quote(.row > plotdim[2] / gridsize),
-    quote(.col > plotdim[1] / gridsize)
+# These functions throws warning if bad arguments are detected. Errors are not
+# appropriate because the bad arguments are meaningful inside these functions.
+warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim, ...) {
+  substituted_list <- list(
+    substitute(gx < 0),
+    substitute(gy < 0),
+    substitute(gx >= plotdim[1]),
+    substitute(gy >= plotdim[2]),
+    substitute(is.na(gx)),
+    substitute(is.na(gy))
   )
-  lapply(list_of_bad_arg, warn_if_any_arg_is_odd, 
-    msg = "Bad argument detected: ")
+  lapply(substituted_list, is_odd_argument, ...)
 }
 
-# Throws warning if bad arguments are detected in `to_id_gxgy()`. Errors are not
-# appropriate because the bad arguments are meaningful inside `to_id_gxgy()`.
-# Maybe rename bad_arg because the name is missleading.
-warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
-  expr_list <- list(
-    quote(gx < 0),
-    quote(gy < 0),
-    quote(gx >= plotdim[1]),
-    quote(gy >= plotdim[2]),
-    quote(is.na(gx)),
-    quote(is.na(gy))
+warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim, ...) {
+  substituted_list <- list(
+    substitute(.row <= 0),
+    substitute(.col <= 0),
+    substitute(.row > plotdim[2] / gridsize),
+    substitute(.col > plotdim[1] / gridsize)
   )
-  is_bad_arg <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning("Bad argument detected: ", deparse(x), call. = FALSE)
-      }
-  }
-  lapply(expr_list, is_bad_arg)
+  lapply(substituted_list, is_odd_argument, ...)
 }
 
 
@@ -118,7 +76,7 @@ NULL
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
   warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
-    plotdim = plotdim)
+    plotdim = plotdim, msg = "Some bad arguments were detected: ")
   
   badrc <- (.row <= 0 | .col <= 0 | .row > plotdim[2] / gridsize |
       .col > plotdim[1] / gridsize)
@@ -135,8 +93,8 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #' @export
 to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
-  warn_bad_arg_to_id_gxgy(gx = gx, gy = gy, gridsize = gridsize,
-    plotdim = plotdim)
+  warn_bad_arg_to_id_gxgy(gx = gx, gy = gy, gridsize = gridsize, 
+  plotdim = plotdim, msg = "Some bad arguments were detected: ")
   
   badgxgy <- (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |
         is.na(gx) | is.na(gy))
