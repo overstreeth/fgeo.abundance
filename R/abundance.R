@@ -5,6 +5,9 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
   stopifnot(all(plotdim > 0))
 }
 
+# Throws warning if bad arguments are detected in `to_id_rowcol()`. Errors are
+# not appropriate because the bad arguments are meaningful inside 
+# `to_id_rowcol()`. Maybe rename bad_arg because the name is missleading.
 warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   expr_list <- list(
     quote(.row <= 0),
@@ -19,26 +22,6 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   }
   lapply(expr_list, is_bad_arg)
 }
-
-
-
-
-# validate_by_position <- function(first_arg, second_arg) {
-#   stopifnot(assertive::is_non_empty(first_arg))
-#   stopifnot(assertive::is_non_empty(second_arg))
-#   
-#   odd_first_arg <- paste0(substitute(first_arg))
-#   odd_second_arg <- paste0(substitute(second_arg))
-#   msg_na_nan <- "and output contain NA or NaN."
-#   if (anyNA(first_arg)) {warning(paste(odd_first_arg, msg_na_nan))}
-#   if (anyNA(second_arg)) {warning(paste(odd_second_arg, msg_na_nan))}
-#   
-#   msg_inf <- "contains infinite values."
-#   if (any(is.infinite(first_arg))) {warning(paste(odd_first_arg, msg_inf))}
-#   if (any(is.infinite(second_arg))) {warning(paste(odd_second_arg, msg_inf))}
-# }
-
-
 
 #' Convert to quadrat indices.
 #' 
