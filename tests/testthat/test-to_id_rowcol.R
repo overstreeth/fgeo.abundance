@@ -35,23 +35,6 @@ test_that("suspicious input throw warning or error", {
       plotdim = c(1000, 500)
     )
   )
-  empty_numeric <- numeric(0)
-  expect_error(
-    to_id_rowcol(
-      .row = 1:10, 
-      .col = empty_numeric, 
-      gridsize = 20,
-      plotdim = c(1000, 500)
-    )
-  )
-  expect_error(
-    to_id_rowcol(
-      .row = empty_numeric, 
-      .col = 1:10, 
-      gridsize = 20,
-      plotdim = c(1000, 500)
-    )
-  )
   vector_with_infinite <- c(1:9, Inf)
   expect_warning(
     to_id_rowcol(
@@ -65,6 +48,23 @@ test_that("suspicious input throw warning or error", {
     to_id_rowcol(
       .row = 1:10, 
       .col = vector_with_infinite, 
+      gridsize = 20,
+      plotdim = c(1000, 500)
+    )
+  )
+  empty_numeric <- numeric(0)
+  expect_warning(
+    to_id_rowcol(
+      .row = 1:10, 
+      .col = empty_numeric, 
+      gridsize = 20,
+      plotdim = c(1000, 500)
+    )
+  )
+  expect_warning(
+    to_id_rowcol(
+      .row = empty_numeric, 
+      .col = 1:10, 
       gridsize = 20,
       plotdim = c(1000, 500)
     )
