@@ -9,7 +9,7 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
 
 
 # Helper to warn for odd arguments
-is_odd_argument <- function(.x, msg) {
+warn_suspicious <- function(.x, msg = NULL) {
   if (any(eval(.x), na.rm = TRUE)) {
     warning(msg, deparse(.x), call. = FALSE)
     }
@@ -26,7 +26,7 @@ warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim, ...) {
     substitute(is.na(gx)),
     substitute(is.na(gy))
   )
-  lapply(substituted_list, is_odd_argument, ...)
+  lapply(substituted_list, warn_suspicious, ...)
 }
 
 warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim, ...) {
@@ -36,7 +36,7 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim, ...) {
     substitute(.row > plotdim[2] / gridsize),
     substitute(.col > plotdim[1] / gridsize)
   )
-  lapply(substituted_list, is_odd_argument, ...)
+  lapply(substituted_list, warn_suspicious, ...)
 }
 
 
