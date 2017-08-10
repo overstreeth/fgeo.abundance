@@ -1,15 +1,21 @@
 context("warn")
 
-test_that("is_suspicious_argument works as expected", {
+test_that("warn_suspicious is silent based on expresison", {
   gx <- 0:3
-  expect_silent(warn_suspicious(.x = substitute(gx < 0), msg = "Some "))
+  expect_silent(warn_suspicious(.x = quote(gx < 0), msg = "Some "))
   gx <- 0:3
-  expect_silent(warn_suspicious(.x = substitute(gx < 0)))
-  gx <- -1:1
-  expect_warning(warn_suspicious(.x = substitute(gx < 0), msg = "Some "),
-    "Some gx < 0", fixed = TRUE)
-  expect_warning(warn_suspicious(.x = substitute(gx < 0)))
+  expect_silent(warn_suspicious(.x = quote(gx < 0)))
 })
+
+test_that("throws warning based on expression", {
+  gx <- -1:1
+  expect_warning(warn_suspicious(.x = quote(gx < 0), msg = "Some "),
+    "Some gx < 0", fixed = TRUE)
+  expect_warning(warn_suspicious(.x = quote(gx < 0)))
+})
+
+
+
 
 test_that("warn_bad_arg_to_id_gxgy() does not warn when it doesn't"), {
   gx = 1
