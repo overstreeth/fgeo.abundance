@@ -18,7 +18,7 @@ test_that("outputs the same as ctfs::rowcol.to.index", {
   expect_equal(before, now)
 })
 
-thest_that("warnings occurr as expected", {
+test_that("warnings occurr as expected", {
   gy_na <- c(gy, NA)
   expect_warning(to_id_gxgy(gx, gy_na, gridsize, plotdim))
   gx_negative <- c(gx, -1)
