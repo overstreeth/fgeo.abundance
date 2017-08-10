@@ -3,6 +3,9 @@
 # Helpers of `to_id_*()` --------------------------------------------------
 
 validate_gridsize_plotdim <- function(gridsize, plotdim) {
+  stopifnot(!is.na(gridsize))
+  stopifnot(all(!is.na(plotdim)))
+  
   stopifnot(gridsize > 0)
   stopifnot(all(plotdim > 0))
 }
