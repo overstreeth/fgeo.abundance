@@ -136,21 +136,37 @@ to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
 # Basal area --------------------------------------------------------------
 
 #' Basal area of trees.
-#'
-#' Calculates the individual basal areas (in square meters) for all submitted
-#' dbhs. The dbh units must be submitted, either cm'or 'millimeters'.
 #' 
-#' @inheritParams abundance
+#' Calculates the individual basal areas in square meters for all `dbh`-values
+#' submitted.
+#' 
+#' @template dbhunit
 #' @template dbh
 #' @return A vector of basal area values of same length as the submitted vector 
 #'   of dbhs.
-'ba'
+#' @export
+#' @examples
+#' dbh <- c(0, 23, 43)
+#' expect_equal(ba(dbh = dbh)
+ba <- function(dbh, dbhunit = "mm") {
+  stopifnot(dbhunit %in% c("mm", "cm"))
+  stopifnot(all(dbh > 0, na.rm = TRUE))
+  if (any(is.na(dbh))) {warning("NA detected in dbh.", call. = FALSE)}
 
-ba=function(dbh,dbhunit='mm') 
- {
-  if(dbhunit=='mm') return(pi*(dbh/2000)^2)
-  if(dbhunit=='cm') return(pi*(dbh/200)^2)
- }
+  if (dbhunit == "cm") {return(pi * (dbh / 200) ^ 2)}
+  pi * (dbh / 2000) ^ 2
+}
+
+
+
+
+
+
+
+
+
+
+tag_xxxcont <- "Continue below"
 
 #' Returns the basal area summed over all submitted dbhs.
 #'
