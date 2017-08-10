@@ -22,4 +22,7 @@ test_that("errs as expected", {
   expect_error(
     validate_gridsize_plotdim(gridsize = NA, plotdim = c(1000, 0))
   )
+  expect_error(
+    validate_gridsize_plotdim(gridsize = 0, plotdim = c(NA, 0))
+  )
 })

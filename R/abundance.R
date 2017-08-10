@@ -10,6 +10,22 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
   stopifnot(all(plotdim > 0))
 }
 
+# Choosingn to warn (not err) because the intention of the function is unclear.
+warn_na_rowcol <- function(.row, .col) {
+  expr_list <- list(
+    quote(is.na(.row)), 
+    quote(is.na(.col))
+  )
+  warn_suspicious <- function(x) {
+    if (any(eval(x), na.rm = TRUE)) {
+      warning(deparse(x), call. = FALSE)
+    }
+  }
+  lapply(expr_list, warn_suspicious)
+}
+
+
+
 # Bad arguments, as defined inside `to_id_*()` ----
 
 # These functions throws warning if bad arguments are detected. Errors are not
@@ -82,6 +98,7 @@ NULL
 #' @export
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
+  warn_na_rowcol(.row = .row, .col = .col)
   warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
     plotdim = plotdim)
   
