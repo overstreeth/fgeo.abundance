@@ -117,19 +117,46 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 
 #' Basal area of trees.
 #' 
-#' Calculates the individual basal areas in square meters for all `dbh`-values
-#' submitted.
+#' * `ba()`: calculates the individual basal areas in square meters for all
+#'   `dbh`-values submitted.
+#' * `basum()`: calculates the basal area summed over all submitted `dbh` values
+#'   (after removing NAs).
 #' 
-#' @template dbhunit
 #' @template dbh
-#' @return A vector of basal area values of same length as the submitted vector 
-#'   of dbhs.
+#' @template dbhunit
+#' @template mindbh
+#' 
+#' @template author_condit
+#' 
+#' @return
+#'   * `ba()`: A vector of basal area values of same length as the submitted 
+#'     vector of dbhs.
+#'   * `basum()`: A number giving the the basal area summed over all submitted
+#'     dbhs.
+#'
+#' @name basal_area
+#' @aliases basum
+#'
+#' @examples 
+#' # Takes NAs and throws informative warning
+#' (dbh <- c(seq(5, 50, by = 5), NA))
+#' ba(dbh, dbhunit = "cm")  # default dbhunit is milimeters ("mm")
+#' 
+#' # (From now on, suppressing warnings to avoid distraction)
+#' 
+#' # Filter stems at or over a minimum dbh and sum them, all in one step
+#' suppressWarnings(
+#'   basum(dbh, mindbh = 30)
+#' )
+#' 
+#' # Same; a bit longer but may be easier to understand what is going on
+#' over_mindbh <- dbh[dbh >= 30]
+#' suppressWarnings(
+#'   sum(ba(over_mindbh), na.rm = TRUE)
+#' )
+
+#' @rdname basal_area
 #' @export
-#' @examples
-#' dbh <- c(1, 23, 43)
-#' ba(dbh = dbh)
-#' dbh <- c(1, 23, NA)
-#' ba(dbh = dbh, dbhunit = "cm")
 ba <- function(dbh, dbhunit = "mm") {
   validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit)
 
@@ -137,19 +164,8 @@ ba <- function(dbh, dbhunit = "mm") {
   pi * (dbh / 2000) ^ 2
 }
 
-#' Basal area summed over all submitted dbhs.
-#' 
-#' Calculates the basal area summed over all submitted `dbh` values (after
-#' removing NAs).
-#' 
-#' @template dbh
-#' @template mindbh
-#' @template dbhunit
-#'   
-#' @return A number giving the the basal area summed over all submitted dbhs.
+#' @rdname basal_area
 #' @export
-#' @examples 
-#' basum(dbh = c(1, 23, NA), mindbh = 23, dbhunit = "cm")
 basum <- function(dbh, dbhunit = "mm", mindbh = 10) {
   validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit, mindbh = mindbh)
   
