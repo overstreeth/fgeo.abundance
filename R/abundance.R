@@ -197,35 +197,45 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 
 # *utilities; utilities* --------------------------------------------------
 
-#' This function fills out an array of 2 dimensions, adding zeroes (or...
+#' Fill 2 dimensional data with custom value.
 #'
-#' @description
+#' This function fills out an array of 2 dimensions with custom values for extra
+#' columns and rows as named in `class1` and `class2`. If a column or row is
+#' missing, it will be filled with the value given by fill. It is useful for
+#' results of table or tapply when some elements had no records.
+#' 
+#' @param .data A two-dimension array, matrix or data.frame.
+#' @param class1 A vector of the same length  of `.data` or longer.
+#' @param class2 A vector.
+#' @param fill 
 #'
-#' This function fills out an array of 2 dimensions, adding zeroes (or other values) for extra columns
-#' and rows as named in class1 and class2. If a column (or row) is
-#' missing, it will be filled with the value given by fill. It is useful for results of table
-#' or tapply when some elements had no records. 
-#'
-#'
-'fill.dimension'
+#' @aliases fill.dimension
+#' 
+#' @export
+#' @examples 
+#' class1 <- 1:2
+#' class2 <- letters[1:5]
+#' fill = 0
+#' .data <- array(
+#'   data = c(1, 2, NA),
+#'   dim = c(2, 4),
+#'   dimnames = list(1:2, letters[1:4])
+#' )
+fill_dimension <- function(.data, class1, class2, fill = 0) {
+  assertive::assert_is_of_length(dim(.data), 2, severity = "warning")
+  assertive::assert_any_are_matching_regex(
+    class(.data), "matrix|data.frame", severity = "warning"
+  )
+  
+  result <- data.frame(
+    matrix(fill, nrow = length(class1), ncol = length(class2))
+  )
+  rownames(result) <- class1
+  colnames(result) <- class2
 
-fill.dimension=function(dataarray,class1,class2,fill=0)
-{
- result=data.frame(matrix(fill,nrow=length(class1),ncol=length(class2)))
- rownames(result)=class1
- colnames(result)=class2
-
- result[rownames(dataarray),colnames(dataarray)]=dataarray
- result[is.na(result)]=fill
- 
- return(result)
+  result[rownames(.data), colnames(.data)] <- .data
+  result[is.na(result)] <- fill
+  result
 }
-
-
-
-
-
-
-
 
 
