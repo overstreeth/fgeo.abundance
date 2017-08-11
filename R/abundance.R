@@ -34,7 +34,7 @@ NULL
 #' @export
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
-  warn_na_rowcol(.row = .row, .col = .col)
+  validate_row_col(.row = .row, .col = .col)
   warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
     plotdim = plotdim)
   
@@ -79,7 +79,7 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
 }
 
 # Choosingn to warn (not err) because the intention of the function is unclear.
-warn_na_rowcol <- function(.row, .col) {
+validate_row_col <- function(.row, .col) {
   assertive::assert_all_are_not_na(.row, severity = "warning")
   assertive::assert_all_are_not_na(.col, severity = "warning")
 }
@@ -131,7 +131,7 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #' dbh <- c(1, 23, NA)
 #' ba(dbh = dbh, dbhunit = "cm")
 ba <- function(dbh, dbhunit = "mm") {
-  validate_dbh_dbhunit(dbh, dbhunit)
+  validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit)
 
   if (dbhunit == "cm") {return(pi * (dbh / 200) ^ 2)}
   pi * (dbh / 2000) ^ 2
@@ -150,10 +150,8 @@ ba <- function(dbh, dbhunit = "mm") {
 #' @export
 #' @examples 
 #' basum(dbh = c(1, 23, NA), mindbh = 23, dbhunit = "cm")
-basum <- function(dbh, mindbh = 10, dbhunit = "mm") {
-  validate_dbh_dbhunit(dbh, dbhunit)
-  assertive::assert_is_a_number(mindbh, severity = "warning")
-  assertive::assert_all_are_positive(mindbh)
+basum <- function(dbh, dbhunit = "mm", mindbh = 10) {
+  validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit, mindbh = mindbh)
   
   if (!is.null(mindbh)) {
     dbh <- dbh[dbh >= mindbh]
@@ -168,9 +166,13 @@ basum <- function(dbh, mindbh = 10, dbhunit = "mm") {
 
 # Basal area, validate arguments ------------------------------------------
 
-validate_dbh_dbhunit <- function(dbh, dbhunit) {
+validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
   assertive::assert_is_numeric(dbh)
   assertive::assert_any_are_matching_regex(dbhunit, pattern = "^mm$|^cm$")
   assertive::assert_all_are_positive(dbh, na_ignore = TRUE)
   assertive::assert_all_are_not_na(dbh, severity = "warning")
+  if (!is.null(mindbh)) {
+    assertive::assert_is_a_number(mindbh, severity = "warning")
+    assertive::assert_all_are_positive(mindbh)
+  }
 }
