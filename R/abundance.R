@@ -166,7 +166,8 @@ ba <- function(dbh, dbhunit = "mm") {
 #' basum(dbh = c(1, 23, NA), mindbh = 23, dbhunit = "cm")
 basum <- function(dbh, mindbh = 10, dbhunit = "mm") {
   validate_dbh_dbhunit(dbh, dbhunit)
-  validate_mindbh(mindbh)
+  assertive::assert_is_a_number(mindbh, severity = "warning")
+  assertive::assert_all_are_positive(mindbh)
   
   if (!is.null(mindbh)) {
     dbh <- dbh[dbh >= mindbh]
@@ -182,16 +183,13 @@ basum <- function(dbh, mindbh = 10, dbhunit = "mm") {
 # Basal area, validate arguments ------------------------------------------
 
 validate_dbh_dbhunit <- function(dbh, dbhunit) {
-  stopifnot(is.numeric(dbh))
-  stopifnot(dbhunit %in% c("mm", "cm"))
-  stopifnot(all(dbh > 0, na.rm = TRUE))
+  assertive::assert_is_numeric(dbh)
+  assertive::assert_any_are_matching_regex(dbhunit, pattern = "^mm$|^cm$")
+  assertive::assert_all_are_positive(dbh, na_ignore = TRUE)
+  
+  
+  
   if (any(is.na(dbh))) {
     warning("NA detected in dbh.", call. = TRUE)
   }
-}
-
-validate_mindbh <- function(mindbh) {
-  stopifnot(is.numeric(mindbh))
-  stopifnot(mindbh > 0)
-  stopifnot(length(mindbh) == 1)
 }
