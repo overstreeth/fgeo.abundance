@@ -80,16 +80,8 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
 
 # Choosingn to warn (not err) because the intention of the function is unclear.
 warn_na_rowcol <- function(.row, .col) {
-  expr_list <- list(
-    quote(is.na(.row)), 
-    quote(is.na(.col))
-  )
-  warn_suspicious <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(deparse(x), call. = TRUE)
-    }
-  }
-  lapply(expr_list, warn_suspicious)
+  assertive::assert_all_are_not_na(.row, severity = "warning")
+  assertive::assert_all_are_not_na(.col, severity = "warning")
 }
 
 # These functions throws warning if bad arguments are detected. Errors are not
