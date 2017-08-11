@@ -86,36 +86,29 @@ warn_na_rowcol <- function(.row, .col) {
 
 # These functions throws warning if bad arguments are detected. Errors are not
 # appropriate because the bad arguments are meaningful inside these functions.
+
 warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
-  expr_list <- list(
-    quote(gx < 0),
-    quote(gy < 0),
-    quote(gx >= plotdim[1]),
-    quote(gy >= plotdim[2]),
-    quote(is.na(gx)),
-    quote(is.na(gy))
+  assertive::assert_all_are_positive(gx, severity = "warning")
+  assertive::assert_all_are_positive(gy, severity = "warning")
+  assertive::assert_all_are_false(
+    gx >= plotdim[1], severity = "warning"
   )
-  warn_suspicious <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(deparse(x), call. = TRUE)
-    }
-  }
-  lapply(expr_list, warn_suspicious)
+  assertive::assert_all_are_false(
+    gy >= plotdim[2], severity = "warning"
+  )
+  assertive::assert_all_are_not_na(gx, severity = "warning")
+  assertive::assert_all_are_not_na(gy, severity = "warning")
 }
 
 warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  expr_list <- list(
-    quote(.row <= 0),
-    quote(.col <= 0),
-    quote(.row > plotdim[2] / gridsize),
-    quote(.col > plotdim[1] / gridsize)
+  assertive::assert_all_are_non_negative(.row, severity = "warning")
+  assertive::assert_all_are_non_negative(.col, severity = "warning")
+  assertive::assert_all_are_false(
+    .row > plotdim[2] / gridsize, severity = "warning"
   )
-  warn_suspicious <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(deparse(x), call. = TRUE)
-    }
-  }
-  lapply(expr_list, warn_suspicious)
+  assertive::assert_all_are_false(
+    .col > plotdim[1] / gridsize, severity = "warning"
+  )
 }
 
 

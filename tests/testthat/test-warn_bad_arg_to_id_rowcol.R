@@ -28,12 +28,4 @@ test_that("warn_bad_arg_to_id_rowcol() is silent with good arguments", {
       plotdim = c(1000, 500)
     )
   )
-  expect_silent(
-    warn_bad_arg_to_id_rowcol(
-      .row = 2,
-      .col = 2,
-      gridsize = 0,
-      plotdim = c(0, 500)
-    )
-  )
 })
