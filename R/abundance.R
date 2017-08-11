@@ -126,8 +126,10 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #'   of dbhs.
 #' @export
 #' @examples
-#' dbh <- c(0, 23, 43)
-#' expect_equal(ba(dbh = dbh)
+#' dbh <- c(1, 23, 43)
+#' ba(dbh = dbh)
+#' dbh <- c(1, 23, NA)
+#' ba(dbh = dbh, dbhunit = "cm")
 ba <- function(dbh, dbhunit = "mm") {
   validate_dbh_dbhunit(dbh, dbhunit)
 

@@ -21,6 +21,8 @@ Calculates the individual basal areas in square meters for all \code{dbh}-values
 submitted.
 }
 \examples{
-dbh <- c(0, 23, 43)
-expect_equal(ba(dbh = dbh)
+dbh <- c(1, 23, 43)
+ba(dbh = dbh)
+dbh <- c(1, 23, NA)
+ba(dbh = dbh, dbhunit = "cm")
 }
