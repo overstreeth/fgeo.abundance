@@ -1,4 +1,4 @@
-# spatial; quadfunc -------------------------------------------------------
+# *spatial; quadfunc* -----------------------------------------------------
 
 # `to_id_*()` -------------------------------------------------------------
 
@@ -192,3 +192,40 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
     assertive::assert_all_are_positive(mindbh)
   }
 }
+
+
+
+# *utilities; utilities* --------------------------------------------------
+
+#' This function fills out an array of 2 dimensions, adding zeroes (or...
+#'
+#' @description
+#'
+#' This function fills out an array of 2 dimensions, adding zeroes (or other values) for extra columns
+#' and rows as named in class1 and class2. If a column (or row) is
+#' missing, it will be filled with the value given by fill. It is useful for results of table
+#' or tapply when some elements had no records. 
+#'
+#'
+'fill.dimension'
+
+fill.dimension=function(dataarray,class1,class2,fill=0)
+{
+ result=data.frame(matrix(fill,nrow=length(class1),ncol=length(class2)))
+ rownames(result)=class1
+ colnames(result)=class2
+
+ result[rownames(dataarray),colnames(dataarray)]=dataarray
+ result[is.na(result)]=fill
+ 
+ return(result)
+}
+
+
+
+
+
+
+
+
+
