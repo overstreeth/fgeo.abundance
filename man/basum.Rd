@@ -2,7 +2,7 @@
 % Please edit documentation in R/abundance.R
 \name{basum}
 \alias{basum}
-\title{Returns the basal area summed over all submitted dbhs.}
+\title{Basal area summed over all submitted dbhs.}
 \usage{
 basum(dbh, mindbh = 10, dbhunit = "mm")
 }
@@ -16,7 +16,13 @@ included.}
 
 \item{dbhunit}{'cm' or 'mm', only used for basal area.}
 }
+\value{
+A number giving the the basal area summed over all submitted dbhs.
+}
 \description{
-Returns the basal area summed over all submitted dbhs. NAs can be included,
-as sum will be completed with \code{na.rm = TRUE}.
+Calculates the basal area summed over all submitted \code{dbh} values (after
+removing NAs).
+}
+\examples{
+basum(dbh = c(1, 23, NA), mindbh = 23, dbhunit = "cm")
 }

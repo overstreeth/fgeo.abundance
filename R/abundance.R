@@ -72,11 +72,10 @@ to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
 # `to_id_*()`, validate arguments -----------------------------------------
 
 validate_gridsize_plotdim <- function(gridsize, plotdim) {
-  stopifnot(!is.na(gridsize))
-  stopifnot(all(!is.na(plotdim)))
-  
-  stopifnot(gridsize > 0)
-  stopifnot(all(plotdim > 0))
+  assertive::assert_all_are_not_na(gridsize)
+  assertive::assert_all_are_not_na(plotdim)
+  assertive::assert_all_are_positive(gridsize)
+  assertive::assert_all_are_positive(plotdim)
 }
 
 # Choosingn to warn (not err) because the intention of the function is unclear.
@@ -186,10 +185,5 @@ validate_dbh_dbhunit <- function(dbh, dbhunit) {
   assertive::assert_is_numeric(dbh)
   assertive::assert_any_are_matching_regex(dbhunit, pattern = "^mm$|^cm$")
   assertive::assert_all_are_positive(dbh, na_ignore = TRUE)
-  
-  
-  
-  if (any(is.na(dbh))) {
-    warning("NA detected in dbh.", call. = TRUE)
-  }
+  assertive::assert_all_are_not_na(dbh, severity = "warning")
 }
