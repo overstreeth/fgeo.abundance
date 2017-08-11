@@ -3,13 +3,13 @@
 \name{basal_area}
 \alias{basal_area}
 \alias{ba}
-\alias{basum}
-\alias{basum}
+\alias{ba_sum}
+\alias{ba_sum}
 \title{Basal area of trees.}
 \usage{
 ba(dbh, dbhunit = "mm")
 
-basum(dbh, dbhunit = "mm", mindbh = 10)
+ba_sum(dbh, dbhunit = "mm", mindbh = 10)
 }
 \arguments{
 \item{dbh}{Stem diameter, usually at breast height (see data dictionary at 
@@ -25,7 +25,7 @@ included.}
 \itemize{
 \item \code{ba()}: A vector of basal area values of same length as the submitted
 vector of dbhs.
-\item \code{basum()}: A number giving the the basal area summed over all submitted
+\item \code{ba_sum()}: A number giving the the basal area summed over all submitted
 dbhs.
 }
 }
@@ -33,7 +33,7 @@ dbhs.
 \itemize{
 \item \code{ba()}: calculates the individual basal areas in square meters for all
 \code{dbh}-values submitted.
-\item \code{basum()}: calculates the basal area summed over all submitted \code{dbh} values
+\item \code{ba_sum()}: calculates the basal area summed over all submitted \code{dbh} values
 (after removing NAs).
 }
 }
@@ -46,7 +46,7 @@ ba(dbh, dbhunit = "cm")  # default dbhunit is milimeters ("mm")
 
 # Filter stems at or over a minimum dbh and sum them, all in one step
 suppressWarnings(
-  basum(dbh, mindbh = 30)
+  ba_sum(dbh, mindbh = 30)
 )
 
 # Same; a bit longer but may be easier to understand what is going on

@@ -119,7 +119,7 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #' 
 #' * `ba()`: calculates the individual basal areas in square meters for all
 #'   `dbh`-values submitted.
-#' * `basum()`: calculates the basal area summed over all submitted `dbh` values
+#' * `ba_sum()`: calculates the basal area summed over all submitted `dbh` values
 #'   (after removing NAs).
 #' 
 #' @template dbh
@@ -131,11 +131,11 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #' @return
 #'   * `ba()`: A vector of basal area values of same length as the submitted 
 #'     vector of dbhs.
-#'   * `basum()`: A number giving the the basal area summed over all submitted
+#'   * `ba_sum()`: A number giving the the basal area summed over all submitted
 #'     dbhs.
 #'
 #' @name basal_area
-#' @aliases basum
+#' @aliases ba_sum
 #'
 #' @examples 
 #' # Takes NAs and throws informative warning
@@ -146,7 +146,7 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #' 
 #' # Filter stems at or over a minimum dbh and sum them, all in one step
 #' suppressWarnings(
-#'   basum(dbh, mindbh = 30)
+#'   ba_sum(dbh, mindbh = 30)
 #' )
 #' 
 #' # Same; a bit longer but may be easier to understand what is going on
@@ -166,7 +166,7 @@ ba <- function(dbh, dbhunit = "mm") {
 
 #' @rdname basal_area
 #' @export
-basum <- function(dbh, dbhunit = "mm", mindbh = 10) {
+ba_sum <- function(dbh, dbhunit = "mm", mindbh = 10) {
   validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit, mindbh = mindbh)
   
   if (!is.null(mindbh)) {
