@@ -207,9 +207,8 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #' results of table or tapply when some elements had no records.
 #' 
 #' @param .data A two-dimension array, matrix or data.frame.
-#' @param class1 A vector of the same length  of `.data` or longer.
-#' @param class2 A vector.
-#' @param fill 
+#' @param class1,class2 A vector of the same length  of `.data` or longer.
+#' @param fill A numeric value to fill missing values with.
 #'
 #' @aliases fill.dimension
 #' 
@@ -224,10 +223,7 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #'   dimnames = list(1:2, letters[1:4])
 #' )
 fill_dimension <- function(.data, class1, class2, fill = 0) {
-  assertive::assert_is_of_length(dim(.data), 2, severity = "warning")
-  assertive::assert_any_are_matching_regex(
-    class(.data), "matrix|data.frame", severity = "warning"
-  )
+  validate_data_class1_class2_fill(.data, class1, class2, fill)
   
   result <- data.frame(
     matrix(fill, nrow = length(class1), ncol = length(class2))
@@ -240,4 +236,22 @@ fill_dimension <- function(.data, class1, class2, fill = 0) {
   result
 }
 
+
+
+# utilities, validate arguments -------------------------------------------
+
+validate_data_class1_class2_fill <- function(.data, class1, class2, fill) {
+  # let class1 = NULL pass this test
+  if (!is.null(class1)) {
+    assertive::assert_any_are_not_na(class1, severity = "warning")
+  }
+  assertive::assert_is_of_length(dim(.data), 2, severity = "warning")
+  assertive::assert_any_are_matching_regex(
+    class(.data), "matrix|data.frame", severity = "warning"
+  )
+  class2_is_not_shorter_than_n_cols_of_data <- length(class2) >= ncol(.data)
+  assertive::assert_is_identical_to_true(
+    class2_is_not_shorter_than_n_cols_of_data, severity = "stop"
+  )
+}
 

@@ -10,11 +10,9 @@ fill_dimension(.data, class1, class2, fill = 0)
 \arguments{
 \item{.data}{A two-dimension array, matrix or data.frame.}
 
-\item{class1}{A vector of the same length  of \code{.data} or longer.}
+\item{class1, class2}{A vector of the same length  of \code{.data} or longer.}
 
-\item{class2}{A vector.}
-
-\item{fill}{}
+\item{fill}{A numeric value to fill missing values with.}
 }
 \description{
 This function fills out an array of 2 dimensions with custom values for extra
