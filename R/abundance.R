@@ -1,69 +1,5 @@
 # spatial; quadfunc -------------------------------------------------------
 
-# Helpers of `to_id_*()` --------------------------------------------------
-
-validate_gridsize_plotdim <- function(gridsize, plotdim) {
-  stopifnot(!is.na(gridsize))
-  stopifnot(all(!is.na(plotdim)))
-  
-  stopifnot(gridsize > 0)
-  stopifnot(all(plotdim > 0))
-}
-
-# Choosingn to warn (not err) because the intention of the function is unclear.
-warn_na_rowcol <- function(.row, .col) {
-  expr_list <- list(
-    quote(is.na(.row)), 
-    quote(is.na(.col))
-  )
-  warn_suspicious <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(deparse(x), call. = FALSE)
-    }
-  }
-  lapply(expr_list, warn_suspicious)
-}
-
-
-
-# Bad arguments, as defined inside `to_id_*()` ----
-
-# These functions throws warning if bad arguments are detected. Errors are not
-# appropriate because the bad arguments are meaningful inside these functions.
-warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
-  expr_list <- list(
-    quote(gx < 0),
-    quote(gy < 0),
-    quote(gx >= plotdim[1]),
-    quote(gy >= plotdim[2]),
-    quote(is.na(gx)),
-    quote(is.na(gy))
-  )
-  warn_suspicious <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(deparse(x), call. = FALSE)
-    }
-  }
-  lapply(expr_list, warn_suspicious)
-}
-
-warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  expr_list <- list(
-    quote(.row <= 0),
-    quote(.col <= 0),
-    quote(.row > plotdim[2] / gridsize),
-    quote(.col > plotdim[1] / gridsize)
-  )
-  warn_suspicious <- function(x) {
-    if (any(eval(x), na.rm = TRUE)) {
-      warning(deparse(x), call. = FALSE)
-    }
-  }
-  lapply(expr_list, warn_suspicious)
-}
-
-
-
 # `to_id_*()` -------------------------------------------------------------
 
 #' Convert to quadrat indices.
@@ -133,6 +69,66 @@ to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
 
 
 
+# `to_id_*()`, validate arguments -----------------------------------------
+
+validate_gridsize_plotdim <- function(gridsize, plotdim) {
+  stopifnot(!is.na(gridsize))
+  stopifnot(all(!is.na(plotdim)))
+  
+  stopifnot(gridsize > 0)
+  stopifnot(all(plotdim > 0))
+}
+
+# Choosingn to warn (not err) because the intention of the function is unclear.
+warn_na_rowcol <- function(.row, .col) {
+  expr_list <- list(
+    quote(is.na(.row)), 
+    quote(is.na(.col))
+  )
+  warn_suspicious <- function(x) {
+    if (any(eval(x), na.rm = TRUE)) {
+      warning(deparse(x), call. = TRUE)
+    }
+  }
+  lapply(expr_list, warn_suspicious)
+}
+
+# These functions throws warning if bad arguments are detected. Errors are not
+# appropriate because the bad arguments are meaningful inside these functions.
+warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
+  expr_list <- list(
+    quote(gx < 0),
+    quote(gy < 0),
+    quote(gx >= plotdim[1]),
+    quote(gy >= plotdim[2]),
+    quote(is.na(gx)),
+    quote(is.na(gy))
+  )
+  warn_suspicious <- function(x) {
+    if (any(eval(x), na.rm = TRUE)) {
+      warning(deparse(x), call. = TRUE)
+    }
+  }
+  lapply(expr_list, warn_suspicious)
+}
+
+warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
+  expr_list <- list(
+    quote(.row <= 0),
+    quote(.col <= 0),
+    quote(.row > plotdim[2] / gridsize),
+    quote(.col > plotdim[1] / gridsize)
+  )
+  warn_suspicious <- function(x) {
+    if (any(eval(x), na.rm = TRUE)) {
+      warning(deparse(x), call. = TRUE)
+    }
+  }
+  lapply(expr_list, warn_suspicious)
+}
+
+
+
 # Basal area --------------------------------------------------------------
 
 #' Basal area of trees.
@@ -149,44 +145,53 @@ to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
 #' dbh <- c(0, 23, 43)
 #' expect_equal(ba(dbh = dbh)
 ba <- function(dbh, dbhunit = "mm") {
-  stopifnot(dbhunit %in% c("mm", "cm"))
-  stopifnot(all(dbh > 0, na.rm = TRUE))
-  if (any(is.na(dbh))) {warning("NA detected in dbh.", call. = FALSE)}
+  validate_dbh_dbhunit(dbh, dbhunit)
 
   if (dbhunit == "cm") {return(pi * (dbh / 200) ^ 2)}
   pi * (dbh / 2000) ^ 2
 }
 
-
-
-
-
-
-
-
-
-
-tag_xxxcont <- "Continue below"
-
-#' Returns the basal area summed over all submitted dbhs.
-#'
-#' @description
-#' Returns the basal area summed over all submitted dbhs. NAs can be included,
-#' as sum will be completed with `na.rm = TRUE`.
-#'
+#' Basal area summed over all submitted dbhs.
+#' 
+#' Calculates the basal area summed over all submitted `dbh` values (after
+#' removing NAs).
+#' 
 #' @template dbh
 #' @template mindbh
 #' @template dbhunit
-#'
-'basum'
-
-basum=function(dbh,mindbh=10,dbhunit='mm')
-{
- if(!is.null(mindbh)) dbh=dbh[dbh>=mindbh]
-
- if(length(dbh)==0) return(0)
- return(sum(ba(dbh,dbhunit=dbhunit),na.rm=TRUE))
+#'   
+#' @return A number giving the the basal area summed over all submitted dbhs.
+#' @export
+#' @examples 
+#' basum(dbh = c(1, 23, NA), mindbh = 23, dbhunit = "cm")
+basum <- function(dbh, mindbh = 10, dbhunit = "mm") {
+  validate_dbh_dbhunit(dbh, dbhunit)
+  validate_mindbh(mindbh)
+  
+  if (!is.null(mindbh)) {
+    dbh <- dbh[dbh >= mindbh]
+  }
+  if (length(dbh) == 0) {
+    return(0)
+  }
+  sum(ba(dbh, dbhunit = dbhunit), na.rm = TRUE)
 }
 
 
 
+# Basal area, validate arguments ------------------------------------------
+
+validate_dbh_dbhunit <- function(dbh, dbhunit) {
+  stopifnot(is.numeric(dbh))
+  stopifnot(dbhunit %in% c("mm", "cm"))
+  stopifnot(all(dbh > 0, na.rm = TRUE))
+  if (any(is.na(dbh))) {
+    warning("NA detected in dbh.", call. = TRUE)
+  }
+}
+
+validate_mindbh <- function(mindbh) {
+  stopifnot(is.numeric(mindbh))
+  stopifnot(mindbh > 0)
+  stopifnot(length(mindbh) == 1)
+}
