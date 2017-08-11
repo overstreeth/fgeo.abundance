@@ -2,6 +2,7 @@
 
 export(ba)
 export(ba_sum)
+export(fill_dimension)
 export(to_id_gxgy)
 export(to_id_rowcol)
 import(grDevices)

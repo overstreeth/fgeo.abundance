@@ -1,4 +1,5 @@
-# *spatial; quadfunc* -----------------------------------------------------
+# ***spatial; quadfunc*** -------------------------------------------------
+
 
 # `to_id_*()` -------------------------------------------------------------
 
@@ -195,7 +196,8 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 
 
 
-# *utilities; utilities* --------------------------------------------------
+
+# ***utilities; utilities*** ----------------------------------------------
 
 #' Fill 2 dimensional data with custom value.
 #'
