@@ -304,6 +304,19 @@ abundance <- function(censdata,
                       dbhunit = "mm",
                       split1 = NULL,
                       split2 = NULL) {
+  
+  validate_arguments_abundance(
+    censdata, type, alivecode, mindbh, dbhunit, split1, split2
+  )
+  
+
+  
+  
+  
+  
+  
+  
+  
   if (is.null(split1)) {
     split1 <- rep("all", dim(censdata)[1])
   }
@@ -326,7 +339,6 @@ abundance <- function(censdata,
   class2 <- sort(unique(split2))
   groupvar <- list(split1[alive & inc], split2[alive & inc])
   
-  stopifnot(type %in% c("abund", "ba", "agb"))
   if (type == "abund") {
     abund <- tapply(censdata$dbh[alive & inc], groupvar, length)
   }
@@ -362,6 +374,70 @@ abundance <- function(censdata,
 
 
 
+
+
+validate_arguments_abundance <- function(censdata,
+                                         type = "abund",
+                                         alivecode = c("A"),
+                                         mindbh = NULL,
+                                         dbhunit = "mm",
+                                         split1 = NULL,
+                                         split2 = NULL) {
+  required_names <- c("dbh", "status", "agb", "date")
+  censdata_names <- paste(colnames(censdata), collapse = "|")
+  assertive::assert_all_are_matching_regex(names_used, censdata_names)
+  
+  assertive::assert_any_are_matching_regex(type, "abund|ba|agb")
+  
+
+}
+
+
+
+context("validate_arguments_abundance")
+
+library(dplyr)
+cns5_mini <- sample_n(bci::bci12full5, 100)
+
+test_that("throws error with wrong input", {
+  expect_error(
+    validate_arguments_abundance(censdata = data.frame(a = 1:3))
+  )
+  expect_error(
+    validate_arguments_abundance(censdata = cns5_mini, type = "wrong")
+  )
+  # xxxcont. more arguments here
+})
+test_that("is silent with good arguments", {
+  expect_silent(
+    validate_arguments_abundance(censdata = as.matrix(cns5_mini))
+  )
+  expect_silent(
+    validate_arguments_abundance(
+      censdata = as.data.frame(cns5_mini), type = "agb"
+    )
+  )
+  # xxxcont. more arguments here
+})
+test_that("warns with suspicious arguments", {
+  # xxxcont. tests here.
+})
+
+
+
+
+
+
+context("abundance")
+
+library(dplyr)
+cns5_mini <- sample_n(bci::bci12full5, 100)
+
+test_that("wrong censdata throws errors or warnings", {
+  wrong_data <- data.frame(a = 1:3, b = 1:3)
+  expect_error(abundance(wrong_data))
+  
+})
 
 
 
