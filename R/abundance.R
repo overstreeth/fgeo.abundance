@@ -364,10 +364,6 @@ abundance <- function(censdata,
   result
 }
 
-
-
-
-
 validate_arguments_abundance <- function(censdata,
                                          type = "abund",
                                          alivecode = c("A"),
@@ -377,75 +373,31 @@ validate_arguments_abundance <- function(censdata,
                                          split2 = NULL) {
   required_names <- c("dbh", "status", "agb", "date")
   censdata_names <- paste(colnames(censdata), collapse = "|")
-  assertive::assert_all_are_matching_regex(names_used, censdata_names)
-  
+  assertive::assert_all_are_matching_regex(required_names, censdata_names)
   assertive::assert_any_are_matching_regex(type, "abund|ba|agb")
-  
+  if (!is.null(mindbh)) {
+    assertive::assert_is_numeric(mindbh)
+  }
+  assertive::assert_any_are_matching_regex(dbhunit, "mm|cm")
 
-}
-
-
-
-context("validate_arguments_abundance")
-
-library(dplyr)
-cns5_mini <- sample_n(bci::bci12full5, 100)
-
-test_that("throws error with wrong input", {
-  expect_error(
-    validate_arguments_abundance(censdata = data.frame(a = 1:3))
-  )
-  expect_error(
-    validate_arguments_abundance(censdata = cns5_mini, type = "wrong")
-  )
-  # xxxcont. more arguments here
-})
-test_that("is silent with good arguments", {
-  expect_silent(
-    validate_arguments_abundance(censdata = as.matrix(cns5_mini))
-  )
-  expect_silent(
-    validate_arguments_abundance(
-      censdata = as.data.frame(cns5_mini), type = "agb"
+  if (!is.null(split1)) {
+    assertive::assert_is_of_length(split1, nrow(censdata))
+    
+    vector_passed <- deparse(substitute(split1))
+    assertive::assert_all_are_matching_regex(
+      vector_passed, censdata_names, severity = "warning"
     )
-  )
-  # xxxcont. more arguments here
-})
-test_that("warns with suspicious arguments", {
-  # xxxcont. tests here.
-})
-
-
-
-
-
-
-context("abundance")
-
-library(dplyr)
-cns5_mini <- sample_n(bci::bci12full5, 100)
-
-test_that("wrong censdata throws errors or warnings", {
-  wrong_data <- data.frame(a = 1:3, b = 1:3)
-  expect_error(abundance(wrong_data))
+  }
   
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  if (!is.null(split2)) {
+    assertive::assert_is_of_length(split2, nrow(censdata))
+    
+    vector_passed <- deparse(substitute(split2))
+    assertive::assert_all_are_matching_regex(
+      vector_passed, censdata_names, severity = "warning"
+    )
+  }
+}
 
 
 
