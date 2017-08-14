@@ -309,14 +309,6 @@ abundance <- function(censdata,
     censdata, type, alivecode, mindbh, dbhunit, split1, split2
   )
   
-
-  
-  
-  
-  
-  
-  
-  
   if (is.null(split1)) {
     split1 <- rep("all", dim(censdata)[1])
   }
