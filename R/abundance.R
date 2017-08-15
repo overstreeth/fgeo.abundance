@@ -344,40 +344,37 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #'   Condit.
 #'
 #' @examples
-#' (tree_abundance <- abundance(bci::bci12full5, mindbh = 10))
+#' # Small subsets of data for examples
+#' library(dplyr)
+#' tree_mini <- dplyr::sample_n(bci::bci12full5, 1000)
+#' stem_mini <- bci::bci12stem5[1:1000, ]
 #' 
-#' (stem_abundance <- abundance(bci::bci12stem5, mindbh = 10))
+#' 
+#' 
+#' (tree_abundance <- abundance(tree_mini, mindbh = 10))
+#' (stem_abundance <- abundance(stem_mini, mindbh = 10))
 #' 
 #' stem_basal_area_by_sp <- abundance(
-#'   bci::bci12stem5,
+#'   stem_mini,
 #'   type = "ba",
 #'   mindbh = 10,
-#'   split1 = bci::bci12stem5$sp
+#'   split1 = stem_mini$sp
 #' )
 #' lapply(stem_basal_area_by_sp, head)
 #' 
 #' 
 #' 
-# library(dplyr)
-# cns5_mini <- dplyr::sample_n(bci::bci12full5, 100)
-# tree_n <- abundanceperquad(
-#   cns5_mini,
-#   plotdim = c(1000, 500),
-#   gridsize = 100,
-#   type = "abund"
-# )
-#'
-#' colSums(tree_n$abund)
-#' length_positive <- function(x) {length((x[x > 0]))}
-#' n <- apply(tree_n$abund, 2, length_positive)
-#' plot(colSums(tree_n$abund), n)
-#'
-#'
-#'
-#' # Matching `gridsize` and `plotdim` between census data and habitat data
-#' abund <- abundance_match_census_habitat(cns5_mini, bci::bci_habitat)
-#' abund[1:3, 1:10]
+#' tree_n <- abundanceperquad(
+#'   tree_mini,
+#'   plotdim = c(1000, 500),
+#'   gridsize = 100,
+#'   type = "abund"
+#' )
+#' str(tree_n$abund, list.len = 10)
 #' 
+#' # Matching `gridsize` and `plotdim` between census data and habitat data
+#' abund <- abundance_match_census_habitat(tree_mini, bci::bci_habitat)
+#' str(abund, list.len = 6)
 #' @export
 #' @rdname abundance
 abundance <- function(censdata,
@@ -527,7 +524,7 @@ abundanceperquad <- function(censdata,
   result
 }
 
-#' rdname abundance
+#' @rdname abundance
 #' @export
 abundance_match_census_habitat <- function(censdata, habitats) {
   validate_abundance_match_census_habitat(censdata, habitats)
@@ -603,7 +600,7 @@ extract_plotdim <- function(habitats) {
 
 # ***extras*** ------------------------------------------------------------
 
-# Name of species which stems are n or above ------------------------------
+# Name of species which stems are n or above 
 
 # Provide readable conditional stop, with friendly message
 stop_if_n_is_too_high <- function(x, n) {
