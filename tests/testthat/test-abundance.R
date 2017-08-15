@@ -25,4 +25,18 @@ test_that("outputs the same as ctfs::abundance()", {
     split1 = cns5_mini$sp
   )
   expect_equal(old, new)
+
+  old <- ctfs::abundance(
+    cns5_mini,
+    type = "agb",
+    mindbh = 10,
+    split1 = cns5_mini$sp
+  )
+  new <- forestr::abundance(
+    cns5_mini,
+    type = "agb",
+    mindbh = 10,
+    split1 = cns5_mini$sp
+  )
+  expect_equal(old, new)
 })
