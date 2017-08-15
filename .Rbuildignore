@@ -7,3 +7,4 @@
 ^docs$
 ^\.Rprofile$
 ^man-roxygen$
+^codecov\.yml$

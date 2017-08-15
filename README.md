@@ -3,7 +3,11 @@
 forestr
 =======
 
-[![Travis-CI Build Status](https://travis-ci.org/forestgeo/forestr.svg?branch=master)](https://travis-ci.org/forestgeo/forestr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/forestr)](https://cran.r-project.org/package=forestr)
+[![Travis-CI Build Status](https://travis-ci.org/forestgeo/forestr.svg?branch=master)](https://travis-ci.org/forestgeo/forestr)
+
+[![codecov](https://codecov.io/github/forestgeo/forestr/branch/master/graphs/badge.svg)](https://codecov.io/github/forestgeo/forestr)
+
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/forestr)](https://cran.r-project.org/package=forestr)
 
 Overview
 --------

@@ -18,7 +18,8 @@ Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Suggests: testthat,
     ctfs,
-    assertive
+    assertive,
+    covr
 Imports: knitr,
     dplyr,
     bci
