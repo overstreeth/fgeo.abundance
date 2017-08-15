@@ -594,3 +594,22 @@ abundance_match_census_habitat <- function(censdata, habitats) {
   )$abund
 }
 
+
+
+
+
+
+
+# Assertions --------------------------------------------------------------
+
+# Reject obviously incorrect data
+assert_names_tag_sp_exist <- function(censdata) {
+  names_tag_sp_exist <- c("tag", "sp") %in% names(censdata)
+  assertive::assert_all_are_true(names_tag_sp_exist)
+}
+
+assert_names_x_y_exist <- function(habitats) {
+  names_x_y_exist <- c("x", "y") %in% names(habitats)
+  assertive::assert_all_are_true(names_x_y_exist)
+}
+
