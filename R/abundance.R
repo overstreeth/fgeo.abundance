@@ -502,6 +502,53 @@ abundanceperquad <- function(censdata,
 
 # Ensure that gridsize and plotdim match in abundance and habitat data ----
 
+#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`.
+#'
+#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`. This
+#' funciton doe not require the user to provide plot dimensionsbecause it
+#' extracts `gridsize` and `plotdim` from habitat data.
+#'
+#' @template censdata
+#' @template habitats
+#'
+#' @return A dataframe giving the abundance per quadrat.
+#' @seealso [extract_gridsize()], [extract_plotdim()],
+#'   [forestr::abundanceperquad()].
+#'
+#' @section Acknowledgement:
+#' Thanks to Gabriel Arellano for suggesting that the match plot dimensions
+#' between habitat data and census data should be enforced programatically.
+#'
+#' @export
+#'
+#' @examples
+#' abund <- abundance_match_census_habitat(bci::bci12full1, bci::bci_habitat)
+#' abund[1:3, 1:10]
+abundance_match_census_habitat <- function(censdata, habitats) {
+  # Reject obviously incorrect data
+  assert_names_tag_sp_exist(censdata)
+  assert_names_x_y_exist(habitats)
+
+  # Ensure consistent gridsize and plotdim in census and habitat data
+  abundanceperquad(
+    censdata,
+    gridsize = extract_gridsize(habitats),
+    plotdim = extract_plotdim(habitats)
+  )$abund
+}
+
+
+# Reject obviously incorrect data
+assert_names_tag_sp_exist <- function(censdata) {
+  names_tag_sp_exist <- c("tag", "sp") %in% names(censdata)
+  assertive::assert_all_are_true(names_tag_sp_exist)
+}
+
+assert_names_x_y_exist <- function(habitats) {
+  names_x_y_exist <- c("x", "y") %in% names(habitats)
+  assertive::assert_all_are_true(names_x_y_exist)
+}
+
 #' From x and y columns of habitat data, get difference between grid steps.
 #'
 #' @param habitat_x_or_y Column x or y of habitat data, e.g. bci::bci_habitat$x.
@@ -559,57 +606,80 @@ extract_plotdim <- function(habitats) {
   unname(plotdim)
 }
 
-#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`.
+
+
+# ***extras*** ------------------------------------------------------------
+
+# Name of species which stems are n or above ------------------------------
+
+# Provide readable conditional stop, with friendly message
+stop_if_n_is_too_high <- function(x, n) {
+  assertive::assert_is_numeric(x)
+  assertive::assert_is_numeric(n)
+  assertive::assert_is_scalar(n)
+
+  if (n > max(x)) {
+    stop(
+      "No species has so many alive stems as n = ", deparse(n), ". ",
+      "Provide n <= ", deparse(max(x)), "."
+    )
+  }
+}
+
+#' Name of species which count is at or above a threshold.
 #'
-#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`. This
-#' funciton doe not require the user to provide plot dimensionsbecause it
-#' extracts `gridsize` and `plotdim` from habitat data.
+#' Name of species which count is at or above a threshold.
 #'
 #' @template censdata
-#' @template habitats
+#' @template abundances
+#' @template n
 #'
-#' @return A dataframe giving the abundance per quadrat.
-#' @seealso [extract_gridsize()], [extract_plotdim()],
-#'   [forestr::abundanceperquad()].
+#' @name sp_names_by_n
 #'
-#' @section Acknowledgement:
-#' Thanks to Gabriel Arellano for suggesting that the match plot dimensions
-#' between habitat data and census data should be enforced programatically.
-#'
-#' @export
+#' @return A character string giving the names of species which count of alive
+#'   stems ([sp_alive_n()]) or total abundance per quadrat ([sp_abund_n()]) is
+#'   at or above a threshold.
 #'
 #' @examples
-#' abund <- abundance_match_census_habitat(bci::bci12full1, bci::bci_habitat)
-#' abund[1:3, 1:10]
-abundance_match_census_habitat <- function(censdata, habitats) {
-  # Reject obviously incorrect data
-  assert_names_tag_sp_exist(censdata)
-  assert_names_x_y_exist(habitats)
+#' # With census data
+#' sp_alive_n(censdata = bci_mini, n = 1500)
+#'
+#' # With abundance data
+#' abund <- abundance_match_census_habitat(bci_mini, bci_habitat)
+#' sp_abund_n(abund, n = 1500)
+NULL
 
-  # Ensure consistent gridsize and plotdim in census and habitat data
-  abundanceperquad(
-    censdata,
-    gridsize = extract_gridsize(habitats),
-    plotdim = extract_plotdim(habitats)
-  )$abund
+#' @rdname sp_names_by_n
+#' @export
+sp_alive_n <- function(censdata, n) {
+  assertive::assert_is_data.frame(censdata)
+  assertive::assert_is_scalar(n)
+  assertive::assert_all_are_non_negative(n)
+
+  alive_stems <- censdata[censdata$status == "A", "sp"]
+  alive_stems_count <- table(alive_stems)
+
+  stop_if_n_is_too_high(x = alive_stems_count, n = n)
+
+  alive_n_plus <- alive_stems_count[alive_stems_count >= n]
+  names(alive_n_plus)
+}
+
+#' @rdname sp_names_by_n
+#' @export
+sp_abund_n <- function(abundances, n) {
+  assertive::assert_is_data.frame(abundances)
+  assertive::assert_is_non_empty(abundances)
+  assertive::assert_is_non_empty(n)
+  assertive::assert_is_scalar(n)
+  assertive::assert_is_numeric(n)
+
+  rs <- rowSums(abundances)
+  stop_if_n_is_too_high(x = rs, n = n)
+
+  names(rs[rs >= n])
 }
 
 
 
-
-
-
-
-# Assertions --------------------------------------------------------------
-
-# Reject obviously incorrect data
-assert_names_tag_sp_exist <- function(censdata) {
-  names_tag_sp_exist <- c("tag", "sp") %in% names(censdata)
-  assertive::assert_all_are_true(names_tag_sp_exist)
-}
-
-assert_names_x_y_exist <- function(habitats) {
-  names_x_y_exist <- c("x", "y") %in% names(habitats)
-  assertive::assert_all_are_true(names_x_y_exist)
-}
 
