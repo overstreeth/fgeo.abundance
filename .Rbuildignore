@@ -8,3 +8,4 @@
 ^\.Rprofile$
 ^man-roxygen$
 ^codecov\.yml$
+^data-raw$
