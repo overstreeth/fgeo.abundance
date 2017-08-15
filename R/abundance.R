@@ -254,36 +254,62 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 
 
 
-#' Abundance or basal area dividing data with 1 or 2 categorical variables.
+#' Abundance measured in number of stems, basal area or above ground biomass.
+#'
+#' @details
+#' * `abundance()` calculates total abundance or basal area, dividing data with
+#'   1 or 2 categorical variables passed to `split1` and `split2`. The length
+#'   of `split1` and `split2` must match exactly the number of rows in 
+#'   `censdata` (so one per tree or stem). `split1` should be the one with the
+#'   most categories (for instances, `split1 = species`, `split2 = 
+#'   dbhcategory`).
 #' 
-#' Calculates total abundance or basal area, dividing data with 1 or 2 
-#' categorical variables passed to `split1` and `split2`.
+#'   For basal area, pass a stem table to `censdata`; For abundance, use either 
+#'   the stem or full table to count stems or trees, respectively.
+#'
+#' * `abundanceperquadrat()` Finds abundance, basal area, or agb of every 
+#'   species per square quadrat of any size; plotdim is the x dimension then y
+#'   dimension of the plot and must be set correctly; gridsize is the quadrat
+#'   dimension. The plot is divided into a checkerboard of non-overlapping, 
+#'   space-filling squares.
+#'
+#'   If the plot dimensions is not an exact multiple of the quadrat size, then a
+#'   strip at the upper edge of the plot (north and east if plot is on cardinal
+#'   directions) is omitted. For example, if `gridsize = 40` and `plotdim = 500`,
+#'   then there are an extra 20 meters at the upper boundary omitted from the
+#'   calculations.
+#'
+#'   The array of abundances per quadrat is useful for similarity, counting
+#'   species and stems per quadrat, etc.
 #' 
-#' The length of `split1` and `split2` must match exactly the number of rows in
-#' `censdata` (so one per tree or stem). `split1` should be the one with the
-#' most categories (for instances, `split1 = species`, `split2 = dbhcategory`).
-#' 
-#' For basal area, pass a stem table to `censdata`; For abundance, use either
-#' the stem or full table to count stems or trees, respectively.
-#' 
-#' @template mindbh
 #' @template censdata
 #' @template type
 #' @template alivecode
+#' @template mindbh
 #' @template dbhunit
 #' @param split1,split2 A vector of categories, one per individual. See details.
-#'
-#' @return A named list of two elements: one is either `abund` or `ba`, and the
-#'   other one is `meandate` (mean measurement date for all individuals in each
-#'   category). Each element of the list is an array of one or two dimensions,
-#'   depending on how many split variables were submitted: each of the
-#'   dimensions of the array handles one of the categorical variables.
-#'
-#' @export
+#' @template plotdim
+#' @template gridsize
+#' 
+#' @return 
+#' 
+#' * `abundance()` returns named list of two elements: one is either `abund` or
+#' `ba`, and the other one is `meandate` (mean measurement date for all
+#' individuals in each category). Each element of the list is an array of one or
+#' two dimensions, depending on how many split variables were submitted: each of
+#' the dimensions of the array handles one of the categorical variables.
+#' 
+#' * `abundanceperquad()`
+#' * `abundanceperquad_match_gridsize_plotdim()`
+#' 
+#' @name abundance
 #' @seealso [ba], [ba_sum].
 #' @template author_condit
 #'
 #' @examples
+#' 
+#' # `abundance()` ----
+#' 
 #' (tree_abundance <- abundance(bci::bci12full5, mindbh = 10))
 #' (stem_abundance <- abundance(bci::bci12stem5, mindbh = 10))
 #' 
@@ -294,9 +320,34 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #'   split1 = bci::bci12stem5$sp
 #' )
 #' lapply(stem_basal_area_by_sp, head)
-
-
-
+#' 
+#' 
+#' 
+#' `abundanceperquad()` ----
+#' 
+#' library(dplyr)
+#' cns5_mini <- sample_n(bci::bci12full5, 100)
+#' 
+#' tree_n <- ctfs::abundanceperquad(
+#'   cns5_mini,
+#'   plotdim = c(1000, 500),
+#'   gridsize = 100,
+#'   type = "abund"
+#' )
+#' 
+#' colSums(tree_n$abund)
+#' length_positive <- function(x) {length((x[x > 0]))}
+#' n <- apply(tree_n$abund, 2, length_positive)
+#' plot(colSums(tree_n$abund), n)
+#' 
+#' 
+#' 
+#' `abundanceperquad_match_gridsize_plotdim()` ----
+#' 
+#' 
+#' 
+#' @export
+#' @rdname abundance
 abundance <- function(censdata,
                       type = "abund",
                       alivecode = c("A"),
@@ -400,72 +451,50 @@ validate_arguments_abundance <- function(censdata,
 }
 
 
+#' @export
+#' @rdname abundance
+abundanceperquad <- function(censdata,
+                             mindbh = 10,
+                             plotdim = c(1000, 500),
+                             gridsize = 100,
+                             type = 'abund',
+                             dbhunit = "mm") {
+  # All arguments are validated inside to_id_gxg() and abundance()
+  
+  sp <- censdata$sp
 
+  quadno <- to_id_gxgy(
+    censdata$gx,
+    censdata$gy,
+    gridsize = gridsize,
+    plotdim = plotdim
+  )
+ 
+  result <- abundance(
+    censdata,
+    type = type,
+    mindbh = mindbh,
+    dbhunit = dbhunit,
+    split1 = sp,
+    split2 = quadno
+  )
+  
+  allspp <- unique(censdata$sp)
+  maxquad <- floor(plotdim[1] / gridsize) * floor(plotdim[2] / gridsize)
+  allquad <- 1:maxquad
+  
+  condition1 <- dim(result[[type]])[1] < length(allspp)
+  condition2 <- dim(result[[type]])[2] < length(allquad)
+  if (condition1 | condition2) {
+    result[[type]] <- fill_dimension(
+      .data = result[[type]],
+      class1 = allspp,
+      class2 = allquad,
+      fill = 0
+    )
+  }
 
-#' 
-#' #' Abundance, basal area, or agb of every species by quadrat.
-#' #'
-#' #' @description
-#' #' Finds abundance, basal area, or agb of every species per square quadrat of
-#' #' any size; plotdim is the x dimension then y dimension of the plot and must be
-#' #' set correctly; gridsize is the quadrat dimension. The plot is divided into a
-#' #' checkerboard of non-overlapping, space-filling squares.
-#' #'
-#' #' @details
-#' #' If the plot dimensions is not an exact multiple of the quadrat size, then a 
-#' #' strip at the upper edge of the plot (north and east if plot is on cardinal 
-#' #' directions) is omitted. For example, if `gridsize = 40` and `plotdim = 500`,
-#' #' then there are an extra 20 meters at the upper boundary omitted from the 
-#' #' calculations.
-#' #'
-#' #' The array of abundances per quadrat is useful for similarity, counting
-#' #' species and stems per quadrat, etc.
-#' #' 
-#' #' @inheritParams abundance
-#' #' @inheritParams findborderquads
-#' #' 
-#' #' @seealso [abundance()]
-#' #' 
-#' #' @return See [abundance()].
-#' #'
-#' #' @examples
-#' #' \dontrun{
-#' #' Nperquad = abundanceperquad(
-#' #'   bci::bci12full6,
-#' #'   plotdim = c(1000, 500),
-#' #'   gridsize = 100,
-#' #'   type = 'abund'
-#' #' )
-#' #' colSums(Nperquad$abund)
-#' #' apply(Nperquad$abund, 2, countspp)
-#' #' plot(colSums(Nperquad$abund), apply / (Nperquad$abund, 2, countspp))
-#' #' }
-#' abundanceperquad=function(censdata,mindbh=10,plotdim=c(1000,500),gridsize=100,type='abund',dbhunit='mm')
-#' {
-#'  sp=censdata$sp
-#' 
-#'  quadno=gxgy.to.index(censdata$gx,censdata$gy,gridsize=gridsize,plotdim=plotdim)
-#'  result=abundance(censdata,type=type,mindbh=mindbh,dbhunit=dbhunit,split1=sp,split2=quadno)
-#' 
-#'  allspp=unique(censdata$sp)
-#'  maxquad=floor(plotdim[1]/gridsize)*floor(plotdim[2]/gridsize)
-#'  allquad=1:maxquad
-#' 
-#'  if(dim(result[[type]])[1]<length(allspp) | dim(result[[type]])[2]<length(allquad))
-#'      result[[type]]=fill.dimension(result[[type]],class1=allspp,class2=allquad,fill=0)
-#'   
-#'  return(result)
-#' }
-
-
-
-
-
-
-
-
-
-
-
+  result
+}
 
 

@@ -2,10 +2,14 @@
 % Please edit documentation in R/abundance.R
 \name{abundance}
 \alias{abundance}
-\title{Abundance or basal area dividing data with 1 or 2 categorical variables.}
+\alias{abundanceperquad}
+\title{Abundance measured in number of stems, basal area or above ground biomass.}
 \usage{
 abundance(censdata, type = "abund", alivecode = c("A"), mindbh = NULL,
   dbhunit = "mm", split1 = NULL, split2 = NULL)
+
+abundanceperquad(censdata, mindbh = 10, plotdim = c(1000, 500),
+  gridsize = 100, type = "abund", dbhunit = "mm")
 }
 \arguments{
 \item{censdata}{A table of plot census data.}
@@ -24,27 +28,55 @@ included.}
 \item{dbhunit}{'cm' or 'mm', only used for basal area.}
 
 \item{split1, split2}{A vector of categories, one per individual. See details.}
+
+\item{plotdim}{The x and y dimensions of the plot.}
+
+\item{gridsize}{Side of the square quadrate.}
 }
 \value{
-A named list of two elements: one is either \code{abund} or \code{ba}, and the
-other one is \code{meandate} (mean measurement date for all individuals in each
-category). Each element of the list is an array of one or two dimensions,
-depending on how many split variables were submitted: each of the
-dimensions of the array handles one of the categorical variables.
+\itemize{
+\item \code{abundance()} returns named list of two elements: one is either \code{abund} or
+\code{ba}, and the other one is \code{meandate} (mean measurement date for all
+individuals in each category). Each element of the list is an array of one or
+two dimensions, depending on how many split variables were submitted: each of
+the dimensions of the array handles one of the categorical variables.
+\item \code{abundanceperquad()}
+\item \code{abundanceperquad_match_gridsize_plotdim()}
+}
 }
 \description{
-Calculates total abundance or basal area, dividing data with 1 or 2
-categorical variables passed to \code{split1} and \code{split2}.
+Abundance measured in number of stems, basal area or above ground biomass.
 }
 \details{
-The length of \code{split1} and \code{split2} must match exactly the number of rows in
+\itemize{
+\item \code{abundance()} calculates total abundance or basal area, dividing data with
+1 or 2 categorical variables passed to \code{split1} and \code{split2}. The length
+of \code{split1} and \code{split2} must match exactly the number of rows in
 \code{censdata} (so one per tree or stem). \code{split1} should be the one with the
 most categories (for instances, \code{split1 = species}, \code{split2 = dbhcategory}).
 
 For basal area, pass a stem table to \code{censdata}; For abundance, use either
 the stem or full table to count stems or trees, respectively.
+\item \code{abundanceperquadrat()} Finds abundance, basal area, or agb of every
+species per square quadrat of any size; plotdim is the x dimension then y
+dimension of the plot and must be set correctly; gridsize is the quadrat
+dimension. The plot is divided into a checkerboard of non-overlapping,
+space-filling squares.
+
+If the plot dimensions is not an exact multiple of the quadrat size, then a
+strip at the upper edge of the plot (north and east if plot is on cardinal
+directions) is omitted. For example, if \code{gridsize = 40} and \code{plotdim = 500},
+then there are an extra 20 meters at the upper boundary omitted from the
+calculations.
+
+The array of abundances per quadrat is useful for similarity, counting
+species and stems per quadrat, etc.
+}
 }
 \examples{
+
+# `abundance()` ----
+
 (tree_abundance <- abundance(bci::bci12full5, mindbh = 10))
 (stem_abundance <- abundance(bci::bci12stem5, mindbh = 10))
 
@@ -55,6 +87,32 @@ stem_basal_area_by_sp <- abundance(
   split1 = bci::bci12stem5$sp
 )
 lapply(stem_basal_area_by_sp, head)
+
+
+
+`abundanceperquad()` ----
+
+library(dplyr)
+cns5_mini <- sample_n(bci::bci12full5, 100)
+
+tree_n <- ctfs::abundanceperquad(
+  cns5_mini,
+  plotdim = c(1000, 500),
+  gridsize = 100,
+  type = "abund"
+)
+
+colSums(tree_n$abund)
+length_positive <- function(x) {length((x[x > 0]))}
+n <- apply(tree_n$abund, 2, length_positive)
+plot(colSums(tree_n$abund), n)
+
+
+
+`abundanceperquad_match_gridsize_plotdim()` ----
+
+
+
 }
 \seealso{
 \link{ba}, \link{ba_sum}.
