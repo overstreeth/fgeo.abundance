@@ -15,3 +15,6 @@ test_that("value are of correct type", {
 test_that("Output of extract_plotdim is unnamed", {
   expect_null(names(extract_plotdim(bci::bci_habitat)))
 })
+test_that("output is of correct lengh", {
+  expect_length(extract_gridsize(bci_habitat), 1)
+})
