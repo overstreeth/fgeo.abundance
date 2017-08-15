@@ -56,3 +56,6 @@ test_that("`ba_sum()` errs with wrong arguments", {
 test_that("`ba_sum()` warns with NAs in dbh", {
   expect_warning(ba_sum(dbh = c(NA, 1, 2, 3)))
 })
+test_that("`ba_sum()` returns 0 if length of dbh is 0", {
+  expect_equal(ba_sum(dbh = numeric(0)), 0)
+})
