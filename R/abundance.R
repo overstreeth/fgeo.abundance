@@ -596,8 +596,6 @@ extract_plotdim <- function(habitats) {
   plotdim <- unlist(
     lapply(habitats[c("x", "y")], function(.x){max(.x) + gridsize})
   )
-
-  assertive::assert_is_of_length(plotdim, 2)
   unname(plotdim)
 }
 

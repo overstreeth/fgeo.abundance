@@ -17,4 +17,5 @@ test_that("Output of extract_plotdim is unnamed", {
 })
 test_that("output is of correct lengh", {
   expect_length(extract_gridsize(bci_habitat), 1)
+  expect_length(extract_plotdim(bci_habitat), 2)
 })
