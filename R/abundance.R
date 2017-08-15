@@ -498,3 +498,99 @@ abundanceperquad <- function(censdata,
 }
 
 
+
+
+# Ensure that gridsize and plotdim match in abundance and habitat data ----
+
+#' From x and y columns of habitat data, get difference between grid steps.
+#'
+#' @param habitat_x_or_y Column x or y of habitat data, e.g. bci::bci_habitat$x.
+#'
+#' @return A non negative scalar
+difference_among_grid_steps <- function(habitat_x_or_y) {
+  assertive::assert_is_non_empty(habitat_x_or_y)
+  assertive::assert_is_vector(habitat_x_or_y)
+  assertive::assert_all_are_non_negative(habitat_x_or_y)
+
+  grid_steps <- unique(habitat_x_or_y)
+  difference_among_grid_steps <- unique(diff(grid_steps))
+
+  difference_among_grid_steps
+}
+
+#' Extract plot dimensions from habitat data.
+#'
+#' @template habitats
+#' @name extract_from_habitat
+#'
+#' @return
+#' * [extract_plotdim()]: `plotdim` (vector of length 2);
+#' * [extract_gridsize()]: `gridsize` (scalar).
+#'
+#' @examples
+#' extract_plotdim(bci::bci_habitat)
+#' extract_gridsize(bci::bci_habitat)
+NULL
+
+#' @export
+#' @rdname extract_from_habitat
+extract_gridsize <- function(habitats) {
+  assert_names_x_y_exist(habitats)
+
+  grid_x <- difference_among_grid_steps(habitats$x)
+  grid_y <- difference_among_grid_steps(habitats$y)
+  gridsize <- unique(grid_x, grid_y)
+
+  assertive::assert_are_identical(grid_x, grid_y)
+  assertive::assert_is_of_length(gridsize, 1)
+  gridsize
+}
+#' @export
+#' @rdname extract_from_habitat
+extract_plotdim <- function(habitats) {
+  assert_names_x_y_exist(habitats)
+
+  gridsize <- extract_gridsize(habitats)
+  plotdim <- unlist(
+    lapply(habitats[c("x", "y")], function(.x){max(.x) + gridsize})
+  )
+
+  assertive::assert_is_of_length(plotdim, 2)
+  unname(plotdim)
+}
+
+#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`.
+#'
+#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`. This
+#' funciton doe not require the user to provide plot dimensionsbecause it
+#' extracts `gridsize` and `plotdim` from habitat data.
+#'
+#' @template censdata
+#' @template habitats
+#'
+#' @return A dataframe giving the abundance per quadrat.
+#' @seealso [extract_gridsize()], [extract_plotdim()],
+#'   [forestr::abundanceperquad()].
+#'
+#' @section Acknowledgement:
+#' Thanks to Gabriel Arellano for suggesting that the match plot dimensions
+#' between habitat data and census data should be enforced programatically.
+#'
+#' @export
+#'
+#' @examples
+#' abund <- abundance_match_census_habitat(bci::bci12full1, bci::bci_habitat)
+#' abund[1:3, 1:10]
+abundance_match_census_habitat <- function(censdata, habitats) {
+  # Reject obviously incorrect data
+  assert_names_tag_sp_exist(censdata)
+  assert_names_x_y_exist(habitats)
+
+  # Ensure consistent gridsize and plotdim in census and habitat data
+  abundanceperquad(
+    censdata,
+    gridsize = extract_gridsize(habitats),
+    plotdim = extract_plotdim(habitats)
+  )$abund
+}
+
