@@ -263,15 +263,16 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #'   `censdata` (so one per tree or stem). `split1` should be the one with the
 #'   most categories (for instances, `split1 = species`, `split2 = 
 #'   dbhcategory`).
+#'   
+#'   Each element of the returned list is an array of one or two dimensions, 
+#'   depending on how many split variables were submitted: each of the 
+#'   dimensions of the array handles one of the categorical variables.
 #' 
 #'   For basal area, pass a stem table to `censdata`; For abundance, use either 
 #'   the stem or full table to count stems or trees, respectively.
 #'
-#' * `abundanceperquadrat()` Finds abundance, basal area, or agb of every 
-#'   species per square quadrat of any size; plotdim is the x dimension then y
-#'   dimension of the plot and must be set correctly; gridsize is the quadrat
-#'   dimension. The plot is divided into a checkerboard of non-overlapping, 
-#'   space-filling squares.
+#' * `abundanceperquadrat()` wraps `abundance()` to find abundance, basal area,
+#'   or agb of every species per square quadrat of any size.
 #'
 #'   If the plot dimensions is not an exact multiple of the quadrat size, then a
 #'   strip at the upper edge of the plot (north and east if plot is on cardinal
@@ -281,7 +282,15 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #'
 #'   The array of abundances per quadrat is useful for similarity, counting
 #'   species and stems per quadrat, etc.
-#' 
+#'   
+#' * `abundance_match_census_habitat()` wraps `abundanceperquad()` ensuring
+#'   consistent `gridsize` and `plotdim` via [extract_gridsize()] and
+#'   [extract_plotdim()].
+#'
+#' @section Acknowledgement:
+#' Thanks to Gabriel Arellano for suggesting that the match plot dimensions
+#' between habitat data and census data should be enforced programatically.
+#'
 #' @template censdata
 #' @template type
 #' @template alivecode
@@ -290,27 +299,24 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #' @param split1,split2 A vector of categories, one per individual. See details.
 #' @template plotdim
 #' @template gridsize
+#' @template habitats
 #' 
-#' @return 
-#' 
-#' * `abundance()` returns named list of two elements: one is either `abund` or
-#' `ba`, and the other one is `meandate` (mean measurement date for all
-#' individuals in each category). Each element of the list is an array of one or
-#' two dimensions, depending on how many split variables were submitted: each of
-#' the dimensions of the array handles one of the categorical variables.
-#' 
-#' * `abundanceperquad()`
-#' * `abundanceperquad_match_gridsize_plotdim()`
+#' @return
+#' * `abundance()` and `abundanceperquad()` return a named list of two elements:
+#'   1. either `abund` or `ba`
+#'   1. `meandate` (mean measurement date for all individuals in each category).
+#'
+#' * `abundance_match_census_habitat()`: A dataframe giving the abundance per
+#'   quadrat.
 #' 
 #' @name abundance
-#' @seealso [ba], [ba_sum].
-#' @template author_condit
+#' @seealso [ba], [ba_sum]
+#' @author `abundance() and `abundanceperquad()` were developed by Richard 
+#'   Condit.
 #'
 #' @examples
-#' 
-#' # `abundance()` ----
-#' 
 #' (tree_abundance <- abundance(bci::bci12full5, mindbh = 10))
+#' 
 #' (stem_abundance <- abundance(bci::bci12stem5, mindbh = 10))
 #' 
 #' stem_basal_area_by_sp <- abundance(
@@ -323,28 +329,25 @@ validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
 #' 
 #' 
 #' 
-#' `abundanceperquad()` ----
-#' 
-#' library(dplyr)
-#' cns5_mini <- sample_n(bci::bci12full5, 100)
-#' 
-#' tree_n <- ctfs::abundanceperquad(
-#'   cns5_mini,
-#'   plotdim = c(1000, 500),
-#'   gridsize = 100,
-#'   type = "abund"
-#' )
-#' 
+# library(dplyr)
+# cns5_mini <- dplyr::sample_n(bci::bci12full5, 100)
+# tree_n <- abundanceperquad(
+#   cns5_mini,
+#   plotdim = c(1000, 500),
+#   gridsize = 100,
+#   type = "abund"
+# )
+#'
 #' colSums(tree_n$abund)
 #' length_positive <- function(x) {length((x[x > 0]))}
 #' n <- apply(tree_n$abund, 2, length_positive)
 #' plot(colSums(tree_n$abund), n)
-#' 
-#' 
-#' 
-#' `abundanceperquad_match_gridsize_plotdim()` ----
-#' 
-#' 
+#'
+#'
+#'
+#' # Matching `gridsize` and `plotdim` between census data and habitat data
+#' abund <- abundance_match_census_habitat(cns5_mini, bci::bci_habitat)
+#' abund[1:3, 1:10]
 #' 
 #' @export
 #' @rdname abundance
@@ -355,7 +358,6 @@ abundance <- function(censdata,
                       dbhunit = "mm",
                       split1 = NULL,
                       split2 = NULL) {
-  
   validate_arguments_abundance(
     censdata, type, alivecode, mindbh, dbhunit, split1, split2
   )
@@ -450,7 +452,6 @@ validate_arguments_abundance <- function(censdata,
   }
 }
 
-
 #' @export
 #' @rdname abundance
 abundanceperquad <- function(censdata,
@@ -497,39 +498,11 @@ abundanceperquad <- function(censdata,
   result
 }
 
-
-
-
-# Ensure that gridsize and plotdim match in abundance and habitat data ----
-
-#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`.
-#'
-#' Abundance per quadrat, ensuring consistent `gridsize` and `plotdim`. This
-#' funciton doe not require the user to provide plot dimensionsbecause it
-#' extracts `gridsize` and `plotdim` from habitat data.
-#'
-#' @template censdata
-#' @template habitats
-#'
-#' @return A dataframe giving the abundance per quadrat.
-#' @seealso [extract_gridsize()], [extract_plotdim()],
-#'   [forestr::abundanceperquad()].
-#'
-#' @section Acknowledgement:
-#' Thanks to Gabriel Arellano for suggesting that the match plot dimensions
-#' between habitat data and census data should be enforced programatically.
-#'
+#' rdname abundance
 #' @export
-#'
-#' @examples
-#' abund <- abundance_match_census_habitat(bci::bci12full1, bci::bci_habitat)
-#' abund[1:3, 1:10]
 abundance_match_census_habitat <- function(censdata, habitats) {
-  # Reject obviously incorrect data
-  assert_names_tag_sp_exist(censdata)
-  assert_names_x_y_exist(habitats)
+  validate_abundance_match_census_habitat(censdata, habitats)
 
-  # Ensure consistent gridsize and plotdim in census and habitat data
   abundanceperquad(
     censdata,
     gridsize = extract_gridsize(habitats),
@@ -537,17 +510,26 @@ abundance_match_census_habitat <- function(censdata, habitats) {
   )$abund
 }
 
-
 # Reject obviously incorrect data
-assert_names_tag_sp_exist <- function(censdata) {
+validate_abundance_match_census_habitat <- function(censdata, habitats) {
+  
   names_tag_sp_exist <- c("tag", "sp") %in% names(censdata)
   assertive::assert_all_are_true(names_tag_sp_exist)
-}
-
-assert_names_x_y_exist <- function(habitats) {
+  
   names_x_y_exist <- c("x", "y") %in% names(habitats)
   assertive::assert_all_are_true(names_x_y_exist)
 }
+
+
+
+
+
+
+
+
+
+
+
 
 #' From x and y columns of habitat data, get difference between grid steps.
 #'
