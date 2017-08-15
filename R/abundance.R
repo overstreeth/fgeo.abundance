@@ -163,6 +163,35 @@ validate_data_class1_class2_fill <- function(.data, class1, class2, fill) {
 
 
 
+
+
+
+#' Assert important names match names in data.
+#'
+#' @param .data Data
+#' @param match  Names to match with names of `.data`.
+#' @param ... Arguments passed to [assertive::assert_all_are_matching_regex()],
+#'   e.g. `severity = "stop"` (default), `severity = "warning"`.
+#'
+#' @return Nothing, warning, error, etc. See 
+#'   [assertive::assert_all_are_matching_regex()].
+#'
+#' @examples
+#' # Passes silently
+#' assert_are_names_matching(data.frame(a = 1), match = c("a"))
+#' # Errs
+#' assert_are_names_matching(data.frame(a = 1), match = c("aa"))
+#' # Warns
+#' assert_are_names_matching(data.frame(a = 1), match = c("aa"),
+#'   severity = "warning")
+#' @keywords internal
+#' @export 
+assert_are_names_matching <- function(.data, match, ...) {
+  anchored_names <- paste0("^", names(.data), "$")
+  collapsed_names <- paste(anchored_names, collapse = "|")
+  assertive::assert_all_are_matching_regex(match, collapsed_names, ...)
+}
+
 # ***abundance; abundance*** ----------------------------------------------
 
 #' Basal area of trees.
@@ -512,22 +541,9 @@ abundance_match_census_habitat <- function(censdata, habitats) {
 
 # Reject obviously incorrect data
 validate_abundance_match_census_habitat <- function(censdata, habitats) {
-  
-  names_tag_sp_exist <- c("tag", "sp") %in% names(censdata)
-  assertive::assert_all_are_true(names_tag_sp_exist)
-  
-  names_x_y_exist <- c("x", "y") %in% names(habitats)
-  assertive::assert_all_are_true(names_x_y_exist)
+  assert_are_names_matching(censdata, c("tag", "sp"))
+  assert_are_names_matching(habitats, c("x", "y"))
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -564,20 +580,17 @@ NULL
 #' @export
 #' @rdname extract_from_habitat
 extract_gridsize <- function(habitats) {
-  assert_names_x_y_exist(habitats)
+  assert_are_names_matching(habitats, c("x", "y"))
 
   grid_x <- difference_among_grid_steps(habitats$x)
   grid_y <- difference_among_grid_steps(habitats$y)
   gridsize <- unique(grid_x, grid_y)
-
-  assertive::assert_are_identical(grid_x, grid_y)
-  assertive::assert_is_of_length(gridsize, 1)
   gridsize
 }
 #' @export
 #' @rdname extract_from_habitat
 extract_plotdim <- function(habitats) {
-  assert_names_x_y_exist(habitats)
+  assert_are_names_matching(habitats, c("x", "y"))
 
   gridsize <- extract_gridsize(habitats)
   plotdim <- unlist(
@@ -661,6 +674,9 @@ sp_abund_n <- function(abundances, n) {
 
   names(rs[rs >= n])
 }
+
+
+
 
 
 
