@@ -3,6 +3,7 @@
 export(abundance)
 export(abundance_match_census_habitat)
 export(abundanceperquad)
+export(assert_are_names_matching)
 export(ba)
 export(ba_sum)
 export(extract_gridsize)

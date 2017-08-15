@@ -32,16 +32,19 @@ included.}
 \item{plotdim}{The x and y dimensions of the plot.}
 
 \item{gridsize}{Side of the square quadrate.}
+
+\item{habitats}{Data frame giving the habitat designation for each 20x20
+quadrat.}
 }
 \value{
 \itemize{
-\item \code{abundance()} returns named list of two elements: one is either \code{abund} or
-\code{ba}, and the other one is \code{meandate} (mean measurement date for all
-individuals in each category). Each element of the list is an array of one or
-two dimensions, depending on how many split variables were submitted: each of
-the dimensions of the array handles one of the categorical variables.
-\item \code{abundanceperquad()}
-\item \code{abundanceperquad_match_gridsize_plotdim()}
+\item \code{abundance()} and \code{abundanceperquad()} return a named list of two elements:
+\enumerate{
+\item either \code{abund} or \code{ba}
+\item \code{meandate} (mean measurement date for all individuals in each category).
+}
+\item \code{abundance_match_census_habitat()}: A dataframe giving the abundance per
+quadrat.
 }
 }
 \description{
@@ -55,13 +58,14 @@ of \code{split1} and \code{split2} must match exactly the number of rows in
 \code{censdata} (so one per tree or stem). \code{split1} should be the one with the
 most categories (for instances, \code{split1 = species}, \code{split2 = dbhcategory}).
 
+Each element of the returned list is an array of one or two dimensions,
+depending on how many split variables were submitted: each of the
+dimensions of the array handles one of the categorical variables.
+
 For basal area, pass a stem table to \code{censdata}; For abundance, use either
 the stem or full table to count stems or trees, respectively.
-\item \code{abundanceperquadrat()} Finds abundance, basal area, or agb of every
-species per square quadrat of any size; plotdim is the x dimension then y
-dimension of the plot and must be set correctly; gridsize is the quadrat
-dimension. The plot is divided into a checkerboard of non-overlapping,
-space-filling squares.
+\item \code{abundanceperquadrat()} wraps \code{abundance()} to find abundance, basal area,
+or agb of every species per square quadrat of any size.
 
 If the plot dimensions is not an exact multiple of the quadrat size, then a
 strip at the upper edge of the plot (north and east if plot is on cardinal
@@ -71,13 +75,20 @@ calculations.
 
 The array of abundances per quadrat is useful for similarity, counting
 species and stems per quadrat, etc.
+\item \code{abundance_match_census_habitat()} wraps \code{abundanceperquad()} ensuring
+consistent \code{gridsize} and \code{plotdim} via \code{\link[=extract_gridsize]{extract_gridsize()}} and
+\code{\link[=extract_plotdim]{extract_plotdim()}}.
 }
 }
+\section{Acknowledgement}{
+
+Thanks to Gabriel Arellano for suggesting that the match plot dimensions
+between habitat data and census data should be enforced programatically.
+}
+
 \examples{
-
-# `abundance()` ----
-
 (tree_abundance <- abundance(bci::bci12full5, mindbh = 10))
+
 (stem_abundance <- abundance(bci::bci12stem5, mindbh = 10))
 
 stem_basal_area_by_sp <- abundance(
@@ -90,17 +101,6 @@ lapply(stem_basal_area_by_sp, head)
 
 
 
-`abundanceperquad()` ----
-
-library(dplyr)
-cns5_mini <- sample_n(bci::bci12full5, 100)
-
-tree_n <- ctfs::abundanceperquad(
-  cns5_mini,
-  plotdim = c(1000, 500),
-  gridsize = 100,
-  type = "abund"
-)
 
 colSums(tree_n$abund)
 length_positive <- function(x) {length((x[x > 0]))}
@@ -109,14 +109,15 @@ plot(colSums(tree_n$abund), n)
 
 
 
-`abundanceperquad_match_gridsize_plotdim()` ----
-
-
+# Matching `gridsize` and `plotdim` between census data and habitat data
+abund <- abundance_match_census_habitat(cns5_mini, bci::bci_habitat)
+abund[1:3, 1:10]
 
 }
 \seealso{
-\link{ba}, \link{ba_sum}.
+\link{ba}, \link{ba_sum}
 }
 \author{
-Richard Condit.
+\code{abundance() and}abundanceperquad()` were developed by Richard
+Condit.
 }
