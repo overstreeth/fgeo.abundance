@@ -47,15 +47,3 @@ test_that("is SILENT with good arguments", {
     validate_abundance(censdata = cns5_mini, split2 = MeasureID)
   )
 })
-
-test_that("WARNS with suspicious arguments", {
-    measureid <- rep(1, nrow(cns5_mini))
-    expect_warning(
-      validate_abundance(censdata = cns5_mini, split1 = measureid)
-    )
-    measureid <- rep(1, nrow(cns5_mini))
-    expect_warning(
-      validate_abundance(censdata = cns5_mini, split2 = measureid)
-    )
-})
-

@@ -411,38 +411,32 @@ abundance <- function(censdata,
   result
 }
 
+
+
+
 validate_abundance <- function(censdata,
-                                         type = "abund",
-                                         alivecode = c("A"),
-                                         mindbh = NULL,
-                                         dbhunit = "mm",
-                                         split1 = NULL,
-                                         split2 = NULL) {
-  required_names <- c("dbh", "status", "agb", "date")
-  censdata_names <- paste(colnames(censdata), collapse = "|")
-  assertive::assert_all_are_matching_regex(required_names, censdata_names)
-  assertive::assert_any_are_matching_regex(type, "abund|ba|agb")
+                               type = "abund",
+                               alivecode = c("A"),
+                               mindbh = NULL,
+                               dbhunit = "mm",
+                               split1 = NULL, 
+                               split2 = NULL) {
+  assert_are_names_matching(censdata, c("dbh", "status", "agb", "date"))
+  assertive::assert_any_are_matching_regex(type, "^abund$|^ba$|^agb$")
   if (!is.null(mindbh)) {
     assertive::assert_is_numeric(mindbh)
   }
   assertive::assert_any_are_matching_regex(dbhunit, "mm|cm")
 
+  anchored_names <- paste0("^", colnames(censdata), "$")
+  censdata_names <- paste(anchored_names, collapse = "|")
+  
   if (!is.null(split1)) {
     assertive::assert_is_of_length(split1, nrow(censdata))
-    
-    vector_passed <- deparse(substitute(split1))
-    assertive::assert_all_are_matching_regex(
-      vector_passed, censdata_names, severity = "warning"
-    )
   }
   
   if (!is.null(split2)) {
     assertive::assert_is_of_length(split2, nrow(censdata))
-    
-    vector_passed <- deparse(substitute(split2))
-    assertive::assert_all_are_matching_regex(
-      vector_passed, censdata_names, severity = "warning"
-    )
   }
 }
 
@@ -637,7 +631,7 @@ sp_abund_n <- function(abundances, n) {
 
 #' Assert important names match names in data.
 #'
-#' @param .data Data.
+#' @param .data A matrix or dataframe.
 #' @param match  Names to match with names of `.data`.
 #' @param ... Arguments passed to [assertive::assert_all_are_matching_regex()],
 #'   e.g. `severity = "stop"` (default), `severity = "warning"`.
@@ -658,7 +652,7 @@ sp_abund_n <- function(abundances, n) {
 #' @keywords internal
 #' @export 
 assert_are_names_matching <- function(.data, match, ...) {
-  anchored_names <- paste0("^", names(.data), "$")
+  anchored_names <- paste0("^", colnames(.data), "$")
   collapsed_names <- paste(anchored_names, collapse = "|")
   assertive::assert_all_are_matching_regex(match, collapsed_names, ...)
 }
