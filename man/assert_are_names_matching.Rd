@@ -25,7 +25,9 @@ Assert important names match names in data.
 # Passes silently
 assert_are_names_matching(data.frame(a = 1), match = c("a"))
 # Errs
-assert_are_names_matching(data.frame(a = 1), match = c("aa"))
+testthat::expect_error(
+  assert_are_names_matching(data.frame(a = 1), match = c("aa"))
+)
 # Warns
 assert_are_names_matching(data.frame(a = 1), match = c("aa"),
   severity = "warning")
