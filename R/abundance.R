@@ -225,7 +225,7 @@ validate_fill_dimension <- function(.data, class1, class2, fill) {
 #' @rdname basal_area
 #' @export
 ba <- function(dbh, dbhunit = "mm") {
-  validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit)
+  validate_ba(dbh = dbh, dbhunit = dbhunit)
 
   if (dbhunit == "cm") {return(pi * (dbh / 200) ^ 2)}
   pi * (dbh / 2000) ^ 2
@@ -234,7 +234,11 @@ ba <- function(dbh, dbhunit = "mm") {
 #' @rdname basal_area
 #' @export
 ba_sum <- function(dbh, dbhunit = "mm", mindbh = 10) {
-  validate_dbh_dbhunit_mindbh(dbh = dbh, dbhunit = dbhunit, mindbh = mindbh)
+  validate_ba(dbh = dbh, dbhunit = dbhunit)
+  if (!is.null(mindbh)) {
+    assertive::assert_is_a_number(mindbh, severity = "warning")
+    assertive::assert_all_are_positive(mindbh)
+  }
   
   if (!is.null(mindbh)) {
     dbh <- dbh[dbh >= mindbh]
@@ -244,30 +248,6 @@ ba_sum <- function(dbh, dbhunit = "mm", mindbh = 10) {
   }
   sum(ba(dbh, dbhunit = dbhunit), na.rm = TRUE)
 }
-
-validate_dbh_dbhunit_mindbh <- function(dbh, dbhunit, mindbh = NULL) {
-  assertive::assert_is_numeric(dbh)
-  assertive::assert_any_are_matching_regex(dbhunit, pattern = "^mm$|^cm$")
-  assertive::assert_all_are_positive(dbh, na_ignore = TRUE)
-  assertive::assert_all_are_not_na(dbh, severity = "warning")
-  if (!is.null(mindbh)) {
-    assertive::assert_is_a_number(mindbh, severity = "warning")
-    assertive::assert_all_are_positive(mindbh)
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -584,6 +564,16 @@ extract_plotdim <- function(habitats) {
   unname(plotdim)
 }
 
+
+
+# abundance_abundance_validate --------------------------------------------
+
+validate_ba <- function(dbh, dbhunit) {
+  assertive::assert_is_numeric(dbh)
+  assertive::assert_any_are_matching_regex(dbhunit, pattern = "^mm$|^cm$")
+  assertive::assert_all_are_positive(dbh, na_ignore = TRUE)
+  assertive::assert_all_are_not_na(dbh, severity = "warning")
+}
 
 
 
