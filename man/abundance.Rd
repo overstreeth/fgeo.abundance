@@ -3,6 +3,7 @@
 \name{abundance}
 \alias{abundance}
 \alias{abundanceperquad}
+\alias{abundance_match_census_habitat}
 \title{Abundance measured in number of stems, basal area or above ground biomass.}
 \usage{
 abundance(censdata, type = "abund", alivecode = c("A"), mindbh = NULL,
@@ -10,6 +11,8 @@ abundance(censdata, type = "abund", alivecode = c("A"), mindbh = NULL,
 
 abundanceperquad(censdata, mindbh = 10, plotdim = c(1000, 500),
   gridsize = 100, type = "abund", dbhunit = "mm")
+
+abundance_match_census_habitat(censdata, habitats)
 }
 \arguments{
 \item{censdata}{A table of plot census data.}
@@ -87,32 +90,37 @@ between habitat data and census data should be enforced programatically.
 }
 
 \examples{
-(tree_abundance <- abundance(bci::bci12full5, mindbh = 10))
+# Small subsets of data for examples
+library(dplyr)
+tree_mini <- dplyr::sample_n(bci::bci12full5, 1000)
+stem_mini <- bci::bci12stem5[1:1000, ]
 
-(stem_abundance <- abundance(bci::bci12stem5, mindbh = 10))
+
+
+(tree_abundance <- abundance(tree_mini, mindbh = 10))
+(stem_abundance <- abundance(stem_mini, mindbh = 10))
 
 stem_basal_area_by_sp <- abundance(
-  bci::bci12stem5,
+  stem_mini,
   type = "ba",
   mindbh = 10,
-  split1 = bci::bci12stem5$sp
+  split1 = stem_mini$sp
 )
 lapply(stem_basal_area_by_sp, head)
 
 
 
-
-colSums(tree_n$abund)
-length_positive <- function(x) {length((x[x > 0]))}
-n <- apply(tree_n$abund, 2, length_positive)
-plot(colSums(tree_n$abund), n)
-
-
+tree_n <- abundanceperquad(
+  tree_mini,
+  plotdim = c(1000, 500),
+  gridsize = 100,
+  type = "abund"
+)
+str(tree_n$abund, list.len = 10)
 
 # Matching `gridsize` and `plotdim` between census data and habitat data
-abund <- abundance_match_census_habitat(cns5_mini, bci::bci_habitat)
-abund[1:3, 1:10]
-
+abund <- abundance_match_census_habitat(tree_mini, bci::bci_habitat)
+str(abund, list.len = 6)
 }
 \seealso{
 \link{ba}, \link{ba_sum}

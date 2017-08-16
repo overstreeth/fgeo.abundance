@@ -7,7 +7,7 @@
 assert_are_names_matching(.data, match, ...)
 }
 \arguments{
-\item{.data}{Data}
+\item{.data}{Data.}
 
 \item{match}{Names to match with names of \code{.data}.}
 
