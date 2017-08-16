@@ -19,3 +19,12 @@ test_that("matches names in censdata", {
   )
   expect_error(assert_are_names_matching(bci_mini, match = c("Tag")))
 })
+
+test_that("works with column names of matrix or names of dataframe", {
+  expect_silent(
+    assert_are_names_matching(data.frame(a = 1), "a")
+  )
+  expect_silent(
+    assert_are_names_matching(as.matrix(data.frame(a = 1)), "a")
+  )
+})
