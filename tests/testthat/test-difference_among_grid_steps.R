@@ -8,3 +8,13 @@ test_that("value is a non negative scalar", {
   expect_true(assertive::is_scalar(value))
   expect_silent(assertive::assert_all_are_non_negative(value))
 })
+
+test_that("returns scalar", {
+  expect_true(
+    assertive::is_scalar(difference_among_grid_steps(bci_habitat$x))
+  )
+  expect_true(
+    assertive::is_scalar(difference_among_grid_steps(bci_habitat$y))
+  )
+})
+
