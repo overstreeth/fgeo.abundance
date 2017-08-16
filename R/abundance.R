@@ -414,31 +414,7 @@ abundance <- function(censdata,
 
 
 
-validate_abundance <- function(censdata,
-                               type = "abund",
-                               alivecode = c("A"),
-                               mindbh = NULL,
-                               dbhunit = "mm",
-                               split1 = NULL, 
-                               split2 = NULL) {
-  assert_are_names_matching(censdata, c("dbh", "status", "agb", "date"))
-  assertive::assert_any_are_matching_regex(type, "^abund$|^ba$|^agb$")
-  if (!is.null(mindbh)) {
-    assertive::assert_is_numeric(mindbh)
-  }
-  assertive::assert_any_are_matching_regex(dbhunit, "mm|cm")
 
-  anchored_names <- paste0("^", colnames(censdata), "$")
-  censdata_names <- paste(anchored_names, collapse = "|")
-  
-  if (!is.null(split1)) {
-    assertive::assert_is_of_length(split1, nrow(censdata))
-  }
-  
-  if (!is.null(split2)) {
-    assertive::assert_is_of_length(split2, nrow(censdata))
-  }
-}
 
 #' @export
 #' @rdname abundance
@@ -498,30 +474,6 @@ abundance_match_census_habitat <- function(censdata, habitats) {
   )$abund
 }
 
-# Reject obviously incorrect data
-validate_abundance_match_census_habitat <- function(censdata, habitats) {
-  assert_are_names_matching(censdata, c("tag", "sp"))
-  assert_are_names_matching(habitats, c("x", "y"))
-}
-
-
-
-#' From x and y columns of habitat data, get difference between grid steps.
-#'
-#' @param habitat_x_or_y Column x or y of habitat data, e.g. bci::bci_habitat$x.
-#'
-#' @return A non negative scalar
-difference_among_grid_steps <- function(habitat_x_or_y) {
-  assertive::assert_is_non_empty(habitat_x_or_y)
-  assertive::assert_is_vector(habitat_x_or_y)
-  assertive::assert_all_are_non_negative(habitat_x_or_y)
-
-  grid_steps <- unique(habitat_x_or_y)
-  difference_among_grid_steps <- unique(diff(grid_steps))
-
-  difference_among_grid_steps
-}
-
 #' Extract plot dimensions from habitat data.
 #'
 #' @template habitats
@@ -558,6 +510,22 @@ extract_plotdim <- function(habitats) {
   unname(plotdim)
 }
 
+#' From x and y columns of habitat data, get difference between grid steps.
+#'
+#' @param habitat_x_or_y Column x or y of habitat data, e.g. bci::bci_habitat$x.
+#'
+#' @return A non negative scalar
+difference_among_grid_steps <- function(habitat_x_or_y) {
+  assertive::assert_is_non_empty(habitat_x_or_y)
+  assertive::assert_is_vector(habitat_x_or_y)
+  assertive::assert_all_are_non_negative(habitat_x_or_y)
+
+  grid_steps <- unique(habitat_x_or_y)
+  difference_among_grid_steps <- unique(diff(grid_steps))
+
+  difference_among_grid_steps
+}
+
 
 
 # abundance_abundance_validate --------------------------------------------
@@ -569,7 +537,37 @@ validate_ba <- function(dbh, dbhunit) {
   assertive::assert_all_are_not_na(dbh, severity = "warning")
 }
 
+validate_abundance <- function(censdata,
+                               type = "abund",
+                               alivecode = c("A"),
+                               mindbh = NULL,
+                               dbhunit = "mm",
+                               split1 = NULL, 
+                               split2 = NULL) {
+  assert_are_names_matching(censdata, c("dbh", "status", "agb", "date"))
+  assertive::assert_any_are_matching_regex(type, "^abund$|^ba$|^agb$")
+  if (!is.null(mindbh)) {
+    assertive::assert_is_numeric(mindbh)
+  }
+  assertive::assert_any_are_matching_regex(dbhunit, "mm|cm")
 
+  anchored_names <- paste0("^", colnames(censdata), "$")
+  censdata_names <- paste(anchored_names, collapse = "|")
+  
+  if (!is.null(split1)) {
+    assertive::assert_is_of_length(split1, nrow(censdata))
+  }
+  
+  if (!is.null(split2)) {
+    assertive::assert_is_of_length(split2, nrow(censdata))
+  }
+}
+
+# Reject obviously incorrect data
+validate_abundance_match_census_habitat <- function(censdata, habitats) {
+  assert_are_names_matching(censdata, c("tag", "sp"))
+  assert_are_names_matching(habitats, c("x", "y"))
+}
 
 # to clasify ------------------------------------------------------------------
 
@@ -599,9 +597,7 @@ NULL
 #' @rdname sp_names_by_n
 #' @export
 sp_alive_n <- function(censdata, n) {
-  assertive::assert_is_data.frame(censdata)
-  assertive::assert_is_scalar(n)
-  assertive::assert_all_are_non_negative(n)
+  validate_sp_alive_n(censdata, n)
 
   alive_stems <- censdata[censdata$status == "A", "sp"]
   alive_stems_count <- table(alive_stems)
@@ -615,11 +611,7 @@ sp_alive_n <- function(censdata, n) {
 #' @rdname sp_names_by_n
 #' @export
 sp_abund_n <- function(abundances, n) {
-  assertive::assert_is_data.frame(abundances)
-  assertive::assert_is_non_empty(abundances)
-  assertive::assert_is_non_empty(n)
-  assertive::assert_is_scalar(n)
-  assertive::assert_is_numeric(n)
+  validate_sp_abund_n(abundances, n)
 
   rs <- rowSums(abundances)
   stop_if_n_is_too_high(x = rs, n = n)
@@ -652,6 +644,9 @@ sp_abund_n <- function(abundances, n) {
 #' @keywords internal
 #' @export 
 assert_are_names_matching <- function(.data, match, ...) {
+  stopifnot(is.data.frame(.data) || is.matrix(.data))
+  assertive::assert_is_character(match)
+
   anchored_names <- paste0("^", colnames(.data), "$")
   collapsed_names <- paste(anchored_names, collapse = "|")
   assertive::assert_all_are_matching_regex(match, collapsed_names, ...)
@@ -674,5 +669,20 @@ stop_if_n_is_too_high <- function(x, n) {
 }
 
 
+
+# to_clasify_validate -----------------------------------------------------
+
+validate_sp_alive_n <- function(censdata, n) {
+  assertive::assert_is_data.frame(censdata)
+  assertive::assert_is_scalar(n)
+  assertive::assert_all_are_non_negative(n)
+}
+
+validate_sp_abund_n <- function(abundances, n) {
+  assertive::assert_is_data.frame(abundances)
+  assertive::assert_is_non_empty(n)
+  assertive::assert_is_scalar(n)
+  assertive::assert_is_numeric(n)
+}
 
 
