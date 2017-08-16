@@ -28,3 +28,12 @@ test_that("works with column names of matrix or names of dataframe", {
     assert_are_names_matching(as.matrix(data.frame(a = 1)), "a")
   )
 })
+
+test_that("stops with wrong input", {
+  expect_error(
+    assert_are_names_matching(.data = "wrong", "a")
+  )
+  expect_error(
+    assert_are_names_matching(.data = data.frame(a = 1), as.factor("a"))
+  )
+})
