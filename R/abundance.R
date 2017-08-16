@@ -31,9 +31,7 @@ NULL
 #' @rdname to_id
 #' @export
 to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
-  validate_row_col(.row = .row, .col = .col)
-  warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
+  validate_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
     plotdim = plotdim)
   
   badrc <- (.row <= 0 | .col <= 0 | .row > plotdim[2] / gridsize |
@@ -46,6 +44,32 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   if (length(badrc[badrc > 0])) {index[badrc] <- NA}
   return(index)
 }
+
+validate_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
+  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
+  validate_row_col(.row = .row, .col = .col)
+  warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
+    plotdim = plotdim)
+}
+
+# xxxxxxxxxxxxxxx ------------
+
+# context("validate_to_id_rowcol")
+# 
+# test_that("from to_id_rowcol(), correctly calls functions that err or warn", {
+  expect_error(
+    to_id_gxgy(1:3, 1:3, rep(NA_real_, 3), c(1000, 500))
+  )
+  expect_error(
+    to_id_gxgy(1:3, 1:3, rep(NA_real_, 3), c(1000, 500))
+  )
+# })
+
+
+
+
+
+
 
 #' @rdname to_id
 #' @export
@@ -180,7 +204,9 @@ validate_data_class1_class2_fill <- function(.data, class1, class2, fill) {
 #' # Passes silently
 #' assert_are_names_matching(data.frame(a = 1), match = c("a"))
 #' # Errs
-#' assert_are_names_matching(data.frame(a = 1), match = c("aa"))
+#' testthat::expect_error(
+#'   assert_are_names_matching(data.frame(a = 1), match = c("aa"))
+#' )
 #' # Warns
 #' assert_are_names_matching(data.frame(a = 1), match = c("aa"),
 #'   severity = "warning")
