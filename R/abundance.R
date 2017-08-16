@@ -1,4 +1,4 @@
-# ***spatial; quadfunc*** -------------------------------------------------
+# spatial_quadfunc --------------------------------------------------------
 
 #' Convert to quadrat indices.
 #' 
@@ -45,39 +45,12 @@ to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
   return(index)
 }
 
-validate_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
-  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
-  validate_row_col(.row = .row, .col = .col)
-  warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
-    plotdim = plotdim)
-}
-
-# xxxxxxxxxxxxxxx ------------
-
-# context("validate_to_id_rowcol")
-# 
-# test_that("from to_id_rowcol(), correctly calls functions that err or warn", {
-  expect_error(
-    to_id_gxgy(1:3, 1:3, rep(NA_real_, 3), c(1000, 500))
-  )
-  expect_error(
-    to_id_gxgy(1:3, 1:3, rep(NA_real_, 3), c(1000, 500))
-  )
-# })
-
-
-
-
-
-
-
 #' @rdname to_id
 #' @export
 to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
-  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
-  warn_bad_arg_to_id_gxgy(gx = gx, gy = gy, gridsize = gridsize, 
+  validate_to_id_gxgy(gx = gx, gy = gy, gridsize = gridsize, 
   plotdim = plotdim)
-  
+
   badgxgy <- (gx < 0 | gy < 0 | gx >= plotdim[1] | gy >= plotdim[2] |
         is.na(gx) | is.na(gy))
   .col_adjusted <- 1 + floor(gx / gridsize)
@@ -89,6 +62,23 @@ to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
   return(to_id_rowcol(.row_adjusted, .col_adjusted, gridsize, plotdim))
 }
 
+
+
+# spatial_quadfunc_validate -----------------------------------------------
+
+validate_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
+  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
+  validate_row_col(.row = .row, .col = .col)
+  warn_bad_arg_to_id_rowcol(.row = .row, .col = .col, gridsize = gridsize,
+    plotdim = plotdim)
+}
+
+validate_to_id_gxgy <- function(gx, gy, gridsize, plotdim){
+  validate_gridsize_plotdim(gridsize = gridsize, plotdim = plotdim)
+  warn_bad_arg_to_id_gxgy(gx = gx, gy = gy, gridsize = gridsize, 
+  plotdim = plotdim)
+}
+
 validate_gridsize_plotdim <- function(gridsize, plotdim) {
   assertive::assert_all_are_not_na(gridsize)
   assertive::assert_all_are_not_na(plotdim)
@@ -96,13 +86,12 @@ validate_gridsize_plotdim <- function(gridsize, plotdim) {
   assertive::assert_all_are_positive(plotdim)
 }
 
-# Choosingn to warn (not err) because the intention of the function is unclear.
 validate_row_col <- function(.row, .col) {
   assertive::assert_all_are_not_na(.row, severity = "warning")
   assertive::assert_all_are_not_na(.col, severity = "warning")
 }
 
-# These functions throws warning if bad arguments are detected. Errors are not
+# Functions warn_bad_arg*() warn if bad arguments are detected. Errors are not
 # appropriate because the bad arguments are meaningful inside these functions.
 
 warn_bad_arg_to_id_gxgy <- function(gx, gy, gridsize, plotdim) {
@@ -131,7 +120,7 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 
 
 
-# ***utilities; utilities*** ----------------------------------------------
+# utilities_utilities -----------------------------------------------------
 
 #' Fill 2 dimensional data with custom value.
 #'
@@ -157,7 +146,7 @@ warn_bad_arg_to_id_rowcol <- function(.row, .col, gridsize, plotdim) {
 #'   dimnames = list(1:2, letters[1:4])
 #' )
 fill_dimension <- function(.data, class1, class2, fill = 0) {
-  validate_data_class1_class2_fill(.data, class1, class2, fill)
+  validate_fill_dimension(.data, class1, class2, fill)
   
   result <- data.frame(
     matrix(fill, nrow = length(class1), ncol = length(class2))
@@ -170,7 +159,11 @@ fill_dimension <- function(.data, class1, class2, fill = 0) {
   result
 }
 
-validate_data_class1_class2_fill <- function(.data, class1, class2, fill) {
+
+
+# utilities_utilities_validate --------------------------------------------
+
+validate_fill_dimension <- function(.data, class1, class2, fill) {
   # let class1 = NULL pass this test
   if (!is.null(class1)) {
     assertive::assert_any_are_not_na(class1, severity = "warning")
@@ -187,38 +180,7 @@ validate_data_class1_class2_fill <- function(.data, class1, class2, fill) {
 
 
 
-
-
-
-#' Assert important names match names in data.
-#'
-#' @param .data Data
-#' @param match  Names to match with names of `.data`.
-#' @param ... Arguments passed to [assertive::assert_all_are_matching_regex()],
-#'   e.g. `severity = "stop"` (default), `severity = "warning"`.
-#'
-#' @return Nothing, warning, error, etc. See 
-#'   [assertive::assert_all_are_matching_regex()].
-#'
-#' @examples
-#' # Passes silently
-#' assert_are_names_matching(data.frame(a = 1), match = c("a"))
-#' # Errs
-#' testthat::expect_error(
-#'   assert_are_names_matching(data.frame(a = 1), match = c("aa"))
-#' )
-#' # Warns
-#' assert_are_names_matching(data.frame(a = 1), match = c("aa"),
-#'   severity = "warning")
-#' @keywords internal
-#' @export 
-assert_are_names_matching <- function(.data, match, ...) {
-  anchored_names <- paste0("^", names(.data), "$")
-  collapsed_names <- paste(anchored_names, collapse = "|")
-  assertive::assert_all_are_matching_regex(match, collapsed_names, ...)
-}
-
-# ***abundance; abundance*** ----------------------------------------------
+# abundance_abundance -----------------------------------------------------
 
 #' Basal area of trees.
 #' 
@@ -624,23 +586,8 @@ extract_plotdim <- function(habitats) {
 
 
 
-# ***extras*** ------------------------------------------------------------
 
-# Name of species which stems are n or above 
-
-# Provide readable conditional stop, with friendly message
-stop_if_n_is_too_high <- function(x, n) {
-  assertive::assert_is_numeric(x)
-  assertive::assert_is_numeric(n)
-  assertive::assert_is_scalar(n)
-
-  if (n > max(x)) {
-    stop(
-      "No species has so many alive stems as n = ", deparse(n), ". ",
-      "Provide n <= ", deparse(max(x)), "."
-    )
-  }
-}
+# to clasify ------------------------------------------------------------------
 
 #' Name of species which count is at or above a threshold.
 #'
@@ -698,6 +645,49 @@ sp_abund_n <- function(abundances, n) {
 
 
 
+#' Assert important names match names in data.
+#'
+#' @param .data Data.
+#' @param match  Names to match with names of `.data`.
+#' @param ... Arguments passed to [assertive::assert_all_are_matching_regex()],
+#'   e.g. `severity = "stop"` (default), `severity = "warning"`.
+#'
+#' @return Nothing, warning, error, etc. See 
+#'   [assertive::assert_all_are_matching_regex()].
+#'
+#' @examples
+#' # Passes silently
+#' assert_are_names_matching(data.frame(a = 1), match = c("a"))
+#' # Errs
+#' testthat::expect_error(
+#'   assert_are_names_matching(data.frame(a = 1), match = c("aa"))
+#' )
+#' # Warns
+#' assert_are_names_matching(data.frame(a = 1), match = c("aa"),
+#'   severity = "warning")
+#' @keywords internal
+#' @export 
+assert_are_names_matching <- function(.data, match, ...) {
+  anchored_names <- paste0("^", names(.data), "$")
+  collapsed_names <- paste(anchored_names, collapse = "|")
+  assertive::assert_all_are_matching_regex(match, collapsed_names, ...)
+}
+
+# Name of species which stems are n or above 
+
+# Provide readable conditional stop, with friendly message
+stop_if_n_is_too_high <- function(x, n) {
+  assertive::assert_is_numeric(x)
+  assertive::assert_is_numeric(n)
+  assertive::assert_is_scalar(n)
+
+  if (n > max(x)) {
+    stop(
+      "No species has so many alive stems as n = ", deparse(n), ". ",
+      "Provide n <= ", deparse(max(x)), "."
+    )
+  }
+}
 
 
 
