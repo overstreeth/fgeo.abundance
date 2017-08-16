@@ -51,7 +51,7 @@ test_that("`ba_sum()` errs with wrong arguments", {
   expect_error(ba_sum("wrong", mindbh = 10, dbhunit = "cm"))
   expect_error(ba_sum(dbh, mindbh = 10, dbhunit = "wrong"))
   expect_error(ba_sum(dbh, mindbh = "wrong"))
-  expect_error(ba_sum(c(0, 1, 2)))
+  expect_error(ba_sum(0:2))
 })
 test_that("`ba_sum()` warns with NAs in dbh", {
   expect_warning(ba_sum(dbh = c(NA, 1, 2, 3)))
