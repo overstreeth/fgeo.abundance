@@ -25,39 +25,3 @@ test_that("classes matrix, array and data.frame all work", {
     fill_dimension(as.matrix(.data), class1, class2, fill = 0)
   )
 })
-
-
-
-
-
-context("validate_data_class1_class2_fill")
-
-test_that("warns with .data of wrong dimension", {
-  expect_error(
-    expect_warning(fill_dimension(c(.data), class1, class2, fill))
-  )
-})
-
-test_that("class1 can't be NA but can be NULL", {
-    expect_error(
-    expect_warning(
-      fill_dimension(.data, class1 = NA, class2 = colnames(.data))
-    )
-  )
-  expect_silent(fill_dimension(.data, class1 = NULL, class2 = colnames(.data)))
-})
-
-test_that("class2 can't be of length shorter than columns in .data", {
-  expect_error(
-    fill_dimension(.data, class1, class2 = colnames(.data)[1:ncol(.data) - 1])
-  )
-})
-
-test_that("fill can be any numeric`", {
-  expect_silent(
-    fill_dimension(.data, class1, class2, fill = 999)
-  )
-  expect_silent(
-    fill_dimension(.data, class1, class2, fill = -999)
-  )
-})
