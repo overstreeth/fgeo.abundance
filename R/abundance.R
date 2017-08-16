@@ -352,7 +352,7 @@ abundance <- function(censdata,
                       dbhunit = "mm",
                       split1 = NULL,
                       split2 = NULL) {
-  validate_arguments_abundance(
+  validate_abundance(
     censdata, type, alivecode, mindbh, dbhunit, split1, split2
   )
   
@@ -411,7 +411,7 @@ abundance <- function(censdata,
   result
 }
 
-validate_arguments_abundance <- function(censdata,
+validate_abundance <- function(censdata,
                                          type = "abund",
                                          alivecode = c("A"),
                                          mindbh = NULL,
