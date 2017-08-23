@@ -12,8 +12,28 @@
 # The data were downloaded on the same day, about 30 minutes after the
 # discussion finished.
 
-fun_table <- readr::read_csv("./data-raw/iss32_fun_table_edited.csv")
+library(tidyverse)
+library(handy)
 
-fun_table
 
-use_data(fun_table, internal = TRUE, overwrite = TRUE)
+
+pull_decision <- function(value) {
+  priority <- readr::read_csv("./data-raw/iss32_grouped_priority.csv")
+  dplyr::filter(priority, .data$priority == value) %>% pull(decision)
+}
+
+functions_priority <- readr::read_csv("./data-raw/iss32_fun_table_edited.csv")
+
+functions_priority <- functions_priority %>% 
+  mutate(priority = 
+      forcats::fct_collapse(
+        decision,    
+        a = pull_decision(1),
+        b = pull_decision(2),
+        c = pull_decision(3),
+        d = pull_decision(4)
+      )
+  ) %>% 
+  select(priority, fun, everything()) %>% filter(as.character(priority) == "a")
+
+use_data(functions_priority, internal = TRUE, overwrite = TRUE)
