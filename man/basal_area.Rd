@@ -33,8 +33,8 @@ dbhs.
 \itemize{
 \item \code{ba()}: calculates the individual basal areas in square meters for all
 \code{dbh}-values submitted.
-\item \code{ba_sum()}: calculates the basal area summed over all submitted \code{dbh} values
-(after removing NAs).
+\item \code{ba_sum()}: calculates the basal area summed over all submitted \code{dbh}
+values (after removing NAs).
 }
 }
 \examples{

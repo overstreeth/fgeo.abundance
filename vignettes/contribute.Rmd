@@ -57,7 +57,7 @@ Functions that validate the inputs passed to other functions are named `validate
 ```
 In each file, match the order between the `FUNCTION()`s and the `validate_FUNCTION()`s to make it easy to navigate the function's outline (Shift + Control + O).
 
-## Naming tests
+## Naming Tests
 
 Place tests into the directory `tests/testthat/` in files named `test-FUNCTION.R`. To do this easyily, run `testthat::use_test("FUNCTION")`.
 

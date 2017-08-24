@@ -2,8 +2,8 @@
 #' 
 #' * `ba()`: calculates the individual basal areas in square meters for all
 #'   `dbh`-values submitted.
-#' * `ba_sum()`: calculates the basal area summed over all submitted `dbh` values
-#'   (after removing NAs).
+#' * `ba_sum()`: calculates the basal area summed over all submitted `dbh`
+#'   values (after removing NAs).
 #' 
 #' @template dbh
 #' @template dbhunit
