@@ -33,7 +33,6 @@ functions_priority <- functions_priority %>%
         c = pull_decision(3),
         d = pull_decision(4)
       )
-  ) %>% 
-  select(priority, fun, everything()) %>% filter(as.character(priority) == "a")
+  )
 
-use_data(functions_priority, internal = TRUE, overwrite = TRUE)
+use_data(functions_priority, internal = TRUE)
