@@ -18,7 +18,7 @@ library(handy)
 
 
 pull_decision <- function(value) {
-  priority <- readr::read_csv("./data-raw/iss32_grouped_priority.csv")
+  priority <- readr::read_delim("./data-raw/iss32_grouped_priority.csv", delim = "\t")
   dplyr::filter(priority, .data$priority == value) %>% pull(decision)
 }
 
