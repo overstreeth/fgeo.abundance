@@ -35,4 +35,4 @@ functions_priority <- functions_priority %>%
       )
   )
 
-use_data(functions_priority, internal = TRUE)
+use_data(functions_priority, internal = TRUE, overwrite = TRUE)
