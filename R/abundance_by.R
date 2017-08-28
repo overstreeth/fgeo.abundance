@@ -40,43 +40,29 @@ test_that("outputs the same as ctfs::abundance when type = 'abund'.", {
 
 
 
-count_alive_by <- function(x, ..., wt = NULL, sort = FALSE)) {
-  alive_id <- id_alive(x)
-  dplyr::count(alive_id, ..., wt = wt, sort = sort))
+count_alive_by <- function(x, ...) {
+  all_sp <- unique(x["sp"])
+  alive <- id_alive(x)
+  count_alive <- dplyr::count(alive, ...)
+  count_all_sp <- dplyr::right_join(count_alive, all_sp)
+  tidyr::replace_na(count_all_sp, list(n = 0))
 }
 
-# context("count_alive")
-# test_that("outputs the same as ctfs::abundance for acaldi", {
-#   x <- bci12t7mini
-#   acaldi_now <- count_alive_by(x, sp) %>% 
-#     dplyr::filter(sp == "acaldi") %>% 
-#     pull()
-#   
-#   acaldi_before <- x %>% 
-#     filter(status == "A") %>% 
-#     split(x$sp) %>%
-#     purrr::map(ctfs::abundance) %>% 
-#     purrr::map("abund") %>% 
-#     tibble::enframe() %>% 
-#     tidyr::unnest()
-# 
-#   expect_equal(acaldi_now, acaldi_before)
+context("count_alive_by")
 
-
-
-# the difference seems to be where species have 0 counts.
-now <- count_alive_by(bci12t7mini, sp) %>% arrange(sp)
-
-before <- ctfs::abundance(bci12t7mini, split1 = bci12t7mini$sp)$abund %>% 
-  mutate(sp = rownames(.), n = as.integer(all)) %>% 
-  arrange(sp) %>% 
-  as_tibble() %>% 
-  select(sp = sp, n = n)
-
-all.equal(before[before$n > 0, ], now)
-
-# xxx Maybe I need to change NA by N
-
+test_that("outputs the same as ctfs::abundance with defaults", {
+  x <- bci12t7mini
+  now <- count_alive_by(x, sp) %>% arrange(sp)
+  before <- x %>%
+    split(.$sp) %>%
+    purrr::map(ctfs::abundance) %>%
+    purrr::map("abund") %>%
+    tibble::enframe() %>%
+    tidyr::unnest() %>% 
+    rename(sp = name, n = all) %>% 
+    arrange(sp)
+  expect_equal(now, before)
+})
 
 
 
