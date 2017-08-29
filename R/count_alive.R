@@ -8,7 +8,7 @@
 #' @template x
 #' @template .status
 #' @param ... Optional. Bare name of variables to group by (passed to 
-#'   [dplyr::count()].
+#'   [dplyr::count()]).
 #'   
 #' @seealso [dplyr::count()].
 #'   
@@ -18,23 +18,28 @@
 #' 
 #' @examples
 #' library(bciex)
+#' 
 #' stems <- bci12s5mini
 #' trees <- bci12t5mini
 #' 
-#' # By default, tally of alive individuals
+#' # Tally of alive individuals
 #' count_alive(stems)
-#' # Dead
+#' 
+#' # Count individuals of any status, say, dead ones
 #' count_status(trees, .status = "D")
 #' 
 #' # Give one or multiple grouping variables to get a grouped summary
+#' # Alive
 #' count_alive(stems, sp)
-#' # Dead by species
+#' 
+#' # Dead
 #' count_status(stems, .status = "D", sp)
 #' 
 #' # Multiple groups
 #' # Alive
 #' stems2 <- rbind(bci12s5mini, bci12s6mini)
 #' count_alive(stems2, sp, CensusID)
+#' 
 #' # Dead
 #' stems2 <- rbind(bci12s5mini, bci12s6mini)
 #' count_status(stems2, .status = "D", sp, CensusID)
@@ -75,7 +80,7 @@ count_status_by <- function(x, .status, ...) {
   # dplyr::count(filtered, sp)
   
   # to excluded species give a count of cero
-  all_sp_n <- dplyr::right_join(grouped_summary, all_sp)
+  all_sp_n <- suppressMessages(dplyr::right_join(grouped_summary, all_sp))
   tidyr::replace_na(all_sp_n, list(n = 0))
 }
 
