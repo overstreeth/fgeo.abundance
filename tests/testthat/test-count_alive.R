@@ -1,5 +1,7 @@
 context("count_alive")
 
+library(dplyr)
+
 test_that("outputs the same as ctfs::abundance() with defaults", {
   x <- bciex::bci12t7mini
   now <- count_alive(x = x, .status = "A")
@@ -8,10 +10,13 @@ test_that("outputs the same as ctfs::abundance() with defaults", {
 })
 
 test_that("outputs an integer", {
+  x <- bciex::bci12t7mini
+  now <- count_alive(x = x, .status = "A")
   expect_type(now, "integer")
 })
 
 test_that("outputs the same as ctfs::abundance with defaults", {
+  x <- bciex::bci12t7mini
   now <- count_alive(x = x, .status = "A", sp) %>% arrange(sp)
   before <- x %>%
     split(.$sp) %>%
@@ -54,6 +59,8 @@ test_that("outputs the same as ctfs::abundance() with defaults", {
 })
 
 test_that("outputs an integer", {
+  x <- bciex::bci12t7mini
+  now <- count_status(x = x, .status = "A")
   expect_type(now, "integer")
 })
 
@@ -88,6 +95,7 @@ test_that("extracts the desired statuses", {
 
 
 test_that("fails if .status is not one of x$status", {
+  x <- bciex::bci12s7mini
   .status <- "invalid_status"
   expect_error(
     filter_status(x = x, .status = .status)
