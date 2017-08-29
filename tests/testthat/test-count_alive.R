@@ -4,20 +4,20 @@ library(dplyr)
 
 test_that("outputs the same as ctfs::abundance() with defaults", {
   x <- bciex::bci12t7mini
-  now <- count_alive(x = x, .status = "A")
+  now <- count_alive(x = x)
   before <- ctfs::abundance(x)$abund$all
   expect_equal(before, now)
 })
 
 test_that("outputs an integer", {
   x <- bciex::bci12t7mini
-  now <- count_alive(x = x, .status = "A")
+  now <- count_alive(x = x)
   expect_type(now, "integer")
 })
 
 test_that("outputs the same as ctfs::abundance with defaults", {
   x <- bciex::bci12t7mini
-  now <- count_alive(x = x, .status = "A", sp) %>% arrange(sp)
+  now <- count_alive(x = x, sp) %>% arrange(sp)
   before <- x %>%
     split(.$sp) %>%
     purrr::map(ctfs::abundance) %>%
@@ -56,11 +56,42 @@ test_that("outputs the same as ctfs::abundance() with defaults", {
   now <- count_status(x = x, .status = "A")
   before <- ctfs::abundance(x)$abund$all
   expect_equal(before, now)
+  
+  now <- count_status(x = x, .status = "A", sp) %>% arrange(sp)
+  before <- x %>%
+    split(.$sp) %>%
+    purrr::map(ctfs::abundance) %>%
+    purrr::map("abund") %>%
+    tibble::enframe() %>%
+    tidyr::unnest() %>% 
+    rename(sp = name, n = all) %>% 
+    arrange(sp)
+  expect_equal(now, before)
 })
 
 test_that("outputs an integer", {
   x <- bciex::bci12t7mini
   now <- count_status(x = x, .status = "A")
+  expect_type(now, "integer")
+})
+
+
+
+context("tally_status")
+
+test_that("outputs is the same as default ctfs::abundance", {
+  x <- bciex::bci12t7mini
+  now <- tally_status(x = x, .status = "A")
+  
+  before <- ctfs::abundance(x)$abund$all
+  expect_equal(before, now)
+  
+  expect_type(now, "integer")
+})
+
+test_that("outputs an integer", {
+  x <- bciex::bci12t7mini
+  now <- tally_status(x = x, .status = "A")
   expect_type(now, "integer")
 })
 
