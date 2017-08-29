@@ -1,4 +1,4 @@
-#' Count the total number of individuals in a dataset or within groups.
+#' Number of individuals in total or within groups.
 #' 
 #' In an ecological context, these functions calculate abundance. To choose the
 #' status of the individuals you want to count, use [count_status()]. If you

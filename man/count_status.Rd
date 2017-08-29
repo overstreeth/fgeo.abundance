@@ -3,7 +3,7 @@
 \name{count_status}
 \alias{count_status}
 \alias{count_alive}
-\title{Count the total number of individuals in a dataset or within groups.}
+\title{Number of individuals in total or within groups.}
 \usage{
 count_status(x, .status, ...)
 
@@ -15,7 +15,7 @@ count_alive(x, ...)
 \item{.status}{A character vector giving the statuses to keep.}
 
 \item{...}{Optional. Bare name of variables to group by (passed to
-\code{\link[dplyr:count]{dplyr::count()}}.}
+\code{\link[dplyr:count]{dplyr::count()}}).}
 }
 \value{
 If you provide grouping variables, these functions output a grouped
@@ -29,23 +29,28 @@ only want to count alive individuals, you may use the shortcut
 }
 \examples{
 library(bciex)
+
 stems <- bci12s5mini
 trees <- bci12t5mini
 
-# By default, tally of alive individuals
+# Tally of alive individuals
 count_alive(stems)
-# Dead
+
+# Count individuals of any status, say, dead ones
 count_status(trees, .status = "D")
 
 # Give one or multiple grouping variables to get a grouped summary
+# Alive
 count_alive(stems, sp)
-# Dead by species
+
+# Dead
 count_status(stems, .status = "D", sp)
 
 # Multiple groups
 # Alive
 stems2 <- rbind(bci12s5mini, bci12s6mini)
 count_alive(stems2, sp, CensusID)
+
 # Dead
 stems2 <- rbind(bci12s5mini, bci12s6mini)
 count_status(stems2, .status = "D", sp, CensusID)
