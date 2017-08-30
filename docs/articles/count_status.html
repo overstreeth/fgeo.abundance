@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comparing performance of dplyr vs. base • forestr</title>
+<title>Review of milestone 1 (issue 41) • forestr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -54,7 +54,7 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Comparing performance of dplyr vs. base</h1>
+      <h1>Review of milestone 1 (issue 41)</h1>
                         <h4 class="author">Mauro Lepore</h4>
             
             <h4 class="date">2017-08-29</h4>
@@ -63,9 +63,9 @@
     
     
 <div class="contents">
-<div id="measuring-performance" class="section level3">
-<h3 class="hasAnchor">
-<a href="#measuring-performance" class="anchor"></a>Measuring performance</h3>
+<div id="measuring-performance" class="section level1">
+<h1 class="hasAnchor">
+<a href="#measuring-performance" class="anchor"></a>Measuring performance</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
 <span class="kw">library</span>(dplyr)
 <span class="co">#&gt; </span>
@@ -84,7 +84,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.13    0.01    0.18</span>
+<span class="co">#&gt;    0.07    0.03    0.11</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -99,7 +99,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.57    0.02    0.73</span>
+<span class="co">#&gt;    0.37    0.02    0.41</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
@@ -158,7 +158,20 @@ x &lt;-<span class="st"> </span>bci12s7mini
 <span class="co">#&gt; 5      A andiin     1</span>
 <span class="co">#&gt; 6      A annoac     5</span>
 <span class="co">#&gt; # ... with 105 more rows</span></code></pre></div>
-<p>Gabriel proposes getting basal area and biomass simply by changing the function passed to <code>summarize()</code>. He prefers less and longer functions over multiple smaller ones (although that is contrary to the most common advice).</p>
+<p>Gabriel proposes getting basal area and biomass simply by changing the function passed to <code>summarize()</code>. He prefers less and longer functions over multiple smaller ones.</p>
+<p>Contrary to the idea, notice that there is prenty of advice. The following quotes come from “Code Complete (Developer Best Practices)” by Steve McConnell:</p>
+<blockquote>
+<p>“One way to improve a system is to increase its modularity—increase the number of well-defined, well-named routines that do one thing and do it well.”</p>
+</blockquote>
+<p>–<a href="http://a.co/dwa6nBZ" class="uri">http://a.co/dwa6nBZ</a></p>
+<blockquote>
+<p>“If a routine executes different code depending on the value of an input parameter, consider breaking the routine into separate routines that can be called separately, without passing in that particular input parameter.”</p>
+</blockquote>
+<p>–<a href="http://a.co/8rXZUPj" class="uri">http://a.co/8rXZUPj</a></p>
+<blockquote>
+<p>“A parameter list has too many parameters. Well-factored programs tend to have many small, well-defined routines that don’t need large parameter lists. A long parameter list is a warning that the abstraction of the routine interface has not been well thought out. Changes within”</p>
+</blockquote>
+<p>–<a href="http://a.co/0GmsFwG" class="uri">http://a.co/0GmsFwG</a></p>
 </div>
 </div>
   </div>
@@ -167,7 +180,8 @@ x &lt;-<span class="st"> </span>bci12s7mini
         <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#meeting-gabriel">Meeting Gabriel</a></li>
+<li><a href="#measuring-performance">Measuring performance</a></li>
+      <li><a href="#meeting-gabriel">Meeting Gabriel</a></li>
       </ul>
 </div>
       </div>
