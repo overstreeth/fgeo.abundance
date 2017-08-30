@@ -13,7 +13,7 @@
 #' @seealso [dplyr::count()].
 #'   
 #' @return If you provide grouping variables, these functions output a grouped
-#'   summary. Else, they output a tally.
+#'   summary. Else, these functions output a tally.
 #' @export
 #' 
 #' @examples
@@ -68,15 +68,14 @@ count_alive <- function(x, ...) {
 #' @template .status 
 #' @param ... Optional. Bare name of variables to group by (passed to
 #'  [dplyr::count()].
-#'
-#' @keywords internal
 #' 
 #' @return A count summary by group.
+#' @keywords internal
 count_status_by <- function(x, .status, ...) {
   # To later add species excluded by status, so that their count is cero
   all_sp <- unique(x["sp"])
-  
   identified <- add_id(x)
+  
   filtered <- filter_status(x = identified, .status = .status)
   grouped_summary <- dplyr::count(filtered, ...)
   # dplyr::count(filtered, sp)
@@ -92,10 +91,9 @@ count_status_by <- function(x, .status, ...) {
 #'
 #' @template x 
 #' @template .status 
-#' 
-#' @keywords internal
 #'
 #' @return An integer giving the total number (tally) of individuals.
+#' @keywords internal
 tally_status <- function(x, .status) {
   identified <- add_id(x)
   filtered <- filter_status(x = identified, .status = .status)
@@ -108,9 +106,8 @@ tally_status <- function(x, .status) {
 #'
 #' @template x 
 #' 
-#' @keywords internal
-#'
 #' @return Returns `x` with an additional variable `id`.
+#' @keywords internal
 add_id <- function(x) {
   x$id <- paste0(x$treeID, "_", x$stemID)
   x
@@ -120,10 +117,9 @@ add_id <- function(x) {
 #'
 #' @template x 
 #' @template .status 
-#'
-#' @keywords internal
 #' 
 #' @return Returns `x` filtered by `.status`.
+#' @keywords internal
 filter_status <- function(x, .status) {
   stopifnot(all(.status %in% unique(x$status)))
   x[x$status %in% .status, ]

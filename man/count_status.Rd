@@ -19,7 +19,7 @@ count_alive(x, ...)
 }
 \value{
 If you provide grouping variables, these functions output a grouped
-summary. Else, they output a tally.
+summary. Else, these functions output a tally.
 }
 \description{
 In an ecological context, these functions calculate abundance. To choose the
