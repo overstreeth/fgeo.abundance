@@ -19,10 +19,10 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 ## ------------------------------------------------------------------------
 library(forestr)
-library(bci)
+library(bciex)
 library(dplyr)
 
-x <- bci12full7
+x <- bci12s7mini
 
 system.time({
   with_dplyr <- count_status(x = x, .status = "A", sp)
@@ -47,4 +47,13 @@ head(with_dplyr)
 head(with_base)
 
 all.equal(with_dplyr, with_base)
+
+## ------------------------------------------------------------------------
+count_status(x, .status = unique(x$status), sp, status) %>% 
+  filter(status == "A")
+
+# Same as
+group_by(x, status, sp) %>% 
+  summarize(n = n()) %>% 
+  filter(status == "A")
 
