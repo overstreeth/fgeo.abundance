@@ -19,9 +19,7 @@ VignetteBuilder: knitr
 Suggests: testthat,
     assertive,
     rmarkdown,
-    bci,
     ctfs
 Imports: dplyr,
     tidyr,
-    bciex,
     knitr

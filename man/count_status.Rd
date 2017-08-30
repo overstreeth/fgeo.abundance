@@ -28,10 +28,8 @@ only want to count alive individuals, you may use the shortcut
 \code{\link[=count_alive]{count_alive()}}.
 }
 \examples{
-library(bciex)
-
-stems <- bci12s5mini
-trees <- bci12t5mini
+stems <- bci12s6mini
+trees <- bci12t6mini
 
 # Tally of alive individuals
 count_alive(stems)
@@ -48,11 +46,11 @@ count_status(stems, .status = "D", sp)
 
 # Multiple groups
 # Alive
-stems2 <- rbind(bci12s5mini, bci12s6mini)
+stems2 <- rbind(bci12s6mini, bci12s6mini)
 count_alive(stems2, sp, CensusID)
 
 # Dead
-stems2 <- rbind(bci12s5mini, bci12s6mini)
+stems2 <- rbind(bci12s6mini, bci12s6mini)
 count_status(stems2, .status = "D", sp, CensusID)
 }
 \seealso{

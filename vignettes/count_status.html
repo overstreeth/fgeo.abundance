@@ -83,7 +83,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="measuring-performance" class="section level3">
 <h3>Measuring performance</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
-<span class="kw">library</span>(bciex)
 <span class="kw">library</span>(dplyr)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
@@ -101,7 +100,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.06    0.00    0.06</span>
+<span class="co">#&gt;    0.07    0.00    0.08</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -116,7 +115,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.45    0.03    0.48</span>
+<span class="co">#&gt;    0.50    0.02    0.56</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
