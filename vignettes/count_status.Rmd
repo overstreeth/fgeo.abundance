@@ -67,5 +67,24 @@ all.equal(with_dplyr, with_base)
 ```
 
 
+# Meeting Gabriel
 
+Gabriel proposes to write one single function like thisÑ
 
+```
+abundance(x, group_by = c("sp", "status"), only_alive = TRUE)
+```
+
+The output should look similar to this:
+
+```{r}
+count_status(x, .status = unique(stem$status), sp, status) %>% 
+  filter(status == "A")
+
+# Same as
+group_by(x, status, sp) %>% 
+  summarize(n = n()) %>% 
+  filter(status == "A")
+```
+
+Gabriel proposes getting basal area and biomass simply by changing the function passed to `summarize()`.
