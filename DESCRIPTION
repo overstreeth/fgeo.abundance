@@ -17,12 +17,11 @@ RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Suggests: testthat,
-    ctfs,
     assertive,
-    covr,
-    rmarkdown
-Imports: knitr,
-    dplyr,
+    rmarkdown,
     bci,
+    ctfs
+Imports: dplyr,
     tidyr,
-    bciex
+    bciex,
+    knitr

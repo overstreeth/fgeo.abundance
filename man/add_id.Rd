@@ -15,3 +15,4 @@ Returns \code{x} with an additional variable \code{id}.
 \description{
 Add unique identifier combining treeID and stemID.
 }
+\keyword{internal}

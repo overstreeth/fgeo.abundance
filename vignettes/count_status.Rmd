@@ -44,7 +44,6 @@ x <- bci12full7
 system.time({
   with_dplyr <- count_status(x = x, .status = "A", sp)
   with_dplyr <- arrange(with_dplyr, sp)
-  head(with_dplyr)
 })
 
 system.time({
@@ -61,9 +60,10 @@ system.time({
 })
 
 head(with_dplyr)
+
 head(with_base)
 
-testthat::expect_equal(with_dplyr, with_base)
+all.equal(with_dplyr, with_base)
 ```
 
 

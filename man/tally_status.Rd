@@ -17,3 +17,4 @@ An integer giving the total number (tally) of individuals.
 \description{
 Tally individuals of a given status.
 }
+\keyword{internal}

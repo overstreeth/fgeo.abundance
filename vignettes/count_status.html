@@ -14,7 +14,7 @@
 
 <meta name="date" content="2017-08-29" />
 
-<title>Count Status</title>
+<title>Comparing performance of dplyr vs. base</title>
 
 
 
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Count Status</h1>
+<h1 class="title toc-ignore">Comparing performance of dplyr vs. base</h1>
 <h4 class="author"><em>Mauro Lepore</em></h4>
 <h4 class="date"><em>2017-08-29</em></h4>
 
@@ -76,7 +76,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="TOC">
 <ul>
 <li><a href="#measuring-performance">Measuring performance</a></li>
-<li><a href="#installation">Installation</a></li>
 </ul>
 </div>
 
@@ -99,10 +98,9 @@ x &lt;-<span class="st"> </span>bci12full7
 <span class="kw">system.time</span>({
   with_dplyr &lt;-<span class="st"> </span><span class="kw">count_status</span>(<span class="dt">x =</span> x, <span class="dt">.status =</span> <span class="st">&quot;A&quot;</span>, sp)
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
-  <span class="kw">head</span>(with_dplyr)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    1.34    0.05    1.47</span>
+<span class="co">#&gt;    1.09    0.05    1.14</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -117,7 +115,7 @@ x &lt;-<span class="st"> </span>bci12full7
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    2.31    0.23    2.58</span>
+<span class="co">#&gt;    1.67    0.21    1.89</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
@@ -129,6 +127,7 @@ x &lt;-<span class="st"> </span>bci12full7
 <span class="co">#&gt; 4 ade1tr   146</span>
 <span class="co">#&gt; 5 aegipa    40</span>
 <span class="co">#&gt; 6 alchco   317</span>
+
 <span class="kw">head</span>(with_base)
 <span class="co">#&gt;            sp    n</span>
 <span class="co">#&gt; acacme acacme   49</span>
@@ -138,14 +137,8 @@ x &lt;-<span class="st"> </span>bci12full7
 <span class="co">#&gt; aegipa aegipa   40</span>
 <span class="co">#&gt; alchco alchco  317</span>
 
-testthat::<span class="kw">expect_equal</span>(with_dplyr, with_base)</code></pre></div>
-</div>
-<div id="installation" class="section level3">
-<h3>Installation</h3>
-<p>If you want to try the functions yourself, you can install <strong>forestr</strong> from its private GitHub repo using <code>auth_token</code> with a token from <a href="https://github.com/settings/tokens" class="uri">https://github.com/settings/tokens</a>. You only need the repo scope.</p>
-<pre><code># install.packages(&quot;devtools&quot;)
-devtools::install_github(&quot;forestgeo/forestr&quot;, auth_token = &quot;abc&quot;)
-library(forestr)</code></pre>
+<span class="kw">all.equal</span>(with_dplyr, with_base)
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
 </div>
 
 

@@ -134,67 +134,51 @@ summary. Else, they output a tally.</p>
 <span class='co'># Give one or multiple grouping variables to get a grouped summary</span>
 <span class='co'># Alive</span>
 <span class='fu'>count_alive</span>(<span class='no'>stems</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 144 x 2
-#&gt;        sp     n
-#&gt;     &lt;chr&gt; &lt;dbl&gt;
-#&gt;  1 apeime     2
-#&gt;  2 alchco     1
-#&gt;  3 quaras     6
-#&gt;  4 beilpe     5
-#&gt;  5 luehse     6
-#&gt;  6 casear     1
-#&gt;  7 simaam     4
-#&gt;  8 alsebl    19
-#&gt;  9 pri2co     7
-#&gt; 10 poular     5
-#&gt; # ... with 134 more rows</div><div class='input'>
+#&gt;       sp     n
+#&gt;    &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1 apeime     2
+#&gt; 2 alchco     1
+#&gt; 3 quaras     6
+#&gt; 4 beilpe     5
+#&gt; 5 luehse     6
+#&gt; 6 casear     1
+#&gt; # ... with 138 more rows</div><div class='input'>
 <span class='co'># Dead</span>
 <span class='fu'>count_status</span>(<span class='no'>stems</span>, <span class='kw'>.status</span> <span class='kw'>=</span> <span class='st'>"D"</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 144 x 2
-#&gt;        sp     n
-#&gt;     &lt;chr&gt; &lt;dbl&gt;
-#&gt;  1 apeime     0
-#&gt;  2 alchco     0
-#&gt;  3 quaras     2
-#&gt;  4 beilpe     2
-#&gt;  5 luehse     1
-#&gt;  6 casear     0
-#&gt;  7 simaam     5
-#&gt;  8 alsebl     2
-#&gt;  9 pri2co     1
-#&gt; 10 poular     5
-#&gt; # ... with 134 more rows</div><div class='input'>
+#&gt;       sp     n
+#&gt;    &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1 apeime     0
+#&gt; 2 alchco     0
+#&gt; 3 quaras     2
+#&gt; 4 beilpe     2
+#&gt; 5 luehse     1
+#&gt; 6 casear     0
+#&gt; # ... with 138 more rows</div><div class='input'>
 <span class='co'># Multiple groups</span>
 <span class='co'># Alive</span>
 <span class='no'>stems2</span> <span class='kw'>&lt;-</span> <span class='fu'>rbind</span>(<span class='no'>bci12s5mini</span>, <span class='no'>bci12s6mini</span>)
 <span class='fu'>count_alive</span>(<span class='no'>stems2</span>, <span class='no'>sp</span>, <span class='no'>CensusID</span>)</div><div class='output co'>#&gt; # A tibble: 244 x 3
-#&gt;        sp CensusID     n
-#&gt;     &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
-#&gt;  1 apeime        5     2
-#&gt;  2 apeime        6     2
-#&gt;  3 alchco        5     1
-#&gt;  4 alchco        6     2
-#&gt;  5 quaras        5     6
-#&gt;  6 quaras        6     7
-#&gt;  7 beilpe        5     5
-#&gt;  8 beilpe        6     4
-#&gt;  9 luehse        5     6
-#&gt; 10 luehse        6     4
-#&gt; # ... with 234 more rows</div><div class='input'>
+#&gt;       sp CensusID     n
+#&gt;    &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
+#&gt; 1 apeime        5     2
+#&gt; 2 apeime        6     2
+#&gt; 3 alchco        5     1
+#&gt; 4 alchco        6     2
+#&gt; 5 quaras        5     6
+#&gt; 6 quaras        6     7
+#&gt; # ... with 238 more rows</div><div class='input'>
 <span class='co'># Dead</span>
 <span class='no'>stems2</span> <span class='kw'>&lt;-</span> <span class='fu'>rbind</span>(<span class='no'>bci12s5mini</span>, <span class='no'>bci12s6mini</span>)
 <span class='fu'>count_status</span>(<span class='no'>stems2</span>, <span class='kw'>.status</span> <span class='kw'>=</span> <span class='st'>"D"</span>, <span class='no'>sp</span>, <span class='no'>CensusID</span>)</div><div class='output co'>#&gt; # A tibble: 219 x 3
-#&gt;        sp CensusID     n
-#&gt;     &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
-#&gt;  1 apeime       NA     0
-#&gt;  2 alchco       NA     0
-#&gt;  3 quaras        5     1
-#&gt;  4 quaras       NA     3
-#&gt;  5 beilpe        5     2
-#&gt;  6 beilpe        6     1
-#&gt;  7 beilpe       NA     2
-#&gt;  8 luehse        5     1
-#&gt;  9 luehse       NA     1
-#&gt; 10 casear       NA     0
-#&gt; # ... with 209 more rows</div></pre>
+#&gt;       sp CensusID     n
+#&gt;    &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
+#&gt; 1 apeime       NA     0
+#&gt; 2 alchco       NA     0
+#&gt; 3 quaras        5     1
+#&gt; 4 quaras       NA     3
+#&gt; 5 beilpe        5     2
+#&gt; 6 beilpe        6     1
+#&gt; # ... with 213 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

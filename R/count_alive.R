@@ -68,6 +68,8 @@ count_alive <- function(x, ...) {
 #' @template .status 
 #' @param ... Optional. Bare name of variables to group by (passed to
 #'  [dplyr::count()].
+#'
+#' @keywords internal
 #' 
 #' @return A count summary by group.
 count_status_by <- function(x, .status, ...) {
@@ -90,6 +92,8 @@ count_status_by <- function(x, .status, ...) {
 #'
 #' @template x 
 #' @template .status 
+#' 
+#' @keywords internal
 #'
 #' @return An integer giving the total number (tally) of individuals.
 tally_status <- function(x, .status) {
@@ -103,6 +107,8 @@ tally_status <- function(x, .status) {
 #' Add unique identifier combining treeID and stemID.
 #'
 #' @template x 
+#' 
+#' @keywords internal
 #'
 #' @return Returns `x` with an additional variable `id`.
 add_id <- function(x) {
@@ -115,6 +121,8 @@ add_id <- function(x) {
 #' @template x 
 #' @template .status 
 #'
+#' @keywords internal
+#' 
 #' @return Returns `x` filtered by `.status`.
 filter_status <- function(x, .status) {
   stopifnot(all(.status %in% unique(x$status)))

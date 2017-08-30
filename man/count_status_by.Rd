@@ -20,3 +20,4 @@ A count summary by group.
 \description{
 Count individuals of a given status by groups.
 }
+\keyword{internal}

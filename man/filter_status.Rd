@@ -17,3 +17,4 @@ Returns \code{x} filtered by \code{.status}.
 \description{
 Filter individuals of a given status.
 }
+\keyword{internal}

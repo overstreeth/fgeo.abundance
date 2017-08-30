@@ -8,19 +8,21 @@ forestr
 Overview
 --------
 
-This package provides tools for the analysis of forest dynamics.
+Tools for the analysis of forest dynamics.
 
 Installation
 ------------
 
-If you are authorized (via [Stuart Davies](daviess@si.edu)), you can install forestr from ForestGEO's private GitHub repo.
+Install forestr from ForestGEO's private GitHub repo.
 
-    # From ?devtools::install_github: To install from a private repo, use auth_token
-    # with a token from https://github.com/settings/tokens. You only need the repo 
-    # scope. Best practice is to save your PAT in env var called GITHUB_PAT.
+    # From ?devtools::install_github:
+    # To install from a private repo, use auth_token # with a token from
+    # https://github.com/settings/tokens. You only need the repo # scope.
 
     # install.packages("devtools")
-    devtools::install_github("forestgeo/forestr", auth_token = "abc")
+
+    # Install the version containing this specific issue (iss41)
+    devtools::install_github("forestgeo/forestr@iss41", auth_token = "abc")
     library(forestr)
 
 Acknowledgements.
