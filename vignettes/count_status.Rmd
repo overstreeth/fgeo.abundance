@@ -36,10 +36,10 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 ```{r}
 library(forestr)
-library(bci)
+library(bciex)
 library(dplyr)
 
-x <- bci12full7
+x <- bci12s7mini
 
 system.time({
   with_dplyr <- count_status(x = x, .status = "A", sp)
