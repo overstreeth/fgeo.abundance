@@ -20,8 +20,7 @@ Suggests: testthat,
     ctfs,
     assertive,
     covr,
-    rmarkdown,
-    knitr
+    rmarkdown
 Imports: knitr,
     dplyr,
     bci,

@@ -1,18 +1,4 @@
----
-title: "Comparing performance of dplyr vs. base"
-author: "Mauro Lepore"
-date: "2017-08-29"
-output: 
-  rmarkdown::html_vignette:
-    toc: true
-    toc_depth: 6
-vignette: >
-  %\VignetteIndexEntry{Count Status}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+## ----setup, echo = FALSE, message=FALSE, warning=FALSE-------------------
 # hadley's settings
 set.seed(1014)
 options(digits = 3)
@@ -30,11 +16,8 @@ knitr::opts_chunk$set(
 )
 
 options(dplyr.print_min = 6, dplyr.print_max = 6)
-```
 
-### Measuring performance
-
-```{r}
+## ------------------------------------------------------------------------
 library(forestr)
 library(bci)
 library(dplyr)
@@ -64,8 +47,4 @@ head(with_dplyr)
 head(with_base)
 
 testthat::expect_equal(with_dplyr, with_base)
-```
-
-
-
 
