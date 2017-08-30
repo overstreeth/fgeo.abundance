@@ -67,7 +67,6 @@
 <h3 class="hasAnchor">
 <a href="#measuring-performance" class="anchor"></a>Measuring performance</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
-<span class="kw">library</span>(bci)
 <span class="kw">library</span>(dplyr)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
@@ -78,14 +77,14 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 
-x &lt;-<span class="st"> </span>bci12full7
+x &lt;-<span class="st"> </span>bci12s7mini
 
 <span class="kw">system.time</span>({
   with_dplyr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/count_status.html">count_status</a></span>(<span class="dt">x =</span> x, <span class="dt">.status =</span> <span class="st">"A"</span>, sp)
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    1.43    0.11    1.55</span>
+<span class="co">#&gt;    0.13    0.01    0.18</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -100,35 +99,77 @@ x &lt;-<span class="st"> </span>bci12full7
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    2.00    0.11    2.11</span>
+<span class="co">#&gt;    0.57    0.02    0.73</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
 <span class="co">#&gt;       sp     n</span>
 <span class="co">#&gt;    &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 acacme    49</span>
-<span class="co">#&gt; 2 acaldi  1146</span>
-<span class="co">#&gt; 3 acalma    53</span>
-<span class="co">#&gt; 4 ade1tr   146</span>
-<span class="co">#&gt; 5 aegipa    40</span>
-<span class="co">#&gt; 6 alchco   317</span>
+<span class="co">#&gt; 1 acaldi     5</span>
+<span class="co">#&gt; 2 aegipa     0</span>
+<span class="co">#&gt; 3 alchco     0</span>
+<span class="co">#&gt; 4 alibed     2</span>
+<span class="co">#&gt; 5 allops     0</span>
+<span class="co">#&gt; 6 alsebl    21</span>
 
 <span class="kw">head</span>(with_base)
-<span class="co">#&gt;            sp    n</span>
-<span class="co">#&gt; acacme acacme   49</span>
-<span class="co">#&gt; acaldi acaldi 1146</span>
-<span class="co">#&gt; acalma acalma   53</span>
-<span class="co">#&gt; ade1tr ade1tr  146</span>
-<span class="co">#&gt; aegipa aegipa   40</span>
-<span class="co">#&gt; alchco alchco  317</span>
+<span class="co">#&gt;            sp  n</span>
+<span class="co">#&gt; acaldi acaldi  5</span>
+<span class="co">#&gt; aegipa aegipa  0</span>
+<span class="co">#&gt; alchco alchco  0</span>
+<span class="co">#&gt; alibed alibed  2</span>
+<span class="co">#&gt; allops allops  0</span>
+<span class="co">#&gt; alsebl alsebl 21</span>
 
 <span class="kw">all.equal</span>(with_dplyr, with_base)
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
+</div>
+<div id="meeting-gabriel" class="section level1">
+<h1 class="hasAnchor">
+<a href="#meeting-gabriel" class="anchor"></a>Meeting Gabriel</h1>
+<p>Gabriel proposes to write one single function like thisÑ</p>
+<pre><code>abundance(x, group_by = c("sp", "status"), only_alive = TRUE)</code></pre>
+<p>The output should look similar to this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_status.html">count_status</a></span>(x, <span class="dt">.status =</span> <span class="kw">unique</span>(x$status), sp, status) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(status ==<span class="st"> "A"</span>)
+<span class="co">#&gt; # A tibble: 111 x 3</span>
+<span class="co">#&gt;       sp status     n</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 apeime      A     2</span>
+<span class="co">#&gt; 2 quaras      A     8</span>
+<span class="co">#&gt; 3 beilpe      A     6</span>
+<span class="co">#&gt; 4 luehse      A     2</span>
+<span class="co">#&gt; 5 simaam      A     6</span>
+<span class="co">#&gt; 6 alsebl      A    21</span>
+<span class="co">#&gt; # ... with 105 more rows</span>
+
+<span class="co"># Same as</span>
+<span class="kw">group_by</span>(x, status, sp) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(status ==<span class="st"> "A"</span>)
+<span class="co">#&gt; # A tibble: 111 x 3</span>
+<span class="co">#&gt; # Groups:   status [1]</span>
+<span class="co">#&gt;   status     sp     n</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
+<span class="co">#&gt; 1      A acaldi     5</span>
+<span class="co">#&gt; 2      A alibed     2</span>
+<span class="co">#&gt; 3      A alsebl    21</span>
+<span class="co">#&gt; 4      A anaxpa     3</span>
+<span class="co">#&gt; 5      A andiin     1</span>
+<span class="co">#&gt; 6      A annoac     5</span>
+<span class="co">#&gt; # ... with 105 more rows</span></code></pre></div>
+<p>Gabriel proposes getting basal area and biomass simply by changing the function passed to <code>summarize()</code>. He prefers less and longer functions over multiple smaller ones (although that is contrary to the most common advice).</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#meeting-gabriel">Meeting Gabriel</a></li>
+      </ul>
+</div>
       </div>
 
 </div>
