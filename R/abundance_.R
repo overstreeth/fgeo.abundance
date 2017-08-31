@@ -19,6 +19,16 @@ abundance_n <- function(x, group_by = c("quadrat", "sp"), only.alive = TRUE) {
   table(x[x$status %in% valid.status, group_by])
 }
 
+#' Abundance with plyr (deprecated), grouping with a characters string.
+#'
+#' @template x 
+#' @param group_by Character string. Don't know if NULL
+#' @param alive_only
+#'
+#' @return
+#' @export
+#'
+#' @examples
 abundance_n_plyr <- function(x, group_by = c("sp", "status"), alive_only = TRUE) {
   n <- plyr::ddply(
     .data = x, 
@@ -34,17 +44,57 @@ abundance_n_plyr <- function(x, group_by = c("sp", "status"), alive_only = TRUE)
 
 
 
+#' Abundance with dplyr, grouping with bare variable names.
+#'
+#' @template  x
+#' @param ... Bare names of variables to group by.
+#' @param only_alive If TRUE, filter only alive individuals.
+#'
+#' @return Tally if groups = NULL, else, a count by group.
+#' @export
+#'
+#' @examples
+#' abundance_n_dplyr(stem)
+#' abundance_n_dplyr(stem, sp, only_alive = FALSE)
 abundance_n_dplyr <- function(x, ..., only_alive = TRUE) {
   if (!only_alive) {
     x <- x[x$status == "A", ]
   }
   
   group_by <- rlang::quos(...)
-
   grouped <- dplyr::group_by(x, !!!group_by)
   dplyr::ungroup(dplyr::summarise(grouped, n = n()))
 }
 
-abundance_n_dplyr(stem)
-abundance_n_dplyr(stem, status, sp, only_alive = FALSE)
 
+
+#' Abundance with dplyr, grouping with a characters string.
+#'
+#' @template x 
+#' @param groups Character string giving the names of variables to group by.
+#' @param only_alive If TRUE, filter only alive individuals.
+#'
+#' @return Tally if groups = NULL, else, a count by group.
+#' @export
+#'
+#' @examples
+#' abundance_n_dplyr_se(stem)
+#' abundance_n_dplyr_se(stem, groups = NULL)
+abundance_n_dplyr_se <- function(x, 
+                                 groups = c("sp", "status"), 
+                                 only_alive = TRUE) {
+  if (!only_alive) {
+    x <- x[x$status == "A",]
+  }
+  
+  if (is.null(groups)) {
+    return(dplyr::tally(x))
+  }
+  
+  # Convert from character string to bare names (https://goo.gl/kPqMUk)
+  parsed_groupes <- lapply(groups, parse_quosure)
+  grouped <- dplyr::group_by(x, UQS(parsed_groupes))
+  
+  count <- dplyr::summarise(grouped, n = n())
+  dplyr::ungroup(count)
+}
