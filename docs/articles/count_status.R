@@ -48,11 +48,10 @@ head(with_base)
 all.equal(with_dplyr, with_base)
 
 ## ------------------------------------------------------------------------
-count_status(x, .status = unique(x$status), sp, status) %>% 
-  filter(status == "A")
-
-# Same as
-group_by(x, status, sp) %>% 
-  summarize(n = n()) %>% 
-  filter(status == "A")
+stem <- bci::bci12full1
+system.time(abundance_n(stem, group_by = c("sp", "status"), only_alive = FALSE))
+system.time(abundance_n2(stem, group_by = c("sp", "status"), only_alive = FALSE))
+system.time(n_dplyr(stem, sp, status, only_alive = FALSE))
+system.time(n_dplyr_se(stem, groups = c("sp", "status"), only_alive = FALSE))
+system.time(n_plyr(stem, groups = c("sp", "status"), only_alive = FALSE))
 

@@ -4,15 +4,12 @@
 \alias{n_d_plyr}
 \alias{n_dplyr}
 \alias{n_dplyr_se}
-\alias{n_dplyr_se_}
 \alias{n_plyr}
 \title{These functions are alternatives which source code use \strong{dplyr} or \strong{plyr}.}
 \usage{
 n_dplyr(x, ..., only_alive = TRUE)
 
 n_dplyr_se(x, groups = c("status", "sp"), only_alive = TRUE)
-
-n_dplyr_se_(x, groups = c("sp", "status"), only_alive = TRUE)
 
 n_plyr(x, groups = c("sp", "status"), only_alive = TRUE, ...)
 }
@@ -40,7 +37,6 @@ available so it is always possible to re-use it into \strong{forestr}.
 \item Grouping with a character string
 \itemize{
 \item \code{\link[=n_dplyr_se]{n_dplyr_se()}} uses latest tidy eval approach.
-\item \code{\link[=n_dplyr_se_]{n_dplyr_se_()}} uses deprecated approach.
 \item \code{\link[=n_plyr]{n_plyr()}} uses plyr (deprecated).
 }
 \item Grouping with bare variable names:
@@ -71,15 +67,6 @@ n_dplyr_se(stem, groups = NULL)
 # Count not only alive
 n <- n_dplyr_se(stem, groups = c("status", "sp"), only_alive = FALSE)
 arrange(n, sp)
-
-
-# Standard evaluation using an older approach. See ?group_by_ (ends in "_").
-
-n_dplyr_se_(stem)
-
-n_dplyr_se_(stem, groups = NULL)
-
-n_dplyr_se_(stem, groups = c("status"), only_alive = FALSE)
 
 
 

@@ -91,8 +91,6 @@ available so it is always possible to re-use it into <strong>forestr</strong>.</
 
 <span class='fu'>n_dplyr_se</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"status"</span>, <span class='st'>"sp"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>n_dplyr_se_</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sp"</span>, <span class='st'>"status"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
 <span class='fu'>n_plyr</span>(<span class='no'>x</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sp"</span>, <span class='st'>"status"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -125,7 +123,6 @@ available so it is always possible to re-use it into <strong>forestr</strong>.</
     <ul>
 <li><p>Grouping with a character string</p><ul>
 <li><p><code>n_dplyr_se()</code> uses latest tidy eval approach.</p></li>
-<li><p><code>n_dplyr_se_()</code> uses deprecated approach.</p></li>
 <li><p><code>n_plyr()</code> uses plyr (deprecated).</p></li>
 </ul></li>
 <li><p>Grouping with bare variable names:</p><ul>
@@ -181,27 +178,6 @@ available so it is always possible to re-use it into <strong>forestr</strong>.</
 #&gt; 5      D alchco     1
 #&gt; 6      G alchco    10
 #&gt; # ... with 301 more rows</div><div class='input'>
-
-<span class='co'># Standard evaluation using an older approach. See ?group_by_ (ends in "_").</span>
-
-<span class='fu'>n_dplyr_se_</span>(<span class='no'>stem</span>)</div><div class='output co'>#&gt; # A tibble: 111 x 2
-#&gt;       sp     n
-#&gt;    &lt;chr&gt; &lt;int&gt;
-#&gt; 1 acaldi     5
-#&gt; 2 alibed     2
-#&gt; 3 alsebl    21
-#&gt; 4 anaxpa     3
-#&gt; 5 andiin     1
-#&gt; 6 annoac     5
-#&gt; # ... with 105 more rows</div><div class='input'>
-<span class='fu'>n_dplyr_se_</span>(<span class='no'>stem</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt;     n
-#&gt; 1 665</div><div class='input'>
-<span class='fu'>n_dplyr_se_</span>(<span class='no'>stem</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"status"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 2
-#&gt;   status     n
-#&gt;    &lt;chr&gt; &lt;int&gt;
-#&gt; 1      A   665
-#&gt; 2      D   434
-#&gt; 3      G  1066</div><div class='input'>
 
 
 <span class='co'># INSTEAD OF DPLYR, USING PLYR (DEPRECATED, AND SLOWER THAN BASE AND DPLYR)</span>

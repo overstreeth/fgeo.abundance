@@ -14,7 +14,7 @@
 
 <meta name="date" content="2017-08-29" />
 
-<title>Comparing performance of dplyr vs. base</title>
+<title>Review of milestone 1 (issue 41)</title>
 
 
 
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Comparing performance of dplyr vs. base</h1>
+<h1 class="title toc-ignore">Review of milestone 1 (issue 41)</h1>
 <h4 class="author"><em>Mauro Lepore</em></h4>
 <h4 class="date"><em>2017-08-29</em></h4>
 
@@ -76,12 +76,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="TOC">
 <ul>
 <li><a href="#measuring-performance">Measuring performance</a></li>
-<li><a href="#meeting-gabriel">Meeting Gabriel</a></li>
 </ul>
 </div>
 
-<div id="measuring-performance" class="section level3">
-<h3>Measuring performance</h3>
+<div id="measuring-performance" class="section level1">
+<h1>Measuring performance</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
 <span class="kw">library</span>(dplyr)
 <span class="co">#&gt; </span>
@@ -100,7 +99,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.07    0.00    0.08</span>
+<span class="co">#&gt;    0.06    0.00    0.06</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -115,7 +114,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.50    0.02    0.56</span>
+<span class="co">#&gt;    0.35    0.00    0.34</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
@@ -139,41 +138,22 @@ x &lt;-<span class="st"> </span>bci12s7mini
 
 <span class="kw">all.equal</span>(with_dplyr, with_base)
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-</div>
-<div id="meeting-gabriel" class="section level1">
-<h1>Meeting Gabriel</h1>
-<p>Gabriel proposes to write one single function like thisÑ</p>
-<pre><code>abundance(x, group_by = c(&quot;sp&quot;, &quot;status&quot;), only_alive = TRUE)</code></pre>
-<p>The output should look similar to this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">count_status</span>(x, <span class="dt">.status =</span> <span class="kw">unique</span>(x$status), sp, status) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(status ==<span class="st"> &quot;A&quot;</span>)
-<span class="co">#&gt; # A tibble: 111 x 3</span>
-<span class="co">#&gt;       sp status     n</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 apeime      A     2</span>
-<span class="co">#&gt; 2 quaras      A     8</span>
-<span class="co">#&gt; 3 beilpe      A     6</span>
-<span class="co">#&gt; 4 luehse      A     2</span>
-<span class="co">#&gt; 5 simaam      A     6</span>
-<span class="co">#&gt; 6 alsebl      A    21</span>
-<span class="co">#&gt; # ... with 105 more rows</span>
-
-<span class="co"># Same as</span>
-<span class="kw">group_by</span>(x, status, sp) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>()) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(status ==<span class="st"> &quot;A&quot;</span>)
-<span class="co">#&gt; # A tibble: 111 x 3</span>
-<span class="co">#&gt; # Groups:   status [1]</span>
-<span class="co">#&gt;   status     sp     n</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1      A acaldi     5</span>
-<span class="co">#&gt; 2      A alibed     2</span>
-<span class="co">#&gt; 3      A alsebl    21</span>
-<span class="co">#&gt; 4      A anaxpa     3</span>
-<span class="co">#&gt; 5      A andiin     1</span>
-<span class="co">#&gt; 6      A annoac     5</span>
-<span class="co">#&gt; # ... with 105 more rows</span></code></pre></div>
-<p>Gabriel proposes getting basal area and biomass simply by changing the function passed to <code>summarize()</code>. He prefers less and longer functions over multiple smaller ones (although that is contrary to the most common advice).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bci::bci12full1
+<span class="kw">system.time</span>(<span class="kw">abundance_n</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.10    0.03    0.12</span>
+<span class="kw">system.time</span>(<span class="kw">abundance_n2</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.03    0.02    0.05</span>
+<span class="kw">system.time</span>(<span class="kw">n_dplyr</span>(stem, sp, status, <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.05    0.00    0.05</span>
+<span class="kw">system.time</span>(<span class="kw">n_dplyr_se</span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.05    0.00    0.05</span>
+<span class="kw">system.time</span>(<span class="kw">n_plyr</span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    5.10    0.28    5.37</span></code></pre></div>
 </div>
 
 
