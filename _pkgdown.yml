@@ -14,7 +14,6 @@ reference:
     - count_alive
     - n_dplyr
     - n_dplyr_se
-    - n_dplyr_se_ 
     - n_plyr
 - title: Data for examples
   contents:

@@ -73,7 +73,6 @@ abundance_n2 <- function(x,
 #' 
 #' * Grouping with a character string
 #'   * [n_dplyr_se()] uses latest tidy eval approach.
-#'   * [n_dplyr_se_()] uses deprecated approach.
 #'   * [n_plyr()] uses plyr (deprecated).
 #'
 #' * Grouping with bare variable names:
@@ -110,15 +109,6 @@ abundance_n2 <- function(x,
 #' # Count not only alive
 #' n <- n_dplyr_se(stem, groups = c("status", "sp"), only_alive = FALSE)
 #' arrange(n, sp)
-#' 
-#' 
-#' # Standard evaluation using an older approach. See ?group_by_ (ends in "_").
-#' 
-#' n_dplyr_se_(stem)
-#' 
-#' n_dplyr_se_(stem, groups = NULL)
-#' 
-#' n_dplyr_se_(stem, groups = c("status"), only_alive = FALSE)
 #' 
 #' 
 #' 
@@ -186,24 +176,6 @@ n_dplyr_se <- function(x,
   parsed_groupes <- lapply(groups, rlang::parse_quosure)
   grouped <- dplyr::group_by(x, rlang::UQS(parsed_groupes))
   
-  count <- dplyr::summarise(grouped, n = n())
-  dplyr::ungroup(count)
-}
-
-#' @rdname n_d_plyr
-#' @export
-n_dplyr_se_ <- function(x, 
-                        groups = c("sp", "status"), 
-                        only_alive = TRUE) {
-  if (only_alive) {
-    x <- x[x$status == "A",]
-  }
-  
-  if (is.null(groups)) {
-    return(dplyr::tally(x))
-  }
-
-  grouped <- dplyr::group_by_(x, groups)
   count <- dplyr::summarise(grouped, n = n())
   dplyr::ungroup(count)
 }
