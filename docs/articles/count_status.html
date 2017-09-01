@@ -84,7 +84,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.07    0.03    0.11</span>
+<span class="co">#&gt;    0.09    0.00    0.09</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -99,7 +99,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.37    0.02    0.41</span>
+<span class="co">#&gt;    0.34    0.00    0.34</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
@@ -123,55 +123,22 @@ x &lt;-<span class="st"> </span>bci12s7mini
 
 <span class="kw">all.equal</span>(with_dplyr, with_base)
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-</div>
-<div id="meeting-gabriel" class="section level1">
-<h1 class="hasAnchor">
-<a href="#meeting-gabriel" class="anchor"></a>Meeting Gabriel</h1>
-<p>Gabriel proposes to write one single function like thisÑ</p>
-<pre><code>abundance(x, group_by = c("sp", "status"), only_alive = TRUE)</code></pre>
-<p>The output should look similar to this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_status.html">count_status</a></span>(x, <span class="dt">.status =</span> <span class="kw">unique</span>(x$status), sp, status) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(status ==<span class="st"> "A"</span>)
-<span class="co">#&gt; # A tibble: 111 x 3</span>
-<span class="co">#&gt;       sp status     n</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 apeime      A     2</span>
-<span class="co">#&gt; 2 quaras      A     8</span>
-<span class="co">#&gt; 3 beilpe      A     6</span>
-<span class="co">#&gt; 4 luehse      A     2</span>
-<span class="co">#&gt; 5 simaam      A     6</span>
-<span class="co">#&gt; 6 alsebl      A    21</span>
-<span class="co">#&gt; # ... with 105 more rows</span>
-
-<span class="co"># Same as</span>
-<span class="kw">group_by</span>(x, status, sp) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>()) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(status ==<span class="st"> "A"</span>)
-<span class="co">#&gt; # A tibble: 111 x 3</span>
-<span class="co">#&gt; # Groups:   status [1]</span>
-<span class="co">#&gt;   status     sp     n</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1      A acaldi     5</span>
-<span class="co">#&gt; 2      A alibed     2</span>
-<span class="co">#&gt; 3      A alsebl    21</span>
-<span class="co">#&gt; 4      A anaxpa     3</span>
-<span class="co">#&gt; 5      A andiin     1</span>
-<span class="co">#&gt; 6      A annoac     5</span>
-<span class="co">#&gt; # ... with 105 more rows</span></code></pre></div>
-<p>Gabriel proposes getting basal area and biomass simply by changing the function passed to <code>summarize()</code>. He prefers less and longer functions over multiple smaller ones.</p>
-<p>Contrary to the idea, notice that there is prenty of advice. The following quotes come from “Code Complete (Developer Best Practices)” by Steve McConnell:</p>
-<blockquote>
-<p>“One way to improve a system is to increase its modularity—increase the number of well-defined, well-named routines that do one thing and do it well.”</p>
-</blockquote>
-<p>–<a href="http://a.co/dwa6nBZ" class="uri">http://a.co/dwa6nBZ</a></p>
-<blockquote>
-<p>“If a routine executes different code depending on the value of an input parameter, consider breaking the routine into separate routines that can be called separately, without passing in that particular input parameter.”</p>
-</blockquote>
-<p>–<a href="http://a.co/8rXZUPj" class="uri">http://a.co/8rXZUPj</a></p>
-<blockquote>
-<p>“A parameter list has too many parameters. Well-factored programs tend to have many small, well-defined routines that don’t need large parameter lists. A long parameter list is a warning that the abstraction of the routine interface has not been well thought out. Changes within”</p>
-</blockquote>
-<p>–<a href="http://a.co/0GmsFwG" class="uri">http://a.co/0GmsFwG</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bci::bci12full1
+<span class="kw">system.time</span>(<span class="kw"><a href="../reference/abundance_n.html">abundance_n</a></span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">"sp"</span>, <span class="st">"status"</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.12    0.00    0.13</span>
+<span class="kw">system.time</span>(<span class="kw"><a href="../reference/abundance_n2.html">abundance_n2</a></span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">"sp"</span>, <span class="st">"status"</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.05    0.00    0.04</span>
+<span class="kw">system.time</span>(<span class="kw"><a href="../reference/n_d_plyr.html">n_dplyr</a></span>(stem, sp, status, <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.07    0.00    0.07</span>
+<span class="kw">system.time</span>(<span class="kw"><a href="../reference/n_d_plyr.html">n_dplyr_se</a></span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">"sp"</span>, <span class="st">"status"</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    0.03    0.01    0.04</span>
+<span class="kw">system.time</span>(<span class="kw"><a href="../reference/n_d_plyr.html">n_plyr</a></span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">"sp"</span>, <span class="st">"status"</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
+<span class="co">#&gt;    user  system elapsed </span>
+<span class="co">#&gt;    4.81    0.29    5.11</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -181,7 +148,6 @@ x &lt;-<span class="st"> </span>bci12s7mini
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#measuring-performance">Measuring performance</a></li>
-      <li><a href="#meeting-gabriel">Meeting Gabriel</a></li>
       </ul>
 </div>
       </div>
