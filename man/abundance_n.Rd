@@ -2,24 +2,33 @@
 % Please edit documentation in R/abundance_.R
 \name{abundance_n}
 \alias{abundance_n}
-\title{Count individuals}
+\title{Count individuals.}
 \usage{
-abundance_n(x, group_by = c("quadrat", "sp"), only.alive = TRUE)
+abundance_n(x, group_by = c("quadrat", "sp"), only_alive = TRUE)
 }
 \arguments{
 \item{x}{Census.}
 
 \item{group_by}{Sting giving the variables to group by.}
 
-\item{only.alive}{}
+\item{only_alive}{If TRUE, filter only alive individuals.}
+}
+\value{
+As per \code{\link[base:table]{base::table()}}.
 }
 \description{
-Count individuals
+Count individuals.
 }
 \examples{
-stem <- bci12t7mini
+stem <- forestr::bci12t7mini
 (n <- abundance_n(stem))
 class(n)
 
-abundance_n(stem, group_by = "sp", F)
+abundance_n(stem, group_by = "sp", FALSE)
+}
+\seealso{
+\code{\link[base:table]{base::table()}}.
+}
+\author{
+Gabriel Arellano.
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add unique identifier combining treeID and stemID. — add_id â€¢ forestr</title>
+<title>Count individuals. — abundance_n2 â€¢ forestr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -76,17 +76,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add unique identifier combining treeID and stemID.</h1>
+    <h1>Count individuals.</h1>
     </div>
 
     
-    <p>Add unique identifier combining treeID and stemID.</p>
-<p>Add unique identifier combining treeID and stemID.</p>
+    <p>Count individuals.</p>
     
 
-    <pre class="usage"><span class='fu'>add_id</span>(<span class='no'>x</span>)
-
-<span class='fu'>add_id</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>abundance_n2</span>(<span class='no'>x</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sp"</span>, <span class='st'>"status"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -96,17 +93,42 @@
       <td><p>Census.</p></td>
     </tr>
     <tr>
-      <th>x</th>
-      <td><p>Census.</p></td>
+      <th>group_by</th>
+      <td><p>Sting giving the variables to group by.</p></td>
+    </tr>
+    <tr>
+      <th>only_alive</th>
+      <td><p>If TRUE, filter only alive individuals.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to <code><a href='http://www.rdocumentation.org/packages/base/topics/tapply'>base::tapply()</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns <code>x</code> with an additional variable <code>id</code>.</p>
-<p>Returns <code>x</code> with an additional variable <code>id</code>.</p>
+    <p>Count of individuals in each group.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='http://www.rdocumentation.org/packages/base/topics/tapply'>base::tapply()</a></code>.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='kw'>forestr</span><span class='kw'>::</span><span class='no'>bci12s6mini</span>
+<span class='fu'>head</span>(<span class='fu'>abundance_n2</span>(<span class='no'>stem</span>))</div><div class='output co'>#&gt;         status
+#&gt; sp        A
+#&gt;   acaldi  4
+#&gt;   alchco  2
+#&gt;   alibed  1
+#&gt;   alsebl 20
+#&gt;   anaxpa  4
+#&gt;   andiin  1</div><div class='input'><span class='fu'>head</span>(<span class='fu'>abundance_n2</span>(<span class='no'>stem</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"status"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; status
+#&gt;   A   D   G   P 
+#&gt; 674 341 914 236 </div><div class='input'><span class='fu'>head</span>(<span class='fu'>abundance_n2</span>(<span class='no'>stem</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"status"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; status
+#&gt;   A   D   G   P 
+#&gt; 674 341 914 236 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -114,7 +136,11 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

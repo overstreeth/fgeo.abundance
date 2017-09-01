@@ -22,4 +22,7 @@ Suggests: testthat,
     ctfs
 Imports: dplyr,
     tidyr,
-    knitr
+    knitr,
+    plyr,
+    rlang,
+    tibble

@@ -66,44 +66,12 @@ all.equal(with_dplyr, with_base)
 ```
 
 
-# Meeting Gabriel
-
-Gabriel proposes to write one single function like thisÑ
-
-```
-abundance(x, group_by = c("sp", "status"), only_alive = TRUE)
-```
-
-The output should look similar to this:
 
 ```{r}
-count_status(x, .status = unique(x$status), sp, status) %>% 
-  filter(status == "A")
-
-# Same as
-group_by(x, status, sp) %>% 
-  summarize(n = n()) %>% 
-  filter(status == "A")
+stem <- bci::bci12full1
+system.time(abundance_n(stem, group_by = c("sp", "status"), only_alive = FALSE))
+system.time(abundance_n2(stem, group_by = c("sp", "status"), only_alive = FALSE))
+system.time(n_dplyr(stem, sp, status, only_alive = FALSE))
+system.time(n_dplyr_se(stem, groups = c("sp", "status"), only_alive = FALSE))
+system.time(n_plyr(stem, groups = c("sp", "status"), only_alive = FALSE))
 ```
-
-Gabriel proposes getting basal area and biomass simply by changing the function passed to `summarize()`. He prefers less and longer functions over multiple smaller ones.
-
-Contrary to the idea, notice that there is prenty of advice. The following quotes come from "Code Complete (Developer Best Practices)" by Steve McConnell:
-
-> "One way to improve a system is to increase its modularity—increase the number of well-defined, well-named routines that do one thing and do it well."
-
---http://a.co/dwa6nBZ
-
-> "If a routine executes different code depending on the value of an input parameter, consider breaking the routine into separate routines that can be called separately, without passing in that particular input parameter."
-
---http://a.co/8rXZUPj
-
-> "A parameter list has too many parameters. Well-factored programs tend to have many small, well-defined routines that don't need large parameter lists. A long parameter list is a warning that the abstraction of the routine interface has not been well thought out. Changes within"
-
---http://a.co/0GmsFwG
-
-
-
-
-
-
