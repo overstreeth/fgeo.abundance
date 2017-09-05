@@ -1,5 +1,5 @@
 ---
-title: "Review of milestone 1 (issue 41)"
+title: "Some measures of performance (issue 41)"
 author: "Mauro Lepore"
 date: "2017-08-29"
 output: 

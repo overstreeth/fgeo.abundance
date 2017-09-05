@@ -14,7 +14,7 @@
 
 <meta name="date" content="2017-08-29" />
 
-<title>Review of milestone 1 (issue 41)</title>
+<title>Some measures of performance (issue 41)</title>
 
 
 
@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Review of milestone 1 (issue 41)</h1>
+<h1 class="title toc-ignore">Some measures of performance (issue 41)</h1>
 <h4 class="author"><em>Mauro Lepore</em></h4>
 <h4 class="date"><em>2017-08-29</em></h4>
 
@@ -99,7 +99,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_dplyr &lt;-<span class="st"> </span><span class="kw">arrange</span>(with_dplyr, sp)
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.06    0.00    0.06</span>
+<span class="co">#&gt;    0.07    0.00    0.08</span>
 
 <span class="kw">system.time</span>({
   <span class="co"># There may be a faster and more elegant way to do this in base</span>
@@ -114,7 +114,7 @@ x &lt;-<span class="st"> </span>bci12s7mini
   with_base &lt;-<span class="st"> </span>with_base[<span class="kw">order</span>(with_base$sp), ]
 })
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.35    0.00    0.34</span>
+<span class="co">#&gt;    0.42    0.02    0.44</span>
 
 <span class="kw">head</span>(with_dplyr)
 <span class="co">#&gt; # A tibble: 6 x 2</span>
@@ -141,19 +141,19 @@ x &lt;-<span class="st"> </span>bci12s7mini
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bci::bci12full1
 <span class="kw">system.time</span>(<span class="kw">abundance_n</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.10    0.03    0.12</span>
+<span class="co">#&gt;    0.16    0.00    0.16</span>
 <span class="kw">system.time</span>(<span class="kw">abundance_n2</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.03    0.02    0.05</span>
+<span class="co">#&gt;    0.06    0.00    0.07</span>
 <span class="kw">system.time</span>(<span class="kw">n_dplyr</span>(stem, sp, status, <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.05    0.00    0.05</span>
+<span class="co">#&gt;    0.05    0.00    0.04</span>
 <span class="kw">system.time</span>(<span class="kw">n_dplyr_se</span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.05    0.00    0.05</span>
+<span class="co">#&gt;    0.08    0.00    0.09</span>
 <span class="kw">system.time</span>(<span class="kw">n_plyr</span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    5.10    0.28    5.37</span></code></pre></div>
+<span class="co">#&gt;    5.76    0.33    6.16</span></code></pre></div>
 </div>
 
 
