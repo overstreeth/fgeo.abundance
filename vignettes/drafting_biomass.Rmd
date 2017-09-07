@@ -1,0 +1,113 @@
+---
+title: "Biomass"
+subtitle: "Drafting the biomass function."
+author: "Gabriel Arellano, Sean McMahon & Mauro Lepore"
+date: "2017-09-06"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 6
+vignette: >
+  %\VignetteIndexEntry{Biomass}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+# hadley's settings
+set.seed(1014)
+options(digits = 3)
+
+knitr::opts_chunk$set(
+  echo = TRUE,  # {mine}
+  comment = "#>",
+  collapse = TRUE,
+  # cache = TRUE,
+  out.width = "70%",
+  fig.align = "center",
+  fig.width = 6,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+## Overview
+
+On Sept 6th, 2017, Gabriel, Sean and Mauro discussed what the biomass function of the __forestr__ package should look like. This vignette aims to developers and collaborators. Its goal is to record the main ideas we discussed so that we can share those ideas and build on them later.
+
+
+## Setup
+
+Loading some useful packages.
+
+```{r pkgs}
+library(tidyverse)
+library(forestr)
+```
+
+Loading some useful data of stems from 1000 trees, selected randomly from Barro Colorado Island (data made
+public in 2012, available at https://goo.gl/GmrwVq; see also ?forestr::bci12s7mini).
+
+```{r stem}
+
+# Making a tibble to get a nicer print method
+stem <- as_tibble(bci12s7mini)
+stem
+```
+
+## Goal
+
+The biomass module has two jobs: to calculate individuals' biomass and to summarise it within user-defined groups.
+
+1. __Calculate individuals' biomass.__ Biomass can be calculated in multiple ways. `biomass()` should allow users to choose how to calculate the biomass of each individual.
+
+2. to sum the biomass of all individuals within any number of user-defined groups. For exmaple, once we know the biomass of each stem in a plot, we may want to summarise the biomass of each species in each quadrat.
+
+## Requirements
+
+
+
+
+Users should have the freedom to chose how to calculate the biomass
+The first step is to calculate the biomass per individual. We want to give users the freedom to do it in multiple ways. We would provide some useful ways, based on the latest research. We would also provide the option for the user to provide custom ways. And the second step is to proide a function that lets users sum the biomass accross all individuals in groups that the user cares about. Next, we'll show what those stems may look like. 
+
+Here, we'll start from the end, i.e. showing how the second step. We choose this order because step 2 is straight forward but step 1 is not. So we'll move quickly throught the easy bit, and will leave you thinking about the more challenging part.
+
+
+## Summing the biomass accross individuals in user-defined groups
+
+For this example, the biomass values that we'll use come directly from the `agb` variable of the stem dataset. And, we'll focus on only a few variables.
+
+```{r}
+# getting biomass as it comes out of the box from the analytical tables
+stem$biomass <- stem$agb
+
+# focusing only on a few variables we care about
+stem1 <- select(stem, 
+  treeID, stemID, quadrat, status, biomass, 
+)
+stem1
+```
+
+Unfortunately, these data has no unique identifies. So let's create one so we one so we can simplify the dataset without loosing information.
+
+```{r}
+add_id <- function(x) {
+  x$id <- paste0(x$treeID, "_", x$stemID)
+  x
+}
+stem2 <- add_id(stem1)
+stem2
+```
+
+Now, `id` has the information from `treeID` and `stemID`; so we can safely remove `treeID` and `stemID`. We'll take the change to re-organize the variables to improve clarity.
+
+```{r}
+# Removing redundant variables; also placing id first, and biomass last
+stem2 <- select(stem2, id, quadrat, status, biomass)
+stem2
+```
+
+
