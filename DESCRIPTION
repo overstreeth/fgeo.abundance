@@ -20,10 +20,10 @@ Suggests: testthat,
     assertive,
     rmarkdown,
     ctfs,
-    knitr
+    knitr,
+    bci
 Imports: dplyr,
     tidyr,
-    knitr,
     plyr,
     rlang,
     tibble
