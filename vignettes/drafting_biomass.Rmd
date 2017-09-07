@@ -135,7 +135,7 @@ In conclusion, we can easily write a function that groups the data by any number
 
 ```
 biomass <- function(census, groups) {
-  # Translate grouping variables passed as strings to quoted expressions
+  # Convert from character string to bare names (https://goo.gl/kPqMUk)
   parsed_groupes <- lapply(groups, rlang::parse_quosure)
   
   # Group
@@ -185,12 +185,12 @@ YES: < User provides site? >
          YES: < Is allometry a table? >
               |- NO: < Is allometry a formula? > 
               |      |- NO: (Return Error 3)
-              |      YES: (Make and use Table B)
+              |      YES: (Make and use custom Table B)
               YES: < Table has name "species" >
                    |- YES: < Use custom Table C? >
                    NO: < Table has name "site"? >
                        |- NO: (Return Error 4)
-                       YES: (Use Table D)
+                       YES: (Use custom Table D)
 
 
 
