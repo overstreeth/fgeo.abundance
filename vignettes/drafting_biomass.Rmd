@@ -121,6 +121,64 @@ In conclusion, we can easily write a function that groups the data by any number
 
 ## Calculate individuals' biomass
 
+We think that the way to calculate the biomass of each individual should depend on how well the user knows the allometry functions for the species or site in the data.
+
+The user provides:
+
+* nothing: use table of species and E (from Chave 2012?).
+A. a table of one allometric information per species, in the shape of a function or formula.
+B. a table of one allometric information applicable to the entire site, in the shape of a function, or formula.
+C. a table of one allometric information applicable to the entire dataset, in the shape of a function or formula.
+
+We propose that `biomass()` should first try to use the information that the user provides, from more to less specific. This is, try first the informmation at the species-level, then at the site-level, and last at the dataset-level. If the user provides no information, then `biomass()` should use published information (e.g. the species by _E_ table in Chave 2012?), which we can store in __forestr__ and update whenever as needed.
+
+Here is what the allometry table would look like for information at different levels:
+
+```{r}
+# Species level --------------------------------------------------------------
+
+f1 <- function(x1){y1 ~ x1}
+f2 <- function(x2){y2 ~ x2}
+fn <- function(xn){yn ~ xn}
+
+species_level <- tribble(
+  ~species, ~f,
+  "sp1"   , f1,
+  "sp2"   , f2,
+  "spn"   , fn
+)
+
+species_level
 
 
 
+# Site level -----------------------------------------------------------------
+
+f1 <- function(x1){y1 ~ x1}
+f2 <- function(x2){y2 ~ x2}
+fn <- function(xn){yn ~ xn}
+
+site_level <- tribble(
+  ~site  , ~f,
+  "site1", f1,
+  "site2", f2,
+  "siten", fn
+)
+
+site_level
+
+
+
+# Dataset level --------------------------------------------------------------
+
+f <- function(x){y ~ x}
+
+dataset_level <- tribble(
+  ~dataset  , ~f,
+  "dataset", f
+  )
+
+dataset_level
+```
+
+Whatever `biomass()` uses, it should inform the user of what functions it is using. That communication may be via conditionals such as messages or warnings and maybe a log file.
