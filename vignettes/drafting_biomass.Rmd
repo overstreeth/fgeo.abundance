@@ -33,10 +33,13 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 ```
 
+
+
 ## Overview
 
 On Sept 6th, 2017, Gabriel, Sean and Mauro discussed what the biomass function of the __forestr__ package should look like. This vignette aims to developers and collaborators. Its goal is to record the main ideas we discussed so that we can share those ideas and build on them later.
 
+The white-board notes from that meeting is [here](.
 
 ## Setup
 
@@ -51,17 +54,28 @@ Loading some useful data of stems from 1000 trees, selected randomly from Barro 
 public in 2012, available at https://goo.gl/GmrwVq; see also ?forestr::bci12s7mini).
 
 ```{r stem}
-
 # Making a tibble to get a nicer print method
 stem0 <- as_tibble(bci12s7mini)
 stem0
 ```
+
+
+
+## Function names
+
+> Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean() is better than compute_mean()), or accessing some property of an object (i.e. coef() is better than get_coefficients()). A good sign that a noun might be a better choice is if you’re using a very broad verb like __"get"__, __"compute"__, __"calculate"__, or __"determine"__. Use your best judgement and don't be afraid to rename a function if you figure out a better name later.
+
+--http://r4ds.had.co.nz/functions.html#functions
+
+
 
 ## Goal
 
 The biomass module has two jobs: to calculate individuals' biomass and to summarize biomass within user-defined groups.
 
 The second job we will address first. We choose this order because summarising biomass (or variable) is straight forward, but calculating each individual's biomass isn't. Biomass can be calculated in multiple ways, and users should be let to choose the way they think is best. So this vignette ends discussing the different ways to calculate biomass, which is the part for which discussion is more widely open.
+
+
 
 ## Last thing first: summarising biomass accross individuals by groups
 
@@ -117,20 +131,89 @@ Here are the first few species and quadrats which biomas is greater than cero:
 filter(by_sp_quad, biomass > 0)
 ```
 
-In conclusion, we can easily write a function that groups the data by any number of variables and summarizes it by summing the biomass of individuals within each group. But how should we calculate the biomass of each individual?
+In conclusion, we can easily write a function that groups the data by any number of variables and summarizes it by summing the biomass of individuals within each group. Such a function can be written in a number of ways. We compared ways that used __base__ exclusively with those that used __dplyr__ and we found that the __dplyr__ approach is orders of magnitude faster. So here what the `biomass()` function may look like:
+
+```
+biomass <- function(census, groups) {
+  # Translate grouping variables passed as strings to quoted expressions
+  parsed_groupes <- lapply(groups, rlang::parse_quosure)
+  
+  # Group
+  grouped <- dplyr::group_by(x, rlang::UQS(parsed_groupes))
+  
+  # Summarize within groups
+  count <- dplyr::summarise(grouped, biomass = biomass_per_individual(.))
+  
+  # Make the output a common data structure
+  as.data.frame(count)
+}
+```
+
+But how should we calculate the biomass of each individual?
+
+
 
 ## Calculate individuals' biomass
 
-We think that the way to calculate the biomass of each individual should depend on how well the user knows the allometry functions for the species or site in the data.
+We think that the way to calculate the biomass of each individual should depend on how well the user knows the allometry formulas of the species or site in the data.
 
-The user provides:
+`biomass_per_individual()` would need two inputs:
 
-* nothing: use table of species and E (from Chave 2012?).
-A. a table of one allometric information per species, in the shape of a function or formula.
-B. a table of one allometric information applicable to the entire site, in the shape of a function, or formula.
-C. a table of one allometric information applicable to the entire dataset, in the shape of a function or formula.
+a. either census data and the name of the site, to calculate biomass with appropriate allometric formulas given by the `biomass_per_individual()` by default.
+b. or census data and a custom allometry, to calculate biomass with allometric formulas given by the user.
 
-We propose that `biomass()` should first try to use the information that the user provides, from more to less specific. This is, try first the informmation at the species-level, then at the site-level, and last at the dataset-level. If the user provides no information, then `biomass()` should use published information (e.g. the species by _E_ table in Chave 2012?), which we can store in __forestr__ and update whenever as needed.
+This is what the definition of `biomass_per_individual() may look like:
+
+```
+biomass_per_individual <- function (x, site, custom_allometry = NULL) {
+  # some code
+}
+```
+
+
+### Flow
+
+This is a draft of the simplified flow.
+
+```
+< User provides data? > 
+|- NO: (Return Error 1)
+YES: < User provides site? > 
+     |- YES: (Use default Table A)
+     NO: < User provides custom allometry? > 
+         |- NO: (Return Error 2)
+         YES: < Is allometry a table? >
+              |- NO: < Is allometry a formula? > 
+              |      |- NO: (Return Error 3)
+              |      YES: (Make and use Table B)
+              YES: < Table has name "species" >
+                   |- YES: < Use custom Table C? >
+                   NO: < Table has name "site"? >
+                       |- NO: (Return Error 4)
+                       YES: (Use Table D)
+
+
+
+ERRORS
+
+Error 1: Must provide data.
+Error 2: Must provide either the site name or custom allometries.
+Error 3: Custom allometry must be either a data frame or a formula.
+Error 4: Custom table must contain names species or site.
+
+
+
+TABLES
+
+Table A (default): `site`, `formula`. I.e. formulas from Chave et al. 2014.
+Table B (custom):  `site`, `formula`.
+Table C (custom):  `species`, `formula`.
+Table D (Custom):  `site`, `formula`.
+```
+
+
+
+## Allometry tables
 
 Here is what the allometry table would look like for information at different levels:
 
