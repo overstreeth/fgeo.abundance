@@ -37,13 +37,21 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 ## Overview
 
-On Sept 6th, 2017, Gabriel, Sean and Mauro discussed what the biomass function of the __forestr__ package should look like. This vignette aims to developers and collaborators. Its goal is to record the main ideas we discussed so that we can share those ideas and build on them later.
+On Sept 6th, 2017, Gabriel, Sean and Mauro discussed what the biomass function of the __forestr__ package should look like. This vignette targets developers and collaborators; Its goal is to record the main ideas we discussed so that we can build on them later.
 
-The white-board notes from that meeting is [here](.
+The white-board notes from that meeting is [here](https://drive.google.com/open?id=0B5fCyFlg2t4pR2RsbmpqaXRYa1pZNWM1cHhSZmlmRFdlbW04) (access private to Sean and Gabriel).
+
+
+
+## Goal
+
+The biomass module has two jobs: to calculate individuals' biomass and to summarize biomass within user-defined groups.
+
+The second job we will address first. We choose this order because summarising biomass (or variable) is straight forward, but calculating each individual's biomass isn't. Biomass can be calculated in multiple ways, and users should be let to choose the way they think is best. So this vignette ends discussing the different ways to calculate biomass, which is the part for which discussion is more widely open.
+
+
 
 ## Setup
-
-Loading some useful packages.
 
 ```{r pkgs}
 library(tidyverse)
@@ -54,26 +62,10 @@ Loading some useful data of stems from 1000 trees, selected randomly from Barro 
 public in 2012, available at https://goo.gl/GmrwVq; see also ?forestr::bci12s7mini).
 
 ```{r stem}
-# Making a tibble to get a nicer print method
+# tibble has an informative print method
 stem0 <- as_tibble(bci12s7mini)
 stem0
 ```
-
-
-
-## Function names
-
-> Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean() is better than compute_mean()), or accessing some property of an object (i.e. coef() is better than get_coefficients()). A good sign that a noun might be a better choice is if you’re using a very broad verb like __"get"__, __"compute"__, __"calculate"__, or __"determine"__. Use your best judgement and don't be afraid to rename a function if you figure out a better name later.
-
---http://r4ds.had.co.nz/functions.html#functions
-
-
-
-## Goal
-
-The biomass module has two jobs: to calculate individuals' biomass and to summarize biomass within user-defined groups.
-
-The second job we will address first. We choose this order because summarising biomass (or variable) is straight forward, but calculating each individual's biomass isn't. Biomass can be calculated in multiple ways, and users should be let to choose the way they think is best. So this vignette ends discussing the different ways to calculate biomass, which is the part for which discussion is more widely open.
 
 
 
@@ -211,57 +203,13 @@ Table C (custom):  `species`, `formula`.
 Table D (Custom):  `site`, `formula`.
 ```
 
-
-
-## Allometry tables
-
-Here is what the allometry table would look like for information at different levels:
-
-```{r}
-# Species level --------------------------------------------------------------
-
-f1 <- function(x1){y1 ~ x1}
-f2 <- function(x2){y2 ~ x2}
-fn <- function(xn){yn ~ xn}
-
-species_level <- tribble(
-  ~species, ~f,
-  "sp1"   , f1,
-  "sp2"   , f2,
-  "spn"   , fn
-)
-
-species_level
+Whatever table `biomass()` uses, it should inform the user of what functions it is using. That communication may be via conditionals such as messages or warnings and maybe a log file. That information may be valuable for developers and users so they know that the function is doing what it should, and also useful to report methods in publications.
 
 
 
-# Site level -----------------------------------------------------------------
+## Appendix: A side note on function names
 
-f1 <- function(x1){y1 ~ x1}
-f2 <- function(x2){y2 ~ x2}
-fn <- function(xn){yn ~ xn}
+> Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. mean() is better than compute_mean()), or accessing some property of an object (i.e. coef() is better than get_coefficients()). A good sign that a noun might be a better choice is if you’re using a very broad verb like __"get"__, __"compute"__, __"calculate"__, or __"determine"__. Use your best judgement and don't be afraid to rename a function if you figure out a better name later.
 
-site_level <- tribble(
-  ~site  , ~f,
-  "site1", f1,
-  "site2", f2,
-  "siten", fn
-)
+--http://r4ds.had.co.nz/functions.html#functions
 
-site_level
-
-
-
-# Dataset level --------------------------------------------------------------
-
-f <- function(x){y ~ x}
-
-dataset_level <- tribble(
-  ~dataset  , ~f,
-  "dataset", f
-  )
-
-dataset_level
-```
-
-Whatever `biomass()` uses, it should inform the user of what functions it is using. That communication may be via conditionals such as messages or warnings and maybe a log file.
