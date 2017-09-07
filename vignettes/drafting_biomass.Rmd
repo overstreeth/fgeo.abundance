@@ -53,40 +53,27 @@ public in 2012, available at https://goo.gl/GmrwVq; see also ?forestr::bci12s7mi
 ```{r stem}
 
 # Making a tibble to get a nicer print method
-stem <- as_tibble(bci12s7mini)
-stem
+stem0 <- as_tibble(bci12s7mini)
+stem0
 ```
 
 ## Goal
 
-The biomass module has two jobs: to calculate individuals' biomass and to summarise it within user-defined groups.
+The biomass module has two jobs: to calculate individuals' biomass and to summarize biomass within user-defined groups.
 
-1. __Calculate individuals' biomass.__ Biomass can be calculated in multiple ways. `biomass()` should allow users to choose how to calculate the biomass of each individual.
+The second job we will address first. We choose this order because summarising biomass (or variable) is straight forward, but calculating each individual's biomass isn't. Biomass can be calculated in multiple ways, and users should be let to choose the way they think is best. So this vignette ends discussing the different ways to calculate biomass, which is the part for which discussion is more widely open.
 
-2. to sum the biomass of all individuals within any number of user-defined groups. For exmaple, once we know the biomass of each stem in a plot, we may want to summarise the biomass of each species in each quadrat.
+## Last thing first: summarising biomass accross individuals by groups
 
-## Requirements
-
-
-
-
-Users should have the freedom to chose how to calculate the biomass
-The first step is to calculate the biomass per individual. We want to give users the freedom to do it in multiple ways. We would provide some useful ways, based on the latest research. We would also provide the option for the user to provide custom ways. And the second step is to proide a function that lets users sum the biomass accross all individuals in groups that the user cares about. Next, we'll show what those stems may look like. 
-
-Here, we'll start from the end, i.e. showing how the second step. We choose this order because step 2 is straight forward but step 1 is not. So we'll move quickly throught the easy bit, and will leave you thinking about the more challenging part.
-
-
-## Summing the biomass accross individuals in user-defined groups
-
-For this example, the biomass values that we'll use come directly from the `agb` variable of the stem dataset. And, we'll focus on only a few variables.
+Here we focus on summarising biomass accross individuals by groups, not in the way to calculate the biomass of each individual. So we'll just use the individuals' biomass directly from the `agb` variable of a stem dataset from Barro Colorado Island. Apart from `agb` we'll use a few more variables useful for calculating the by-groups summary.
 
 ```{r}
 # getting biomass as it comes out of the box from the analytical tables
-stem$biomass <- stem$agb
+stem0$biomass <- stem0$agb
 
 # focusing only on a few variables we care about
-stem1 <- select(stem, 
-  treeID, stemID, quadrat, status, biomass, 
+stem1 <- select(stem0, 
+  treeID, stemID, quadrat, status, sp, biomass, 
 )
 stem1
 ```
@@ -102,12 +89,38 @@ stem2 <- add_id(stem1)
 stem2
 ```
 
-Now, `id` has the information from `treeID` and `stemID`; so we can safely remove `treeID` and `stemID`. We'll take the change to re-organize the variables to improve clarity.
+`id` has the information from `treeID` and `stemID`; so we can safely remove `treeID` and `stemID`. We'll take the change to re-organize the variables to improve clarity.
 
 ```{r}
 # Removing redundant variables; also placing id first, and biomass last
-stem2 <- select(stem2, id, quadrat, status, biomass)
-stem2
+stem3 <- select(stem2, id, quadrat, status, sp, biomass)
+stem3
 ```
+
+A good way to summarize these data is to sum the biomass of all individuals in each species:
+
+```{r}
+by_sp <- group_by(stem3, sp)
+by_sp <- dplyr::summarize(by_sp, biomass = sum(biomass, na.rm = TRUE))
+```
+
+Or we may want to sumarize by summing the abundance of each species in each quadrat:
+
+```{r}
+by_sp_quad <- group_by(stem3, sp, quadrat)
+by_sp_quad <- summarize(by_sp_quad, biomass = sum(biomass, na.rm = TRUE))
+```
+
+Here are the first few species and quadrats which biomas is greater than cero:
+
+```{r}
+filter(by_sp_quad, biomass > 0)
+```
+
+In conclusion, we can easily write a function that groups the data by any number of variables and summarizes it by summing the biomass of individuals within each group. But how should we calculate the biomass of each individual?
+
+## Calculate individuals' biomass
+
+
 
 
