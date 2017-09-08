@@ -44,17 +44,26 @@ necessarily for the package).
 library(forestr)
 library(plyr)
 
-stem <- bci12s6mini
+stem <- bci12s7mini
 ```
 
 
 
 # From array to data frame
 
-Example grouping by one variable.
+Example grouping by two variables.
 
 ```{r}
 # USING `abundance_n()`
+
+abundance_n <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
+    if (only_alive) {
+      valid.status <- "A"
+    } else {
+      valid.status <- unique(x$status)
+    }
+    table(x[x$status %in% valid.status, group_by])
+}
 
 x1 <- abundance_n(stem, group_by = c("sp"), only_alive = FALSE)
 length(dim(x1))
@@ -67,56 +76,7 @@ head(as.data.frame(x1))
 head(as.data.frame.array(x1))
 # a little better
 head(as.data.frame.table(x1))
-
-# The previous output is the closest to this "tidy" data frame:
-head(n_dplyr_se(stem, "sp", only_alive = FALSE))
-
-
-
-# SAME, USING `abundance_n2()`
-
-x1 <- abundance_n(stem, group_by = c("sp"), only_alive = FALSE)
-
-head(as.data.frame.table(x1))
-
-head(n_dplyr_se(stem, "sp", only_alive = FALSE))
 ```
-
-
-
-
-Example grouping by one variable.
-
-```{r}
-# USING `abundance_n()`
-
-x2 <- abundance_n(stem, group_by = c("sp", "status"), only_alive = FALSE)
-length(dim(x2))
-
-head(x2)
-class(x2)
-
-head(as.data.frame(x2))
-# same
-head(as.data.frame.array(x2))
-# a little better
-head(arrange(as.data.frame.table(x2), sp))
-
-# The previous output is the closest to this "tidy" data frame:
-head(n_dplyr_se(stem, c("sp", "status"), only_alive = FALSE))
-
-
-
-# SAME, USING `abundance_n2()`
-
-x1 <- abundance_n(stem, group_by = c("sp"), only_alive = FALSE)
-
-head(as.data.frame.table(x1))
-
-head(n_dplyr_se(stem, "sp", only_alive = FALSE))
-```
-
-`as.data.frame.table()` output is closest to a "tidy" data frame. This can also be done with `plyr::adply()`, but `as.data.frame.table()` is simplest.
 
 
 
@@ -125,11 +85,11 @@ head(n_dplyr_se(stem, "sp", only_alive = FALSE))
 __plyr__ can convert from class `data.frame` to class `array`.
 
 ```{r}
-df <- n_dplyr_se(stem, groups = c("sp", "status"), only_alive = FALSE)
+df <- abundance(stem, group_by = c("sp", "status"), only_alive = FALSE)
 head(df)
 a <- daply(df, .(sp, status), nrow)
 head(a)
-class(a)
+is.array(a)
 ```
 
 With three grouping variables (using another dataset for simplicity)
@@ -144,4 +104,5 @@ groups <- c("year", "team", "stint")
 is.array(a)
 ```
 
+Follow this discussion here: https://goo.gl/9pyXss.
 
