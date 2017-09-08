@@ -1,0 +1,512 @@
+# Chunk 17
+unusual_trees <- bci12full7 %>%
+filter(dbh > 2000) %>%
+select(treeID, ExactDate, status, gx, gy, dbh) %>%
+arrange(dbh)
+unusual_trees
+# Chunk 18: locate-unusual-trees
+# For faster analysis and to avoid overplotting, choose only 100 trees at random
+sample_100 <- bci12full7 %>% sample_n(100)
+# Left plot
+unusual_tree_loc <- ggplot(sample_100, aes(gx, gy)) +
+# plot a few points for reference with only 1/10 opacity (less distracting)
+geom_point(alpha = 1/10) +
+# highlight location of unusual trees in the plot
+geom_point(data = unusual_trees, colour = "red")
+unusual_tree_loc
+# Right plot
+edge_trees <- unusual_trees %>% filter(gy < 100)
+unusual_tree_loc +
+geom_point(
+data = edge_trees,
+size = 3, shape = 1  # highlight edge trees with bigger and hollow points
+)
+are_usual <- !bci12full7$treeID %in% unusual_trees$treeID
+usual_trees <- bci12full7 %>% filter(are_usual)
+are_usual
+any(are_usual)
+any(!are_usual)
+usual_trees
+bci12full7 %>% filter(are_usual)
+bci12full7 %>% filter(are_usual)
+bci12full7
+filter(are_usual)
+bci12full7 %>% filter(are_usual)
+usual_trees
+usual_trees %>% filter(are_usual)
+are_usual
+are_usual
+usual_trees %>% nrow()
+bci12full7 %>% nrow()
+usual_trees %>% nrow()
+bci12full7 %>% nrow()
+usual_trees %>% nrow()
+bci12full7 %>% nrow()
+usual_trees %>% nrow()
+are_usual <- !bci12full7$treeID %in% unusual_trees$treeID
+usual_trees <- bci12full7 %>% filter(are_usual)
+# Confirm data set of usual trees has less rows than full data set.
+bci12full7 %>% nrow()
+usual_trees %>% nrow()
+are_usual
+!are_usual
+are_unusual <- !are_usual
+with_unusual_made_NA <- bci12full7 %>%
+mutate(dbh = ifelse(are_unusual, NA, dbh))
+with_unusual_made_NA
+with_unusual_made_NA %>% filter(treeID %in% are_unusual)
+are_unusual
+with_unusual_made_NA %>% filter(treeID %in% bci12full7[are_unusual])
+bci12full7[are_unusual]
+are_unusual
+bci12full7[are_unusual, ]
+with_unusual_made_NA %>% nrow()
+bci12full7 %>% nrow()
+bci12full7 %>% nrow()
+with_unusual_made_NA %>% nrow()
+bci12full7 %>% filter(are_unusual)
+bci12full7 %>% filter(are_unusual) %>% select(dbh, everything())
+with_unusual_made_NA %>% filter(are_unusual) %>% select(dbh, everything())
+are_unusual <- !are_usual
+with_unusual_made_NA <- bci12full7 %>%
+mutate(dbh = ifelse(are_unusual, NA, dbh))
+# Confirm no rows have been removed, but dbh of unusual trees is NA
+bci12full7 %>% nrow()
+with_unusual_made_NA %>% nrow()
+with_unusual_made_NA %>% filter(are_unusual) %>% select(dbh, everything())
+x <- 1:50
+case_when(
+x %% 35 == 0 ~ "fizz buzz",
+x %% 5 == 0 ~ "fizz",
+x %% 7 == 0 ~ "buzz",
+TRUE ~ as.character(x)
+)
+# Like an if statement, the arguments are evaluated in order, so you must
+# proceed from the most specific to the most general. This won't work:
+case_when(
+TRUE ~ as.character(x),
+x %%  5 == 0 ~ "fizz",
+x %%  7 == 0 ~ "buzz",
+x %% 35 == 0 ~ "fizz buzz"
+)
+case_when(
+x %% 35 == 0 ~ "fizz buzz",
+x %% 5 == 0 ~ "fizz",
+x %% 7 == 0 ~ "buzz",
+TRUE ~ as.character(x)
+)
+# Alternatively to ifelse, use `case_when()` (easier when cases are many)
+bci12full7 %>%
+mutate(dbh = case_when(
+dbh = are_unusual ~ NA,
+TRUE            ~ dbh
+)
+)
+are_unusual
+# Alternatively to ifelse, use `case_when()` (easier when cases are many)
+bci12full7 %>%
+mutate(dbh = case_when(
+dbh = are_unusual ~ NA_real_,
+TRUE            ~ dbh
+)
+)
+are_unusual <- !are_usual
+with_unusual_made_NA <- bci12full7 %>%
+mutate(dbh = ifelse(are_unusual, NA_real_, dbh))
+with_unusual_made_NA
+case_when(
+TRUE ~ as.character(x),
+x %%  5 == 0 ~ "fizz",
+x %%  7 == 0 ~ "buzz",
+x %% 35 == 0 ~ "fizz buzz"
+)
+patterns <- list(
+TRUE ~ as.character(x),
+x %%  5 == 0 ~ "fizz",
+x %%  7 == 0 ~ "buzz",
+x %% 35 == 0 ~ "fizz buzz"
+)
+case_when(!!! patterns)
+patterns <- list(
+TRUE ~ as.character(x),
+x %%  5 == 0 ~ "fizz",
+x %%  7 == 0 ~ "buzz",
+x %% 35 == 0 ~ "fizz buzz"
+)
+case_when(!!! patterns)
+case_when(!!! patterns)
+patterns <- list(
+x %% 35 == 0 ~ "fizz buzz",
+x %% 5 == 0 ~ "fizz",
+x %% 7 == 0 ~ "buzz",
+TRUE ~ as.character(x)
+)
+case_when(!!! patterns)
+bci_hist
+ggplot(data = with_unusual_made_NA, aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+ggplot(data = with_unusual_made_NA, aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 500) %>%
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 2000☻) %>% 2
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 2000) %>% 2
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 1500) %>% 2
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 1000) %>% 2
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 2000) %>%
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(dbh > 1500) %>%
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(are_unusual) %>%
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+with_unusual_made_NA %>%
+filter(are_unusual)
+with_unusual_made_NA %>%
+filter(are_unusual) %>%
+select(dbh, dplyr::everything())
+# but dbh of unusual trees is NA
+with_unusual_made_NA %>%
+filter(are_unusual) %>%
+select(dbh)
+# Confirm no rows have been removed,
+bci12full7 %>% nrow()
+with_unusual_made_NA %>% nrow()
+# but dbh of unusual trees is NA
+with_unusual_made_NA %>%
+filter(are_unusual) %>%
+select(dbh, treeID)
+# Confirm no rows have been removed,
+bci12full7 %>% nrow()
+with_unusual_made_NA %>% nrow()
+# but dbh of unusual trees is NA
+unusual_only <- with_unusual_made_NA %>%
+filter(are_unusual) %>%
+select(dbh, treeID)
+# Confirm no rows have been removed,
+bci12full7 %>% nrow()
+with_unusual_made_NA %>% nrow()
+# but dbh of unusual trees is NA
+unusual_only <- with_unusual_made_NA %>%
+filter(are_unusual) %>%
+select(dbh, treeID)
+unusual_only
+unusual_only %>%
+ggplot(aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth)
+unusual_only
+# Expect to plot nothing but to get a warning
+ggplot(unusual_only, aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth) +
+labs(title = "Expect to plot nothing but to get a warning")
+# Expect no warning now
+ggplot(unusual_only, aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth) +
+labs(title = "Expect no plot nor warning because na.rm = TRUE")
+# Expect no warning now
+ggplot(unusual_only, aes(dbh)) +
+geom_histogram(binwidth = useful_barwidth, na.rm = TRUE) +
+labs(title = "Expect no plot nor warning because na.rm = TRUE")
+nycflights13::flights %>%
+mutate(
+cancelled = is.na(dep_time),
+sched_hour = sched_dep_time %/% 100,
+sched_min = sched_dep_time %% 100,
+sched_dep_time = sched_hour + sched_min / 60
+)
+nycflights13::flights %>%
+mutate(
+cancelled = is.na(dep_time),
+sched_hour = sched_dep_time %/% 100,
+sched_min = sched_dep_time %% 100,
+sched_dep_time = sched_hour + sched_min / 60
+) %>%
+ggplot(mapping = aes(sched_dep_time)) +
+geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+ggplot(bci12full7) +
+geom_freqpoly(aes(dbh, colour = status))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(status, colour = missing_dbh))
+nycflights13::flights %>%
+mutate(
+cancelled = is.na(dep_time),
+sched_hour = sched_dep_time %/% 100,
+sched_min = sched_dep_time %% 100,
+sched_dep_time = sched_hour + sched_min / 60
+) %>%
+ggplot(mapping = aes(sched_dep_time)) +
+geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(status, colour = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(status, fill = missing_dbh))
+bci12full7 %>% filter(status == "M")
+bci12full7 %>% filter(status == "M") %>% print(n)
+bci12full7 %>% filter(status == "M") %>% print(n = 100)
+bci12full7 %>% filter(status == "M") %>% print(n = 100)
+bci12full7
+bci12full7$status
+bci12full7$status %>% unique
+bci12full7 %>% filter(status == "M") %>% print(n = 100)
+bci12full7 %>% filter(status == "M") %>% print(n = 100) %>% select(status, everything())
+bci12full7 %>% filter(status == "M") %>% select(status, everything()) %>% print(n = 100)
+bci12full7 %>% filter(status == "M") %>% select(status, everything()) %>% print(n = 100)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(DFstatus, fill = missing_dbh))
+unique(bci12full7$DFstatus)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive")
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, everything())
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nonstems, everything())
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything())
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(unique)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(unique)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(unique) %>% head()
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(~head(unique), data = .)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(~head(unique, data = .))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(function(x) head(unique(x)))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(function(x) head(unique(x)))[1:2]
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(function(x) head(unique(x))) %>% .[1:2]
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>% select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>% purrr::map(function(x) head(unique(x)))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(DFstatus, fill = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>%
+select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>%
+purrr::map(function(x) head(unique(x)))
+bci12full7$agb
+bci12full7$agb %>% unique()
+biomass <- AGB.ind(df = bci::bci12full1)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_freqpoly(aes(agb, fill = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_freqpoly(aes(agb, fill = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(DFstatus, fill = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>%
+select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>%
+purrr::map(function(x) head(unique(x)))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE)
+nycflights13::flights %>%
+mutate(
+cancelled = is.na(dep_time),
+sched_hour = sched_dep_time %/% 100,
+sched_min = sched_dep_time %% 100,
+sched_dep_time = sched_hour + sched_min / 60
+) %>%
+ggplot(mapping = aes(sched_dep_time)) +
+geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_point(aes(agb, dbh, colour = missing_dbh))
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+filter(agb == 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_point(aes(agb, dbh, colour = missing_dbh))
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+# filter(agb == 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh))
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+# filter(agb == 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(DFstatus, fill = missing_dbh))
+bci12full7 %>%
+filter(agb == 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>%
+select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>%
+purrr::map(function(x) head(unique(x)))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE)
+nycflights13::flights %>%
+mutate(
+cancelled = is.na(dep_time),
+sched_hour = sched_dep_time %/% 100,
+sched_min = sched_dep_time %% 100,
+sched_dep_time = sched_hour + sched_min / 60
+) %>%
+ggplot(mapping = aes(sched_dep_time)) +
+geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+bci12full7 %>%
+filter(agb == 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+filter(agb != 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+filter(agb <10 0) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+filter(agb <10) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+filter(agb < 10) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+filter(agb < 2.5) %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_histogram(aes(agb, fill = missing_dbh), position = "dodge")
+# geom_freqpoly(aes(agb, colour = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+ggplot() +
+geom_bar(aes(DFstatus, fill = missing_dbh))
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>%
+select(dbh, status, missing_dbh, agb, codes, nostems, everything()) %>%
+lapply(head)
+head_of_unique <- function(x) {head(unique(x))}
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE) %>%
+select(dbh, status, missing_dbh, agb, codes, nostems, everything())
+bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE)
+missing_dbh_trees <- bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+filter(DFstatus == "alive", missing_dbh == TRUE)
+missing_dbh_trees
+missing_dbh_trees %>% lapply(head_of_unique)
+summary(missing_dbh_trees)
+missing_dbh_trees %>% lapply(n_distinct)
+missing_dbh_trees
+missing_dbh_trees %>% select_if(n_distinct == 1)
+missing_dbh_trees %>% select_if(n_distinct == 1)
+missing_dbh_trees %>% select_if(functon(x) n_distinct(x) == 1)
+missing_dbh_trees %>% select_if(function(x) n_distinct(x) == 1)
+missing_dbh_trees %>% select_if(function(x) n_distinct(x) == 1)
+missing_dbh_trees %>% select_if(function(x) n_distinct(x) == 1) %>% unique
+unique_value_is_one <- function(x) n_distinct(x) == 1
+unique_value_is_one <- function(x) {n_distinct(x) == 1}
+missing_dbh_trees %>% select_if(unique_value_is_one)
+missing_dbh_trees <- bci12full7 %>%
+mutate(missing_dbh = is.na(dbh)) %>%
+has_single_unique_value <- function(x) {n_distinct(x) == 1}
+missing_dbh_trees %>% select_if(unique_value_is_one)
+missing_dbh_trees %>% select_if(unique_value_is_one) %>% unique()
+has_single_unique_value <- function(x) {dplyr::n_distinct(x) == 1}
+missing_dbh_trees %>%
+select_if(unique_value_is_one) %>%
+unique()
+has_single_unique_value <- function(x) {dplyr::n_distinct(x) == 1}
+missing_dbh_trees %>%
+select_if(has_single_unique_value) %>%
+unique()

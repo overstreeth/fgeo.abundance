@@ -1,0 +1,512 @@
+multiline = F,
+dotall = F)
+)
+str_replace_all(
+docs[[1, 1]],
+pattern = regex(
+".*(\n\')([^ ]+)(\'\n).*",
+multiline = F,
+dotall = F),
+replacement = "\\1"
+)
+str_replace_all(
+docs[[1, 1]],
+pattern = regex(
+".*(\n\')([^ ]+)(\'\n).*",
+multiline = F,
+dotall = F),
+replacement = "\\2"
+)
+str_extract_all(
+docs[[1, 1]],
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+?str_extract_all
+str_extract_all(
+docs,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+docs <- file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+str_extract_all(
+docs,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+docs
+str_extract_all(
+docs$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+tibble_src <- function(file_dir) {
+docs <- file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+}
+tibble_src(file_dir)
+tibble_src(file_dir)
+tibble_src <- function(file_dir) {
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+}
+tibble_src(file_dir)
+docs <- tibble_src(file_dir)
+docs
+tibble_doc <- function(file_dir) {
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+}
+file_dir <- "./data-raw/tst_in/abundance.R"
+docs <- tibble_doc(file_dir)
+file_dir <- "./data-raw/tst_in/abundance.R"
+tibble_doc(file_dir)$doc
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+tibble()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+tibble()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(".*\'(.*)\'.*", "\\1")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(".*\\'(.*)\\'.*", "\\1")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all("(.*\\')(.*)(\\'.*)", "\\1")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all("(.*\\')(.*)(\\'.*)", "\\2")
+vignette("regular-expression")
+vignettes
+vignettes("regular-expressions")
+?regex
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(
+pattern = regex(".*\'(.*)\'.*", multiline = F, dotall = F),
+replacement = "\\1"
+)
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n"), "")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "") %>%
+str_replace_all(fixed("'\n"), "")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "") %>%
+str_replace_all(fixed("'\n"), "") %>%
+tibble()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "") %>%
+str_replace_all(fixed("'\n"), "") %>%
+tibble() %>%
+setNames("fun_nm")
+tibble_nm <- function(file_dir = file_dir) {
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "") %>%
+str_replace_all(fixed("'\n"), "") %>%
+tibble() %>%
+setNames("fun_nm")
+}
+tibble_nm <- function(file_dir) {
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "") %>%
+str_replace_all(fixed("'\n"), "") %>%
+tibble() %>%
+setNames("fun_nm")
+}
+tibble_doc(file_dir)
+tibble_nm(file_dir)
+left_join(tibble_doc(file_dir), tibble_nm(file_dir))
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist() %>%
+str_replace_all(fixed("#'\n'"), "") %>%
+str_replace_all(fixed("\n'"), "") %>%
+str_replace_all(fixed("'\n"), "") %>%
+tibble() %>%
+setNames("fun_nm")
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+) %>%
+unlist()
+str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+tibble_doc(file_dir)
+tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+tibble_doc(file_dir)$doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+)
+tibble_doc(file_dir)
+tibble_doc(file_dir)$doc
+tibble_doc(file_dir)
+tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+)
+)
+tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+)
+tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+) %>% select(1, 2)
+tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+) %>% select(1)
+tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+) %>% select(fun_nm)
+src_nm <- tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+)
+src_nm
+src_nm <- dplyr::select(2, 1)
+src_nm <- dplyr::select(src_nm, 2, 1)
+src_nm
+library(readr)
+library(stringr)
+library(purrr)
+library(tibble)
+library(dplyr)
+library(tidyr)
+base_in <- "./data-raw/tst_in/"
+base_out <- "./data-raw/tst_out/"
+path_in <- map2(base_in, dir(base_in), paste0)
+path_out <- map2(base_out, dir(base_in), paste0)
+tibble_doc <- function(file_dir) {
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+}
+tibble_src_nm <- function(file_dir) {
+src_nm <- tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+)
+dplyr::select(src_nm, 2, 1)
+}
+tibble_src_nm(file_dir)
+file_dir <- "./data-raw/tst_in/abundance.R"
+tibble_src_nm(file_dir)
+library(readr)
+library(stringr)
+library(purrr)
+library(tibble)
+library(dplyr)
+library(tidyr)
+base_in <- "./data-raw/tst_in/"
+base_out <- "./data-raw/tst_out/"
+path_in <- map2(base_in, dir(base_in), paste0)
+path_out <- map2(base_out, dir(base_in), paste0)
+tibble_doc <- function(file_dir) {
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+}
+tibble_src_nm <- function(file_dir) {
+src_nm <- tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+)
+dplyr::select(src_nm, 2, 1)
+}
+file_dir <- "./data-raw/tst_in/abundance.R"
+tibble_src_nm(file_dir)
+library(readr)
+library(stringr)
+library(purrr)
+library(tibble)
+library(dplyr)
+library(tidyr)
+base_in <- "./data-raw/tst_in/"
+base_out <- "./data-raw/tst_out/"
+path_in <- map2(base_in, dir(base_in), paste0)
+path_out <- map2(base_out, dir(base_in), paste0)
+tibble_doc <- function(file_dir) {
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+}
+tibble_src_nm <- function(file_dir) {
+src_nm <- tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+)
+dplyr::select(src_nm, 2, 1)
+}
+file_dir <- "./data-raw/tst_in/abundance.R"
+tibble_src_nm(file_dir)
+tibble_src_nm(file_dir)
+tibble_src_nm(file_dir)[2]
+tibble_src_nm(file_dir) %>% filter(is_empty(src_nm))
+tibble_src_nm(file_dir)
+tibble_src_nm(file_dir) %>% filter(is_empty(fun_nm))
+tibble_src_nm(file_dir) %>% filter(!is_empty(fun_nm))
+tibble_src_nm(file_dir) %>% filter(!grepl("character\0\)"))
+tibble_src_nm(file_dir) %>% filter(!NULL)
+tibble_src_nm(file_dir) %>% filter(NULL)
+tibble_src_nm(file_dir)$fun_nm)
+tibble_src_nm(file_dir)$fun_nm
+map(tibble_src_nm(file_dir)$fun_nm, typeof)
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc")
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc") %>%
+filter(grepl(".*[a-zA-Z]+.*", doc))
+tibble_doc <- function(file_dir) {
+file_dir %>%
+readr::read_file() %>%
+str_replace_all(
+pattern = regex("(\n\')([^ ]+)(\'\n)", multiline = F, dotall = F),
+replacement = "\\1\\2\\3\nxxxxx\n"
+) %>%
+str_split("xxxxx") %>%
+unlist() %>%
+tibble() %>%
+setNames("doc") %>%
+# Remove empty rows
+filter(grepl(".*[a-zA-Z]+.*", doc))
+}
+tibble_src_nm <- function(file_dir) {
+src_nm <- tibble_doc(file_dir) %>%
+mutate(
+fun_nm = str_extract_all(
+doc,
+pattern = regex(".*(\n\')([^ ]+)(\'\n).*", multiline = F, dotall = F)
+),
+fun_nm = str_replace_all(fun_nm, fixed("#'\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("\n'"), ""),
+fun_nm = str_replace_all(fun_nm, fixed("'\n"), "")
+)
+dplyr::select(src_nm, 2, 1)
+}
+file_dir <- "./data-raw/tst_in/abundance.R"
+tibble_src_nm(file_dir)
+file_dir
+path_in
+path_in
+map(path_in, tibble_src_nm)
+path_in

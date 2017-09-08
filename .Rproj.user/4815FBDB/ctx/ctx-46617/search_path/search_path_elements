@@ -1,0 +1,17 @@
+.GlobalEnv
+package:forestr
+package:bindrcpp
+package:dplyr
+devtools_shims
+package:testthat
+package:bciex
+tools:rstudio
+package:stats
+package:graphics
+package:grDevices
+package:utils
+package:datasets
+package:devtools
+package:methods
+Autoloads
+package:base

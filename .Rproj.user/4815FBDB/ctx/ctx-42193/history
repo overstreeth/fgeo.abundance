@@ -1,0 +1,7 @@
+library(ctfs)
+?ctfs
+?ctfs-package
+?abundance
+devtools::load_all(".")
+devtools::load_all(".")
+devtools::load_all(".")
