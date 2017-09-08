@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.travis\.yml$
+^inst/forestr-uncurated$
+^README\.Rmd$
+^README-.*\.png$
+^docs$
+^\.Rprofile$
+^man-roxygen$
+^codecov\.yml$
+^data-raw$
+^_pkgdown\.yml$
+^vignettes/rsconnect/$
+^C:\Users\dora\Dropbox\git_repos\forestr\docs$
