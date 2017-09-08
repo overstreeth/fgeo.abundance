@@ -21,10 +21,19 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 library(forestr)
 library(plyr)
 
-stem <- bci12s6mini
+stem <- bci12s7mini
 
 ## ------------------------------------------------------------------------
 # USING `abundance_n()`
+
+abundance_n <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
+    if (only_alive) {
+      valid.status <- "A"
+    } else {
+      valid.status <- unique(x$status)
+    }
+    table(x[x$status %in% valid.status, group_by])
+}
 
 x1 <- abundance_n(stem, group_by = c("sp"), only_alive = FALSE)
 length(dim(x1))
@@ -38,53 +47,12 @@ head(as.data.frame.array(x1))
 # a little better
 head(as.data.frame.table(x1))
 
-# The previous output is the closest to this "tidy" data frame:
-head(n_dplyr_se(stem, "sp", only_alive = FALSE))
-
-
-
-# SAME, USING `abundance_n2()`
-
-x1 <- abundance_n(stem, group_by = c("sp"), only_alive = FALSE)
-
-head(as.data.frame.table(x1))
-
-head(n_dplyr_se(stem, "sp", only_alive = FALSE))
-
 ## ------------------------------------------------------------------------
-# USING `abundance_n()`
-
-x2 <- abundance_n(stem, group_by = c("sp", "status"), only_alive = FALSE)
-length(dim(x2))
-
-head(x2)
-class(x2)
-
-head(as.data.frame(x2))
-# same
-head(as.data.frame.array(x2))
-# a little better
-head(arrange(as.data.frame.table(x2), sp))
-
-# The previous output is the closest to this "tidy" data frame:
-head(n_dplyr_se(stem, c("sp", "status"), only_alive = FALSE))
-
-
-
-# SAME, USING `abundance_n2()`
-
-x1 <- abundance_n(stem, group_by = c("sp"), only_alive = FALSE)
-
-head(as.data.frame.table(x1))
-
-head(n_dplyr_se(stem, "sp", only_alive = FALSE))
-
-## ------------------------------------------------------------------------
-df <- n_dplyr_se(stem, groups = c("sp", "status"), only_alive = FALSE)
+df <- abundance(stem, group_by = c("sp", "status"), only_alive = FALSE)
 head(df)
 a <- daply(df, .(sp, status), nrow)
 head(a)
-class(a)
+is.array(a)
 
 ## ------------------------------------------------------------------------
 example_years <- c(1938, 1956, 1909, 1992)

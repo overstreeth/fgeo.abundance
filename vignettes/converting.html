@@ -87,11 +87,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
 <span class="kw">library</span>(plyr)
 
-stem &lt;-<span class="st"> </span>bci12s6mini</code></pre></div>
+stem &lt;-<span class="st"> </span>bci12s7mini</code></pre></div>
 <div id="from-array-to-data-frame" class="section level1">
 <h1>From array to data frame</h1>
-<p>Example grouping by one variable.</p>
+<p>Example grouping by two variables.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># USING `abundance_n()`</span>
+
+abundance_n &lt;-<span class="st"> </span>function(x, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;quadrat&quot;</span>, <span class="st">&quot;sp&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">TRUE</span>) {
+    if (only_alive) {
+      valid.status &lt;-<span class="st"> &quot;A&quot;</span>
+    } else {
+      valid.status &lt;-<span class="st"> </span><span class="kw">unique</span>(x$status)
+    }
+    <span class="kw">table</span>(x[x$status %in%<span class="st"> </span>valid.status, group_by])
+}
 
 x1 &lt;-<span class="st"> </span><span class="kw">abundance_n</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>)
 <span class="kw">length</span>(<span class="kw">dim</span>(x1))
@@ -129,156 +138,32 @@ x1 &lt;-<span class="st"> </span><span class="kw">abundance_n</span>(stem, <span
 <span class="co">#&gt; 3 alchco   11</span>
 <span class="co">#&gt; 4 alibed    3</span>
 <span class="co">#&gt; 5 allops    1</span>
-<span class="co">#&gt; 6 alsebl   36</span>
-
-<span class="co"># The previous output is the closest to this &quot;tidy&quot; data frame:</span>
-<span class="kw">head</span>(<span class="kw">n_dplyr_se</span>(stem, <span class="st">&quot;sp&quot;</span>, <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; # A tibble: 6 x 2</span>
-<span class="co">#&gt;       sp     n</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1 acaldi    27</span>
-<span class="co">#&gt; 2 aegipa     1</span>
-<span class="co">#&gt; 3 alchco    11</span>
-<span class="co">#&gt; 4 alibed     3</span>
-<span class="co">#&gt; 5 allops     1</span>
-<span class="co">#&gt; 6 alsebl    36</span>
-
-
-
-<span class="co"># SAME, USING `abundance_n2()`</span>
-
-x1 &lt;-<span class="st"> </span><span class="kw">abundance_n</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>)
-
-<span class="kw">head</span>(<span class="kw">as.data.frame.table</span>(x1))
-<span class="co">#&gt;     Var1 Freq</span>
-<span class="co">#&gt; 1 acaldi   27</span>
-<span class="co">#&gt; 2 aegipa    1</span>
-<span class="co">#&gt; 3 alchco   11</span>
-<span class="co">#&gt; 4 alibed    3</span>
-<span class="co">#&gt; 5 allops    1</span>
-<span class="co">#&gt; 6 alsebl   36</span>
-
-<span class="kw">head</span>(<span class="kw">n_dplyr_se</span>(stem, <span class="st">&quot;sp&quot;</span>, <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; # A tibble: 6 x 2</span>
-<span class="co">#&gt;       sp     n</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1 acaldi    27</span>
-<span class="co">#&gt; 2 aegipa     1</span>
-<span class="co">#&gt; 3 alchco    11</span>
-<span class="co">#&gt; 4 alibed     3</span>
-<span class="co">#&gt; 5 allops     1</span>
-<span class="co">#&gt; 6 alsebl    36</span></code></pre></div>
-<p>Example grouping by one variable.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># USING `abundance_n()`</span>
-
-x2 &lt;-<span class="st"> </span><span class="kw">abundance_n</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>)
-<span class="kw">length</span>(<span class="kw">dim</span>(x2))
-<span class="co">#&gt; [1] 2</span>
-
-<span class="kw">head</span>(x2)
-<span class="co">#&gt;         status</span>
-<span class="co">#&gt; sp        A  D  G  P</span>
-<span class="co">#&gt;   acaldi  4 11 10  2</span>
-<span class="co">#&gt;   aegipa  0  1  0  0</span>
-<span class="co">#&gt;   alchco  2  0  9  0</span>
-<span class="co">#&gt;   alibed  1  1  0  1</span>
-<span class="co">#&gt;   allops  0  1  0  0</span>
-<span class="co">#&gt;   alsebl 20  2  9  5</span>
-<span class="kw">class</span>(x2)
-<span class="co">#&gt; [1] &quot;table&quot;</span>
-
-<span class="kw">head</span>(<span class="kw">as.data.frame</span>(x2))
-<span class="co">#&gt;       sp status Freq</span>
-<span class="co">#&gt; 1 acaldi      A    4</span>
-<span class="co">#&gt; 2 aegipa      A    0</span>
-<span class="co">#&gt; 3 alchco      A    2</span>
-<span class="co">#&gt; 4 alibed      A    1</span>
-<span class="co">#&gt; 5 allops      A    0</span>
-<span class="co">#&gt; 6 alsebl      A   20</span>
-<span class="co"># same</span>
-<span class="kw">head</span>(<span class="kw">as.data.frame.array</span>(x2))
-<span class="co">#&gt;         A  D  G P</span>
-<span class="co">#&gt; acaldi  4 11 10 2</span>
-<span class="co">#&gt; aegipa  0  1  0 0</span>
-<span class="co">#&gt; alchco  2  0  9 0</span>
-<span class="co">#&gt; alibed  1  1  0 1</span>
-<span class="co">#&gt; allops  0  1  0 0</span>
-<span class="co">#&gt; alsebl 20  2  9 5</span>
-<span class="co"># a little better</span>
-<span class="kw">head</span>(<span class="kw">arrange</span>(<span class="kw">as.data.frame.table</span>(x2), sp))
-<span class="co">#&gt;       sp status Freq</span>
-<span class="co">#&gt; 1 acaldi      A    4</span>
-<span class="co">#&gt; 2 acaldi      D   11</span>
-<span class="co">#&gt; 3 acaldi      G   10</span>
-<span class="co">#&gt; 4 acaldi      P    2</span>
-<span class="co">#&gt; 5 aegipa      A    0</span>
-<span class="co">#&gt; 6 aegipa      D    1</span>
-
-<span class="co"># The previous output is the closest to this &quot;tidy&quot; data frame:</span>
-<span class="kw">head</span>(<span class="kw">n_dplyr_se</span>(stem, <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; # A tibble: 6 x 3</span>
-<span class="co">#&gt;       sp status     n</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1 acaldi      A     4</span>
-<span class="co">#&gt; 2 acaldi      D    11</span>
-<span class="co">#&gt; 3 acaldi      G    10</span>
-<span class="co">#&gt; 4 acaldi      P     2</span>
-<span class="co">#&gt; 5 aegipa      D     1</span>
-<span class="co">#&gt; 6 alchco      A     2</span>
-
-
-
-<span class="co"># SAME, USING `abundance_n2()`</span>
-
-x1 &lt;-<span class="st"> </span><span class="kw">abundance_n</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>)
-
-<span class="kw">head</span>(<span class="kw">as.data.frame.table</span>(x1))
-<span class="co">#&gt;     Var1 Freq</span>
-<span class="co">#&gt; 1 acaldi   27</span>
-<span class="co">#&gt; 2 aegipa    1</span>
-<span class="co">#&gt; 3 alchco   11</span>
-<span class="co">#&gt; 4 alibed    3</span>
-<span class="co">#&gt; 5 allops    1</span>
-<span class="co">#&gt; 6 alsebl   36</span>
-
-<span class="kw">head</span>(<span class="kw">n_dplyr_se</span>(stem, <span class="st">&quot;sp&quot;</span>, <span class="dt">only_alive =</span> <span class="ot">FALSE</span>))
-<span class="co">#&gt; # A tibble: 6 x 2</span>
-<span class="co">#&gt;       sp     n</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1 acaldi    27</span>
-<span class="co">#&gt; 2 aegipa     1</span>
-<span class="co">#&gt; 3 alchco    11</span>
-<span class="co">#&gt; 4 alibed     3</span>
-<span class="co">#&gt; 5 allops     1</span>
-<span class="co">#&gt; 6 alsebl    36</span></code></pre></div>
-<p><code>as.data.frame.table()</code> output is closest to a “tidy” data frame. This can also be done with <code>plyr::adply()</code>, but <code>as.data.frame.table()</code> is simplest.</p>
+<span class="co">#&gt; 6 alsebl   36</span></code></pre></div>
 </div>
 <div id="from-data-frame-to-array" class="section level1">
 <h1>From data frame to array</h1>
 <p><strong>plyr</strong> can convert from class <code>data.frame</code> to class <code>array</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">n_dplyr_se</span>(stem, <span class="dt">groups =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">abundance</span>(stem, <span class="dt">group_by =</span> <span class="kw">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="st">&quot;status&quot;</span>), <span class="dt">only_alive =</span> <span class="ot">FALSE</span>)
 <span class="kw">head</span>(df)
-<span class="co">#&gt; # A tibble: 6 x 3</span>
-<span class="co">#&gt;       sp status     n</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1 acaldi      A     4</span>
-<span class="co">#&gt; 2 acaldi      D    11</span>
-<span class="co">#&gt; 3 acaldi      G    10</span>
-<span class="co">#&gt; 4 acaldi      P     2</span>
-<span class="co">#&gt; 5 aegipa      D     1</span>
-<span class="co">#&gt; 6 alchco      A     2</span>
+<span class="co">#&gt;       sp status  n</span>
+<span class="co">#&gt; 1 acaldi      A  5</span>
+<span class="co">#&gt; 2 acaldi      D 11</span>
+<span class="co">#&gt; 3 acaldi      G 11</span>
+<span class="co">#&gt; 4 aegipa      D  1</span>
+<span class="co">#&gt; 5 alchco      D  1</span>
+<span class="co">#&gt; 6 alchco      G 10</span>
 a &lt;-<span class="st"> </span><span class="kw">daply</span>(df, .(sp, status), nrow)
 <span class="kw">head</span>(a)
 <span class="co">#&gt;         status</span>
-<span class="co">#&gt; sp        A  D  G  P</span>
-<span class="co">#&gt;   acaldi  1  1  1  1</span>
-<span class="co">#&gt;   aegipa NA  1 NA NA</span>
-<span class="co">#&gt;   alchco  1 NA  1 NA</span>
-<span class="co">#&gt;   alibed  1  1 NA  1</span>
-<span class="co">#&gt;   allops NA  1 NA NA</span>
-<span class="co">#&gt;   alsebl  1  1  1  1</span>
-<span class="kw">class</span>(a)
-<span class="co">#&gt; [1] &quot;matrix&quot;</span></code></pre></div>
+<span class="co">#&gt; sp        A D  G</span>
+<span class="co">#&gt;   acaldi  1 1  1</span>
+<span class="co">#&gt;   aegipa NA 1 NA</span>
+<span class="co">#&gt;   alchco NA 1  1</span>
+<span class="co">#&gt;   alibed  1 1 NA</span>
+<span class="co">#&gt;   allops NA 1 NA</span>
+<span class="co">#&gt;   alsebl  1 1  1</span>
+<span class="kw">is.array</span>(a)
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>With three grouping variables (using another dataset for simplicity)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example_years &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1938</span>, <span class="dv">1956</span>, <span class="dv">1909</span>, <span class="dv">1992</span>)
 example &lt;-<span class="st"> </span>dplyr::<span class="kw">filter</span>(baseball, year %in%<span class="st"> </span>example_years)
@@ -332,6 +217,7 @@ groups &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">
 <span class="co">#&gt;   1992  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA  NA</span>
 <span class="kw">is.array</span>(a)
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<p>Follow this discussion here: <a href="https://goo.gl/9pyXss" class="uri">https://goo.gl/9pyXss</a>.</p>
 </div>
 
 
