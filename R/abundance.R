@@ -5,7 +5,7 @@
 #' Count number of individuals in total (`abundance_tally()`) or by groups 
 #' (`abundance()`).
 #'
-#' @template  x
+#' @param  x Census data.
 #' @param group_by Character string giving the names of variables to group by.
 #' @param only_alive If TRUE, counts only alive individuals (`status == "A"`).
 #'   If FALSE counts individuals of all available statuses.
