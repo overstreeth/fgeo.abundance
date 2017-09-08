@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abundance measured in number of stems, basal area or above ground biomass. — abundance â€¢ forestr</title>
+<title>Count number of individuals in total or by groups. — abundance â€¢ forestr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -56,9 +56,6 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -79,65 +76,33 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abundance measured in number of stems, basal area or above ground biomass.</h1>
+    <h1>Count number of individuals in total or by groups.</h1>
     </div>
 
     
-    <p>Abundance measured in number of stems, basal area or above ground biomass.</p>
+    <p>Count number of individuals in total (<code>abundance_tally()</code>) or by groups
+(<code>abundance()</code>).</p>
     
 
-    <pre class="usage"><span class='fu'>abundance</span>(<span class='no'>censdata</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"abund"</span>, <span class='kw'>alivecode</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"A"</span>), <span class='kw'>mindbh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dbhunit</span> <span class='kw'>=</span> <span class='st'>"mm"</span>, <span class='kw'>split1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>split2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>abundance</span>(<span class='no'>x</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"quadrat"</span>, <span class='st'>"sp"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>abundanceperquad</span>(<span class='no'>censdata</span>, <span class='kw'>mindbh</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1000</span>, <span class='fl'>500</span>),
-  <span class='kw'>gridsize</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"abund"</span>, <span class='kw'>dbhunit</span> <span class='kw'>=</span> <span class='st'>"mm"</span>)
-
-<span class='fu'>abundance_match_census_habitat</span>(<span class='no'>censdata</span>, <span class='no'>habitats</span>)</pre>
+<span class='fu'>abundance_tally</span>(<span class='no'>x</span>, <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>censdata</th>
-      <td><p>A table of plot census data.</p></td>
+      <th>x</th>
+      <td><p>Census data.</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>Either 'abund' (default) for abundance, 'ba' for basal area, or
-'agb'.</p></td>
+      <th>group_by</th>
+      <td><p>Character string giving the names of variables to group by.</p></td>
     </tr>
     <tr>
-      <th>alivecode</th>
-      <td><p>character, codes of the variable `status` that indicate the 
-tree is alive. The default 'A' is the standard CTFS designation for living 
-trees or stems</p></td>
-    </tr>
-    <tr>
-      <th>mindbh</th>
-      <td><p>The minimum diameter above which the counts are done. Trees
-smaller than `mindbh` are excluded. If `NULL`, all living trees are
-included.</p></td>
-    </tr>
-    <tr>
-      <th>dbhunit</th>
-      <td><p>'cm' or 'mm', only used for basal area.</p></td>
-    </tr>
-    <tr>
-      <th>split1, split2</th>
-      <td><p>A vector of categories, one per individual. See details.</p></td>
-    </tr>
-    <tr>
-      <th>plotdim</th>
-      <td><p>The x and y dimensions of the plot.</p></td>
-    </tr>
-    <tr>
-      <th>gridsize</th>
-      <td><p>Side of the square quadrate.</p></td>
-    </tr>
-    <tr>
-      <th>habitats</th>
-      <td><p>Data frame giving the habitat designation for each 20x20
-quadrat.</p></td>
+      <th>only_alive</th>
+      <td><p>If TRUE, counts only alive individuals (<code>status == "A"</code>).
+If FALSE counts individuals of all available statuses.</p></td>
     </tr>
     </table>
     
@@ -145,130 +110,86 @@ quadrat.</p></td>
 
     
 <ul>
-<li><p><code>abundance()</code> and <code>abundanceperquad()</code> return a named list of two elements:</p><ol>
-<li><p>either <code>abund</code> or <code>ba</code></p></li>
-<li><p><code>meandate</code> (mean measurement date for all individuals in each category).</p></li>
-</ol></li>
-<li><p><code>abundance_match_census_habitat()</code>: A dataframe giving the abundance per
-quadrat.</p></li>
+<li><p><code>abundance_tally()</code>: An integer giving the number of rows in <code>x</code>, which
+for census data equals the number of unique individuals.</p></li>
+<li><p><code>abundance()</code>: a data frame giving the number of individuals in each
+group defined by <code>group_by</code>.</p></li>
 </ul>
 
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <ul>
-<li><p><code>abundance()</code> calculates total abundance or basal area, dividing data with
-1 or 2 categorical variables passed to <code>split1</code> and <code>split2</code>. The length
-of <code>split1</code> and <code>split2</code> must match exactly the number of rows in
-<code>censdata</code> (so one per tree or stem). <code>split1</code> should be the one with the
-most categories (for instances, <code>split1 = species</code>, <code>split2 = dbhcategory</code>).</p>
-<p>Each element of the returned list is an array of one or two dimensions,
-depending on how many split variables were submitted: each of the
-dimensions of the array handles one of the categorical variables.</p>
-<p>For basal area, pass a stem table to <code>censdata</code>; For abundance, use either
-the stem or full table to count stems or trees, respectively.</p></li>
-<li><p><code>abundanceperquadrat()</code> wraps <code>abundance()</code> to find abundance, basal area,
-or agb of every species per square quadrat of any size.</p>
-<p>If the plot dimensions is not an exact multiple of the quadrat size, then a
-strip at the upper edge of the plot (north and east if plot is on cardinal
-directions) is omitted. For example, if <code>gridsize = 40</code> and <code>plotdim = 500</code>,
-then there are an extra 20 meters at the upper boundary omitted from the
-calculations.</p>
-<p>The array of abundances per quadrat is useful for similarity, counting
-species and stems per quadrat, etc.</p></li>
-<li><p><code>abundance_match_census_habitat()</code> wraps <code>abundanceperquad()</code> ensuring
-consistent <code>gridsize</code> and <code>plotdim</code> via <code><a href='extract_from_habitat.html'>extract_gridsize()</a></code> and
-<code><a href='extract_from_habitat.html'>extract_plotdim()</a></code>.</p></li>
-</ul>
-    
-    <h2 class="hasAnchor" id="acknowledgement"><a class="anchor" href="#acknowledgement"></a>Acknowledgement</h2>
-
-    
-    <p>Thanks to Gabriel Arellano for suggesting that the match plot dimensions
-between habitat data and census data should be enforced programatically.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='basal_area.html'>ba</a>, <a href='basal_area.html'>ba_sum</a></p>
+    <p><code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>dplyr::tally()</a></code>, <a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>dplyr::count</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Small subsets of data for examples</span>
+    <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='no'>bci12s7mini</span>
+
+<span class='co'># Returns a data frame by groups</span>
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>stem</span>)
+<span class='fu'>head</span>(<span class='no'>n</span>)</div><div class='output co'>#&gt;   quadrat     sp n
+#&gt; 1    0000 soroaf 1
+#&gt; 2    0002 hybapr 1
+#&gt; 3    0006 hybapr 2
+#&gt; 4    0009 faraoc 1
+#&gt; 5    0009 hybapr 1
+#&gt; 6    0020 tet2pa 1</div><div class='input'>
+<span class='co'># Safest functions always return the same type of output. This errs:</span>
+<span class='fu'>not_run</span>({
+  <span class='fu'>abundance</span>(<span class='no'>stem</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+})
+
+<span class='co'># Returns not a data frame but an integer representing a tally</span>
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance_tally</span>(<span class='no'>stem</span>)
+<span class='fu'>head</span>(<span class='no'>n</span>)</div><div class='output co'>#&gt; [1] 665</div><div class='input'>
+<span class='co'># Count not only alive</span>
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>stem</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"status"</span>, <span class='st'>"sp"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>head</span>(<span class='no'>n</span>)</div><div class='output co'>#&gt;   status     sp  n
+#&gt; 1      A acaldi  5
+#&gt; 2      A alibed  2
+#&gt; 3      A alsebl 21
+#&gt; 4      A anaxpa  3
+#&gt; 5      A andiin  1
+#&gt; 6      A annoac  5</div><div class='input'>
+
+
+<span class='co'># Same, using dplyr directly</span>
+
 <span class='fu'>library</span>(<span class='no'>dplyr</span>)
-<span class='no'>tree_mini</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='kw'>bci</span><span class='kw'>::</span><span class='no'>bci12full5</span>, <span class='fl'>1000</span>)
-<span class='no'>stem_mini</span> <span class='kw'>&lt;-</span> <span class='kw'>bci</span><span class='kw'>::</span><span class='no'>bci12stem5</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>, ]
 
+<span class='no'>alive</span> <span class='kw'>&lt;-</span> <span class='fu'>filter</span>(<span class='no'>stem</span>, <span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"A"</span>)
 
-
-(<span class='no'>tree_abundance</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>tree_mini</span>, <span class='kw'>mindbh</span> <span class='kw'>=</span> <span class='fl'>10</span>))</div><div class='output co'>#&gt; $abund
-#&gt;     all
-#&gt; all 511
-#&gt; 
-#&gt; $meandate
-#&gt;          all
-#&gt; all 14746.64
-#&gt; </div><div class='input'>(<span class='no'>stem_abundance</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>stem_mini</span>, <span class='kw'>mindbh</span> <span class='kw'>=</span> <span class='fl'>10</span>))</div><div class='output co'>#&gt; $abund
-#&gt;     all
-#&gt; all 423
-#&gt; 
-#&gt; $meandate
-#&gt;          all
-#&gt; all 14867.36
-#&gt; </div><div class='input'>
-<span class='no'>stem_basal_area_by_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(
-  <span class='no'>stem_mini</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"ba"</span>,
-  <span class='kw'>mindbh</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>split1</span> <span class='kw'>=</span> <span class='no'>stem_mini</span>$<span class='no'>sp</span>
-)
-<span class='fu'>lapply</span>(<span class='no'>stem_basal_area_by_sp</span>, <span class='no'>head</span>)</div><div class='output co'>#&gt; $ba
-#&gt;               all
-#&gt; aegipa 0.00000000
-#&gt; alchco 0.17657636
-#&gt; allops 0.06326225
-#&gt; alsebl 3.49413040
-#&gt; amaico 0.00000000
-#&gt; anacex 8.82765073
-#&gt; 
-#&gt; $meandate
-#&gt;             all
-#&gt; aegipa       NA
-#&gt; alchco 14872.67
-#&gt; allops 14871.00
-#&gt; alsebl 14869.03
-#&gt; amaico       NA
-#&gt; anacex 14872.60
-#&gt; </div><div class='input'>
-
-
-<span class='no'>tree_n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundanceperquad</span>(
-  <span class='no'>tree_mini</span>,
-  <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1000</span>, <span class='fl'>500</span>),
-  <span class='kw'>gridsize</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"abund"</span>
-)
-<span class='fu'>str</span>(<span class='no'>tree_n</span>$<span class='no'>abund</span>, <span class='kw'>list.len</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; 'data.frame':	143 obs. of  50 variables:
-#&gt;  $ 1 : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 2 : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 3 : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 4 : num  0 0 0 0 1 0 0 0 0 0 ...
-#&gt;  $ 5 : num  0 0 0 0 0 1 0 1 0 0 ...
-#&gt;  $ 6 : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 7 : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 8 : num  0 0 0 0 1 0 0 0 0 0 ...
-#&gt;  $ 9 : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 10: num  0 0 0 0 1 0 0 0 0 0 ...
-#&gt;   [list output truncated]</div><div class='input'>
-<span class='co'># Matching `gridsize` and `plotdim` between census data and habitat data</span>
-<span class='no'>abund</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance_match_census_habitat</span>(<span class='no'>tree_mini</span>, <span class='kw'>bci</span><span class='kw'>::</span><span class='no'>bci_habitat</span>)
-<span class='fu'>str</span>(<span class='no'>abund</span>, <span class='kw'>list.len</span> <span class='kw'>=</span> <span class='fl'>6</span>)</div><div class='output co'>#&gt; 'data.frame':	143 obs. of  1250 variables:
-#&gt;  $ 1   : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 2   : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 3   : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 4   : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 5   : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;  $ 6   : num  0 0 0 0 0 0 0 0 0 0 ...
-#&gt;   [list output truncated]</div></pre>
+<span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+<span class='fu'>summarise</span>(<span class='no'>grouped</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>n</span>())</div><div class='output co'>#&gt; # A tibble: 568 x 3
+#&gt; # Groups:   quadrat [?]
+#&gt;    quadrat     sp     n
+#&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
+#&gt;  1    0000 soroaf     1
+#&gt;  2    0002 hybapr     1
+#&gt;  3    0006 hybapr     2
+#&gt;  4    0009 faraoc     1
+#&gt;  5    0009 hybapr     1
+#&gt;  6    0020 tet2pa     1
+#&gt;  7    0022 sympgl     1
+#&gt;  8    0100 des2pa     1
+#&gt;  9    0100 psycho     1
+#&gt; 10    0101 ingafa     1
+#&gt; # ... with 558 more rows</div><div class='input'>
+<span class='co'># Or</span>
+<span class='fu'>count</span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 568 x 3
+#&gt;    quadrat     sp     n
+#&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
+#&gt;  1    0000 soroaf     1
+#&gt;  2    0002 hybapr     1
+#&gt;  3    0006 hybapr     2
+#&gt;  4    0009 faraoc     1
+#&gt;  5    0009 hybapr     1
+#&gt;  6    0020 tet2pa     1
+#&gt;  7    0022 sympgl     1
+#&gt;  8    0100 des2pa     1
+#&gt;  9    0100 psycho     1
+#&gt; 10    0101 ingafa     1
+#&gt; # ... with 558 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -277,10 +198,6 @@ between habitat data and census data should be enforced programatically.</p>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#acknowledgement">Acknowledgement</a></li>
-
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -288,8 +205,7 @@ between habitat data and census data should be enforced programatically.</p>
 
     <h2>Author</h2>
     
-<code>abundance() and</code>abundanceperquad()` were developed by Richard
-Condit.
+Gabriel Arellano, Sean McMahon &amp; Mauro Lepore.
 
   </div>
 </div>
