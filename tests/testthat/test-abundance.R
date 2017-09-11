@@ -42,3 +42,18 @@ test_that("weird arguments throw error", {
   expect_error(abundance(stem, only_alive = NULL))  
 
 })
+
+
+test_that("returns the despite tricky objects in the global environment", {
+  
+})
+
+
+
+
+
+
+
+
+
+
