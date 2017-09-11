@@ -1,5 +1,7 @@
 context("abundance")
 
+library(tidyverse)
+
 stem <- bci12s7mini
 
 df <- data.frame(
@@ -44,8 +46,26 @@ test_that("weird arguments throw error", {
 })
 
 
-test_that("returns the despite tricky objects in the global environment", {
-  
+test_that("tricky objects in global environment cause no scoping issues", {
+  # Create a confusing variable on the global environment
+  # confusing because `parsed_groups` exists in the function's body
+  parsed_groups <- c("status")  # this should be ignored
+  nms <- abundance(df) %>% 
+    as_tibble() %>% 
+    names()
+  expect_false("status" %in% nms)
+
+  group_by <- c("status")  # this should be ignored
+  nms <- abundance(df) %>% 
+    as_tibble() %>% 
+    names()
+  expect_false("status" %in% nms)
+
+  group_by <- c("status")  # this should be ignored
+  nms <- abundance(df, group_by = group_by) %>% 
+    as_tibble() %>% 
+    names()
+  expect_true("status" %in% nms)
 })
 
 
