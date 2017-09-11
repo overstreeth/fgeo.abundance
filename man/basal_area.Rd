@@ -29,6 +29,11 @@ area of a circle given its diameter.
 \description{
 Basal area of each individual (\code{basal_area_ind()}).
 }
+\details{
+Units of returned values are the square of the input units. For example, if
+you input diameter measured in mm, the output will be an area measured in
+mm^2.
+}
 \examples{
 stem <- bci12s7mini
 

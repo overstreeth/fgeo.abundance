@@ -119,6 +119,12 @@ area of a circle given its diameter.</p></li>
 </ul>
 
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Units of returned values are the square of the input units. For example, if
+you input diameter measured in mm, the output will be an area measured in
+mm^2.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other grouped summaries: <code><a href='abundance.html'>abundance</a></code></p>
@@ -127,8 +133,8 @@ area of a circle given its diameter.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='no'>bci12s7mini</span>
 
-<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 720  NA  NA  NA  NA  NA</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Returning basal area in the same units as input.</span></div><div class='output co'>#&gt; [1] 407150.4       NA       NA       NA       NA       NA</div><div class='input'>
-<span class='fu'>head</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>))</div><div class='output co'>#&gt; <span class='message'>Returning basal area in the same units as input.</span></div><div class='output co'>#&gt;   quadrat     sp basal_area
+<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 720  NA  NA  NA  NA  NA</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt; [1] 407150.4       NA       NA       NA       NA       NA</div><div class='input'>
+<span class='fu'>head</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt;   quadrat     sp basal_area
 #&gt; 1    0000 soroaf 2642.07942
 #&gt; 2    0002 hybapr   95.03318
 #&gt; 3    0006 hybapr  475.16589
@@ -150,6 +156,8 @@ area of a circle given its diameter.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
