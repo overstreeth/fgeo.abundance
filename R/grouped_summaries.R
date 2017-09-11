@@ -1,3 +1,25 @@
+# Grouping function to reuse in the "grouped summaries" family' -----------
+
+group <- function(x, group_by, only_alive) {
+  assertive::assert_is_non_empty(x)
+    
+  if (only_alive) {
+    x <- x[x$status == "A", ]
+  }
+  
+  if (is.null(group_by)) {
+    stop("group_by can't be NULL.")
+  }
+  
+  # Convert from character string to bare names (https://goo.gl/kPqMUk)
+  parsed_groups <- lapply(group_by, parse_quosure)
+  dplyr::group_by(x, UQS(parsed_groups))
+}
+
+
+
+# Abundance ---------------------------------------------------------------
+
 #' Count number of individuals in total or by groups.
 #' 
 #' Count number of individuals in total (`abundance_tally()`) or by groups 
@@ -24,22 +46,17 @@
 #' n <- abundance(stem)
 #' head(n)
 #' 
-#' # Safest functions always return the same type of output. This errs:
-#' \dontrun{
-#' abundance(stem, group_by = NULL)
-#' }
-#' 
-#' # Returns not a data frame but an integer representing a tally
-#' n <- abundance_tally(stem)
-#' head(n)
+#' # Instead of a data frame, return an integer representing a tally
+#' abundance_tally(stem)
 #' 
 #' # Count not only alive
 #' n <- abundance(stem, group_by = c("status", "sp"), only_alive = FALSE)
-#' head(n)
+#' ordered_by_species <- order(n$sp)
+#' head(n[ordered_by_species, ])
 #' 
 #' 
 #' 
-#' # Same, using dplyr directly
+#' # Alternatives ----------------------------------------------------------
 #' 
 #' library(dplyr)
 #' 
@@ -52,20 +69,7 @@
 #' count(alive, quadrat, sp)
 #' @export
 abundance <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
-  assertive::assert_is_non_empty(x)
-    
-  if (only_alive) {
-    x <- x[x$status == "A", ]
-  }
-  
-  if (is.null(group_by)) {
-    stop("group_by can't be NULL. If you want a tally, see ?abundance_tally.")
-  }
-  
-  # Convert from character string to bare names (https://goo.gl/kPqMUk)
-  parsed_groups <- lapply(group_by, parse_quosure)
-  grouped <- dplyr::group_by(x, UQS(parsed_groups))
-  
+  grouped <- group(x = x, group_by = group_by, only_alive = only_alive)
   count <- dplyr::summarise(grouped, n = n())
   as.data.frame(count, stringsAsFactors = FALSE)
 }
@@ -81,44 +85,7 @@ abundance_tally <- function(x, only_alive = TRUE) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# DRY: group before summarizing in family abundance(), basal_area(), etc ----
-
-group <- function(x, group_by, only_alive) {
-  assertive::assert_is_non_empty(x)
-    
-  if (only_alive) {
-    x <- x[x$status == "A", ]
-  }
-  
-  if (is.null(group_by)) {
-    stop("group_by can't be NULL.")
-  }
-  
-  # Convert from character string to bare names (https://goo.gl/kPqMUk)
-  parsed_groups <- lapply(group_by, parse_quosure)
-  dplyr::group_by(x, UQS(parsed_groups))
-}
-
-
-
-# Basal area ----
+# Basal area --------------------------------------------------------------
 
 #' Basal area.
 #' 
@@ -140,10 +107,12 @@ group <- function(x, group_by, only_alive) {
 #' @examples
 #' stem <- bci12s7mini
 #' 
+#' head(stem$dbh)
 #' head(basal_area_ind(stem$dbh))
+#' 
 #' head(basal_area(stem))
 #' 
-#' # Same but silent
+#' # Silent
 #' head(suppressMessages(basal_area(stem)))
 basal_area <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
   grouped <- group(x = x, group_by = group_by, only_alive = only_alive)
