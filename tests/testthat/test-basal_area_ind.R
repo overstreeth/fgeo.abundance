@@ -8,7 +8,7 @@ df <- data.frame(
 )
 
 test_that("retuns a numeric vector", {
-  result <- suppressMessages(basal_area_ind(stem$dbh))
+  result <- suppressMessages(basal_area_ind(df$dbh))
   expect_type(result, "double")
   expect_true(purrr::is_vector(result))
 })

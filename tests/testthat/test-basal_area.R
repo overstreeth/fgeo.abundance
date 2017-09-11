@@ -25,12 +25,17 @@ test_that("returns the same as *_ind if data has only one row.", {
 
 
 test_that("returns the correct sum", {
+  df <- data.frame(
+    sp = rep(letters[1:3], each = 2),
+    status = rep(c("A", "D"), 3),
+    quadrat = 1:6,
+    dbh = rnorm(6)
+  )
   df$ba <- suppressMessages(basal_area_ind(df$dbh))
   
   actual <- sum(basal_area(df, "quadrat", FALSE) %>% pull(basal_area))
   expected <- sum(df$ba)
   expect_equal(actual, expected)
-  expect_true(near(round(actual, 3), round(4.712389, 3)))
 })
 
 test_that("Argument only_alive works as expected", {
