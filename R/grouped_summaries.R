@@ -91,6 +91,10 @@ abundance_tally <- function(x, only_alive = TRUE) {
 #' 
 #' Basal area of each individual (`basal_area_ind()`).
 #'
+#' Units of returned values are the square of the input units. For example, if 
+#' you input diameter measured in mm, the output will be an area measured in
+#' mm^2.
+#'
 #' @template x
 #' @template group_by 
 #' @template only_alive
@@ -121,7 +125,7 @@ basal_area <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
     sum(suppressMessages(basal_area_ind(diameter)), na.rm = TRUE)
   }
   count <- dplyr::summarise(grouped, basal_area = sum_basal_area(.data$dbh))
-  message("Returning basal area in the same units as input.")
+  message("Units of returned values are the square of the input units.")
   as.data.frame(count, stringsAsFactors = FALSE)
 }
 
@@ -130,6 +134,6 @@ basal_area <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
 basal_area_ind <- function(diameter) {
   assertive::assert_is_non_empty(diameter)
   
-  message("Returning basal area in the same units as input.")
+  message("Units of returned values are the square of the input units.")
   1/4 * pi * (diameter)^2
 }
