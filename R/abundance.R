@@ -63,8 +63,8 @@ abundance <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
   }
   
   # Convert from character string to bare names (https://goo.gl/kPqMUk)
-  parsed_groups <- lapply(group_by, rlang::parse_quosure)
-  grouped <- dplyr::group_by(x, rlang::UQS(parsed_groups))
+  parsed_groups <- lapply(group_by, parse_quosure)
+  grouped <- dplyr::group_by(x, UQS(parsed_groups))
   
   count <- dplyr::summarise(grouped, n = n())
   as.data.frame(count, stringsAsFactors = FALSE)
@@ -112,8 +112,8 @@ group <- function(x, group_by, only_alive) {
   }
   
   # Convert from character string to bare names (https://goo.gl/kPqMUk)
-  parsed_groups <- lapply(group_by, rlang::parse_quosure)
-  dplyr::group_by(x, rlang::UQS(parsed_groups))
+  parsed_groups <- lapply(group_by, parse_quosure)
+  dplyr::group_by(x, UQS(parsed_groups))
 }
 
 
@@ -142,6 +142,8 @@ group <- function(x, group_by, only_alive) {
 #' 
 #' head(basal_area_ind(stem$dbh))
 #' head(basal_area(stem))
+#' 
+#' # Same but silent
 #' head(suppressMessages(basal_area(stem)))
 basal_area <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
   grouped <- group(x = x, group_by = group_by, only_alive = only_alive)

@@ -34,6 +34,8 @@ stem <- bci12s7mini
 
 head(basal_area_ind(stem$dbh))
 head(basal_area(stem))
+
+# Same but silent
 head(suppressMessages(basal_area(stem)))
 }
 \seealso{
