@@ -14,7 +14,7 @@ abundance_tally(x, only_alive = TRUE)
 
 \item{group_by}{Character string giving the names of variables to group by.}
 
-\item{only_alive}{If TRUE, counts only alive individuals (\code{status == "A"}).
+\item{only_alive}{If TRUE, counts only alive individuals (`status == "A"`).
 If FALSE counts individuals of all available statuses.}
 }
 \value{
@@ -64,7 +64,9 @@ summarise(grouped, n = n())
 count(alive, quadrat, sp)
 }
 \seealso{
-\code{\link[dplyr:tally]{dplyr::tally()}}, \link[dplyr:count]{dplyr::count}.
+\code{\link[dplyr:tally]{dplyr::tally()}}, \code{\link[dplyr:count]{dplyr::count()}}.
+
+Other grouped summaries: \code{\link{basal_area}}
 }
 \author{
 Gabriel Arellano, Sean McMahon & Mauro Lepore.
