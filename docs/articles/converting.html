@@ -69,6 +69,19 @@
 <p>–@gabrielato</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
 <span class="kw">library</span>(plyr)
+<span class="kw">library</span>(dplyr)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:plyr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     arrange, count, desc, failwith, id, mutate, rename, summarise,</span>
+<span class="co">#&gt;     summarize</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 
 stem &lt;-<span class="st"> </span>bci12s7mini</code></pre></div>
 <div id="from-array-to-data-frame" class="section level1">
@@ -137,7 +150,7 @@ x1 &lt;-<span class="st"> </span><span class="kw">abundance_n</span>(stem, <span
 <span class="co">#&gt; 4 aegipa      D  1</span>
 <span class="co">#&gt; 5 alchco      D  1</span>
 <span class="co">#&gt; 6 alchco      G 10</span>
-a &lt;-<span class="st"> </span><span class="kw">daply</span>(df, .(sp, status), nrow)
+a &lt;-<span class="st"> </span>plyr::<span class="kw">daply</span>(df, .(sp, status), nrow)
 <span class="kw">head</span>(a)
 <span class="co">#&gt;         status</span>
 <span class="co">#&gt; sp        A D  G</span>
@@ -155,7 +168,7 @@ example &lt;-<span class="st"> </span>dplyr::<span class="kw">filter</span>(base
 
 <span class="co"># grouping by year, team and stint, to show array of 3 dimensions</span>
 groups &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"year"</span>, <span class="st">"team"</span>, <span class="st">"stint"</span>)
-(a &lt;-<span class="st"> </span><span class="kw">daply</span>(example, <span class="dt">.variables =</span> groups, <span class="dt">.fun =</span> nrow))
+(a &lt;-<span class="st"> </span>plyr::<span class="kw">daply</span>(example, <span class="dt">.variables =</span> groups, <span class="dt">.fun =</span> nrow))
 <span class="co">#&gt; , , stint = 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;       team</span>

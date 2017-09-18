@@ -20,6 +20,7 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 ## ------------------------------------------------------------------------
 library(forestr)
 library(plyr)
+library(dplyr)
 
 stem <- bci12s7mini
 
@@ -50,7 +51,7 @@ head(as.data.frame.table(x1))
 ## ------------------------------------------------------------------------
 df <- abundance(stem, group_by = c("sp", "status"), only_alive = FALSE)
 head(df)
-a <- daply(df, .(sp, status), nrow)
+a <- plyr::daply(df, .(sp, status), nrow)
 head(a)
 is.array(a)
 
@@ -60,6 +61,6 @@ example <- dplyr::filter(baseball, year %in% example_years)
 
 # grouping by year, team and stint, to show array of 3 dimensions
 groups <- c("year", "team", "stint")
-(a <- daply(example, .variables = groups, .fun = nrow))
+(a <- plyr::daply(example, .variables = groups, .fun = nrow))
 is.array(a)
 

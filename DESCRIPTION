@@ -16,14 +16,10 @@ BugReports: https://github.com/forestgeo/forestr/issues
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
-Suggests: testthat,
-    assertive,
-    rmarkdown,
-    ctfs,
-    knitr,
-    bci
-Imports: dplyr,
-    tidyr,
+Suggests: knitr,
     plyr,
-    rlang,
-    tibble
+    rmarkdown,
+    testthat
+Imports: assertive,
+    dplyr,
+    rlang
