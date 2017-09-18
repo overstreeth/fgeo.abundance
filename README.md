@@ -21,8 +21,13 @@ Install forestr from ForestGEO's private GitHub repo.
 
     # install.packages("devtools")
 
-    # Install the version containing this specific issue (iss41)
-    devtools::install_github("forestgeo/forestr@iss41", auth_token = "abc")
+    # Install the master branch
+    devtools::install_github("forestgeo/forestr", auth_token = "abc")
+
+    # Or install a branch containing a specific ISSUE
+    devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
+
+    # Then, load each time before using
     library(forestr)
 
 Acknowledgements.
