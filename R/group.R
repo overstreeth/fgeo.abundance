@@ -10,6 +10,6 @@ group <- function(x, group_by, only_alive) {
   }
   
   # Convert from character string to bare names (https://goo.gl/kPqMUk)
-  parsed_groups <- lapply(group_by, parse_quosure)
-  dplyr::group_by(x, UQS(parsed_groups))
+  parsed_groups <- lapply(group_by, rlang::parse_quosure)
+  dplyr::group_by(x, rlang::UQS(parsed_groups))
 }

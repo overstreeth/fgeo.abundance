@@ -11,7 +11,4 @@
 #'
 #' @name forestr
 #' @docType package
-#' @import rlang
-#' @importFrom dplyr n
-#'
 "_PACKAGE"
