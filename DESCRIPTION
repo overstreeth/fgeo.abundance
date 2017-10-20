@@ -6,19 +6,13 @@ Authors@R: c(
     person("CTFS-ForestGEO", , , "ForestGEO@si.edu", role = c("cph", "fnd"))
     )
 Description: Tools for the analysis of forest dynamics.
-Depends:
-    R (>= 3.1.2)
-License: file LICENSE
-Encoding: UTF-8
-LazyData: true
+License: GPL-3
 URL: https://github.com/forestgeo/forestr
 BugReports: https://github.com/forestgeo/forestr/issues
-RoxygenNote: 6.0.1
-Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 3.1.2)
 VignetteBuilder: knitr
-Suggests: knitr,
-    rmarkdown,
-    testthat
-Imports: assertive,
-    dplyr,
-    rlang
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
