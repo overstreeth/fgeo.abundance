@@ -1,5 +1,17 @@
-# Grouping function to reuse in the "grouped summaries" family' -----------
-
+#' A version of [dplyr::group_by()] that inputs "quoted" variable names.
+#' 
+#' @template x
+#' @template group_by 
+#' @template only_alive
+#' 
+#' @seealso [dplyr::group_by()].
+#' 
+#' @return A grouped tibble.
+#' @export
+#' @examples 
+#' df <- bciex::bci12s7mini
+#' group(df, "sp", only_alive = TRUE)
+#' group(df, c("quadrat", "sp"), only_alive = TRUE)
 group <- function(x, group_by, only_alive) {
   assertive::assert_is_non_empty(x)
     
