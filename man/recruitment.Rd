@@ -2,20 +2,14 @@
 % Please edit documentation in R/ctfs-recruitment.R
 \name{recruitment}
 \alias{recruitment}
-\alias{recruitment.eachspp}
-\alias{recruitment_df}
-\alias{recruitment.eachspp_df}
+\alias{demography_df}
 \title{Caculate recruitment for all and each species (as in the CTFS R package)}
 \usage{
 recruitment(census1, census2, mindbh = 10, alivecode = c("A", "AB", "AS"),
   split1 = NULL, split2 = NULL)
 
-recruitment.eachspp(census1, census2, mindbh = 10, alivecode = c("A", "AB",
-  "AS"))
-
-recruitment_df(...)
-
-recruitment.eachspp_df(...)
+demography_df(.f, census1, census2, mindbh = 10, alivecode = c("A", "AB",
+  "AS"), split1 = NULL)
 }
 \arguments{
 \item{census1}{The R Analytical Table for a single census, either tree or
@@ -49,11 +43,13 @@ trees or stems}
 }
 }
 \description{
-\code{recruitment()} and \code{recruitment.eachspp()} caculate recruitment for all and
-each species and return a list (as in
-(http://ctfs.si.edu/Public/CTFSRPackage/). \code{recruitment_df()} and
-\code{recruitment.eachspp_df()} are equivalent but instead of a list they output a
-dataframe, which is easier to manipulate and view.
+\code{recruitment()} caculates recruitment accross the entire dataset or within
+one or two groups and returns a list (as in
+(http://ctfs.si.edu/Public/CTFSRPackage/). \code{demography_df()} takes any
+demography function and performs the exact same calculation; it works accross
+the entire dataset or within one group -- not within two groups. And instead
+of a list it  returns a dataframe, which is easier to manipulate and view
+(see examples).
 }
 \details{
 For every individual of all species you must provide two complete datasets,
@@ -80,16 +76,27 @@ lapply(each_spp, head)
 
 # Easier to manipulate and view -------------------------------------------
 
-library(dplyr)
-library(tidyr)
+# `demography_df()` takes any function but only 1 or NULL splitting variables
 
-(result <- recruitment.eachspp_df(census1, census2))
+split_null <- demography_df(.f = "recruitment", census1, census2)
+split_null
+
+split_quad <- demography_df(.f = "recruitment", census1, census2, 
+  split1 = census1$quadrat)
+head(split_quad, 10)
+
+# Exploring recruitment for some interesting species
+
+split_spp <- demography_df(.f = "recruitment", census1, census2, 
+  split1 = census1$sp)
+head(split_spp, 10)
 
 sp_to_explore <- c("casesy", "ocotob", "soroaf")
-long_format <- dplyr::filter(result, sp \%in\% sp_to_explore)
+long_format <- subset(split_spp, split1 \%in\% sp_to_explore)
 long_format
 
-wide_format <- tidyr::spread(long_format, key = sp, value = value)
+library(tidyr)
+wide_format <- tidyr::spread(long_format, key = split1, value = value)
 wide_format
 }
 \seealso{

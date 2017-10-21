@@ -2,16 +2,15 @@
 % Please edit documentation in R/ctfs-recruitment.R
 \name{drp}
 \alias{drp}
-\title{A version of drop which includes as.matrix. Without it, drop does n...}
+\title{Internal.}
 \usage{
 drp(x)
 }
 \description{
-A version of drop which includes as.matrix. Without it, drop does not serve
-its purpose. This is necessary in many many situations where a single row is
-taken out of a dataframe, but must be passed as a vector.
+Internal.
 }
 \seealso{
 Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{fill.dimension}},
   \code{\link{find.climits}}, \code{\link{recruitment}}
 }
+\keyword{internal}

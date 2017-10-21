@@ -1,6 +1,15 @@
+
+
+# Examples
+census1 <- subset(forestr::bci12t6mini, sp %in% c("casesy", "ocotob", "soroaf"))
+census2 <- subset(forestr::bci12t7mini, sp %in% c("casesy", "ocotob", "soroaf"))
+
+recruitment_by(census1, census2, group_by = c("quadrat", "sp"))
+
+
 recruitment_by <- function(census1, 
                            census2, 
-                           group_by = c("sp"),
+                           group_by = c("quadrat"),
                            only_alive = TRUE, ...) {
   # Reformat data to map each group to a data set in census1 and census2
   group_vars <- group_by
@@ -26,28 +35,7 @@ recruitment_by <- function(census1,
   
   # Calculate recruitment for each data set
   recruitment <- mutate(cns_non_empty, 
-    recruitment = map2(census1, census2, recruitment_df))
+    recruitment = map2(census1, census2, recruitment_df, ...))
   unnest(recruitment[c(group_vars, "recruitment")])
 }
-
-  
-# list(census1 = census1, census2 = census2) %>% 
-# # map(as.tibble) %>% 
-# enframe(name = "census") %>% 
-# unnest() %>% 
-# group_by(census, sp) %>% 
-# nest() %>% 
-# spread(census, data) %>% 
-# mutate(recruitment = map2(census1, census2, recruitment_df))
-
-
-
-
-
-
-
-
-
-
-
 

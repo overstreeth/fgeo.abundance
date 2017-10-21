@@ -10,12 +10,14 @@
 
 
 #' Caculate recruitment for all and each species (as in the CTFS R package)
-#' 
-#' `recruitment()` and `recruitment.eachspp()` caculate recruitment for all and
-#' each species and return a list (as in
-#' (http://ctfs.si.edu/Public/CTFSRPackage/). `recruitment_df()` and
-#' `recruitment.eachspp_df()` are equivalent but instead of a list they output a
-#' dataframe, which is easier to manipulate and view.
+#'
+#' `recruitment()` caculates recruitment accross the entire dataset or within 
+#' one or two groups and returns a list (as in
+#' (http://ctfs.si.edu/Public/CTFSRPackage/). `demography_df()` takes any 
+#' demography function and performs the exact same calculation; it works accross
+#' the entire dataset or within one group -- not within two groups. And instead
+#' of a list it  returns a dataframe, which is easier to manipulate and view 
+#' (see examples).
 #' 
 #' For every individual of all species you must provide two complete datasets,
 #' one per census, with variables `dbh`, `pom`, `status` and `date`. Any status
@@ -60,23 +62,34 @@
 #' 
 #' # Easier to manipulate and view -------------------------------------------
 #' 
-#' library(dplyr)
-#' library(tidyr)
+#' # `demography_df()` takes any function but only 1 or NULL splitting variables
 #' 
-#' (result <- recruitment.eachspp_df(census1, census2))
+#' split_null <- demography_df(.f = "recruitment", census1, census2)
+#' split_null
+#' 
+#' split_quad <- demography_df(.f = "recruitment", census1, census2, 
+#'   split1 = census1$quadrat)
+#' head(split_quad, 10)
+#' 
+#' # Exploring recruitment for some interesting species
+#' 
+#' split_spp <- demography_df(.f = "recruitment", census1, census2, 
+#'   split1 = census1$sp)
+#' head(split_spp, 10)
 #' 
 #' sp_to_explore <- c("casesy", "ocotob", "soroaf")
-#' long_format <- dplyr::filter(result, sp %in% sp_to_explore)
+#' long_format <- subset(split_spp, split1 %in% sp_to_explore)
 #' long_format
 #' 
-#' wide_format <- tidyr::spread(long_format, key = sp, value = value)
+#' library(tidyr)
+#' wide_format <- tidyr::spread(long_format, key = split1, value = value)
 #' wide_format
 recruitment <-function(census1,
-                            census2,
-                            mindbh = 10,
-                            alivecode = c("A", "AB", "AS"),
-                            split1 = NULL,
-                            split2 = NULL) {
+                       census2,
+                       mindbh = 10,
+                       alivecode = c("A", "AB", "AS"),
+                       split1 = NULL,
+                       split2 = NULL) {
  if(is.null(split1)) split1=rep("all",dim(census1)[1])
  if(is.null(split2)) split2=rep("all",dim(census2)[1])
 
@@ -144,34 +157,38 @@ recruitment <-function(census1,
 
 #' @rdname recruitment
 #' @export
-recruitment.eachspp <- function(census1,
-                             census2,
-                             mindbh = 10,
-                             alivecode = c("A", "AB", "AS")) {
- result=recruitment(census1,census2,mindbh=mindbh,alivecode=alivecode,split1=census1$sp)
- return(result)
-}
-
-#' @rdname recruitment
-#' @export
-recruitment_df <- function(...) {
-  recruitment_list <- recruitment(...)
-  tidyr::unnest(tibble::enframe(recruitment_list))
-}
-
-#' @rdname recruitment
-#' @export
-recruitment.eachspp_df <- function(...) {
-  recruitment.eachspp_list <- recruitment.eachspp(...)
-  df_list <- purrr::map(recruitment.eachspp_list, tibble::enframe, name = "sp")
+demography_df <- function(.f, 
+                          census1, 
+                          census2, 
+                          mindbh = 10, 
+                          alivecode = c("A", "AB", "AS"),
+                          split1 = NULL) {
+  # Calculate with the relevant demography function
+  args_list <- list(census1 = census1, census2 = census2, mindbh = mindbh, 
+    alivecode = alivecode, split1 = split1)
+  result_list <- do.call(.f, args_list)
+  
+  # Transform result from list to dataframe
+  df_list <- purrr::map(result_list, tibble::enframe)
   df_nested_cols <- tibble::enframe(df_list, "metric")
   df_long <- dplyr::select(tidyr::unnest(df_nested_cols), 
-    .data$sp, .data$metric, .data$value)
-  dplyr::arrange(df_long, .data$sp)
+    .data$name, .data$metric, .data$value)
+  arranged <- dplyr::arrange(df_long, .data$name)
+  
+  # Rename splitting variable or remove it if none is provided
+  if (is.null(split1)) {
+    arranged$name <- NULL
+    arranged
+  } else {
+    is_name_to_rename <- grepl("name", names(arranged))
+    names(arranged)[is_name_to_rename] <- "split1"
+    arranged
+  }
 }
 
 
 
+# Internal dependencies of recruitment ------------------------------------
 
 #' Internal.
 #'
@@ -187,8 +204,6 @@ fill.dimension <- function(dataarray, class1, class2, fill = 0) {
  
  return(result)
 }
-
-
 
 #' Internal.
 #'
@@ -210,18 +225,10 @@ find.climits <- function(N, D, alpha = .05, kind = 'upper') {
  
 }
 
-
-
-
-
-
-
-#' A version of drop which includes as.matrix. Without it, drop does n...
+#' Internal.
 #'
-#' A version of drop which includes as.matrix. Without it, drop does not serve
-#' its purpose. This is necessary in many many situations where a single row is
-#' taken out of a dataframe, but must be passed as a vector.
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
 drp <- function(x) {
   return(drop(as.matrix(x)))
 }
