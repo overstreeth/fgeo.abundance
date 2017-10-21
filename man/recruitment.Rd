@@ -8,8 +8,8 @@
 recruitment(census1, census2, mindbh = 10, alivecode = c("A", "AB", "AS"),
   split1 = NULL, split2 = NULL)
 
-demography_df(.f, census1, census2, mindbh = 10, alivecode = c("A", "AB",
-  "AS"), split1 = NULL)
+demography_df(.f = c("recruitment", "mortality", "growth"), census1, census2,
+  mindbh = 10, alivecode = c("A", "AB", "AS"), split1 = NULL)
 }
 \arguments{
 \item{census1}{The R Analytical Table for a single census, either tree or
@@ -28,6 +28,8 @@ trees or stems}
 \item{split1}{a vector of categories, one per individual}
 
 \item{split2}{another vector of categories, one per individual}
+
+\item{.f}{Demography function.}
 }
 \value{
 (xxx ask documentation) A list with components:
@@ -70,8 +72,8 @@ census2 <- forestr::bci12t7mini
 
 recruitment(census1, census2)
 
-# Trick to fit a few species on screen
-each_spp <- recruitment.eachspp(census1, census2)
+each_spp <- recruitment(census1, census2, split1 = census1$sp)
+# Fit a few species on screen
 lapply(each_spp, head)
 
 # Easier to manipulate and view -------------------------------------------

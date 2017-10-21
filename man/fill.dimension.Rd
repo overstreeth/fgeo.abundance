@@ -4,7 +4,7 @@
 \alias{fill.dimension}
 \title{Internal.}
 \usage{
-fill.dimension(dataarray, class1, class2, fill = 0)
+\method{fill}{dimension}(dataarray, class1, class2, fill = 0)
 }
 \description{
 Internal.

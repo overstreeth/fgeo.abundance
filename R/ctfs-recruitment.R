@@ -29,7 +29,8 @@
 #' status is NA in either census are deleted from all calculations.
 #' 
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
-#'
+#' 
+#' @param .f Demography function.
 #' @template census1_census2
 #' @template mindbh
 #' @template alivecode
@@ -56,8 +57,8 @@
 #' 
 #' recruitment(census1, census2)
 #' 
-#' # Trick to fit a few species on screen
-#' each_spp <- recruitment.eachspp(census1, census2)
+#' each_spp <- recruitment(census1, census2, split1 = census1$sp)
+#' # Fit a few species on screen
 #' lapply(each_spp, head)
 #' 
 #' # Easier to manipulate and view -------------------------------------------
@@ -157,22 +158,29 @@ recruitment <-function(census1,
 
 #' @rdname recruitment
 #' @export
-demography_df <- function(.f, 
+demography_df <- function(.f = c("recruitment", "mortality", "growth"), 
                           census1, 
                           census2, 
                           mindbh = 10, 
                           alivecode = c("A", "AB", "AS"),
                           split1 = NULL) {
+  .f <- .f[1]
+  if (.f != "recruitment") {
+    stop("demography currently supports only `recruitment`")
+  }
+  
   # Calculate with the relevant demography function
-  args_list <- list(census1 = census1, census2 = census2, mindbh = mindbh, 
-    alivecode = alivecode, split1 = split1)
+  args_list <- list(
+    census1 = census1, census2 = census2, 
+    mindbh = mindbh, alivecode = alivecode, split1 = split1
+  )
   result_list <- do.call(.f, args_list)
   
   # Transform result from list to dataframe
   df_list <- purrr::map(result_list, tibble::enframe)
   df_nested_cols <- tibble::enframe(df_list, "metric")
-  df_long <- dplyr::select(tidyr::unnest(df_nested_cols), 
-    .data$name, .data$metric, .data$value)
+  unnested <- tidyr::unnest(df_nested_cols)
+  df_long <- dplyr::select(unnested, .data$name, .data$metric, .data$value)
   arranged <- dplyr::arrange(df_long, .data$name)
   
   # Rename splitting variable or remove it if none is provided
