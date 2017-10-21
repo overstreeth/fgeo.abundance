@@ -19,7 +19,8 @@ RoxygenNote: 6.0.1
 Imports: 
     rlang (>= 0.1.2),
     dplyr,
-    assertive
+    assertive,
+    tidyr
 Suggests: 
     knitr,
     rmarkdown

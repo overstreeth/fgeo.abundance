@@ -6,3 +6,5 @@
 ^README\.Rmd$
 ^man-roxygen$
 ^docs$
+^tmp\.R$
+^\.*_tmp\.R$
