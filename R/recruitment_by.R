@@ -39,3 +39,16 @@
 #   unnest(recruitment[c(group_vars, "recruitment")])
 # }
 # 
+
+
+# Cleaner alternative -----------------------------------------------------
+
+# bind_rows(census1, census2) %>% 
+#   as_tibble() %>%
+#   nest(-sp, -quadrat, -census) %>% 
+#   spread(census, data) %>% 
+#   mutate(recru = map2(census1, census2, recruitment)) %>% 
+#   select(-census1, -census2) %>% 
+#   mutate(recru = map(recru, enframe)) %>% 
+#   unnest() %>% 
+#   unnest()
