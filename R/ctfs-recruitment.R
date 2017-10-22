@@ -91,6 +91,9 @@ recruitment <-function(census1,
                        alivecode = c("A", "AB", "AS"),
                        split1 = NULL,
                        split2 = NULL) {
+  check_if_all_dbh_is_na(cns = census1, split = split1)
+  check_if_all_dbh_is_na(cns = census2, split = split2)
+  
  if(is.null(split1)) split1=rep("all",dim(census1)[1])
  if(is.null(split2)) split2=rep("all",dim(census2)[1])
 
