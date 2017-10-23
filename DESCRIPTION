@@ -20,7 +20,8 @@ Imports:
     rlang (>= 0.1.2),
     dplyr,
     assertive,
-    tidyr
+    tidyr,
+    purrr
 Suggests: 
     knitr,
     rmarkdown,

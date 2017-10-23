@@ -18,7 +18,6 @@
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @family functions to compare two censuses
 #' 
-#' @param .f Demography function.
 #' @template census1_census2
 #' @template mindbh
 #' @template alivecode
@@ -80,7 +79,7 @@ demography_df <- function(demography_list) {
   # Transform result from list to dataframe
   nested <- tibble::enframe(demography_list, "metric")
   unnested <- tidyr::unnest(
-    dplyr::mutate(nested, value = purrr::map(value, tibble::enframe))
+    dplyr::mutate(nested, value = purrr::map(.data$value, tibble::enframe))
   )
   # Reorganize columns
   df_long <- dplyr::select(unnested, .data$name, .data$metric, .data$value)
