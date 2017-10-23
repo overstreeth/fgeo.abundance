@@ -21,7 +21,8 @@ Imports:
     dplyr,
     assertive,
     tidyr,
-    purrr
+    purrr,
+    tibble
 Suggests: 
     knitr,
     rmarkdown,
