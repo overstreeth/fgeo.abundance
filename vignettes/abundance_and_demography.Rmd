@@ -35,6 +35,8 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 * Recycle available examples and vignettes
 * Show how similar or different these functions are compared to their __ctfs__' version.
+* Show warnings if names in data are wrong and how to rename them
+* Show warnings is some groups in split variables are all NA and how to work woth safely or possibly
 
 # Overview
 
