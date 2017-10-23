@@ -3,7 +3,7 @@
 # The documentation of mortality is together with other demography funcitons
 # see tag @name demography
 
-#' @rdname demography
+#' @rdname recruitment
 #' @export
 mortality <- function(census1,
                            census2,

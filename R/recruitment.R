@@ -27,8 +27,6 @@
 #' @param split1 a vector of categories, one per individual
 #' @param split2 another vector of categories, one per individual
 #' 
-#' @name demography
-#' 
 #' @return (xxx ask documentation) 
 #' * `recruitment()` returns a list with components:
 #'   * `N2`:
@@ -91,10 +89,6 @@
 #' library(tidyr)
 #' wide_format <- tidyr::spread(long_format, key = split1, value = value)
 #' wide_format
-NULL
-
-#' @rdname demography
-#' @export
 recruitment <- function(census1,
                        census2,
                        mindbh = 10,
@@ -170,7 +164,7 @@ recruitment <- function(census1,
  return(result)
 }
 
-#' @rdname demography
+#' @rdname recruitment
 #' @export
 demography_df <- function(.f = c("recruitment", "mortality", "growth"), 
                           census1, 

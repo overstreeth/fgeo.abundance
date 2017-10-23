@@ -2,7 +2,6 @@
 % Please edit documentation in R/mortality.R, R/recruitment.R
 \name{mortality}
 \alias{mortality}
-\alias{demography}
 \alias{recruitment}
 \alias{demography_df}
 \title{Caculate recruitment for all and each species (as in the CTFS R package)}
