@@ -1,9 +1,6 @@
-# ?ctfs::mortality ----
+# For documentation see demography.R
 
-# The documentation of mortality is together with other demography funcitons
-# see tag @name demography
-
-#' @rdname recruitment
+#' @rdname demography
 #' @export
 mortality <- function(census1,
                            census2,
@@ -66,7 +63,21 @@ mortality <- function(census1,
  return(result)
 }
 
+#' @rdname demography
+#' @export
 
+mortality_df <- function(census1, 
+                         census2, 
+                         alivecode = c("A", "AB", "AS"),
+                         split1 = NULL) {
+  result <- mortality(census1 = census1, census2 = census2, 
+    alivecode = alivecode, split1 = split1)
+  demography_df(result)
+}
+
+
+
+# Internal dependencies of recruitment ------------------------------------
 
 #' Internal.
 #'

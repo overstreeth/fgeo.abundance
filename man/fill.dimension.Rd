@@ -4,16 +4,17 @@
 \alias{fill.dimension}
 \title{Internal.}
 \usage{
-fill.dimension(dataarray, class1, class2, fill = 0)
+\method{fill}{dimension}(dataarray, class1, class2, fill = 0)
 }
 \description{
 Internal.
 }
 \seealso{
 Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
-  \code{\link{drp}}, \code{\link{find.climits}},
+  \code{\link{demography}}, \code{\link{drp}},
+  \code{\link{find.climits}},
   \code{\link{mortality.calculation}},
   \code{\link{mortality.dbh}},
-  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
+  \code{\link{mortality.eachspp}}
 }
 \keyword{internal}

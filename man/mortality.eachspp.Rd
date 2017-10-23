@@ -12,9 +12,9 @@ Internal.
 }
 \seealso{
 Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
-  \code{\link{drp}}, \code{\link{fill.dimension}},
-  \code{\link{find.climits}},
+  \code{\link{demography}}, \code{\link{drp}},
+  \code{\link{fill.dimension}}, \code{\link{find.climits}},
   \code{\link{mortality.calculation}},
-  \code{\link{mortality.dbh}}, \code{\link{mortality}}
+  \code{\link{mortality.dbh}}
 }
 \keyword{internal}

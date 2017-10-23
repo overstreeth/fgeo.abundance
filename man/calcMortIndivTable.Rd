@@ -10,10 +10,11 @@ calcMortIndivTable(mtable, by = "species")
 Internal.
 }
 \seealso{
-Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{drp}},
-  \code{\link{fill.dimension}}, \code{\link{find.climits}},
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{demography}},
+  \code{\link{drp}}, \code{\link{fill.dimension}},
+  \code{\link{find.climits}},
   \code{\link{mortality.calculation}},
   \code{\link{mortality.dbh}},
-  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
+  \code{\link{mortality.eachspp}}
 }
 \keyword{internal}

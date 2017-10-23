@@ -11,8 +11,9 @@ Internal.
 }
 \seealso{
 Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
-  \code{\link{drp}}, \code{\link{fill.dimension}},
-  \code{\link{find.climits}}, \code{\link{mortality.dbh}},
-  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
+  \code{\link{demography}}, \code{\link{drp}},
+  \code{\link{fill.dimension}}, \code{\link{find.climits}},
+  \code{\link{mortality.dbh}},
+  \code{\link{mortality.eachspp}}
 }
 \keyword{internal}
