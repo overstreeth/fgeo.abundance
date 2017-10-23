@@ -10,7 +10,10 @@ find.climits(N, D, alpha = 0.05, kind = "upper")
 Internal.
 }
 \seealso{
-Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{drp}},
-  \code{\link{fill.dimension}}
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
+  \code{\link{drp}}, \code{\link{fill.dimension}},
+  \code{\link{mortality.calculation}},
+  \code{\link{mortality.dbh}},
+  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
 }
 \keyword{internal}

@@ -2,12 +2,18 @@
 % Please edit documentation in R/mortality.R
 \name{calcMortIndivTable}
 \alias{calcMortIndivTable}
-\title{Calculate mortality rate per species per census interval using the ...}
+\title{Internal.}
 \usage{
 calcMortIndivTable(mtable, by = "species")
 }
 \description{
-Calculate mortality rate per species per census interval using the output of individual_mort.table.
-
-Formerly named calcMortlmerTable.
+Internal.
 }
+\seealso{
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{drp}},
+  \code{\link{fill.dimension}}, \code{\link{find.climits}},
+  \code{\link{mortality.calculation}},
+  \code{\link{mortality.dbh}},
+  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
+}
+\keyword{internal}

@@ -2,18 +2,19 @@
 % Please edit documentation in R/mortality.R
 \name{mortality.dbh}
 \alias{mortality.dbh}
-\title{Calculate forest-wide mortality in given dbh categories.}
+\title{Internal.}
 \usage{
 mortality.dbh(census1, census2, classbreak = c(10, 100, 300),
   alivecode = c("A", "AB", "AS"))
 }
-\arguments{
-\item{classbreak}{xxxdocparam}
-}
 \description{
-Calculate forest-wide mortality in given dbh categories. See mortality and
-mortality.eachspp, which have same arguments and same output format.
+Internal.
 }
 \seealso{
-\code{\link[=mortality]{mortality()}}, \code{\link[=mortality.eachspp]{mortality.eachspp()}}
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
+  \code{\link{drp}}, \code{\link{fill.dimension}},
+  \code{\link{find.climits}},
+  \code{\link{mortality.calculation}},
+  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
 }
+\keyword{internal}

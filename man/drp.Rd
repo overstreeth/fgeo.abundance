@@ -10,7 +10,10 @@ drp(x)
 Internal.
 }
 \seealso{
-Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{fill.dimension}},
-  \code{\link{find.climits}}
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
+  \code{\link{fill.dimension}}, \code{\link{find.climits}},
+  \code{\link{mortality.calculation}},
+  \code{\link{mortality.dbh}},
+  \code{\link{mortality.eachspp}}, \code{\link{mortality}}
 }
 \keyword{internal}

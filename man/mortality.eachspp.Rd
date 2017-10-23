@@ -2,29 +2,19 @@
 % Please edit documentation in R/mortality.R
 \name{mortality.eachspp}
 \alias{mortality.eachspp}
-\title{Calculate mortality for each species in given dbh categories.}
+\title{Internal.}
 \usage{
 mortality.eachspp(census1, census2, classbreak = c(10, 100, 300),
   alivecode = c("A", "AB", "AS"))
 }
-\arguments{
-\item{classbreak}{xxxdocparam}
-}
-\value{
-The list from \code{\link[=mortality]{mortality()}}, which can be passed to \code{\link[=assemble.demography]{assemble.demography()}}
-for a convenient format.
-}
 \description{
-Calculate mortality for each species in given dbh categories. It sets the
-split variables using the species name and submitted dbh \code{classbreaks} and
-then uses mortality to do the calculation.
+Internal.
 }
-\examples{
-\dontrun{
-CTFSplot("bci", 5:6)
-mort.data = mortality.eachspp(bci::bci12full5, bci::bci12full6)
-mort.table1 = assemble.demography(mort.data, type = "m", whichdbhcat = 1)
-mort.table2 = assemble.demography(mort.data, type = "m", whichdbhcat = 2)
-mort.table3 = assemble.demography(mort.data, type = "m", whichdbhcat = 3)
+\seealso{
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
+  \code{\link{drp}}, \code{\link{fill.dimension}},
+  \code{\link{find.climits}},
+  \code{\link{mortality.calculation}},
+  \code{\link{mortality.dbh}}, \code{\link{mortality}}
 }
-}
+\keyword{internal}

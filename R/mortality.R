@@ -68,28 +68,10 @@ mortality <- function(census1,
 
 
 
-#' Calculate mortality rate and confidence limits.
+#' Internal.
 #'
-#' @description
-#' This is the calculation of mortality rate and confidence limits, given `N`
-#' (number alive at the outset), `S` (number of survivors), and time (time
-#' interval). All three can be arrays, vectors, or scalars, but all three must
-#' be identical size.
-#'
-#' @inheritParams find.climits
-#' @param S Number of survivors
-#' @param meantime xxxdocparam
-#'
-#' @seealso [find.climits()].
-#'
-#' @examples
-#' \dontrun{
-#' mortality.calculation(
-#'   N = c(100, 1000),
-#'   S = c(75, 750),
-#'   meantime = c(5.1, 5.1)
-#' )
-#' }
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
 mortality.calculation=function(N,S,meantime)
 {
  lower.ci=find.climits(N,(N-S),kind="lower")
@@ -112,15 +94,10 @@ mortality.calculation=function(N,S,meantime)
                time=meantime))
 }
 
-
-
-#' Calculate mortality rate per species per census interval using the ...
+#' Internal.
 #'
-#' @description
-#'
-#' Calculate mortality rate per species per census interval using the output of individual_mort.table.
-#'
-#' Formerly named calcMortlmerTable.
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
 calcMortIndivTable=function(mtable,by='species')
 {
  if(by=='species') splitby=list(mtable$sp,mtable$census)
@@ -136,30 +113,10 @@ calcMortIndivTable=function(mtable,by='species')
  return(mortality)
 }
 
-
-
-#' Calculate mortality for each species in given dbh categories.
+#' Internal.
 #'
-#' @description
-#' Calculate mortality for each species in given dbh categories. It sets the
-#' split variables using the species name and submitted dbh `classbreaks` and
-#' then uses mortality to do the calculation.
-#'
-#' @return
-#' The list from [mortality()], which can be passed to [assemble.demography()]
-#' for a convenient format.
-#'
-#' @inheritParams mortality.dbh
-#'
-#' @examples
-#' \dontrun{
-#' CTFSplot("bci", 5:6)
-#' mort.data = mortality.eachspp(bci::bci12full5, bci::bci12full6)
-#' mort.table1 = assemble.demography(mort.data, type = "m", whichdbhcat = 1)
-#' mort.table2 = assemble.demography(mort.data, type = "m", whichdbhcat = 2)
-#' mort.table3 = assemble.demography(mort.data, type = "m", whichdbhcat = 3)
-#' }
-#' @export
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
 mortality.eachspp=function(census1,census2,classbreak=c(10,100,300),alivecode=c("A","AB","AS"))
 {
  allbreak=c(classbreak,10000)
@@ -170,22 +127,10 @@ mortality.eachspp=function(census1,census2,classbreak=c(10,100,300),alivecode=c(
  return(result)
 }
 
-
-
-
-#' Calculate forest-wide mortality in given dbh categories.
+#' Internal.
 #'
-#' @description
-#'
-#' Calculate forest-wide mortality in given dbh categories. See mortality and
-#' mortality.eachspp, which have same arguments and same output format.
-#'
-#' @inheritParams mortality
-#' @param classbreak xxxdocparam
-#'
-#' @seealso [mortality()], [mortality.eachspp()]
-#'
-#' @export
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
 mortality.dbh=function(census1,census2,classbreak=c(10,100,300),alivecode=c("A","AB","AS"))
 {
  allbreak=c(classbreak,10000)
@@ -197,6 +142,3 @@ mortality.dbh=function(census1,census2,classbreak=c(10,100,300),alivecode=c("A",
 
  return(result)
 }
-
-
-
