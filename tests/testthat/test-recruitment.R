@@ -14,6 +14,10 @@ expect_equal(
   tiny2$sp %>% unique
 )
 
+
+
+# recruitment -------------------------------------------------------------
+
 test_that("works with predictable inputs", {
   out1 <- recruitment(tiny1, tiny2)
   expect_type(out1, "list")
@@ -67,4 +71,28 @@ test_that("with wrongly named crucial-variables throws warning", {
   newnm1 <- dplyr::rename(tiny1, xxx = date)
   newnm2 <- dplyr::rename(tiny2, xxx = date)
   expect_error(recruitment(newnm1, newnm2))
+})
+
+
+
+# recruitment_df() -------------------------------------------------------------
+
+test_that("works with predictable inputs", {
+  # No splitting variable
+  out1 <- recruitment_df(tiny1, tiny2)
+  expect_is(out1, "data.frame")
+  expect_length(out1, 3)
+  
+  # One splitting variable
+  # skipping out2
+  # expect warning because tiny2 has two species which dbh is all NA
+  expect_warning(out3 <- recruitment_df(tiny1, tiny2, split1 = tiny1$sp))
+  # output has correct structure
+  expect_is(out3, "data.frame")
+  expect_length(out3, 3)
+
+  # Two splitting variables fail because split2 is not defined in recruitment_df
+  expect_error(
+    recruitment_df(tiny1, tiny2, split1 = tiny1$sp, split2 = tiny1$quadrat)
+  )
 })

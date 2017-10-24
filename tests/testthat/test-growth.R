@@ -14,6 +14,10 @@ expect_equal(
   tiny2$sp %>% unique
 )
 
+
+
+# growth() ----------------------------------------------------------------
+
 test_that("works with predictable inputs", {
   # No splitting variable
   out1 <- growth(tiny1, tiny2)
@@ -42,7 +46,6 @@ test_that("works with predictable inputs", {
   expect_type(out5[[1]], "double")
 })
 
-
 test_that("missing crucial names throws error", {
   crucial_nms <- c("dbh", "pom", "status", "date", "stemID")
 
@@ -66,3 +69,28 @@ test_that("missing crucial names throws error", {
   newnm2 <- dplyr::rename(tiny2, xxx = stemID)
   expect_error(growth(newnm1, newnm2))
 })
+
+
+
+# growth_df() -------------------------------------------------------------
+
+test_that("works with predictable inputs", {
+  # No splitting variable
+  out1 <- growth_df(tiny1, tiny2)
+  expect_is(out1, "data.frame")
+  expect_length(out1, 3)
+  
+  # One splitting variable
+  # skipping out2
+  # expect warning because tiny2 has two species which dbh is all NA
+  expect_warning(out3 <- growth_df(tiny1, tiny2, split1 = tiny1$sp))
+  # output has correct structure
+  expect_is(out3, "data.frame")
+  expect_length(out3, 3)
+
+  # Two splitting variables fail because split2 is not defined in growth_df()
+  expect_error(
+    growth_df(tiny1, tiny2, split1 = tiny1$sp, split2 = tiny1$quadrat)
+  )
+})
+

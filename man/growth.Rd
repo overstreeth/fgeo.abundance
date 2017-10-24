@@ -2,11 +2,16 @@
 % Please edit documentation in R/growth.R
 \name{growth}
 \alias{growth}
+\alias{growth_df}
 \title{Annual growth rates accross entire census or within groups.}
 \usage{
 growth(census1, census2, rounddown = FALSE, method = "I", stdev = FALSE,
   dbhunit = "mm", mindbh = 10, growthcol = "dbh", err.limit = 4,
   maxgrow = 75, split1 = NULL, split2 = NULL)
+
+growth_df(census1, census2, rounddown = FALSE, method = "I",
+  stdev = FALSE, dbhunit = "mm", mindbh = 10, growthcol = "dbh",
+  err.limit = 4, maxgrow = 75, split1 = NULL)
 }
 \arguments{
 \item{census1}{The R Analytical Table for a single census, either tree or
@@ -49,8 +54,9 @@ measures.}
 increment, or relative growth
 \item \code{N}, the number of individuals included in the mean (not counting any
 excluded)
-\item \code{clim}, width of confidence interval; add this number to the mean rate to
-get upper confidence limit, substract to get lower
+\item \code{clim} (or sd with \code{stdev = TRUE}), width of confidence interval; add this
+number to the mean rate to get upper confidence limit, substract to get
+lower
 \item \code{dbhmean}, mean dbh in census 1 of individuals included
 \item \code{time}, mean time interval in years
 \item \code{date1}, mean date included individuals were measured in census 1, as
@@ -71,16 +77,32 @@ few_trees <- sample(unique(bci12s6mini$tag), 200)
 census1 <- subset(bci12s6mini, tag \%in\% few_trees)
 census2 <- subset(bci12s7mini, tag \%in\% few_trees)
 
+# Across entire dataset
 growth(census1, census2)
 
+# Within groups defined by one "splitting" variable
+# Note warning if split variable has grups which dbh is full of NA
+growth_metrics <- growth(census1, census2, split1 = census1$sp)
 # View just a few species with `head()`
-lapply(growth(census1, census2, split1 = census1$sp), head)
+lapply(growth_metrics, head)
 
+# Within groups defined by two "splitting" variables
+# Also warnings here (one warning per problematic splitting variable)
 split_by_two <- growth(census1, census2, 
   split1 = census1$sp, split2 = census1$quadrat)
 lapply(split_by_two, function(x) head(x[1:6]))
 str(split_by_two)
 
+# Use other arguments carefully; read `?growth()`
+
+# Calculate not annual growth rate but relative growth rate
+growth(census1, census2, method = "E")
+# Return `sd` instead of `clim`
+growth(census1, census2, stdev = TRUE)
+# Include all living trees
+growth(census1, census2, mindbh = NULL)
+# Measure growth not based on `dbh` but on `agb`
+growth(census1, census2, growthcol = "agb")
 }
 \seealso{
 Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{CI}},

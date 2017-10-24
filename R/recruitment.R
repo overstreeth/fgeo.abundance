@@ -86,8 +86,14 @@ recruitment_df <- function(census1,
                            mindbh = 10, 
                            alivecode = c("A", "AB", "AS"),
                            split1 = NULL) {
-  result <- recruitment(census1 = census1, census2 = census2, mindbh = mindbh,
-    alivecode = alivecode, split1 = split1)
+  result <- recruitment(
+    census1 = census1,
+    census2 = census2,
+    mindbh = mindbh,
+    alivecode = alivecode,
+    split1 = split1
+    # split 2 is intentionally removed
+  )
   demography_df(result)
 }
 

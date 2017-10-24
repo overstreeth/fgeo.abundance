@@ -71,8 +71,13 @@ mortality_df <- function(census1,
                          census2, 
                          alivecode = c("A", "AB", "AS"),
                          split1 = NULL) {
-  result <- mortality(census1 = census1, census2 = census2, 
-    alivecode = alivecode, split1 = split1)
+  result <- mortality(
+    census1 = census1,
+    census2 = census2,
+    alivecode = alivecode,
+    split1 = split1
+    # split 2 is intentionally removed
+  )
   demography_df(result)
 }
 

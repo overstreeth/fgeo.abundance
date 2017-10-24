@@ -30,8 +30,9 @@
 #'   increment, or relative growth
 #' * `N`, the number of individuals included in the mean (not counting any
 #'   excluded)
-#' * `clim`, width of confidence interval; add this number to the mean rate to
-#'   get upper confidence limit, substract to get lower
+#' * `clim` (or sd with `stdev = TRUE`), width of confidence interval; add this
+#'   number to the mean rate to get upper confidence limit, substract to get
+#'   lower
 #' * `dbhmean`, mean dbh in census 1 of individuals included
 #' * `time`, mean time interval in years
 #' * `date1`, mean date included individuals were measured in census 1, as
@@ -46,16 +47,32 @@
 #' census1 <- subset(bci12s6mini, tag %in% few_trees)
 #' census2 <- subset(bci12s7mini, tag %in% few_trees)
 #' 
+#' # Across entire dataset
 #' growth(census1, census2)
 #' 
+#' # Within groups defined by one "splitting" variable
+#' # Note warning if split variable has grups which dbh is full of NA
+#' growth_metrics <- growth(census1, census2, split1 = census1$sp)
 #' # View just a few species with `head()`
-#' lapply(growth(census1, census2, split1 = census1$sp), head)
+#' lapply(growth_metrics, head)
 #' 
+#' # Within groups defined by two "splitting" variables
+#' # Also warnings here (one warning per problematic splitting variable)
 #' split_by_two <- growth(census1, census2, 
 #'   split1 = census1$sp, split2 = census1$quadrat)
 #' lapply(split_by_two, function(x) head(x[1:6]))
 #' str(split_by_two)
 #' 
+#' # Use other arguments carefully; read `?growth()`
+#' 
+#' # Calculate not annual growth rate but relative growth rate
+#' growth(census1, census2, method = "E")
+#' # Return `sd` instead of `clim`
+#' growth(census1, census2, stdev = TRUE)
+#' # Include all living trees
+#' growth(census1, census2, mindbh = NULL)
+#' # Measure growth not based on `dbh` but on `agb`
+#' growth(census1, census2, growthcol = "agb")
 growth <- function(census1,
                    census2,
                    rounddown = FALSE,
@@ -124,6 +141,36 @@ growth <- function(census1,
         dbhmean = drp(meandbh), time = drp(interval), date1 = drp(startdate), 
         date2 = drp(enddate))
     return(result)
+}
+
+#' @rdname growth
+#' @export
+growth_df <- function(census1, 
+                      census2,
+                      rounddown = FALSE,
+                      method = "I",
+                      stdev = FALSE,
+                      dbhunit = "mm",
+                      mindbh = 10,
+                      growthcol = "dbh",
+                      err.limit = 4,
+                      maxgrow = 75,
+                      split1 = NULL) {
+  result <- growth(
+    census1 = census1,
+    census2 = census2,
+    rounddown = rounddown,
+    method = method,
+    stdev = stdev,
+    dbhunit = dbhunit,
+    mindbh = mindbh,
+    growthcol = growthcol,
+    err.limit = err.limit,
+    maxgrow = maxgrow,
+    split1 = split1
+    # split 2 is intentionally removed
+  )
+  demography_df(result)
 }
 
 
