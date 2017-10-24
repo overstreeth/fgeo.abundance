@@ -21,6 +21,7 @@ check_if_all_dbh_is_na <- function(cns1, cns2, split) {
   }
 }
 
+# Check data has crucial variables
 check_crucial_names <- function(cns, nms) {
   # Check that names in census1 and census2 are as expected
   are_names_expected <- all(nms %in% names(cns))
@@ -31,3 +32,15 @@ check_crucial_names <- function(cns, nms) {
       paste(nms, collapse = ", "))
   }
 }
+
+# Wrap check_if_all_dbh_is_na() and check_crucial_names()
+check_crucial_names_and_if_dbh_is_na <- function(cns1, 
+                                                 cns2, 
+                                                 nms, 
+                                                 split1, 
+                                                 split2) {
+  check_crucial_names(cns = cns1, nms = nms)
+  check_if_all_dbh_is_na(cns1 = cns1, cns2 = cns2, split = split1)
+  check_if_all_dbh_is_na(cns1 = cns1, cns2 = cns2, split = split2)
+}
+
