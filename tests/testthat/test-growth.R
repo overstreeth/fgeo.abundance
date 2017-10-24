@@ -1,4 +1,4 @@
-context("test-mortality.R")
+context("test-growth.R")
 
 library(dplyr)
 
@@ -14,60 +14,55 @@ expect_equal(
   tiny2$sp %>% unique
 )
 
-# Test new data with function that knownly works
-test_that("recruitment works with tiny data", {
-  expect_type(recruitment(tiny1, tiny2), "list")
-})
-
-# Now continue testing mortality -- the function relevant here
-
 test_that("works with predictable inputs", {
-  out1 <- mortality(tiny1, tiny2)
+  # No splitting variable
+  out1 <- growth(tiny1, tiny2)
   expect_type(out1, "list")
-  expect_length(out1, 9)
+  expect_length(out1, 7)
   expect_false(any(is.na(out1)))
   
-  # out2 was tested mindbh, which exista in recruitment() but not in mortality()
-  
-  # spliting by one works
+  # One splitting variable
+  # skipping out2
   # expect warning because tiny2 has two species which dbh is all NA
-  out3 <- expect_warning(mortality(tiny1, tiny2, split1 = tiny1$sp))
-  out4 <- expect_warning(mortality(tiny1, tiny2, split1 = tiny2$sp))
-
-  # output is valid
+  expect_warning(out3 <- growth(tiny1, tiny2, split1 = tiny1$sp))
+  # output has correct structure
   expect_type(out3, "list")
-  expect_length(out3, 9)
-  expect_false(any(is.na(out3)))
+  expect_length(out3, 7)
   # spliting by sp of census 1 or census 2 is the same
+  expect_warning(out4 <- growth(tiny1, tiny2, split1 = tiny2$sp))
   expect_true(identical(out3, out4))
   # and the result is different than not splitting at al 
   expect_false(identical(out1, out4))
   
-  # Splitting by two works
-  out5 <- expect_warning(
-    mortality(tiny1, tiny2, split1 = tiny1$sp, split2 = tiny1$quadrat)
+  # Two splitting variables
+  expect_warning(
+    out5 <- growth(tiny1, tiny2, split1 = tiny1$sp, split2 = tiny1$quadrat)
   )
-  # output is valid
-  # now we still get a list but each element is a double
+  # output has correct structure
   expect_type(out5[[1]], "double")
 })
 
+
 test_that("missing crucial names throws error", {
-  crucial_nms <- c("dbh", "pom", "status", "date")
+  crucial_nms <- c("dbh", "pom", "status", "date", "stemID")
 
   newnm1 <- dplyr::rename(tiny1, xxx = dbh)
   newnm2 <- dplyr::rename(tiny2, xxx = dbh)
-  expect_error(mortality(newnm1, newnm2))
+  expect_error(growth(newnm1, newnm2))
 
   newnm1 <- dplyr::rename(tiny1, xxx = pom)
   newnm2 <- dplyr::rename(tiny2, xxx = pom)
-  expect_error(mortality(newnm1, newnm2))
+  expect_error(growth(newnm1, newnm2))
 
   newnm1 <- dplyr::rename(tiny1, xxx = status)
   newnm2 <- dplyr::rename(tiny2, xxx = status)
-  expect_error(mortality(newnm1, newnm2))
+  expect_error(growth(newnm1, newnm2))
 
   newnm1 <- dplyr::rename(tiny1, xxx = date)
   newnm2 <- dplyr::rename(tiny2, xxx = date)
-  expect_error(mortality(newnm1, newnm2))
+  expect_error(growth(newnm1, newnm2))
+  
+  newnm1 <- dplyr::rename(tiny1, xxx = stemID)
+  newnm2 <- dplyr::rename(tiny2, xxx = stemID)
+  expect_error(growth(newnm1, newnm2))
 })

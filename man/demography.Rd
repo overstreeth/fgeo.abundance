@@ -6,7 +6,7 @@
 \alias{mortality_df}
 \alias{recruitment}
 \alias{recruitment_df}
-\title{Caculate recruitment for all and each species (as in the CTFS R package)}
+\title{Recruitment and mortality}
 \usage{
 mortality(census1, census2, alivecode = c("A", "AB", "AS"), split1 = NULL,
   split2 = NULL)
@@ -68,21 +68,21 @@ julian object (R displays as date, but treats as integer)
 }
 }
 \description{
-Caculate \code{recruitment()}, \code{mortality()} and \code{growth()} accross the entire
-dataset or within one or two groups (as in
-(http://ctfs.si.edu/Public/CTFSRPackage/). Each of these demography functions
-has a \code{*_df()} version that accepts not more than one split variable and,
-instead of a list, returns a dataframe.
-}
-\details{
+Caculate demography metrics accross the entire dataset or within one or two
+groups (as in (http://ctfs.si.edu/Public/CTFSRPackage/). Each of these
+demography functions has a \code{*_df()} version that accepts not more than one
+split variable and, instead of a list, returns a dataframe.
+
 For every individual of all species you must provide two complete datasets,
 one per census, with variables \code{dbh}, \code{pom}, \code{status} and \code{date}. Any status
 indicating a live tree can be submitted in the variable \code{alivecode}.
+}
+\details{
 Survivors are all individuals alive in both censuses, with \code{status == A} in
 the first census, and larger than the minimum dbh in the first census. The
 total population in the second census includes all those alive, above the
-minimum dbh, plus any other survivors. As in \code{\link[=mortality]{mortality()}}, individuals whose
-status is NA in either census are deleted from all calculations.
+minimum \code{dbh}, plus any other survivors. Individuals whose status is NA in
+either census are deleted from all calculations.
 }
 \examples{
 # Some data to play with
@@ -107,10 +107,51 @@ wide_format <- tidyr::spread(long_format, key = split, value = value)
 wide_format
 }
 \seealso{
-Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{calcMortIndivTable}},
-  \code{\link{drp}}, \code{\link{fill.dimension}},
-  \code{\link{find.climits}},
+Other functions from http://ctfs.si.edu/Public/CTFSRPackage/: \code{\link{CI}},
+  \code{\link{IfElse}}, \code{\link{addBinParam}},
+  \code{\link{arrangeParam.Gibbs}},
+  \code{\link{arrangeParam.llike}},
+  \code{\link{bad.binparam}},
+  \code{\link{binGraphManySpecies.Panel}},
+  \code{\link{binGraphManySpecies}},
+  \code{\link{binGraphSampleSpecies}},
+  \code{\link{biomass.growth}},
+  \code{\link{calcMortIndivTable}},
+  \code{\link{calculateBinModel.AIC}},
+  \code{\link{calculateBinModel.BIC}},
+  \code{\link{colMedians}},
+  \code{\link{compare.growthbinmodel}},
+  \code{\link{defineBinBreaks}}, \code{\link{defineSDpar}},
+  \code{\link{dgammadexp}}, \code{\link{drp}},
+  \code{\link{enoughSamplePerBin}},
+  \code{\link{extract.growthdata}},
+  \code{\link{fill.dimension}}, \code{\link{find.climits}},
+  \code{\link{graph.growthmodel.spp}},
+  \code{\link{graph.growthmodel}},
+  \code{\link{graph.outliers.spp}},
+  \code{\link{graph.outliers}},
+  \code{\link{growth.biomass.indiv}},
+  \code{\link{growth.dbh}}, \code{\link{growth.eachspp}},
+  \code{\link{growth.flexbin}}, \code{\link{growth.indiv}},
+  \code{\link{growth}},
+  \code{\link{individual_grow.table}},
+  \code{\link{linear.model.ctr}},
+  \code{\link{linear.model}},
+  \code{\link{linearmodel.bin.set}},
+  \code{\link{linearmodel.bin}},
+  \code{\link{llike.GaussModelSD}},
+  \code{\link{llike.GaussModel}},
+  \code{\link{llike.linearbin.optim}}, \code{\link{logit}},
+  \code{\link{metrop1step}}, \code{\link{model.xy}},
   \code{\link{mortality.calculation}},
   \code{\link{mortality.dbh}},
-  \code{\link{mortality.eachspp}}
+  \code{\link{mortality.eachspp}},
+  \code{\link{overlay.growthbinmodel}}, \code{\link{pst}},
+  \code{\link{pts.to.interceptslope}},
+  \code{\link{rndown5}},
+  \code{\link{run.growthbin.manyspp}},
+  \code{\link{run.growthfit.bin}},
+  \code{\link{trim.growth}}, \code{\link{wideEnoughBins}}
+
+Other functions to compare two censuses: \code{\link{growth}}
 }

@@ -1,19 +1,22 @@
-#' Caculate recruitment for all and each species (as in the CTFS R package)
-#'
-#' Caculate `recruitment()`, `mortality()` and `growth()` accross the entire
-#' dataset or within one or two groups (as in
-#' (http://ctfs.si.edu/Public/CTFSRPackage/). Each of these demography functions
-#' has a `*_df()` version that accepts not more than one split variable and,
-#' instead of a list, returns a dataframe.
+#' Recruitment and mortality 
+#' 
+#' 
+#' @description 
+#' Caculate demography metrics accross the entire dataset or within one or two
+#' groups (as in (http://ctfs.si.edu/Public/CTFSRPackage/). Each of these
+#' demography functions has a `*_df()` version that accepts not more than one
+#' split variable and, instead of a list, returns a dataframe.
 #' 
 #' For every individual of all species you must provide two complete datasets,
 #' one per census, with variables `dbh`, `pom`, `status` and `date`. Any status
 #' indicating a live tree can be submitted in the variable `alivecode`.
+#' 
+#' @details 
 #' Survivors are all individuals alive in both censuses, with `status == A` in
 #' the first census, and larger than the minimum dbh in the first census. The
 #' total population in the second census includes all those alive, above the
-#' minimum dbh, plus any other survivors. As in [mortality()], individuals whose
-#' status is NA in either census are deleted from all calculations.
+#' minimum `dbh`, plus any other survivors. Individuals whose status is NA in
+#' either census are deleted from all calculations.
 #' 
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @family functions to compare two censuses

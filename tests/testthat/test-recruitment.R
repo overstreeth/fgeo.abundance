@@ -55,9 +55,16 @@ test_that("with wrongly named crucial-variables throws warning", {
   newnm1 <- dplyr::rename(tiny1, xxx = dbh)
   newnm2 <- dplyr::rename(tiny2, xxx = dbh)
   expect_error(recruitment(newnm1, newnm2))
-  
-  # xxxcont repeat for all crucial names
-  # xxxcont check same if splitting variables
-  
-  
+
+  newnm1 <- dplyr::rename(tiny1, xxx = pom)
+  newnm2 <- dplyr::rename(tiny2, xxx = pom)
+  expect_error(recruitment(newnm1, newnm2))
+
+  newnm1 <- dplyr::rename(tiny1, xxx = status)
+  newnm2 <- dplyr::rename(tiny2, xxx = status)
+  expect_error(recruitment(newnm1, newnm2))
+
+  newnm1 <- dplyr::rename(tiny1, xxx = date)
+  newnm2 <- dplyr::rename(tiny2, xxx = date)
+  expect_error(recruitment(newnm1, newnm2))
 })

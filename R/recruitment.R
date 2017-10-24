@@ -11,7 +11,8 @@ recruitment <- function(census1,
   check_crucial_names(census1, nms = c("dbh", "pom", "status", "date"))
   check_if_all_dbh_is_na(census1, census2, split = split1)
   check_if_all_dbh_is_na(census1, census2, split = split2)
-  
+
+  # Legacy code ---
  if(is.null(split1)) split1=rep("all",dim(census1)[1])
  if(is.null(split2)) split2=rep("all",dim(census2)[1])
 
