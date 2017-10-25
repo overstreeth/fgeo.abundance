@@ -114,9 +114,9 @@ head(silent)
 Instead if you want the basal area of each individual stem, use `basal_area_ind()`:
 
 ```{r}
-head(
-  basal_area_ind(stem$dbh)
-)
+ba <- basal_area_ind(stem$dbh)
+head(ba)
+
 # Why NAs?
 head(stem$dbh)
 # because `dbh` is na in the data set

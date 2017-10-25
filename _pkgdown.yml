@@ -1,10 +1,11 @@
-navbar:
-  type: default
-  left:
-    - text: Functions Index
-      href: reference/index.html
-    - text: Tutorials
-      href: articles/index.html
+template:
+  params:
+    bootswatch: united
+
+home:
+  links:
+  - text: Learn more
+    href: http://www.forestgeo.si.edu/
 
 reference:
   - title: "Abundance and friends"
@@ -15,6 +16,7 @@ reference:
       - abundance_tally
       - basal_area
       - basal_area_ind
+
   - title: "Demography"
     desc: >
       Functions that input data from two censuses
@@ -25,16 +27,24 @@ reference:
       - mortality_df
       - recruitment
       - recruitment_df
+
   - title: "Data sets"
     contents: 
       - bci12t7mini
       - bci12s7mini
 
 articles:
-  - title: "Metrics within a single censuses"
+  - title: "Calculations within a single censuses"
     contents:
     - demography
-  - title: "Metrics between two censuses"
+  - title: "Calculations between two censuses"
     contents:
     - abundance
 
+navbar:
+  type: default
+  left:
+    - text: Functions Index
+      href: reference/index.html
+    - text: Tutorials
+      href: articles/index.html
