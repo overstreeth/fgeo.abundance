@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-vignette">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -37,6 +37,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/demography.html">Demography</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -55,8 +67,14 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
-    <div id="forestr" class="section level1">
+  <div class="col-md-9">
+    
+
+    
+    
+<div class="contents">
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<div id="forestr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#forestr" class="anchor"></a>forestr</h1></div>
 <p>The goal of <strong>forestr</strong> is to provide tools for the analysis of forest dynamics.</p>
@@ -69,25 +87,27 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install forestr from ForestGEO’s private GitHub repo.</p>
-<div class="sourceCode"><pre class="sourceCode R"><code class="sourceCode r"><span class="co"># To install from a private repo, use auth_token # with a token from</span>
-<span class="co"># https://github.com/settings/tokens. You only need the repo # scope.</span>
+<pre><code># To install from a private repo, use auth_token # with a token from
+# https://github.com/settings/tokens. You only need the repo # scope.
 
-<span class="co"># install.packages("devtools")</span>
+# install.packages("devtools")
 
-<span class="co"># Install the master branch</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"forestgeo/forestr"</span>, <span class="dt">auth_token =</span> <span class="st">"abc"</span>)
+# Install the master branch
+devtools::install_github("forestgeo/forestr", auth_token = "abc")
 
-<span class="co"># Install an ISSUE-specific branch with</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"forestgeo/forestr@ISSUE"</span>, <span class="dt">auth_token =</span> <span class="st">"abc"</span>)
+# Install an ISSUE-specific branch with
+devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
 
-<span class="co"># Then, load each time before using</span>
-<span class="kw">library</span>(forestr)</code></pre></div>
+# Then, load each time before using
+library(forestr)</code></pre>
+</div>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
-    <h2>Links</h2>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/forestgeo/forestr">https://​github.com/​forestgeo/​forestr</a>
 </li>
@@ -102,6 +122,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <li>CTFS-ForestGEO <br><small class="roles"> Copyright holder, funder </small> </li>
 </ul>
 </div>
+
 </div>
 
 

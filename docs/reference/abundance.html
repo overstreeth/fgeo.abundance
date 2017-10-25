@@ -60,6 +60,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/demography.html">Demography</a>
+    </li>
+  </ul>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -155,45 +167,33 @@ group defined by <code>group_by</code>.</p></li>
 
 <span class='co'># ALTERNATIVES</span>
 
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+
 <span class='no'>alive</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>stem</span>, <span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"A"</span>)
 
 <span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
 <span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='no'>grouped</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/n.html'>n</a></span>())</div><div class='output co'>#&gt; # A tibble: 568 x 3
 #&gt; # Groups:   quadrat [?]
-#&gt;    quadrat     sp     n
-#&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
-#&gt;  1    0000 soroaf     1
-#&gt;  2    0002 hybapr     1
-#&gt;  3    0006 hybapr     2
-#&gt;  4    0009 faraoc     1
-#&gt;  5    0009 hybapr     1
-#&gt;  6    0020 tet2pa     1
-#&gt;  7    0022 sympgl     1
-#&gt;  8    0100 des2pa     1
-#&gt;  9    0100 psycho     1
-#&gt; 10    0101 ingafa     1
-#&gt; # ... with 558 more rows</div><div class='input'>
+#&gt;   quadrat     sp     n
+#&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
+#&gt; 1    0000 soroaf     1
+#&gt; 2    0002 hybapr     1
+#&gt; 3    0006 hybapr     2
+#&gt; 4    0009 faraoc     1
+#&gt; 5    0009 hybapr     1
+#&gt; 6    0020 tet2pa     1
+#&gt; # ... with 562 more rows</div><div class='input'>
 <span class='co'># Or</span>
 <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 568 x 3
-#&gt;    quadrat     sp     n
-#&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
-#&gt;  1    0000 soroaf     1
-#&gt;  2    0002 hybapr     1
-#&gt;  3    0006 hybapr     2
-#&gt;  4    0009 faraoc     1
-#&gt;  5    0009 hybapr     1
-#&gt;  6    0020 tet2pa     1
-#&gt;  7    0022 sympgl     1
-#&gt;  8    0100 des2pa     1
-#&gt;  9    0100 psycho     1
-#&gt; 10    0101 ingafa     1
-#&gt; # ... with 558 more rows</div></pre>
+#&gt;   quadrat     sp     n
+#&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
+#&gt; 1    0000 soroaf     1
+#&gt; 2    0002 hybapr     1
+#&gt; 3    0006 hybapr     2
+#&gt; 4    0009 faraoc     1
+#&gt; 5    0009 hybapr     1
+#&gt; 6    0020 tet2pa     1
+#&gt; # ... with 562 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
