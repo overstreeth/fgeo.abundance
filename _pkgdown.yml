@@ -35,4 +35,6 @@ articles:
     contents:
     - demography
   - title: "Metrics between two censuses"
+    contents:
+    - abundance
 
