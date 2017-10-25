@@ -1,6 +1,5 @@
-# For documentation see demography.R
-
-#' @rdname demography
+# For documentation see recruitment() in recruitment.R
+#' @rdname recruitment
 #' @export
 mortality <- function(census1,
                            census2,
@@ -64,9 +63,8 @@ mortality <- function(census1,
  return(result)
 }
 
-#' @rdname demography
+#' @rdname recruitment
 #' @export
-
 mortality_df <- function(census1, 
                          census2, 
                          alivecode = c("A", "AB", "AS"),

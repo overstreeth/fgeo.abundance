@@ -1,0 +1,202 @@
+---
+subtitle: "Calculaitons Within A Census"
+author: "Mauro Lepore"
+date: "2017-10-22"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 6
+vignette: >
+  %\VignetteIndexEntry{Calculaitons Within A Census}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+# hadley's settings
+set.seed(1014)
+options(digits = 3)
+
+knitr::opts_chunk$set(
+  echo = TRUE,  # {mine}
+  comment = "#>",
+  collapse = TRUE,
+  # cache = TRUE,
+  out.width = "70%",
+  fig.align = "center",
+  fig.width = 6,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+# Overview
+
+This vignette shows you how to calculate demographic metrics with the functions `recruitment()`, `mortality()` and `growth()` from the __forestr__ package -- let's load it now:
+
+```{r}
+library(forestr)
+```
+
+You may be familiar with the functions `abundance()`, `basal_area()` and `biomass()`, which input data from a single census and calculate a single metric per individual stem or group of stems. The functions you'll see operate quite differently: `recruitment()`, `mortality()` and `growth()` input data from two censuses and calculate muitiple metrics accross the entire data set, optionally spliting the dataset  by groups.  Because those two groups of functions work quite differently (the group of `abundance()` versus that of `recruitment()`) making their interphases and output feel similar is not straight forward -- so prepare for a little-different experience.
+
+This is how this document is organized. You'll see `recruitment()` and `mortality()` together and `growth()` separately. In each section you'll first see the new _data\.frame_ versions of those functions and second you'll see the traditional versions. Following all that you'll learn about some proposed changes to these functions and at the end you'll see some details only relevant to those interested in the software development side of things.
+
+# Recruitment and Mortality
+
+Currently `recruitment()` and `mortality()` are more similar to each other than they are to `growth()`. (From a technical point of view the most important difference is that `growth()` has currently many more arguments than the other two functions). To relect that relationship  `recruitment()` and `mortality()` are documented together. The next two commands present you with the same help file.
+
+```
+?recruitment
+# same
+?mortality
+```
+
+## xxx Notes to myself
+
+xxx NOTE: CAN SOMEONE DOCUMENT "RETURNS" FOR RECRUITMENT?
+
+* Start with newer version first
+
+* Continue with akward old version
+
+STRUCTURE
+
+* Show lists versus df
+
+ERRORS
+
+* Compare funs in __forestr__ with those in __ctfs__ to show behaviour when a input data has wrong name, e.g. dbh.
+
+WARNINGS
+
+* Show that groups with dbh equal to NA are warned
+
+```{r}
+# Some data to play with
+census1 <- forestr::bci12t6mini
+census2 <- forestr::bci12t7mini
+
+recruitment(census1, census2)
+
+# Easier to view and filter when you split by some variable with many groups
+# (note warning when some groups have dbh values full of NA)
+recruitment_df(census1, census2, split1 = census1$sp)
+
+# Same for `mortality()`; lets explore a few species
+(all_sp <- mortality_df(census1, census2, split1 = census1$sp))
+few_sp <- sample(unique(all_sp$split), 3)
+long_format <- subset(all_sp, split %in% few_sp)
+head(long_format, 10)
+
+# From long to wide format
+library(tidyr)
+wide_format <- tidyr::spread(long_format, key = split, value = value)
+wide_format
+```
+
+# Growth
+
+```{r}
+# Filtering only 200 trees to make the data small
+few_trees <- sample(unique(bci12s6mini$tag), 200)
+census1 <- subset(bci12s6mini, tag %in% few_trees)
+census2 <- subset(bci12s7mini, tag %in% few_trees)
+
+# Across entire dataset
+growth(census1, census2)
+
+# Within groups defined by one "splitting" variable
+# Note warning if split variable has grups which dbh is full of NA
+growth_metrics <- growth(census1, census2, split1 = census1$sp)
+# View just a few species with `head()`
+lapply(growth_metrics, head)
+
+# Within groups defined by two "splitting" variables
+# Also warnings here (one warning per problematic splitting variable)
+split_by_two <- growth(census1, census2, 
+ split1 = census1$sp, split2 = census1$quadrat)
+lapply(split_by_two, function(x) head(x[1:6]))
+str(split_by_two)
+
+# Use other arguments carefully; read `?growth()`
+
+# Calculate not annual growth rate but relative growth rate
+growth(census1, census2, method = "E")
+# Return `sd` instead of `clim`
+growth(census1, census2, stdev = TRUE)
+# Include all living trees
+growth(census1, census2, mindbh = NULL)
+# Measure growth not based on `dbh` but on `agb`
+growth(census1, census2, growthcol = "agb")
+
+```
+
+# Future Improvements
+
+* Transform some arguments in independent functions, eg mindbh. This should reduce duplication and make funcitons easier to understand and compose.
+
+* Reduce arguments to
+    + make functions safer
+    + make functions simpler
+    + make all demography functions have the same arguments so they can be documented together.
+
+
+
+# Technical Notes
+
+> The single biggest way to improve both the quality of your code and your productivity isto reuse good code.
+
+― from "Code Complete (Developer Best Practices)" (https://goo.gl/83hsHb)
+
+The __forestr__ package evolves from the CTFS R Package (http://ctfs.si.edu/Public/CTFSRPackage/). In general, funcitons in __forestr__ and the CTFS R Package may or may not share the same names or code. But the funcitons shown here, in particular, are almost identical to those in the CTFS R Package both in name and code. While small, the changes in __forestr__ make the functions considerably more reliable: They provide more informative warnings and when inputs are wrong they throw clearer errors messages. The differences will beomce bigger with time. But now, by reusing big chunks of code from the CTFS R Package users can get a good amount of useful futures relatively quickly.
+
+That gain in development-speed comes at a cost: With the inherited code comes inherited complexity. Consider the functions used here. The following three figures show that `recruitment()` and `mortality()` depend on just a few functions, but the dependencies of `growth()` are many more.
+
+```{r, echo=FALSE, message=FALSE}
+library(DependenciesGraphs)
+library(handy)
+library(ctfs)
+```
+
+* Dependencies of `recruitment()`:
+
+```{r, echo=FALSE}
+explore_dependencies("ctfs", "recruitment")
+```
+
+* Dependencies of `mortality()`:
+
+```{r, echo=FALSE}
+explore_dependencies("ctfs", "mortality")
+```
+
+* Dependencies of `growth()`:
+
+```{r, echo=FALSE}
+explore_dependencies("ctfs", "growth")
+```
+
+While reducing code complexity key to developing good softwa, providing users with the functionality they need is arguably the priority. Taking time into account, I propose to add the most important features first and to reduce the system's complexity second -- maybe after we release first version.
+
+
+
+
+
+
+
+
+
+# xxx Notes to myself
+
+* Save space in examples of growth()
+
+* Reuse doce from available examples and vignettes
+
+* Move from familiar to unfamiliar by comparing funcitons in __forestr__ versus their equivalent in __ctfs__.
+
+* For each function:
+    + show good behaviour, warnings and errors;
+    + explore most important arguments
+    + comment on the arguments not shown
