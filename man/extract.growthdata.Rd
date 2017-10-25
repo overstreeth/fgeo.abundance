@@ -4,11 +4,10 @@
 \alias{extract.growthdata}
 \title{Internal.}
 \usage{
-\method{extract}{growthdata}(census1, census2, growcol = "incgr",
-  mingrow = 0.1, logit = "x", growthfunc = growth.biomass.indiv,
-  pomcut = 10000, rounddown = FALSE, mindbh = 10, dbhunit = "mm",
-  err.limit = 4, maxgrow = 75, exclude.stem.change = TRUE,
-  returnfull = FALSE)
+extract.growthdata(census1, census2, growcol = "incgr", mingrow = 0.1,
+  logit = "x", growthfunc = growth.biomass.indiv, pomcut = 10000,
+  rounddown = FALSE, mindbh = 10, dbhunit = "mm", err.limit = 4,
+  maxgrow = 75, exclude.stem.change = TRUE, returnfull = FALSE)
 }
 \description{
 Internal.

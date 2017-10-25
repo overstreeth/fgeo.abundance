@@ -1,0 +1,38 @@
+navbar:
+  type: default
+  left:
+    - text: Functions Index
+      href: reference/index.html
+    - text: Tutorials
+      href: articles/index.html
+
+reference:
+  - title: "Abundance and friends"
+    desc: >
+      Functions that input data from one census
+    contents: 
+      - abundance
+      - abundance_tally
+      - basal_area
+      - basal_area_ind
+  - title: "Demography"
+    desc: >
+      Functions that input data from two censuses
+    contents:
+      - growth
+      - growth_df
+      - mortality
+      - mortality_df
+      - recruitment
+      - recruitment_df
+  - title: "Data sets"
+    contents: 
+      - bci12t7mini
+      - bci12s7mini
+
+articles:
+  - title: "Metrics within a single censuses"
+    contents:
+    - demography
+  - title: "Metrics between two censuses"
+
