@@ -9,6 +9,8 @@ output:
 vignette: >
   %\VignetteIndexEntry{Calculaitons Within A Census}
   %\VignetteEncoding{UTF-8}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
@@ -78,22 +80,67 @@ WARNINGS
 census1 <- forestr::bci12t6mini
 census2 <- forestr::bci12t7mini
 
-recruitment(census1, census2)
 
-# Easier to view and filter when you split by some variable with many groups
-# (note warning when some groups have dbh values full of NA)
-recruitment_df(census1, census2, split1 = census1$sp)
 
-# Same for `mortality()`; lets explore a few species
-(all_sp <- mortality_df(census1, census2, split1 = census1$sp))
-few_sp <- sample(unique(all_sp$split), 3)
-long_format <- subset(all_sp, split %in% few_sp)
+# Using the new wrapper `<FUNCTION>_df()` ---------------------------------
+
+# A REALISTIC CASE
+
+# Note `recruitment_df()` warns if some groups have dbh values full of NA
+split_by_sp <- recruitment_df(census1, census2, split1 = census1$sp)
+head(split_by_sp, 10)
+
+# Same for `mortality_df()`; let's explore a few species
+# We don't need to be warned again (suppressing warnings)
+all_species <- suppressWarnings(
+  mortality_df(census1, census2, split1 = census1$sp)
+)
+few_species <- sample(unique(all_species$split), 3)
+long_format <- subset(all_species, split %in% few_species)
 head(long_format, 10)
-
 # From long to wide format
 library(tidyr)
 wide_format <- tidyr::spread(long_format, key = split, value = value)
 wide_format
+
+# THE SIMPLEST CASE
+
+# split1 defaults to `NULL`; output keeps the variable `split` for consistency
+split_null <- recruitment_df(census1, census2, split1 = NULL)
+head(split_null, 10)
+
+# Using the traditional functions -----------------------------------------
+
+# The output is more ackward to explore
+traditional_by_sp <- recruitment(census1, census2, split1 = census1$sp)
+str(traditional_by_sp)
+# In RStudio 1.1 the function `View()` will help you see ackward lists.
+# Here showing a simple trick
+lapply(traditional_by_sp, head)
+
+
+
+# Warnings and errors -----------------------------------------------------
+
+# Notice that the original `recruitment()` from ctfs gives no warnings
+# No warning
+with_ctfs <- ctfs::recruitment(census1, census2, split1 = census1$sp)
+# Warning
+with_forestr <- forestr::recruitment(census1, census2, split1 = census1$sp)
+
+# What happens if input is wrong?
+# Changing the name of an important variable
+wrong_nm1 <- census1
+wrong_nm2 <- census2
+wrong_nm1$DBH <- wrong_nm1$dbh
+wrong_nm1$dbh <- NULL
+wrong_nm2$DBH <- wrong_nm2$dbh
+wrong_nm2$dbh <- NULL
+
+# Uninformative error (gets picked up too far into the function)
+with_ctfs <- ctfs::recruitment(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
+# Informative error (gets picket up at the top of the function)
+with_forestr <- forestr::recruitment(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
 ```
 
 # Growth
