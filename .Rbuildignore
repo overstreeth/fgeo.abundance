@@ -7,6 +7,3 @@
 ^man-roxygen$
 ^docs$
 ^tmp\.R$
-^\.*_tmp\.R$
-^\.travis\.yml$
-^codecov\.yml$
