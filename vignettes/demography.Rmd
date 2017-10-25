@@ -38,13 +38,19 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 This vignette shows you how to calculate demographic metrics with the functions `recruitment()`, `mortality()` and `growth()` from the __forestr__ package -- let's load it now:
 
 ```{r}
-# install_github("forestgeo/forestr@iss49_demography", auth_token = "abc")
+ GITHUB_PAT <- "your token"
+# install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)
 library(forestr)
+
+# Also using the package tibble for nicer printing
+library(tibble)
+# Print no more than 10 rows to save space and time
+options(tibble.print_max = 10)
 ```
 
-You may be familiar with the functions `abundance()`, `basal_area()` and `biomass()`, which input data from a single census and calculate a single metric per individual stem or group of stems. The functions you'll see operate quite differently: `recruitment()`, `mortality()` and `growth()` input data from two censuses and calculate multiple metrics across the entire data set, optionally spiting the data set  by groups.  Because those two groups of functions work quite differently (the group of `abundance()` versus that of `recruitment()`) making their interphases and output feel similar is not straight forward -- so prepare for a little-different experience.
+You may be familiar with the functions `abundance()`, `basal_area()` and `biomass()`, which input data from a single census and calculate a single metric per individual stem or group of stems. Unlike those functions, the ones you'll see here operate quite differently: `recruitment()`, `mortality()` and `growth()` input data from two censuses and calculate multiple metrics across the entire data set, optionally spiting the data set by some variable. Because those two groups of functions work quite differently (the group of `abundance()` versus that of `recruitment()`) making their interphases and output feel similar is not straight forward -- so prepare for a little-different experience.
 
-This is how this document is organized. You'll see `recruitment()` and `mortality()` together and `growth()` separately. In each section you'll first see the new _data\.frame_ versions of those functions and second you'll see the traditional versions. Following all that you'll learn about some proposed changes to these functions and at the end you'll see some details only relevant to those interested in the software development side of things.
+This is how this document is organized. You'll see `recruitment()` and `mortality()` together and `growth()` separately. In each section you'll first see the new `<FUNCTION>_df()` versions of those functions and then you'll see the traditional versions; and you will also see how all that compares to the orignal versions in the CTFS R Package. Then in the previous last section you'll learn about some proposed changes to these functions, and at the end you'll see some details only relevant to those interested in the software development side of things.
 
 # Recruitment and Mortality
 
@@ -71,7 +77,6 @@ census2 <- forestr::bci12t7mini
 
 # Note `recruitment_df()` warns if some groups have dbh values full of NA
 split_by_sp <- recruitment_df(census1, census2, split1 = census1$sp)
-
 head(split_by_sp, 10)
 
 # Same for `mortality_df()`; let's explore a few species
@@ -81,11 +86,11 @@ all_species <- suppressWarnings(
 )
 few_species <- sample(unique(all_species$split), 5)
 long_format <- subset(all_species, split %in% few_species)
-
 head(long_format, 10)
 
 # From long to wide format
 library(tidyr)
+
 wide_format <- tidyr::spread(long_format, key = split, value = value)
 wide_format
 
@@ -170,7 +175,6 @@ census2 <- forestr::bci12t7mini
 
 # Note `growth_df()` warns if some groups have dbh values full of NA
 split_by_sp <- growth_df(census1, census2, split1 = census1$sp)
-
 head(split_by_sp, 10)
 
 # Same for `growth_df()`; let's explore a few species
@@ -180,7 +184,6 @@ all_species <- suppressWarnings(
 )
 few_species <- sample(unique(all_species$split), 5)
 long_format <- subset(all_species, split %in% few_species)
-
 head(long_format, 10)
 
 # From long to wide format
@@ -192,7 +195,6 @@ wide_format
 
 # split1 defaults to `NULL`; output keeps the variable `split` for consistency
 split_null <- growth_df(census1, census2)
-
 head(split_null, 10)
 
 # Using the traditional functions -----------------------------------------
