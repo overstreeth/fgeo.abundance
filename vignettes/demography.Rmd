@@ -57,25 +57,9 @@ Currently `recruitment()` and `mortality()` are more similar to each other than 
 
 ## xxx Notes to myself
 
-xxx NOTE: CAN SOMEONE DOCUMENT "RETURNS" FOR RECRUITMENT?
+[xxx NOTE: CAN SOMEONE DOCUMENT "RETURNS" FOR RECRUITMENT?]
 
-* Start with newer version first
-
-* Continue with akward old version
-
-STRUCTURE
-
-* Show lists versus df
-
-ERRORS
-
-* Compare funs in __forestr__ with those in __ctfs__ to show behaviour when a input data has wrong name, e.g. dbh.
-
-WARNINGS
-
-* Show that groups with dbh equal to NA are warned
-
-```{r}
+```{r, error=TRUE}
 # Some data to play with
 census1 <- forestr::bci12t6mini
 census2 <- forestr::bci12t7mini
@@ -88,6 +72,7 @@ census2 <- forestr::bci12t7mini
 
 # Note `recruitment_df()` warns if some groups have dbh values full of NA
 split_by_sp <- recruitment_df(census1, census2, split1 = census1$sp)
+
 head(split_by_sp, 10)
 
 # Same for `mortality_df()`; let's explore a few species
@@ -95,9 +80,11 @@ head(split_by_sp, 10)
 all_species <- suppressWarnings(
   mortality_df(census1, census2, split1 = census1$sp)
 )
-few_species <- sample(unique(all_species$split), 3)
+few_species <- sample(unique(all_species$split), 5)
 long_format <- subset(all_species, split %in% few_species)
+
 head(long_format, 10)
+
 # From long to wide format
 library(tidyr)
 wide_format <- tidyr::spread(long_format, key = split, value = value)
@@ -106,19 +93,40 @@ wide_format
 # THE SIMPLEST CASE
 
 # split1 defaults to `NULL`; output keeps the variable `split` for consistency
-split_null <- recruitment_df(census1, census2, split1 = NULL)
+split_null <- recruitment_df(census1, census2)
 head(split_null, 10)
+
+# For this simple case, you may want to use this alternative approach
+result <- recruitment(census1, census2)
+result_df <- as.data.frame(unlist(result))
+head(result_df, 10)
+
+# But that approach doesn't help with splitting variables because we loose 
+# information about what matric each value belongs to
+result <- recruitment(census1, census2, split1 = census1$sp)
+result_df <- as.data.frame(unlist(result))
+head(result_df, 10)
 
 # Using the traditional functions -----------------------------------------
 
 # The output is more ackward to explore
-traditional_by_sp <- recruitment(census1, census2, split1 = census1$sp)
+traditional_by_sp <- suppressWarnings(
+  recruitment(census1, census2, split1 = census1$sp)
+)
 str(traditional_by_sp)
+
 # In RStudio 1.1 the function `View()` will help you see ackward lists.
 # Here showing a simple trick
 lapply(traditional_by_sp, head)
 
+# `recruitment()` can take up to two splitting variables; not `recruitment_df()`
+traditional_by_sp_and_quadrat <- suppressWarnings(
+  recruitment(census1, census2, split1 = census1$sp, split2 = census1$quadrat)
+)
+str(traditional_by_sp_and_quadrat)
 
+# This intentionally fails -- to keep the output easy to view and manipulate
+recruitment_df(census1, census2, split1 = census1$sp, split2 = census1$quadrat)
 
 # Warnings and errors -----------------------------------------------------
 
@@ -129,7 +137,8 @@ with_ctfs <- ctfs::recruitment(census1, census2, split1 = census1$sp)
 with_forestr <- forestr::recruitment(census1, census2, split1 = census1$sp)
 
 # What happens if input is wrong?
-# Changing the name of an important variable
+
+# Introducing a wrong name for an important variable
 wrong_nm1 <- census1
 wrong_nm2 <- census2
 wrong_nm1$DBH <- wrong_nm1$dbh
@@ -139,57 +148,126 @@ wrong_nm2$dbh <- NULL
 
 # Uninformative error (gets picked up too far into the function)
 with_ctfs <- ctfs::recruitment(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
-# Informative error (gets picket up at the top of the function)
+
+# More informative error (gets picket up at the top of the function)
 with_forestr <- forestr::recruitment(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
 ```
 
 # Growth
 
-```{r}
-# Filtering only 200 trees to make the data small
-few_trees <- sample(unique(bci12s6mini$tag), 200)
-census1 <- subset(bci12s6mini, tag %in% few_trees)
-census2 <- subset(bci12s7mini, tag %in% few_trees)
+Compared to `recruitment()` and `mortality()`, `growth()` has currently many more arguments, so it's documented separately. Yet much of the documentation is the same -- `growth()` inherits arguments and description from `recruitment()` and `mortality()` (see `?growth()`). This section starts with what `growth()` shares with `recruitment()` and `mortality()` and then shows some arguments exclusive of `growth()`.
 
-# Across entire dataset
-growth(census1, census2)
 
-# Within groups defined by one "splitting" variable
-# Note warning if split variable has grups which dbh is full of NA
-growth_metrics <- growth(census1, census2, split1 = census1$sp)
-# View just a few species with `head()`
-lapply(growth_metrics, head)
+```{r, error=TRUE}
+# Using the same data as above.
+# You can expect the same warnings about `dbh` eualt to NA within some groups
+# defined by `split1 = census1$sp` and `split2 = census1$quadrat`
+census1 <- forestr::bci12t6mini
+census2 <- forestr::bci12t7mini
 
-# Within groups defined by two "splitting" variables
-# Also warnings here (one warning per problematic splitting variable)
-split_by_two <- growth(census1, census2, 
- split1 = census1$sp, split2 = census1$quadrat)
-lapply(split_by_two, function(x) head(x[1:6]))
-str(split_by_two)
+# Using the new wrapper `<FUNCTION>_df()` ---------------------------------
 
-# Use other arguments carefully; read `?growth()`
+# A REALISTIC CASE
+
+# Note `growth_df()` warns if some groups have dbh values full of NA
+split_by_sp <- growth_df(census1, census2, split1 = census1$sp)
+
+head(split_by_sp, 10)
+
+# Same for `growth_df()`; let's explore a few species
+# We don't need to be warned again (suppressing warnings)
+all_species <- suppressWarnings(
+  growth_df(census1, census2, split1 = census1$sp)
+)
+few_species <- sample(unique(all_species$split), 5)
+long_format <- subset(all_species, split %in% few_species)
+
+head(long_format, 10)
+
+# From long to wide format
+library(tidyr)
+wide_format <- tidyr::spread(long_format, key = split, value = value)
+wide_format
+
+# THE SIMPLEST CASE
+
+# split1 defaults to `NULL`; output keeps the variable `split` for consistency
+split_null <- growth_df(census1, census2)
+
+head(split_null, 10)
+
+# Using the traditional functions -----------------------------------------
+
+# The output is more ackward to explore
+traditional_by_sp <- suppressWarnings(
+  growth(census1, census2, split1 = census1$sp)
+)
+str(traditional_by_sp)
+
+# In RStudio 1.1 the function `View()` will help you see ackward lists.
+# Here showing a simple trick
+lapply(traditional_by_sp, head)
+
+# `growth()` can take up to two splitting variables; not `growth_df()`
+traditional_by_sp_and_quadrat <- suppressWarnings(
+  growth(census1, census2, split1 = census1$sp, split2 = census1$quadrat)
+)
+str(traditional_by_sp_and_quadrat)
+
+# This intentionally fails -- to keep the output easy to view and manipulate
+growth_df(census1, census2, split1 = census1$sp, split2 = census1$quadrat)
+
+# Warnings and errors -----------------------------------------------------
+
+# Notice that the original `growth()` from ctfs gives no warnings
+# No warning
+with_ctfs <- ctfs::growth(census1, census2, split1 = census1$sp)
+# Warning
+with_forestr <- forestr::growth(census1, census2, split1 = census1$sp)
+
+# What happens if input is wrong?
+
+# Introducing a wrong name for an important variable
+wrong_nm1 <- census1
+wrong_nm2 <- census2
+wrong_nm1$DBH <- wrong_nm1$dbh
+wrong_nm1$dbh <- NULL
+wrong_nm2$DBH <- wrong_nm2$dbh
+wrong_nm2$dbh <- NULL
+
+# Uninformative error (gets picked up too far into the function)
+with_ctfs <- ctfs::growth(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
+
+# More informative error (gets picket up at the top of the function)
+with_forestr <- forestr::growth(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
+
+# Some arguments exclusive of `growth()` ----------------------------------
+
+# Here are exclusive arguments of growth; read about the others at `?growth()`
 
 # Calculate not annual growth rate but relative growth rate
-growth(census1, census2, method = "E")
-# Return `sd` instead of `clim`
-growth(census1, census2, stdev = TRUE)
-# Include all living trees
-growth(census1, census2, mindbh = NULL)
-# Measure growth not based on `dbh` but on `agb`
-growth(census1, census2, growthcol = "agb")
+# Unlisting to fit all metrics in one line and save space
+unlist(growth(census1, census2, method = "E"))
 
+# Return `sd` instead of `clim`
+unlist(growth(census1, census2, stdev = TRUE))
+
+# Include all living trees
+unlist(growth(census1, census2, mindbh = NULL))
+
+# Measure growth not based on `dbh` but on `agb`
+unlist(growth(census1, census2, growthcol = "agb"))
 ```
 
 # Future Improvements
 
-* Transform some arguments in independent functions, eg mindbh. This should reduce duplication and make funcitons easier to understand and compose.
+* All three funcitons, `recruitment()`, `mortality()` and `growth()`, could be defined with less arguments and the same arguments. That would make the funcitons easier to use and easier to document. The removed arguments could be either dropped completely or transformed into a function on their own. For example, the argument `mindbh` filters stems which `dbh` is at least a given value; such filtering is useful in many other situations. If we extract it into its own function, if can be reused without the need of duplicating code inside each funciton that currently has the `mindbh` argument. That way, a census would be filtered before it is passed to any demography function. That helps not only users but code-readers more-obviously see what's going on with the data.
 
-* Reduce arguments to
-    + make functions safer
-    + make functions simpler
-    + make all demography functions have the same arguments so they can be documented together.
+* If all demography funcitons have (almost) the same arguments [not the case now`growth()` has many more arguments], all three funcitons could share the same documentation. That will help users to understand how they relate to each other, and also help the maintainers to keep the documentation synchronized [althouth __roxygen2__ provides tools for inheriting documentation].
 
+* Some arguments' defaults may change to more conservative values. For example, `mindbh = 10` is the current default and may change to `mindbh = NULL` which conservatively includes all stems (even if excluding stems is common, in this case safety may be more important than confort).
 
+* If time allows all demography functions shown here should be reviewed and either refactored to make them easier to maintain or compleately rewritten (as we did with `abundance()` and `basal\_area()`).
 
 # Technical Notes
 
@@ -226,24 +304,3 @@ explore_dependencies("ctfs", "growth")
 ```
 
 While reducing code complexity key to developing good softwa, providing users with the functionality they need is arguably the priority. Taking time into account, I propose to add the most important features first and to reduce the system's complexity second -- maybe after we release first version.
-
-
-
-
-
-
-
-
-
-# xxx Notes to myself
-
-* Save space in examples of growth()
-
-* Reuse doce from available examples and vignettes
-
-* Move from familiar to unfamiliar by comparing funcitons in __forestr__ versus their equivalent in __ctfs__.
-
-* For each function:
-    + show good behaviour, warnings and errors;
-    + explore most important arguments
-    + comment on the arguments not shown
