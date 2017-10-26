@@ -26,4 +26,5 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    covr
+    covr,
+    readr
