@@ -72,9 +72,16 @@ map_sp <- function(census, species, ...) {
 #' @export
 #' @rdname map_sp
 map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
-  on.exit(dev.off())
+  
+  is_wrong_extension <- !grepl("*.\\.pdf", file)
+  if (is_wrong_extension) {
+    warning("File extension should be .pdf.\n",
+      "  * Instead of given file name using default")
+  }
+  
   plots <- map_sp(census = census, species = species, ...)
   pdf(file = file)
+  on.exit(dev.off())
   invisible(lapply(plots, print))
   message("Saving maps as ", file)
   invisible(plots)
