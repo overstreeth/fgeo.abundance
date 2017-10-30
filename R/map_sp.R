@@ -19,7 +19,6 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' library(dplyr)  # to make it easer to manipulate data
 #' library(gridExtra)  # to arrange multiple plots in one page
 #'
@@ -58,7 +57,21 @@
 #' pdf("multi_paged.pdf", paper = "letter")
 #' multi_per_page
 #' dev.off()
+#'
+#'
+#'
+#' # ERRORS AND WARNINGS
+#' 
+#' # Match exactly the names of crucial variables
+#' census <- dplyr::rename(census, SP = sp)
+#' # This fails
+#' \dontrun{
+#' map_sp(census, species = "hybapr")
 #' }
+#'
+#' # File extension should be .pdf
+#' map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
+#' map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
 map_sp <- function(census, species, ...) {
   check_crucial_names(census, c("gx", "gy", "sp"))
   assertive::assert_is_character(species)
@@ -76,14 +89,15 @@ map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
   is_wrong_extension <- !grepl("*.\\.pdf", file)
   if (is_wrong_extension) {
     warning("File extension should be .pdf.\n",
-      "  * Instead of given file name using default")
+      "  * Replacing given file name by default file name")
+    file <- "map.pdf"
   }
   
   plots <- map_sp(census = census, species = species, ...)
   pdf(file = file)
   on.exit(dev.off())
   invisible(lapply(plots, print))
-  message("Saving maps as ", file)
+  message("Saving as ", file)
   invisible(plots)
 }
 
