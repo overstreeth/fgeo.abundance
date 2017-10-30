@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Basal area. — basal_area â€¢ forestr</title>
+<title>Internal funciton to output the template for the package's website — write_pkgdown_template â€¢ forestr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,79 +77,43 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Basal area.</h1>
+    <h1>Internal funciton to output the template for the package's website</h1>
     </div>
 
     
-    <p>Basal area of each individual (<code>basal_area_ind()</code>).</p>
+    <p>Internal funciton to output the template for package website built with
+the <strong>pkgdown</strong> package (http://hadley.github.io/pkgdown/).</p>
     
 
-    <pre class="usage"><span class='fu'>basal_area</span>(<span class='no'>x</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"quadrat"</span>, <span class='st'>"sp"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>basal_area_ind</span>(<span class='no'>diameter</span>)</pre>
+    <pre class="usage"><span class='fu'>write_pkgdown_template</span>(<span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"./"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Census data.</p></td>
-    </tr>
-    <tr>
-      <th>group_by</th>
-      <td><p>Character string giving the names of variables to group by.</p></td>
-    </tr>
-    <tr>
-      <th>only_alive</th>
-      <td><p>If TRUE, counts only alive individuals (`status == "A"`).
-If FALSE counts individuals of all available statuses.</p></td>
-    </tr>
-    <tr>
-      <th>diameter</th>
-      <td><p>A vector giving the individuals' diameter (generally, <code>x$dbh</code>).</p></td>
+      <th>dir</th>
+      <td><p>Directory where the file <code>pkgdown.yml</code> will be placed.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-<ul>
-<li><p><code>basal_area_ind()</code>: A numeric vector giving the basal area of each
-individual in the same units as the input vector. This is simply the
-area of a circle given its diameter.</p></li>
-</ul>
-
+    <p>Outputs the file <code>_pkgdown.yml</code> (in working directory by default).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Units of returned values are the square of the input units. For example, if
-you input diameter measured in mm, the output will be an area measured in
-mm^2.</p>
+    <p>Does not overwrite existing file.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other grouped summaries: <code><a href='abundance.html'>abundance</a></code></p>
+    <p><code><a href='http://hadley.github.io/pkgdown/reference/build_site.html'>pkgdown::build_site()</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='no'>bci12s7mini</span>
-
-<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 720  NA  NA  NA  NA  NA</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt; [1] 407150.4       NA       NA       NA       NA       NA</div><div class='input'>
-<span class='fu'>head</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt;   quadrat     sp basal_area
-#&gt; 1    0000 soroaf 2642.07942
-#&gt; 2    0002 hybapr   95.03318
-#&gt; 3    0006 hybapr  475.16589
-#&gt; 4    0009 faraoc 1809.55737
-#&gt; 5    0009 hybapr    0.00000
-#&gt; 6    0020 tet2pa 3117.24531</div><div class='input'>
-<span class='co'># Silent</span>
-<span class='fu'>head</span>(<span class='fu'>suppressMessages</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>)))</div><div class='output co'>#&gt;   quadrat     sp basal_area
-#&gt; 1    0000 soroaf 2642.07942
-#&gt; 2    0002 hybapr   95.03318
-#&gt; 3    0006 hybapr  475.16589
-#&gt; 4    0009 faraoc 1809.55737
-#&gt; 5    0009 hybapr    0.00000
-#&gt; 6    0020 tet2pa 3117.24531</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>write_pkgdown_template</span>()
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
