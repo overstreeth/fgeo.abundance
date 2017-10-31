@@ -30,7 +30,7 @@ check_crucial_names <- function(cns, nms) {
   if (are_names_expected) {
     return(invisible(NULL))
   } else {
-    stop("Check your data contains these names: ", 
-      paste(nms, collapse = ", "))
+    stop("Check that your data contains these names: ", 
+      paste(nms, collapse = ", "), call. = FALSE)
   }
 }
