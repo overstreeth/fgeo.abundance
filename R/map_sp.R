@@ -124,10 +124,10 @@ map_xy <- function(census, xlim, ylim, ...) {
 }
 
 add_elevation <- function(ggplot, elevation, bins = NULL) {
-  base_plot_is_class_ggplot <- grepl("ggplot", class(ggplot))
+  base_plot_is_class_ggplot <- any(grepl("ggplot", class(ggplot)))
   stopifnot(base_plot_is_class_ggplot)
 
-  elevation_is_dataframe <- grepl("data.frame", class(elevation))
+  elevation_is_dataframe <- any(grepl("data.frame", class(elevation)))
   stopifnot(elevation_is_dataframe)
   
   check_crucial_names(elevation, c("gx", "gy", "elev"))
@@ -139,6 +139,8 @@ add_elevation <- function(ggplot, elevation, bins = NULL) {
 
 # Standarized plot for each species (fixed ratio and limits).
 map_one_sp <- function(census, one_sp, elevation = NULL, bins = NULL, ...) {
+  assertive::assert_is_character(one_sp)
+  
   xlim <- c(0, max(census$gx, na.rm = TRUE))
   ylim <- c(0, max(census$gy, na.rm = TRUE))
 
