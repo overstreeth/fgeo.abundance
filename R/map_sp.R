@@ -72,13 +72,13 @@
 #' map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
 #' map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
 #' }
-map_sp <- function(census, species, elevation = NULL, ...) {
+map_sp <- function(census, species, elevation = NULL, bins = NULL, ...) {
   check_crucial_names(census, c("gx", "gy", "sp"))
   assertive::assert_is_character(species)
   assertive::assert_is_non_empty(species)
 
   plots <- lapply(X = species, FUN = map_one_sp, census = census, 
-    elevation = elevation, ...)
+    elevation = elevation, bins = bins, ...)
   names(plots) <- species
   plots
 }
@@ -89,6 +89,7 @@ map_sp_pdf <- function(census,
                        species,
                        file = "map.pdf",
                        elevation = NULL,
+                       bins = NULL,
                        ...) {
   is_wrong_extension <- !grepl("*.\\.pdf", file)
   if (is_wrong_extension) {
@@ -98,7 +99,7 @@ map_sp_pdf <- function(census,
   }
   
   plots <- map_sp(census = census, species = species, elevation = elevation,
-    ...)
+    bins = bins, ...)
   pdf(file = file)
   on.exit(dev.off())
   invisible(lapply(plots, print))
@@ -109,7 +110,7 @@ map_sp_pdf <- function(census,
 # General plot of gx by gy faceted by species.
 map_xy <- function(census, xlim, ylim, ...) {
   check_crucial_names(census, c("gx", "gy"))
-  p <- ggplot2::ggplot(
+  ggplot2::ggplot(
     data = census,
     ggplot2::aes(x = gx, y = gy)
   ) +
@@ -120,17 +121,17 @@ map_xy <- function(census, xlim, ylim, ...) {
     ggplot2::theme_bw()
 }
 
-add_elevation <- function(ggplot, elevation) {
+add_elevation <- function(ggplot, elevation, bins = NULL) {
     check_crucial_names(elevation, c("gx", "gy", "elev"))
   
     ggplot + 
       ggplot2::geom_contour(
-        data = elevation, ggplot2::aes(x = gx, y = gy, z = elev)
+        data = elevation, ggplot2::aes(x = gx, y = gy, z = elev), bins = bins
       )
 }
 
 # Standarized plot for each species (fixed ratio and limits).
-map_one_sp <- function(census, one_sp, elevation = NULL, ...) {
+map_one_sp <- function(census, one_sp, elevation = NULL, bins = NULL, ...) {
   xlim <- c(0, max(census$gx, na.rm = TRUE))
   ylim <- c(0, max(census$gy, na.rm = TRUE))
   assertive::assert_all_are_not_na(c(xlim, ylim))
@@ -138,7 +139,7 @@ map_one_sp <- function(census, one_sp, elevation = NULL, ...) {
   filtered_census <- census[census$sp %in% one_sp, ]
   p <- map_xy(filtered_census, xlim, ylim, ...)
   if (!is.null(elevation)) {
-    p <- add_elevation(ggplot = p, elevation = elevation)
+    p <- add_elevation(ggplot = p, elevation = elevation, bins = bins)
   }
   p
 }
