@@ -1,36 +1,21 @@
 library(tidyverse)
-cns_one_sp <- dplyr::sample_n(census[census$sp == "hybapr", ], 200)
+census <- bciex::bci12t7mini
+
+few_sp <- count(census, sp) %>% arrange(n) %>% tail(3) %>% pull(sp)
+census <- census %>% filter(sp  %in% few_sp)
+
 elevation <- bciex::bci_elevation
 elevation <- dplyr::rename(elevation, gx = x, gy = y)
-xlim <- c(0, max(cns_one_sp$gx, na.rm = TRUE))
-ylim <- c(0, max(cns_one_sp$gy, na.rm = TRUE))
+xlimit <- c(0, max(census$gx, na.rm = TRUE))
+ylimit <- c(0, max(census$gy, na.rm = TRUE))
 
+map_xy(census, xlimit, ylimit)
 
-mymap <- function(census, xlim, ylim, ...) {
-  check_crucial_names(census, c("gx", "gy"))
-  p <- ggplot2::ggplot(
-    data = census,
-    ggplot2::aes(x = gx, y = gy)
-  ) +
-    ggplot2::geom_point(...) +
-    ggplot2::facet_grid(. ~ sp) +
-    ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
-    ggplot2::labs(x = NULL, y = NULL) +
-    ggplot2::theme_bw()
-}
+map_one_sp(census, "hybapr", elevation = elevation)
 
+map_sp(census, c("hybapr", "faraoc"), elevation = elevation, bins = 20)
 
+species <- c("hybapr", "faraoc")
+map_sp_pdf(census, species, file = "mymap.pdf", elevation = elevation, bins = 2)
 
-
-p <- map_xy(cns_one_sp, xlim, ylim)
-
-add_elevation(p, elevation = elevation)
-
-species <- c("hampap", "ficupo")
-
-map_sp(census, species, elevation = elevation)
-map_sp(census, "anacex", elevation = NULL)
-
-map_sp_pdf(census, species, elevation = elevation)
-map_sp_pdf(census, "anacex", elevation = NULL)
 
