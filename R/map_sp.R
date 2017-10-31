@@ -140,6 +140,7 @@ add_elevation <- function(ggplot, elevation, bins = NULL) {
 # Standarized plot for each species (fixed ratio and limits).
 map_one_sp <- function(census, one_sp, elevation = NULL, bins = NULL, ...) {
   assertive::assert_is_character(one_sp)
+  assertive::assert_is_of_length(one_sp, 1)
   
   xlim <- c(0, max(census$gx, na.rm = TRUE))
   ylim <- c(0, max(census$gy, na.rm = TRUE))
