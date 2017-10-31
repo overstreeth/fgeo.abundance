@@ -102,8 +102,8 @@ map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
 }
 
 # General plot of gx by gy faceted by species.
-map_xy <- function(census, xlim, ylim, ...) {
-  ggplot2::ggplot(
+map_xy <- function(census, xlim, ylim, elev = NULL, ...) {
+  p <- ggplot2::ggplot(
     data = census,
     ggplot2::aes(x = census$gx, y = census$gy)
   ) +
@@ -112,6 +112,14 @@ map_xy <- function(census, xlim, ylim, ...) {
     ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
     ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::theme_bw()
+  
+  if (!is.null(elev)) {
+    # xxx check_crucial_names(elev, c("x", "y", "elev"))
+    p + ggplot2::geom_contour(aes(z = elev))
+  } else {
+    p
+  }
+  # xxx add argument elev en every function down the road
 }
 
 # Standarized plot for each species (fixed ratio and limits).
