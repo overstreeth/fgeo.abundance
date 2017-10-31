@@ -102,24 +102,35 @@ map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
 }
 
 # General plot of gx by gy faceted by species.
-map_xy <- function(census, xlim, ylim, elev = NULL, ...) {
-  p <- ggplot2::ggplot(
-    data = census,
-    ggplot2::aes(x = census$gx, y = census$gy)
-  ) +
+map_xy <- function(census, xlim, ylim, ...) {
+  check_crucial_names(census, c("gx", "gy"))
+  ggplot2::ggplot(data = census, ggplot2::aes(x = census$gx, y = census$gy)) +
     ggplot2::geom_point(...) +
     ggplot2::facet_grid(. ~ census$sp) +
     ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
     ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::theme_bw()
+}
+map_xy2 <- function(census, xlim, ylim, ...) {
+  check_crucial_names(census, c("gx", "gy"))
+  p <- ggplot2::ggplot(
+    data = census,
+    ggplot2::aes(x = gx, y = gy)
+  ) +
+    ggplot2::geom_point(...) +
+    ggplot2::facet_grid(. ~ sp) +
+    ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::theme_bw()
+}
+
+add_elevation <- function(ggplot, elevation) {
+    check_crucial_names(elevation, c("gx", "gy", "elev"))
   
-  if (!is.null(elev)) {
-    # xxx check_crucial_names(elev, c("x", "y", "elev"))
-    p + ggplot2::geom_contour(aes(z = elev))
-  } else {
-    p
-  }
-  # xxx add argument elev en every function down the road
+    ggplot + 
+      ggplot2::geom_contour(
+        data = elevation, ggplot2::aes(x = gx, y = gy, z = elev)
+      )
 }
 
 # Standarized plot for each species (fixed ratio and limits).

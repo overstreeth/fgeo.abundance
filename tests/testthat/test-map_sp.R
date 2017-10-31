@@ -48,3 +48,11 @@ test_that("output is an invisible and named list and prints pdf w/ message", {
   expect_named(result, all_species)
 })
 
+
+
+context("map_xy")
+
+test_that("plots elevation or not based on argument elev.", {
+  # xxx
+})
+
