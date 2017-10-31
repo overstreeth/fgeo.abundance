@@ -22,6 +22,8 @@ check_if_all_dbh_is_na <- function(cns1, cns2, split) {
 }
 
 # Check data has crucial variables
+#' @export
+#' @keywords internal
 check_crucial_names <- function(cns, nms) {
   # Check that names in census1 and census2 are as expected
   are_names_expected <- all(nms %in% names(cns))

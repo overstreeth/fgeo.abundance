@@ -19,6 +19,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)  # to make it easer to manipulate data
 #' library(gridExtra)  # to arrange multiple plots in one page
 #'
@@ -65,13 +66,12 @@
 #' # Match exactly the names of crucial variables
 #' census <- dplyr::rename(census, SP = sp)
 #' # This fails
-#' \dontrun{
 #' map_sp(census, species = "hybapr")
-#' }
 #'
 #' # File extension should be .pdf
 #' map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
 #' map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
+#' }
 map_sp <- function(census, species, ...) {
   check_crucial_names(census, c("gx", "gy", "sp"))
   assertive::assert_is_character(species)

@@ -35,6 +35,7 @@ Thanks to Gabriel Arellano and David Kenfack for ideas and feedback.
 }
 
 \examples{
+\dontrun{
 library(dplyr)  # to make it easer to manipulate data
 library(gridExtra)  # to arrange multiple plots in one page
 
@@ -81,13 +82,12 @@ dev.off()
 # Match exactly the names of crucial variables
 census <- dplyr::rename(census, SP = sp)
 # This fails
-\dontrun{
 map_sp(census, species = "hybapr")
-}
 
 # File extension should be .pdf
 map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
 map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
+}
 }
 \seealso{
 \code{\link[ggplot2:geom_layer]{ggplot2::geom_layer()}}, \code{\link[grDevices:pdf]{grDevices::pdf()}}, \code{\link[grDevices:png]{grDevices::png()}}.

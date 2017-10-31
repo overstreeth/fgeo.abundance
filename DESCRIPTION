@@ -22,9 +22,11 @@ Imports:
     assertive,
     tidyr,
     purrr,
-    tibble
+    tibble,
+    ggplot2
 Suggests: 
     knitr,
     rmarkdown,
     covr,
-    readr
+    readr,
+    gridExtra
