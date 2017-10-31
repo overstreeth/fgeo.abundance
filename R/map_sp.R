@@ -125,11 +125,15 @@ add_elevation <- function(ggplot, elevation) {
 }
 
 # Standarized plot for each species (fixed ratio and limits).
-map_one_sp <- function(census, one_sp, ...) {
+map_one_sp <- function(census, one_sp, elevation = NULL, ...) {
   xlim <- c(0, max(census$gx, na.rm = TRUE))
   ylim <- c(0, max(census$gy, na.rm = TRUE))
   assertive::assert_all_are_not_na(c(xlim, ylim))
 
   filtered_census <- census[census$sp %in% one_sp, ]
-  map_xy(filtered_census, xlim, ylim, ...)
+  p <- map_xy(filtered_census, xlim, ylim, ...)
+  if (!is.null(elevation)) {
+    p <- add_elevation(ggplot = p, elevation = elevation)
+  }
+  p
 }
