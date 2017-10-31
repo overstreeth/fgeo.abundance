@@ -110,6 +110,8 @@ map_sp_pdf <- function(census,
 # General plot of gx by gy faceted by species.
 map_xy <- function(census, xlim, ylim, ...) {
   check_crucial_names(census, c("gx", "gy"))
+  assertive::assert_all_are_not_na(c(xlim, ylim))
+
   ggplot2::ggplot(
     data = census,
     ggplot2::aes(x = gx, y = gy)
@@ -122,19 +124,23 @@ map_xy <- function(census, xlim, ylim, ...) {
 }
 
 add_elevation <- function(ggplot, elevation, bins = NULL) {
-    check_crucial_names(elevation, c("gx", "gy", "elev"))
+  base_plot_is_class_ggplot <- grepl("ggplot", class(ggplot))
+  stopifnot(base_plot_is_class_ggplot)
+
+  elevation_is_dataframe <- grepl("data.frame", class(elevation))
+  stopifnot(elevation_is_dataframe)
   
-    ggplot + 
-      ggplot2::geom_contour(
-        data = elevation, ggplot2::aes(x = gx, y = gy, z = elev), bins = bins
-      )
+  check_crucial_names(elevation, c("gx", "gy", "elev"))
+
+  ggplot + 
+    ggplot2::geom_contour(
+      data = elevation, ggplot2::aes(x = gx, y = gy, z = elev), bins = bins)
 }
 
 # Standarized plot for each species (fixed ratio and limits).
 map_one_sp <- function(census, one_sp, elevation = NULL, bins = NULL, ...) {
   xlim <- c(0, max(census$gx, na.rm = TRUE))
   ylim <- c(0, max(census$gy, na.rm = TRUE))
-  assertive::assert_all_are_not_na(c(xlim, ylim))
 
   filtered_census <- census[census$sp %in% one_sp, ]
   p <- map_xy(filtered_census, xlim, ylim, ...)
