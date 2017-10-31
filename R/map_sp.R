@@ -104,15 +104,6 @@ map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
 # General plot of gx by gy faceted by species.
 map_xy <- function(census, xlim, ylim, ...) {
   check_crucial_names(census, c("gx", "gy"))
-  ggplot2::ggplot(data = census, ggplot2::aes(x = census$gx, y = census$gy)) +
-    ggplot2::geom_point(...) +
-    ggplot2::facet_grid(. ~ census$sp) +
-    ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
-    ggplot2::labs(x = NULL, y = NULL) +
-    ggplot2::theme_bw()
-}
-map_xy2 <- function(census, xlim, ylim, ...) {
-  check_crucial_names(census, c("gx", "gy"))
   p <- ggplot2::ggplot(
     data = census,
     ggplot2::aes(x = gx, y = gy)
