@@ -5,9 +5,9 @@
 \alias{map_sp_pdf}
 \title{Map the distribution of one, some or all species in a census data set.}
 \usage{
-map_sp(census, species, ...)
+map_sp(census, species, elevation = NULL, ...)
 
-map_sp_pdf(census, species, file = "map.pdf", ...)
+map_sp_pdf(census, species, file = "map.pdf", elevation = NULL, ...)
 }
 \arguments{
 \item{census}{Census data.}

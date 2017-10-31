@@ -72,20 +72,24 @@
 #' map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
 #' map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
 #' }
-map_sp <- function(census, species, ...) {
+map_sp <- function(census, species, elevation = NULL, ...) {
   check_crucial_names(census, c("gx", "gy", "sp"))
   assertive::assert_is_character(species)
   assertive::assert_is_non_empty(species)
 
-  plots <- lapply(X = species, FUN = map_one_sp, census = census, ...)
+  plots <- lapply(X = species, FUN = map_one_sp, census = census, 
+    elevation = elevation, ...)
   names(plots) <- species
   plots
 }
 
 #' @export
 #' @rdname map_sp
-map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
-  
+map_sp_pdf <- function(census,
+                       species,
+                       file = "map.pdf",
+                       elevation = NULL,
+                       ...) {
   is_wrong_extension <- !grepl("*.\\.pdf", file)
   if (is_wrong_extension) {
     warning("File extension should be .pdf.\n",
@@ -93,7 +97,8 @@ map_sp_pdf <- function(census, species, file = "map.pdf", ...) {
     file <- "map.pdf"
   }
   
-  plots <- map_sp(census = census, species = species, ...)
+  plots <- map_sp(census = census, species = species, elevation = elevation,
+    ...)
   pdf(file = file)
   on.exit(dev.off())
   invisible(lapply(plots, print))

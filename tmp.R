@@ -26,4 +26,11 @@ p <- map_xy(cns_one_sp, xlim, ylim)
 
 add_elevation(p, elevation = elevation)
 
+species <- c("hampap", "ficupo")
+
+map_sp(census, species, elevation = elevation)
+map_sp(census, "anacex", elevation = NULL)
+
+map_sp_pdf(census, species, elevation = elevation)
+map_sp_pdf(census, "anacex", elevation = NULL)
 
