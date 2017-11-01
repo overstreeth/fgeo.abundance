@@ -1,0 +1,58 @@
+---
+title: "Mapping species distribution"
+author: "Mauro Lepore"
+date: "2017-11-01"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 6
+vignette: >
+  %\VignetteIndexEntry{Mapping species distribution}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+# hadley's settings
+set.seed(1014)
+options(digits = 3)
+
+knitr::opts_chunk$set(
+  echo = TRUE,  # {mine}
+  comment = "#>",
+  collapse = TRUE,
+  # cache = TRUE,
+  out.width = "70%",
+  fig.align = "center",
+  fig.width = 6,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+This vignette show you how to map species distribution with `map_sp()` and `map_sp_pdf()` from the __forestr__ package. Let's load __forestr__:
+
+```{r}
+GITHUB_PAT <- "your token"
+# install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)
+library(forestr)
+
+# Also using the package dplyr for easier data manipulation
+library(dplyr)
+```
+
+The first section shows you how to explore your data quickly and yet get good quality maps with the available defaults. The second section shows you how to customize you maps; It is organized to show first the changes you may need for exploring your data, and second the changes you may need to precisely communicate your results.
+
+# Exploring Data Quickly: Using Defaults
+
+# Customizing Your Maps
+
+## Most Common Changes
+
+## Less Common Changes
+
+## Advanced Changes
+
+

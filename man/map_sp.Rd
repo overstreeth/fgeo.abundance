@@ -5,30 +5,55 @@
 \alias{map_sp_pdf}
 \title{Map the distribution of one, some or all species in a census data set.}
 \usage{
-map_sp(census, species, elevation = NULL, bins = NULL, ...)
+map_sp(census, species, xlim = NULL, ylim = NULL,
+  theme = ggplot2::theme_bw(), elevation = NULL, line_size = 0.5,
+  low = "#132B43", high = "#56B1F7", bins = NULL, ...)
 
-map_sp_pdf(census, species, file = "map.pdf", elevation = NULL,
-  bins = NULL, ...)
+map_sp_pdf(census, species, xlim = NULL, ylim = NULL,
+  theme = ggplot2::theme_bw(), elevation = NULL, line_size = 0.5,
+  low = "#132B43", high = "#56B1F7", bins = NULL, file = "map.pdf", ...)
 }
 \arguments{
 \item{census}{Census data.}
 
 \item{species}{A string of the species codes to plot (\code{sp}).}
 
+\item{xlim, ylim}{A vector giving the limits of x, y axes, for example
+\code{xlim = c(0, 1000), ylim = c(0, 500)}. Default limits should be OK -- they
+are set to be c(0, max), where max is the maximum value of \code{gx} or \code{gy}
+in the data set.}
+
+\item{theme}{A ggplot2 theme to customize the looks of the map.}
+
+\item{elevation}{A dataframe with variables gx, gy, and elev giving the
+elevation of the site.}
+
+\item{line_size}{A number to customize the width of the elevation lines.}
+
+\item{low, high}{Colours to represent the range between low and high
+elevation. Use colour names like \code{low = "black", high = "red"} or HEX
+colours like \code{low = "#132B43", high = "#56B1F7"} (for more colours google
+#132B43).}
+
+\item{bins}{A number. Setting bins creates evenly spaced contours in the
+range of the data. Integers}
+
 \item{...}{Arguments passed to \code{\link[ggplot2:geom_layer]{ggplot2::geom_layer()}} via
-\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}.}
+\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to customize, for example, the size, shape,
+or colour of the points.}
 
 \item{file}{A character string giving the name of the file.}
 }
 \value{
-A list of plots is always returned:
-\itemize{
-\item \code{map_sp()} returns it visibly;
-\item \code{map_sp_pdf()} returns it invisibly so it can be reused, but its main
-}
+Both functions return a list of plots. \code{map_sp()} returns it visibly;
+\code{map_sp_pdf()} returns it invisibly so it can be reused, but its main
+output is a .pdf file.
 }
 \description{
-Map the distribution of one, some or all species in a census data set.
+Only the first two arguments are strictly necessary and the defaults are set
+to cover most common cases. All other arguments let you customize your map:
+they let you customize the points; the plot theme; add your elevation data,
+and customize the elevation lines.
 }
 \section{Acknowledgement}{
 
@@ -91,5 +116,6 @@ map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
 }
 }
 \seealso{
-\code{\link[ggplot2:geom_layer]{ggplot2::geom_layer()}}, \code{\link[grDevices:pdf]{grDevices::pdf()}}, \code{\link[grDevices:png]{grDevices::png()}}.
+\code{\link[ggplot2:geom_layer]{ggplot2::geom_layer()}}, \code{\link[grDevices:pdf]{grDevices::pdf()}}, \code{\link[grDevices:png]{grDevices::png()}},
+\code{\link[ggplot2:theme]{ggplot2::theme()}}.
 }
