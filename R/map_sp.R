@@ -1,7 +1,12 @@
 # Map species from a census.
 
 #' Map the distribution of one, some or all species in a census data set.
-#'
+#' 
+#' Only the first two arguments are strictly necessary and the defaults are set
+#' to cover most common cases. All other arguments let you customize your map:
+#' they let you customize the points; the plot theme; add your elevation data, 
+#' and customize the elevation lines.
+#' 
 #' @param census Census data.
 #' @param species A string of the species codes to plot (`sp`).
 #' @param ... Arguments passed to [ggplot2::geom_layer()] via
@@ -10,6 +15,11 @@
 #' @param theme A ggplot2 theme to customize the looks of the map.
 #' @param elevation A dataframe with variables gx, gy, and elev giving the 
 #'   elevation of the site.
+#' @param line_size A number to customize the width of the elevation lines.
+#' @param low,high Colours to represent the range between low and high 
+#'   elevation. Use colour names like `low = "black", high = "red"` or HEX
+#'   colours like `low = "#132B43", high = "#56B1F7"` (for more colours google 
+#'   #132B43).
 #' @param bins A number. Setting bins creates evenly spaced contours in the
 #'   range of the data. Integers 
 #' @param file A character string giving the name of the file.
@@ -20,9 +30,9 @@
 #' @section Acknowledgement:
 #' Thanks to Gabriel Arellano and David Kenfack for ideas and feedback.
 #'
-#' @return A list of plots is always returned:
-#' * `map_sp()` returns it visibly;
-#' * `map_sp_pdf()` returns it invisibly so it can be reused, but its main
+#' @return Both functions return a list of plots. `map_sp()` returns it visibly;
+#'   `map_sp_pdf()` returns it invisibly so it can be reused, but its main
+#'   output is a .pdf file.
 #' @export
 #'
 #' @examples
@@ -84,11 +94,15 @@ map_sp <- function(census,
                    ...,
                    theme = ggplot2::theme_bw(),
                    elevation = NULL,
+                   line_size = 0.5,
+                   low = "#132B43",
+                   high = "#56B1F7",
                    bins = NULL) {
   check_map_sp(census, species)
   
   plots <- lapply(X = species, FUN = map_one_sp, census = census, theme = theme,
-    elevation = elevation, bins = bins, ...)
+    elevation = elevation, line_size = line_size, low = low, high = high,
+    bins = bins, ...)
   names(plots) <- species
   plots
 }
@@ -100,13 +114,17 @@ map_sp_pdf <- function(census,
                        ...,
                        theme = ggplot2::theme_bw(),
                        elevation = NULL,
+                       line_size = 0.5,
+                       low = "#132B43",
+                       high = "#56B1F7",
                        bins = NULL,
                        file = "map.pdf") {
   check_map_sp(census, species)
   file <- check_file_extension(file)
   
   plots <- map_sp(census = census, species = species, theme = theme, 
-    elevation = elevation, bins = bins, ...)
+    elevation = elevation, line_size = line_size, low = low, high = high, 
+    bins = bins, ...)
   pdf(file = file)
   on.exit(dev.off())
   invisible(lapply(plots, print))
@@ -131,7 +149,8 @@ map_basic <- function(census, xlim, ylim, theme = ggplot2::theme_bw(), ...) {
 }
 
 add_elevation <- function(ggplot,
-                          elevation = elevation,
+                          elevation,
+                          line_size = 0.5,
                           low = "#132B43",
                           high = "#56B1F7",
                           bins = NULL) {
@@ -143,7 +162,8 @@ add_elevation <- function(ggplot,
 
   p <- ggplot + 
     ggplot2::stat_contour(data = elevation, 
-      ggplot2::aes(x = gx, y = gy, z = elev, colour = ..level..), bins = bins) +
+      ggplot2::aes(x = gx, y = gy, z = elev, colour = ..level..), 
+      size = line_size, bins = bins) +
     scale_colour_continuous(low = low, high = high)
   labels_properties <- list("far.from.others.borders", "calc.boxes", 
     "enlarge.box", box.color = NA, fill = "transparent", "draw.rects")
@@ -157,8 +177,9 @@ map_one_sp <- function(census,
                        ...,
                        theme = ggplot2::theme_bw(),
                        elevation = NULL,
-                       low = "blue",
-                       high = "red",
+                       line_size = 0.5,
+                       low = "#132B43",
+                       high = "#56B1F7",
                        bins = NULL) {
   assertive::assert_is_character(one_sp)
   assertive::assert_is_of_length(one_sp, 1)
@@ -169,8 +190,8 @@ map_one_sp <- function(census,
   filtered_census <- census[census$sp %in% one_sp, ]
   p <- map_basic(filtered_census, xlim, ylim, theme = theme, ...)
   if (!is.null(elevation)) {
-    p <- add_elevation(ggplot = p, 
-      elevation = elevation, low = low, high = high, bins = bins)
+    p <- add_elevation(ggplot = p, elevation = elevation, line_size = line_size,
+      low = low, high = high, bins = bins)
   }
   p
 }
