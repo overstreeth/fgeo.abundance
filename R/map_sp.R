@@ -4,11 +4,18 @@
 #'
 #' @param census Census data.
 #' @param species A string of the species codes to plot (`sp`).
-#' @param file A character string giving the name of the file.
 #' @param ... Arguments passed to [ggplot2::geom_layer()] via
-#'   [ggplot2::geom_point()].
+#'   [ggplot2::geom_point()] to customize, for example, the size, shape,
+#'   or colour of the points.
+#' @param theme A ggplot2 theme to customize the looks of the map.
+#' @param elevation A dataframe with variables gx, gy, and elev giving the 
+#'   elevation of the site.
+#' @param bins A number. Setting bins creates evenly spaced contours in the
+#'   range of the data. Integers 
+#' @param file A character string giving the name of the file.
 #'
-#' @seealso [ggplot2::geom_layer()], [grDevices::pdf()], [grDevices::png()].
+#' @seealso [ggplot2::geom_layer()], [grDevices::pdf()], [grDevices::png()], 
+#'   [ggplot2::theme()].
 #'
 #' @section Acknowledgement:
 #' Thanks to Gabriel Arellano and David Kenfack for ideas and feedback.
@@ -72,10 +79,15 @@
 #' map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
 #' map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
 #' }
-map_sp <- function(census, species, elevation = NULL, bins = NULL, ...) {
+map_sp <- function(census,
+                   species,
+                   ...,
+                   theme = ggplot2::theme_bw(),
+                   elevation = NULL,
+                   bins = NULL) {
   check_map_sp(census, species)
   
-  plots <- lapply(X = species, FUN = map_one_sp, census = census, 
+  plots <- lapply(X = species, FUN = map_one_sp, census = census, theme = theme,
     elevation = elevation, bins = bins, ...)
   names(plots) <- species
   plots
@@ -85,15 +97,16 @@ map_sp <- function(census, species, elevation = NULL, bins = NULL, ...) {
 #' @rdname map_sp
 map_sp_pdf <- function(census,
                        species,
-                       file = "map.pdf",
+                       ...,
+                       theme = ggplot2::theme_bw(),
                        elevation = NULL,
                        bins = NULL,
-                       ...) {
+                       file = "map.pdf") {
   check_map_sp(census, species)
   file <- check_file_extension(file)
   
-  plots <- map_sp(census = census, species = species, elevation = elevation,
-    bins = bins, ...)
+  plots <- map_sp(census = census, species = species, theme = theme, 
+    elevation = elevation, bins = bins, ...)
   pdf(file = file)
   on.exit(dev.off())
   invisible(lapply(plots, print))
@@ -102,7 +115,7 @@ map_sp_pdf <- function(census,
 }
 
 # General plot of gx by gy faceted by species.
-map_xy <- function(census, xlim, ylim, ...) {
+map_basic <- function(census, xlim, ylim, theme = ggplot2::theme_bw(), ...) {
   check_crucial_names(census, c("gx", "gy"))
   assertive::assert_all_are_not_na(c(xlim, ylim))
 
@@ -114,7 +127,7 @@ map_xy <- function(census, xlim, ylim, ...) {
     ggplot2::facet_grid(. ~ sp) +
     ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
     ggplot2::labs(x = NULL, y = NULL) +
-    ggplot2::theme_bw()
+    theme
 }
 
 add_elevation <- function(ggplot, elevation, bins = NULL) {
@@ -134,7 +147,12 @@ add_elevation <- function(ggplot, elevation, bins = NULL) {
 }
 
 # Standarized plot for each species (fixed ratio and limits).
-map_one_sp <- function(census, one_sp, elevation = NULL, bins = NULL, ...) {
+map_one_sp <- function(census,
+                       one_sp,
+                       ...,
+                       theme = ggplot2::theme_bw(),
+                       elevation = NULL,
+                       bins = NULL) {
   assertive::assert_is_character(one_sp)
   assertive::assert_is_of_length(one_sp, 1)
   
@@ -142,7 +160,7 @@ map_one_sp <- function(census, one_sp, elevation = NULL, bins = NULL, ...) {
   ylim <- c(0, max(census$gy, na.rm = TRUE))
 
   filtered_census <- census[census$sp %in% one_sp, ]
-  p <- map_xy(filtered_census, xlim, ylim, ...)
+  p <- map_basic(filtered_census, xlim, ylim, theme = theme, ...)
   if (!is.null(elevation)) {
     p <- add_elevation(ggplot = p, elevation = elevation, bins = bins)
   }
