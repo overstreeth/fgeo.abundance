@@ -10,8 +10,11 @@ xlimit <- c(0, max(census$gx, na.rm = TRUE))
 ylimit <- c(0, max(census$gy, na.rm = TRUE))
 
 map_xy(census, xlimit, ylimit)
+map_one_sp(census, "hybapr", elevation = elevation, bins = NULL)
 
-map_one_sp(census, "hybapr", elevation = elevation)
+
+
+
 
 map_sp(census, c("hybapr", "faraoc"), elevation = elevation, bins = 20)
 

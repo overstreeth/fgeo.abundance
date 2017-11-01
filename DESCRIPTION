@@ -17,16 +17,17 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 Imports: 
-    rlang (>= 0.1.2),
     dplyr,
     assertive,
     tidyr,
     purrr,
     tibble,
-    ggplot2
+    ggplot2,
+    directlabels
 Suggests: 
     knitr,
     rmarkdown,
     covr,
     readr,
     gridExtra
+

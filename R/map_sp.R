@@ -120,15 +120,17 @@ map_xy <- function(census, xlim, ylim, ...) {
 add_elevation <- function(ggplot, elevation, bins = NULL) {
   base_plot_is_class_ggplot <- any(grepl("ggplot", class(ggplot)))
   stopifnot(base_plot_is_class_ggplot)
-
   elevation_is_dataframe <- any(grepl("data.frame", class(elevation)))
   stopifnot(elevation_is_dataframe)
-  
   check_crucial_names(elevation, c("gx", "gy", "elev"))
 
-  ggplot + 
-    ggplot2::geom_contour(
-      data = elevation, ggplot2::aes(x = gx, y = gy, z = elev), bins = bins)
+  p <- ggplot + 
+    ggplot2::stat_contour(data = elevation, 
+      ggplot2::aes(x = gx, y = gy, z = elev, colour = ..level..), bins = bins)
+  labels_properties <- list("far.from.others.borders", "calc.boxes", 
+    "enlarge.box", box.color = NA, fill = "transparent", "draw.rects")
+  p_with_labels <- directlabels::direct.label(p, labels_properties)
+  p_with_labels
 }
 
 # Standarized plot for each species (fixed ratio and limits).
