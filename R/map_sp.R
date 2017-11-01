@@ -130,7 +130,11 @@ map_basic <- function(census, xlim, ylim, theme = ggplot2::theme_bw(), ...) {
     theme
 }
 
-add_elevation <- function(ggplot, elevation, bins = NULL) {
+add_elevation <- function(ggplot,
+                          elevation = elevation,
+                          low = "#132B43",
+                          high = "#56B1F7",
+                          bins = NULL) {
   base_plot_is_class_ggplot <- any(grepl("ggplot", class(ggplot)))
   stopifnot(base_plot_is_class_ggplot)
   elevation_is_dataframe <- any(grepl("data.frame", class(elevation)))
@@ -139,7 +143,8 @@ add_elevation <- function(ggplot, elevation, bins = NULL) {
 
   p <- ggplot + 
     ggplot2::stat_contour(data = elevation, 
-      ggplot2::aes(x = gx, y = gy, z = elev, colour = ..level..), bins = bins)
+      ggplot2::aes(x = gx, y = gy, z = elev, colour = ..level..), bins = bins) +
+    scale_colour_continuous(low = low, high = high)
   labels_properties <- list("far.from.others.borders", "calc.boxes", 
     "enlarge.box", box.color = NA, fill = "transparent", "draw.rects")
   p_with_labels <- directlabels::direct.label(p, labels_properties)
@@ -152,6 +157,8 @@ map_one_sp <- function(census,
                        ...,
                        theme = ggplot2::theme_bw(),
                        elevation = NULL,
+                       low = "blue",
+                       high = "red",
                        bins = NULL) {
   assertive::assert_is_character(one_sp)
   assertive::assert_is_of_length(one_sp, 1)
@@ -162,7 +169,8 @@ map_one_sp <- function(census,
   filtered_census <- census[census$sp %in% one_sp, ]
   p <- map_basic(filtered_census, xlim, ylim, theme = theme, ...)
   if (!is.null(elevation)) {
-    p <- add_elevation(ggplot = p, elevation = elevation, bins = bins)
+    p <- add_elevation(ggplot = p, 
+      elevation = elevation, low = low, high = high, bins = bins)
   }
   p
 }
