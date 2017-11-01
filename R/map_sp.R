@@ -9,6 +9,10 @@
 #' 
 #' @param census Census data.
 #' @param species A string of the species codes to plot (`sp`).
+#' @param xlim,ylim A vector giving the limits of x, y axes, for example 
+#'   `xlim = c(0, 1000), ylim = c(0, 500)`. Default limits should be OK -- they
+#'   are set to be c(0, max), where max is the maximum value of `gx` or `gy`
+#'   in the data set.
 #' @param ... Arguments passed to [ggplot2::geom_layer()] via
 #'   [ggplot2::geom_point()] to customize, for example, the size, shape,
 #'   or colour of the points.
@@ -91,6 +95,8 @@
 #' }
 map_sp <- function(census,
                    species,
+                   xlim = NULL,
+                   ylim = NULL,
                    ...,
                    theme = ggplot2::theme_bw(),
                    elevation = NULL,
@@ -100,7 +106,8 @@ map_sp <- function(census,
                    bins = NULL) {
   check_map_sp(census, species)
   
-  plots <- lapply(X = species, FUN = map_one_sp, census = census, theme = theme,
+  plots <- lapply(X = species, FUN = map_one_sp, census = census, 
+    xlim = xlim, ylim = ylim, theme = theme,
     elevation = elevation, line_size = line_size, low = low, high = high,
     bins = bins, ...)
   names(plots) <- species
@@ -111,6 +118,8 @@ map_sp <- function(census,
 #' @rdname map_sp
 map_sp_pdf <- function(census,
                        species,
+                       xlim = NULL,
+                       ylim = NULL,
                        ...,
                        theme = ggplot2::theme_bw(),
                        elevation = NULL,
@@ -122,7 +131,8 @@ map_sp_pdf <- function(census,
   check_map_sp(census, species)
   file <- check_file_extension(file)
   
-  plots <- map_sp(census = census, species = species, theme = theme, 
+  plots <- map_sp(census = census, species = species, 
+    xlim = xlim, ylim = ylim, theme = theme, 
     elevation = elevation, line_size = line_size, low = low, high = high, 
     bins = bins, ...)
   pdf(file = file)
@@ -175,6 +185,8 @@ add_elevation <- function(ggplot,
 map_one_sp <- function(census,
                        one_sp,
                        ...,
+                       xlim = NULL,
+                       ylim = NULL,
                        theme = ggplot2::theme_bw(),
                        elevation = NULL,
                        line_size = 0.5,
@@ -184,8 +196,8 @@ map_one_sp <- function(census,
   assertive::assert_is_character(one_sp)
   assertive::assert_is_of_length(one_sp, 1)
   
-  xlim <- c(0, max(census$gx, na.rm = TRUE))
-  ylim <- c(0, max(census$gy, na.rm = TRUE))
+  if (is.null(xlim)) {xlim <- c(0, max(census$gx, na.rm = TRUE))}
+  if (is.null(ylim)) {ylim <- c(0, max(census$gy, na.rm = TRUE))}
 
   filtered_census <- census[census$sp %in% one_sp, ]
   p <- map_basic(filtered_census, xlim, ylim, theme = theme, ...)
