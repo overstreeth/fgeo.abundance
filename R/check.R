@@ -39,7 +39,7 @@ check_crucial_names <- function(cns, nms) {
 #' @export
 #' @keywords internal
 check_map_sp <- function(cns, sp) {
-  assertive::assert_is_data.frame(census)
+  assertive::assert_is_data.frame(cns)
   check_crucial_names(cns = cns, nms = c("gx", "gy", "sp"))
   assertive::assert_is_character(sp)
   assertive::assert_is_non_empty(sp)
