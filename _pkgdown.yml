@@ -28,6 +28,14 @@ reference:
       - recruitment
       - recruitment_df
 
+
+  - title: "Mapping"
+    desc: >
+      Functions to map species distributions
+    contents:
+      - map_sp
+      - map_sp_pdf
+
   - title: "Data sets"
     contents: 
       - bci12t7mini
@@ -40,6 +48,9 @@ articles:
   - title: "Calculations between two censuses"
     contents:
     - abundance
+  - title: "Mapping species distribution"
+    contents:
+    - map
 
 navbar:
   type: default
