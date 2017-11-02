@@ -142,7 +142,8 @@ map_sp_pdf <- function(census,
   invisible(plots)
 }
 
-# Standarized plot for each species (fixed ratio and limits).
+#' Standarized plot for each species (fixed ratio and limits).
+#' @noRd
 map_one_sp <- function(census,
                        one_sp,
                        xlim = NULL,
@@ -169,7 +170,8 @@ map_one_sp <- function(census,
   p
 }
 
-# General plot of gx by gy faceted by species.
+#' General plot of gx by gy faceted by species.
+#' @noRd
 map_basic <- function(census, xlim, ylim, theme = ggplot2::theme_bw(), ...) {
   check_crucial_names(census, c("gx", "gy"))
   assertive::assert_all_are_not_na(c(xlim, ylim))
@@ -185,6 +187,8 @@ map_basic <- function(census, xlim, ylim, theme = ggplot2::theme_bw(), ...) {
     theme
 }
 
+#' Add elevation lines to a ggplot.
+#' @noRd
 add_elevation <- function(ggplot,
                           elevation,
                           line_size = 0.5,

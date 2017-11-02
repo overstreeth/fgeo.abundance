@@ -1,4 +1,5 @@
-# Warn if all dbh vealues of a census `cns` are equal to NA.
+#' Warn if all dbh vealues of a census `cns` are equal to NA.
+#' @noRd
 check_if_all_dbh_is_na <- function(cns1, cns2, split) {
   # Check for one census, then appply to both
   check_one_cns <- function(cns, split) {
@@ -21,9 +22,8 @@ check_if_all_dbh_is_na <- function(cns1, cns2, split) {
   }
 }
 
-# Check data has crucial variables
-#' @export
-#' @keywords internal
+#' Check data has crucial variables
+#' @noRd
 check_crucial_names <- function(cns, nms) {
   # Check that names in census1 and census2 are as expected
   are_names_expected <- all(nms %in% names(cns))
@@ -35,9 +35,8 @@ check_crucial_names <- function(cns, nms) {
   }
 }
 
-# Internal. Wrap multiple checks in map_sp() and map_sp_pdf() for clarity.
-#' @export
-#' @keywords internal
+#' Wrap multiple checks in map_sp() and map_sp_pdf() for clarity.
+#' @noRd
 check_map_sp <- function(cns, sp) {
   assertive::assert_is_data.frame(cns)
   check_crucial_names(cns = cns, nms = c("gx", "gy", "sp"))
@@ -45,6 +44,8 @@ check_map_sp <- function(cns, sp) {
   assertive::assert_is_non_empty(sp)
 }
 
+#' If file extension is not .pdf, ignore the given file-name
+#' @noRd
 check_file_extension <- function(file) {
   is_extension_ok <- grepl("*.\\.pdf", file)
   if (is_extension_ok) {
