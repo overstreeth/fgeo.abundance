@@ -87,13 +87,6 @@ map_sp(census, c("hybapr", "faraoc"))
 map_sp_pdf(census, c("hybapr", "faraoc"))
 ```
 
-If you want to print the maps both to a .pdf and to screen, you can do that in a single step because `map_sp_pdf()` returns a list of maps invisibly:
-
-```{r}
-invisible_maps <- map_sp_pdf(census, "hybapr")
-invisible_maps
-```
-
 Keep in mind that your census data must have specific variable-names:
 
 ```{r, error=TRUE}
@@ -245,3 +238,20 @@ map_sp(census, "hybapr", theme = mytheme)
 ```
 
 __ggplot2__ is the engine of `map_sp()` and `map_sp_pdf()`, but these functions are built so you can use them without konwing anything about __ggplot2__. Yet you may want to know more about it. __ggplot2__ is not an arbitrary collection of functions that you need to memorize; instead it is one implementation of [The Grammar of Graphics](https://goo.gl/E514ar). You can learn __ggplot2__ from [this website](https://goo.gl/tVvLQZ); this specialized, paid book: [ggplot2: Elegant Graphics for Data Analysis](https://goo.gl/R6wJk9); or this general, free book [R for Data Science](http://r4ds.had.co.nz/). Learning always has some overhead, but the learning curve of __ggplot2__ is not steep. It pays off.
+
+
+# Supplement: Mapping as Part of a Pipe
+
+Both `map_sp()` and  `map_sp_pdf()` can be used as part of a pipe. (With the pipe operator (`%>%`; Control/Command + Shift + M) you can chain multiple functions more expressively than with multiple function calls [http://style.tidyverse.org/pipes.html].)
+
+```{r}
+census %>% 
+  dplyr::filter(sp == "hybapr") %>% 
+  # Print map to screen and continue pipe
+  forestr::map_sp(unique(.$sp)) %>% 
+  # Line above invisibly retuns the filtered census, so it can be used next
+  count(sp)
+
+# Compare: Above the count is done after filtering.
+census %>% count(sp)
+```
