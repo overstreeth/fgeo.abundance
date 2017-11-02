@@ -37,10 +37,11 @@ This vignette show you how to map species distribution with `map_sp()` and `map_
 
 ```{r}
 GITHUB_PAT <- "your token"
-# install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)
+# install_github("forestgeo/forestr", auth_token = GITHUB_PAT)
 library(forestr)
 
-# Also using the package dplyr for easier data manipulation
+# Also using the package dplyr for easier data manipulation;
+# it is the most downloaded R package (https://goo.gl/bXBmkS).
 library(dplyr)
 # Print only a few rows of tibbles (modern dataframes) to save space
 options(dplyr.print_min = 6, dplyr.print_max = 6)
@@ -190,4 +191,50 @@ You can overwrite the default limits with the arguments `xlim` and `ylim`:
 map_sp(rare_case, unique(rare_case$sp), xlim = c(0, 1000), ylim = c(0, 500))
 ```
 
+# Fine Tunning
 
+This last section shows you how to fine tune your plots. For this, you will need a couple of functions from packages other than __forestr__. Because you this kind of changes are rare you may forget how to do them, but you can come back to notes whenever you
+
+## Multiple Plots in One Page
+
+To plot multiple maps on one page you can use `gridExtra::maparrange()`.
+
+```{r}
+library(gridExtra)
+maps <- map_sp(census, sp_top3)
+multipaged <- marrangeGrob(maps, nrow = 2, ncol = 2)
+multipaged
+```
+
+Now you can save your multi-paged maps to a .pdf or other device:
+
+```{r}
+# Saving to .pdf
+pdf("multi-paged.pdf")
+multipaged
+dev.off()
+
+# Saving to .png
+png("multi-paged.png")
+multipaged
+dev.off()
+```
+
+## Fine Tunning the Theme
+
+You may have noticed that the default value of the argument `theme` is a function from the __ggplot__ package. Before you used a pre-made theme; but you can create your own theme with `ggplot2::theme()` and then pass it to `map_sp()` or `map_sp_pdf()`. 
+
+
+```{r}
+# Showing only a few options; see all the options with ?ggplot2::theme()
+mytheme <- ggplot2::theme(
+  panel.background = element_rect(fill = "lightgreen"),
+  panel.grid.minor = element_line(linetype = "dashed"),
+  strip.background = element_rect(fill = "black"),
+  strip.text = element_text(colour = "white"),
+  text = element_text(size = 25, face = "bold")
+)
+map_sp(census, "hybapr", theme = mytheme)
+```
+
+__ggplot2__ is the engine of `map_sp()` and `map_sp_pdf()`, but these functions are built so you can use them without konwing anything about __ggplot2__. Yet you may want to know more about it. __ggplot2__ is not an arbitrary collection of functions that you need to memorize; instead it is one implementation of [The Grammar of Graphics](https://goo.gl/E514ar). You can learn __ggplot2__ from [this website](https://goo.gl/tVvLQZ); this specialized, paid book: [ggplot2: Elegant Graphics for Data Analysis](https://goo.gl/R6wJk9); or this general, free book [R for Data Science](http://r4ds.had.co.nz/). Learning always has some overhead, but the learning curve of __ggplot2__ is not steep. It pays off.
