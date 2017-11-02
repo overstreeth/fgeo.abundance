@@ -202,23 +202,31 @@ To plot multiple maps on one page you can use `gridExtra::maparrange()`.
 ```{r}
 library(gridExtra)
 maps <- map_sp(census, sp_top3)
-multipaged <- marrangeGrob(maps, nrow = 2, ncol = 2)
+multipaged <- marrangeGrob(map_sp(census, sp_top3), nrow = 1, ncol = 2)
 multipaged
 ```
 
-Now you can save your multi-paged maps to a .pdf or other device:
+Now you can save your multi-paged maps to a .pdf
 
 ```{r}
-# Saving to .pdf
-pdf("multi-paged.pdf")
-multipaged
-dev.off()
+# Saving to .pdf: Option 1
+ggplot2::ggsave("multi-paged.pdf", multipaged)
 
-# Saving to .png
-png("multi-paged.png")
+# Saving to .pdf: Option 2
+pdf()
 multipaged
 dev.off()
 ```
+
+You can also print to other devices. If your maps span multiple pages, .png() will create one file per page.
+
+```{r}
+# Saving to .png; this will create multiple files.
+png()
+multipaged
+dev.off()
+```
+
 
 ## Fine Tunning the Theme
 
@@ -238,20 +246,3 @@ map_sp(census, "hybapr", theme = mytheme)
 ```
 
 __ggplot2__ is the engine of `map_sp()` and `map_sp_pdf()`, but these functions are built so you can use them without konwing anything about __ggplot2__. Yet you may want to know more about it. __ggplot2__ is not an arbitrary collection of functions that you need to memorize; instead it is one implementation of [The Grammar of Graphics](https://goo.gl/E514ar). You can learn __ggplot2__ from [this website](https://goo.gl/tVvLQZ); this specialized, paid book: [ggplot2: Elegant Graphics for Data Analysis](https://goo.gl/R6wJk9); or this general, free book [R for Data Science](http://r4ds.had.co.nz/). Learning always has some overhead, but the learning curve of __ggplot2__ is not steep. It pays off.
-
-
-# Supplement: Mapping as Part of a Pipe
-
-Both `map_sp()` and  `map_sp_pdf()` can be used as part of a pipe. (With the pipe operator (`%>%`; Control/Command + Shift + M) you can chain multiple functions more expressively than with multiple function calls [http://style.tidyverse.org/pipes.html].)
-
-```{r}
-census %>% 
-  dplyr::filter(sp == "hybapr") %>% 
-  # Print map to screen and continue pipe
-  forestr::map_sp(unique(.$sp)) %>% 
-  # Line above invisibly retuns the filtered census, so it can be used next
-  count(sp)
-
-# Compare: Above the count is done after filtering.
-census %>% count(sp)
-```
