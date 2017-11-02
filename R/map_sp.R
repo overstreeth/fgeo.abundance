@@ -139,6 +139,8 @@ map_sp_pdf <- function(census,
   on.exit(dev.off())
   invisible(lapply(plots, print))
   message("Saving as ", file)
+  
+  invisible(plots)
 }
 
 #' Standarized plot for each species (fixed ratio and limits).
