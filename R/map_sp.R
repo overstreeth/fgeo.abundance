@@ -201,7 +201,7 @@ add_elevation <- function(ggplot,
     ggplot2::stat_contour(data = elevation, 
       ggplot2::aes(x = gx, y = gy, z = elev, colour = ..level..), 
       size = line_size, bins = bins) +
-    scale_colour_continuous(low = low, high = high)
+    ggplot2::scale_colour_continuous(low = low, high = high)
   labels_properties <- list("far.from.others.borders", "calc.boxes", 
     "enlarge.box", box.color = NA, fill = "transparent", "draw.rects")
   p_with_labels <- directlabels::direct.label(p, labels_properties)
