@@ -33,29 +33,34 @@ library(ggplot2)
 update_geom_defaults("text", list(size = 14.5))
 ```
 
-This vignette show you how to map species distribution with `map_sp()` and `map_sp_pdf()` from the __forestr__ package. Let's load __forestr__:
+# Overview
+
+This vignette show you how to map species distribution with `map_sp()` and `map_sp_pdf()` from the __forestr__ package.
 
 ```{r}
+# To install from a private repo, generate a personal access token (PAT) in
+# https://github.com/settings/tokens and supply to this argument.
 GITHUB_PAT <- "your token"
 # install_github("forestgeo/forestr", auth_token = GITHUB_PAT)
 library(forestr)
 
-# Also using the package dplyr for easier data manipulation;
-# it is the most downloaded R package (https://goo.gl/bXBmkS).
+# Also using the package dplyr for easier data manipulation
+# install.packages(dplyr)
 library(dplyr)
 # Print only a few rows of tibbles (modern dataframes) to save space
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 ```
 
-__forestr__ has some data that you will use for examples:
+Loading data for examples.
 
 ```{r}
-example_data <- dplyr::as_tibble(forestr::bci12t7mini)
+# Converting dataframe to tibble for better printing
+example_data <- as_tibble(forestr::bci12t7mini)
 
 # Let's find the top-3 most abundant species
 sp_n <- count(example_data, sp)
-arranged <- arrange(sp_n, desc(n))
-sp_top3 <- head(arranged, 3)$sp
+sp_arranged <- arrange(sp_n, desc(n))
+sp_top3 <- head(sp_arranged, 3)$sp
 sp_top3
 
 # For a this example, let's filter the data set to keep only the top-3 species
@@ -63,11 +68,11 @@ census <- filter(example_data, sp  %in% sp_top3)
 census
 ```
 
-The first section shows you how to explore your data quickly and yet get good quality maps with the available defaults. The second section shows you how to customize you maps; It is organized to show first the changes you may need for exploring your data, and second the changes you may need to precisely communicate your results.
+The next section shows you how to explore your data quickly; You will produce good quality maps with available defaults. The following section shows you how to customize you maps by making some common and less common changes. And the last section shows you how to fine tune your maps.
 
 # Exploring Data Quickly: Using Defaults
 
-## Species Distribution
+## Mapping Species Distribution
 
 Although the output of `map_sp()` and `map_sp_pdf()` is printed to different devices -- i.e, the screen or a .pdf file --  those functions are almost identical. They are documented jointly and share the same arguments. 
 
@@ -97,12 +102,12 @@ with_wrong_name <- rename(census, SP = sp)
 map_sp(with_wrong_name, c("hybapr", "faraoc"))
 ```
 
-## Elevation
+## Adding Elevation
 
 You may have elevation data from your site.
 
 ```{r}
-my_elev <- bciex::bci_elevation
+my_elev <- forestr::bci_elevation
 my_elev
 ```
 
