@@ -111,7 +111,10 @@ map_sp <- function(census,
     elevation = elevation, line_size = line_size, low = low, high = high,
     bins = bins, ...)
   names(plots) <- species
-  plots
+  print(plots)
+  
+  # Allow piping (http://style.tidyverse.org/functions.html#return)
+  invisible(census)
 }
 
 #' @export
@@ -139,7 +142,9 @@ map_sp_pdf <- function(census,
   on.exit(dev.off())
   invisible(lapply(plots, print))
   message("Saving as ", file)
-  invisible(plots)
+  
+  # Allow piping (http://style.tidyverse.org/functions.html#return)
+  invisible(census)
 }
 
 #' Standarized plot for each species (fixed ratio and limits).
