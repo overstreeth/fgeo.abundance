@@ -18,7 +18,7 @@ set.seed(1014)
 options(digits = 3)
 
 knitr::opts_chunk$set(
-  echo = TRUE,  # {mine}
+  echo = TRUE,
   comment = "#>",
   collapse = TRUE,
   cache = TRUE,
@@ -29,7 +29,8 @@ knitr::opts_chunk$set(
   fig.show = "hold"
 )
 
-options(dplyr.print_min = 6, dplyr.print_max = 6)
+library(ggplot2)
+update_geom_defaults("text", list(size = 14.5))
 ```
 
 This vignette show you how to map species distribution with `map_sp()` and `map_sp_pdf()` from the __forestr__ package. Let's load __forestr__:
@@ -41,8 +42,8 @@ library(forestr)
 
 # Also using the package dplyr for easier data manipulation
 library(dplyr)
-# Print no more than 10 rows to save space and time
-options(dplyr.print_max = 10)
+# Print only a few rows of tibbles (modern dataframes) to save space
+options(dplyr.print_min = 6, dplyr.print_max = 6)
 ```
 
 __forestr__ has some data that you will use for examples:
@@ -85,15 +86,13 @@ map_sp(census, c("hybapr", "faraoc"))
 map_sp_pdf(census, c("hybapr", "faraoc"))
 ```
 
-Note that your census data must have very specific names:
+Keep in mind that your census data must have specific variable-names:
 
 ```{r, error=TRUE}
 # Show behaviour with wrong name
 with_wrong_name <- rename(census, SP = sp)
-# Confirm that sp changed to SP
-select(with_wrong_name, matches("sp"))
 
-# This will fail
+# This will fail because the data set has name `SP`, not `sp`
 map_sp(with_wrong_name, c("hybapr", "faraoc"))
 ```
 
@@ -109,47 +108,86 @@ my_elev
 Note that the elevation data set must have very specific variable names; or it will fail:
 
 ```{r, error=TRUE}
-# This will fail
+# This will fail because the names of `my_elev` are not correct
 map_sp(census, c("hybapr", "faraoc"), elevation = my_elev)
 ```
 
 If necessary, rename your variables:
 
 ```{r}
+# Renaming data and trying again
 elev <- rename(my_elev, gx = x, gy = y)
 map_sp(census, c("hybapr", "faraoc"), elevation = elev)
 ```
 
-When saving to .pdf you can provide a file name; but note the file name must end in _.pdf_ or it will be replaced by a default name:
-
-```{r}
-map_sp(census, c("hybapr", "faraoc"), elevation = elev, file = "bad-name.pdf")
-map_sp(census, c("hybapr", "faraoc"), elevation = elev, file = "good-name.pdf")
-```
-
-
 # Customizing Your Maps
+
+Eventually you may want to customize the output of `map_sp()` and `map_sp_pdf()`. When you are exploring your data you may want to quickly change a few things such as the some property of the points, the general theme of your map; or the colour of the elevation lines. And eventually you may want to fine tune your map for publication. This section helps you to do all of that.
 
 ## Most Common Changes
 
+### Changing Ponint Properties
 
-The map limits default to the range 0-max, where max is the maximum value of the variable `gx` or `gy` in the census data. You can overwrite the defaults to expand or contract the map limits.
-
-```{r}
-map_sp(census, "hybapr", xlim = c(0, 400), ylim = c(0, 600))
-```
-
-
+Recall that both `map_sp()` and `map_sp_pdf()` have the same arguments; the argument `...`, in particular, allows you to pass arguments to `ggplot2::geom_point()`. Read `?ggplot2::geom_point()` to learn all your options; here you can see some common ones:
 
 ```{r}
-map_sp(census, "hybapr", theme = ggplot2::theme_dark())
+map_sp(census, "hybapr",
+  # Arguments passed to ggplot2::geom_point()
+  size = 4, shape = 22, fill = "green", colour = "black", stroke = 2)
 ```
 
+### Changing the Theme
 
+You can change the overall look of your map with a pre-set ggplot theme. Learn about the available themes by reading `?ggplot2::theme_bw()`.
 
+```{r}
+map_sp(census, "hybapr", theme = ggplot2::theme_classic())
+```
+
+### Changing the Elevation Lines
+
+You can also customize the elevation lines. This example shows all the available options:
+* Change line size;
+* set colours to represent low and high elevation;
+* set the number of intervals in which the elevation variable is to be cut (note that the cut results in ugly numbers, with many decimals).
+
+```{r}
+map_sp(census, "hybapr", 
+  elevation = elev, line_size = 1, low = "red", high = "blue", bins = 2)
+```
 
 ## Less Common Changes
 
-## Advanced Changes
+Here are some changes that you may need less often but are still good to keep in mind.
+
+### Change File Name
+
+When printing to .pdf you can provide a custom file name (and path to a directory); but note the file name must end in _.pdf_ or it will be replaced by a default name:
+
+```{r, error=TRUE}
+spp <- c("hybapr", "faraoc")
+map_sp_pdf(census, spp, elevation = elev, file = "bad-name1")
+map_sp_pdf(census, spp, elevation = elev, file = "bad-name2.png")
+map_sp_pdf(census, spp, elevation = elev, file = "good-name.pdf")
+```
+
+### Change x and y Limits
+
+Occationally you may need to change the map limits. The map limits default to the range 0-max, where max is the maximum value of the variable `gx` or `gy` in the census data. 
+
+In the rare case where no stem occurrs at the maximum limits of your plot, the default would result in a map that spans less than the defined limits of your data.
+
+```{r}
+# Fake case: The plot maximum-limits are gx = 1000 and gy = 500; but all stems
+# in the census occurr at lower gx and gy limits
+rare_case <- filter(census, gx < 800, gy < 200)
+map_sp(rare_case, unique(rare_case$sp))
+```
+
+You can overwrite the default limits with the arguments `xlim` and `ylim`:
+
+```{r}
+map_sp(rare_case, unique(rare_case$sp), xlim = c(0, 1000), ylim = c(0, 500))
+```
 
 
