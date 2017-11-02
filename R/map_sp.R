@@ -130,6 +130,7 @@ map_sp_pdf <- function(census,
                        ...) {
   check_map_sp(census, species)
   file <- check_file_extension(file)
+  message("Saving as ", file)
   
   plots <- map_sp(census = census, species = species, 
     xlim = xlim, ylim = ylim, theme = theme, 
@@ -138,7 +139,6 @@ map_sp_pdf <- function(census,
   pdf(file = file)
   on.exit(dev.off())
   invisible(lapply(plots, print))
-  message("Saving as ", file)
   
   invisible(plots)
 }
