@@ -174,9 +174,9 @@ map_sp_pdf(census, spp, elevation = elev, file = "good-name.pdf")
 
 ### Change x and y Limits
 
-Occationally you may need to change the map limits. The map limits default to the range 0-max, where max is the maximum value of the variable `gx` or `gy` in the census data. 
+Occasionally you may need to change the map limits. The map limits default to the range 0-max, where max is the maximum value of the variable `gx` or `gy` in the census data. 
 
-In the rare case where no stem occurrs at the maximum limits of your plot, the default would result in a map that spans less than the defined limits of your data.
+In the rare case where no stem occurs at the maximum limits of your plot, the default would result in a map that spans less than the defined limits of your data.
 
 ```{r}
 # Fake case: The plot maximum-limits are gx = 1000 and gy = 500; but all stems
@@ -245,4 +245,4 @@ mytheme <- ggplot2::theme(
 map_sp(census, "hybapr", theme = mytheme)
 ```
 
-__ggplot2__ is the engine of `map_sp()` and `map_sp_pdf()`, but these functions are built so you can use them without konwing anything about __ggplot2__. Yet you may want to know more about it. __ggplot2__ is not an arbitrary collection of functions that you need to memorize; instead it is one implementation of [The Grammar of Graphics](https://goo.gl/E514ar). You can learn __ggplot2__ from [this website](https://goo.gl/tVvLQZ); this specialized, paid book: [ggplot2: Elegant Graphics for Data Analysis](https://goo.gl/R6wJk9); or this general, free book [R for Data Science](http://r4ds.had.co.nz/). Learning always has some overhead, but the learning curve of __ggplot2__ is not steep. It pays off.
+__ggplot2__ is the engine of `map_sp()` and `map_sp_pdf()`, but these functions are built so you can use them without knowing anything about __ggplot2__. Yet you may want to know more about it. __ggplot2__ is not an arbitrary collection of functions that you need to memorize; instead it is one implementation of [The Grammar of Graphics](https://goo.gl/E514ar). You can learn __ggplot2__ from [this website](https://goo.gl/tVvLQZ); this specialized, paid book: [ggplot2: Elegant Graphics for Data Analysis](https://goo.gl/R6wJk9); or this general, free book [R for Data Science](http://r4ds.had.co.nz/). Learning always has some overhead, but the learning curve of __ggplot2__ is not steep. It pays off.
