@@ -87,6 +87,13 @@ map_sp(census, c("hybapr", "faraoc"))
 map_sp_pdf(census, c("hybapr", "faraoc"))
 ```
 
+If you want to print the maps both to a .pdf and to screen, you can do that in a single step because `map_sp_pdf()` returns a list of maps invisibly:
+
+```{r}
+invisible_maps <- map_sp_pdf(census, "hybapr")
+invisible_maps
+```
+
 Keep in mind that your census data must have specific variable-names:
 
 ```{r, error=TRUE}
