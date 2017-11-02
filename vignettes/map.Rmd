@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
   echo = TRUE,  # {mine}
   comment = "#>",
   collapse = TRUE,
-  # cache = TRUE,
+  cache = TRUE,
   out.width = "70%",
   fig.align = "center",
   fig.width = 6,
@@ -41,15 +41,112 @@ library(forestr)
 
 # Also using the package dplyr for easier data manipulation
 library(dplyr)
+# Print no more than 10 rows to save space and time
+options(dplyr.print_max = 10)
+```
+
+__forestr__ has some data that you will use for examples:
+
+```{r}
+example_data <- dplyr::as_tibble(forestr::bci12t7mini)
+
+# Let's find the top-3 most abundant species
+sp_n <- count(example_data, sp)
+arranged <- arrange(sp_n, desc(n))
+sp_top3 <- head(arranged, 3)$sp
+sp_top3
+
+# For a this example, let's filter the data set to keep only the top-3 species
+census <- filter(example_data, sp  %in% sp_top3)
+census
 ```
 
 The first section shows you how to explore your data quickly and yet get good quality maps with the available defaults. The second section shows you how to customize you maps; It is organized to show first the changes you may need for exploring your data, and second the changes you may need to precisely communicate your results.
 
 # Exploring Data Quickly: Using Defaults
 
+## Species Distribution
+
+Although the output of `map_sp()` and `map_sp_pdf()` is printed to different devices -- i.e, the screen or a .pdf file --  those functions are almost identical. They are documented jointly and share the same arguments. 
+
+```
+?map_sp
+# Or
+?map_sp_pdf
+```
+
+Notice that only the first two arguments of these functions are strictly necessary.
+
+```{r}
+# Print to screen
+map_sp(census, c("hybapr", "faraoc"))
+
+# Save in a .pdf (defaults to working directory)
+map_sp_pdf(census, c("hybapr", "faraoc"))
+```
+
+Note that your census data must have very specific names:
+
+```{r, error=TRUE}
+# Show behaviour with wrong name
+with_wrong_name <- rename(census, SP = sp)
+# Confirm that sp changed to SP
+select(with_wrong_name, matches("sp"))
+
+# This will fail
+map_sp(with_wrong_name, c("hybapr", "faraoc"))
+```
+
+## Elevation
+
+You may have elevation data from your site.
+
+```{r}
+my_elev <- bciex::bci_elevation
+my_elev
+```
+
+Note that the elevation data set must have very specific variable names; or it will fail:
+
+```{r, error=TRUE}
+# This will fail
+map_sp(census, c("hybapr", "faraoc"), elevation = my_elev)
+```
+
+If necessary, rename your variables:
+
+```{r}
+elev <- rename(my_elev, gx = x, gy = y)
+map_sp(census, c("hybapr", "faraoc"), elevation = elev)
+```
+
+When saving to .pdf you can provide a file name; but note the file name must end in _.pdf_ or it will be replaced by a default name:
+
+```{r}
+map_sp(census, c("hybapr", "faraoc"), elevation = elev, file = "bad-name.pdf")
+map_sp(census, c("hybapr", "faraoc"), elevation = elev, file = "good-name.pdf")
+```
+
+
 # Customizing Your Maps
 
 ## Most Common Changes
+
+
+The map limits default to the range 0-max, where max is the maximum value of the variable `gx` or `gy` in the census data. You can overwrite the defaults to expand or contract the map limits.
+
+```{r}
+map_sp(census, "hybapr", xlim = c(0, 400), ylim = c(0, 600))
+```
+
+
+
+```{r}
+map_sp(census, "hybapr", theme = ggplot2::theme_dark())
+```
+
+
+
 
 ## Less Common Changes
 
