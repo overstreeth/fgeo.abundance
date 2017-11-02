@@ -38,6 +38,8 @@ options(dplyr.print_min = 10, dplyr.print_max = 10)
 This vignette shows you how to calculate abundance and basal area with the functions `abundance()`, `basal_area()`, and friends from the __forestr__ package -- let's load it now:
 
 ```{r}
+# To install from a private repo, generate a personal access token (PAT) in
+# https://github.com/settings/tokens and supply to this argument.
  GITHUB_PAT <- "your token"
 # install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)
 library(forestr)
