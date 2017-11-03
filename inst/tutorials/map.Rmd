@@ -135,6 +135,40 @@ elev <- rename(my_elev, gx = x, gy = y)
 map_sp(census, c("hybapr", "faraoc"), elevation = elev)
 ```
 
+# Dealing with Overplotting
+
+Sometimes a species is so abundant that its distribution overplots.
+
+```{r}
+# Fake over abundant species
+crowded <- dplyr::tibble(
+  sp = sample(c("species1"), 10000, replace = TRUE),
+  gx = sample.int(1000, 10000, replace = TRUE),
+  gy = sample.int(500, 10000, replace = TRUE)
+)
+map_sp(crowded, c("species1"))
+```
+
+To reduce overplotting, you can do a number of things. First, you can try reducing the size or opacity of the points, or changing their shape.
+
+```{r fig.align="default", out.width="45%", fig.widh=(6 * 0.45 / 0.7)}
+# smaller and semi transparent
+map_sp(crowded, c("species1"), size = 1, alpha = 2/10)
+
+# Smaller and open
+map_sp(crowded, c("species1"), size = 1, shape = 21)
+
+# (Printing side by side to save space)
+```
+
+If your research question allows, you can try subsampling your data.
+
+```{r}
+# A random sample of 2000 stems
+smaller <- sample_n(crowded, 2000)
+map_sp(smaller, c("species1"), shape = 21)
+```
+
 # Customizing Your Maps
 
 You may want to customize your maps. For example, you may want to change some properties of the points or elevation lines (e.g. colour); or the general theme of the map. These are relatively common changes.
@@ -280,6 +314,25 @@ my_theme <- ggplot2::theme(
   text = element_text(size = 25, face = "bold")
 )
 map_sp(census, "hybapr", theme = my_theme)
+```
+
+## Extending with ggplot2
+
+Finally, you can also use the output of `map_sp()` and `map_pdf()` as the starting point for further customization with __ggplot2__ (the next section provides resources to learn __ggplot2__). That may be convenient for minor extensions; for larger ones you may prefer to start from scratch. Note that `map_sp()` and `map_sp_pdf()` output not just one plot but a list of plots. That is important to keep in mind if you want to iterate over all the plot-elements of the output list. For example, this is how you would add a new layer to one element of the plots' list:
+
+```{r}
+plots <- map_sp(census, c("hybapr", "faraoc"))
+
+# Adding a new layer to one element of the plots' list
+plots[["hybapr"]] + geom_vline(aes(xintercept = 300), colour = "red")
+```
+
+And this is how you can apply the same new layer to all the plot-elements of the output list (note that the function `+` is applied to each item in the `plots` list):
+
+```{r}
+lapply(plots, `+`, geom_vline(aes(xintercept = 300), colour = "red"))
+
+# (Printing side by side to save space)
 ```
 
 ## Learning More
