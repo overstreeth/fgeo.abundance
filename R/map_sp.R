@@ -86,7 +86,7 @@
 #' # Match exactly the names of crucial variables
 #' census <- dplyr::rename(census, SP = sp)
 #' # This fails
-#' map_sp(census, species = "hybapr")
+#' # map_sp(census, species = "hybapr")
 #'
 #' # File extension should be .pdf
 #' map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
