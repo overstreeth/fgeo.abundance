@@ -87,6 +87,7 @@ mortality_df <- function(census1,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 mortality.calculation=function(N,S,meantime)
 {
  lower.ci=find.climits(N,(N-S),kind="lower")
@@ -113,6 +114,7 @@ mortality.calculation=function(N,S,meantime)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 calcMortIndivTable=function(mtable,by='species')
 {
  if(by=='species') splitby=list(mtable$sp,mtable$census)
@@ -132,6 +134,7 @@ calcMortIndivTable=function(mtable,by='species')
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 mortality.eachspp=function(census1,census2,classbreak=c(10,100,300),alivecode=c("A","AB","AS"))
 {
  allbreak=c(classbreak,10000)
@@ -146,6 +149,7 @@ mortality.eachspp=function(census1,census2,classbreak=c(10,100,300),alivecode=c(
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 mortality.dbh=function(census1,census2,classbreak=c(10,100,300),alivecode=c("A","AB","AS"))
 {
  allbreak=c(classbreak,10000)

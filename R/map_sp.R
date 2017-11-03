@@ -24,11 +24,10 @@
 #' @param bins A number. Setting bins creates evenly spaced contours in the
 #'   range of the data. Integers 
 #' @param file A character string giving the name of the file.
-#' @param ... Arguments passed to [ggplot2::geom_layer()] via
-#'   [ggplot2::geom_point()] to customize, for example, the size, shape,
-#'   or colour of the points.
+#' @param ... Arguments passed to [ggplot2::geom_point()] to customize, for
+#'   example, the size, shape, or colour of the points.
 #'
-#' @seealso [ggplot2::geom_layer()], [grDevices::pdf()], [grDevices::png()], 
+#' @seealso [grDevices::pdf()], [grDevices::png()], 
 #'   [ggplot2::theme()].
 #'
 #' @section Acknowledgement:

@@ -38,9 +38,8 @@ colours like \code{low = "#132B43", high = "#56B1F7"} (for more colours google
 \item{bins}{A number. Setting bins creates evenly spaced contours in the
 range of the data. Integers}
 
-\item{...}{Arguments passed to \code{\link[ggplot2:geom_layer]{ggplot2::geom_layer()}} via
-\code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to customize, for example, the size, shape,
-or colour of the points.}
+\item{...}{Arguments passed to \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}} to customize, for
+example, the size, shape, or colour of the points.}
 
 \item{file}{A character string giving the name of the file.}
 }
@@ -116,6 +115,6 @@ map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
 }
 }
 \seealso{
-\code{\link[ggplot2:geom_layer]{ggplot2::geom_layer()}}, \code{\link[grDevices:pdf]{grDevices::pdf()}}, \code{\link[grDevices:png]{grDevices::png()}},
+\code{\link[grDevices:pdf]{grDevices::pdf()}}, \code{\link[grDevices:png]{grDevices::png()}},
 \code{\link[ggplot2:theme]{ggplot2::theme()}}.
 }

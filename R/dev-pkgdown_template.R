@@ -16,6 +16,7 @@
 #' @seealso [pkgdown::build_site()]
 #' 
 #' @keywords internal
+ #' @noRd
 #' @family functions for developers
 write_pkgdown_template <- function(dir = "./") {
   file <- paste0(dir, "_pkgdown.yml")

@@ -181,6 +181,7 @@ growth_df <- function(census1,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 binGraphManySpecies <- 
 function (fulldataname, darken = 8, xrange = c(-3, 3), yrange = c(0, 
     0.1), xtitle = NULL, ytitle = NULL, export = pdf, outfile = "growth/linearbin.multi.pdf", 
@@ -230,6 +231,7 @@ function (fulldataname, darken = 8, xrange = c(-3, 3), yrange = c(0,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 binGraphManySpecies.Panel <- 
 function (fulldataname, sitename, darken = 8, xrange = c(-3, 
     3), yrange = c(0, 0.1), export = pdf, outfile = "growth/linearbin.multi.pdf", 
@@ -260,6 +262,7 @@ function (fulldataname, sitename, darken = 8, xrange = c(-3,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 binGraphSampleSpecies <- 
 function (fulldataname, species, whichbin, export = pdf, outfile = "growth/linearbin.summary.pdf", 
     h = 8, w = 10) 
@@ -293,6 +296,7 @@ function (fulldataname, species, whichbin, export = pdf, outfile = "growth/linea
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 compare.growthbinmodel <- 
 function (fit, bins = 1:4, makegraph = TRUE, conflines = 0, newgraph = TRUE, 
     export = pdf, outfile = "growth/linearbin.bestfit.pdf", h = 8, 
@@ -360,6 +364,7 @@ function (fit, bins = 1:4, makegraph = TRUE, conflines = 0, newgraph = TRUE,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 dgammadexp <- 
 function (z, mean, sd, lambda, draws = 10000, div = 0.1, xrange = c(-10, 
     30), graphit = F) 
@@ -388,6 +393,7 @@ function (z, mean, sd, lambda, draws = 10000, div = 0.1, xrange = c(-10,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 extract.growthdata <- 
 function (census1, census2, growcol = "incgr", mingrow = 0.1, 
     logit = "x", growthfunc = growth.biomass.indiv, pomcut = 10000, 
@@ -432,6 +438,7 @@ function (census1, census2, growcol = "incgr", mingrow = 0.1,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 graph.growthmodel <- 
 function (spp, fitlist, whichbin = 1, regclr = "green", modelclr = "blue", 
     graphdiv = 10, export = pdf, outfile = "growth/linearbin.fit.pdf", 
@@ -455,6 +462,7 @@ function (spp, fitlist, whichbin = 1, regclr = "green", modelclr = "blue",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 graph.outliers <- 
 function (full, trimmed, fit = NULL, allspp = NULL, size = "agb", 
     export = NULL, wind = X11) 
@@ -475,6 +483,7 @@ function (full, trimmed, fit = NULL, allspp = NULL, size = "agb",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 graph.outliers.spp <- 
 function (full, trimmed, spname = "gustsu", fit = NULL, size = "agb", 
     export = NULL, xtitle = "log(agb)", ytitle = "growth") 
@@ -499,6 +508,7 @@ function (full, trimmed, spname = "gustsu", fit = NULL, size = "agb",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 growth.biomass.indiv <- 
 function (census1, census2, mindbh = 10, steminfo = FALSE, dbhunit = "mm", 
     err.limit = 4, maxgrow = 75, rounddown = NULL, exclude.stem.change = TRUE, 
@@ -538,6 +548,7 @@ function (census1, census2, mindbh = 10, steminfo = FALSE, dbhunit = "mm",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 growth.dbh <- 
 function (census1, census2, classbreak = c(10, 100, 300), dbhunit = "mm", 
     growthcol = "dbh", err.limit = 4, maxgrow = 75, rounddown = FALSE, 
@@ -561,6 +572,7 @@ function (census1, census2, classbreak = c(10, 100, 300), dbhunit = "mm",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 growth.eachspp <- 
 function (census1, census2, classbreak = c(10, 100, 300), dbhunit = "mm", 
     mindbh = 10, growthcol = "dbh", err.limit = 4, maxgrow = 75, 
@@ -583,6 +595,7 @@ function (census1, census2, classbreak = c(10, 100, 300), dbhunit = "mm",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 growth.flexbin <- 
 function (growthtable, sizecol = "dbh", nobin = 2, start = NULL, 
     startsd = NULL, sdmodel = linear.model.ctr, badsdfunc = NULL, 
@@ -644,6 +657,7 @@ function (growthtable, sizecol = "dbh", nobin = 2, start = NULL,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 growth.indiv <- 
 function (census1, census2, rounddown = FALSE, mindbh = 10, dbhunit = "mm", 
     err.limit = 4, maxgrow = 75) 
@@ -677,6 +691,7 @@ function (census1, census2, rounddown = FALSE, mindbh = 10, dbhunit = "mm",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 individual_grow.table <- 
 function (cnsdata, powertransformation = 0.45, rnd = c(FALSE, 
     TRUE, rep(FALSE, 4)), mingrow = 0.1, mindbh = 10, maxdbh = 10000, 
@@ -720,6 +735,7 @@ function (cnsdata, powertransformation = 0.45, rnd = c(FALSE,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 overlay.growthbinmodel <- 
 function (fit, bins = 1:4, regclr = "green", modelclr = "blue", 
     graphdiv = 15, add = FALSE, newgraph = TRUE, export = pdf, 
@@ -753,6 +769,7 @@ function (fit, bins = 1:4, regclr = "green", modelclr = "blue",
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 run.growthbin.manyspp <- 
 function (growthdata, size = "dbh", spp = spp20, minabund300 = 15, 
     minTotal = 40, dbhunit = "mm", sdmodel = linear.model.ctr, 
@@ -793,6 +810,7 @@ function (growthdata, size = "dbh", spp = spp20, minabund300 = 15,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 run.growthfit.bin <- 
 function (growthdata, size = "dbh", startpar = c(0.03, 0.005), 
     startsdpar = c(0.04, 0), sdmodel = linear.model.ctr, badsdfunc = NULL, 
@@ -821,6 +839,7 @@ function (growthdata, size = "dbh", startpar = c(0.03, 0.005),
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 trim.growth <- 
 function (cens1, cens2, time, slope = 0.006214, intercept = 0.9036, 
     err.limit = 4, maxgrow = 75, pomcut = 0.05, mindbh = 10, 
@@ -853,6 +872,7 @@ function (cens1, cens2, time, slope = 0.006214, intercept = 0.9036,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 bad.binparam <- 
 function (x, param, ...) 
 {
@@ -880,6 +900,7 @@ function (x, param, ...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 biomass.growth <- 
 function (census1, census2, rounddown = FALSE, stdev = FALSE, 
     mindbh = 10, split1 = NULL, split2 = NULL) 
@@ -927,6 +948,7 @@ function (census1, census2, rounddown = FALSE, stdev = FALSE,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 defineBinBreaks <- 
 function (size, nobin, ...) 
 {
@@ -970,6 +992,7 @@ function (size, nobin, ...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 graph.growthmodel.spp <- 
 function (fit, jiggle = 0.001, whichpred = "pred", xrange = NULL, 
     yrange = NULL, xtitle = NULL, ytitle = NULL, includeaxs = TRUE, 
@@ -1047,6 +1070,7 @@ function (fit, jiggle = 0.001, whichpred = "pred", xrange = NULL,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 linearmodel.bin <- 
 function (x, param, ...) 
 {
@@ -1077,6 +1101,7 @@ function (x, param, ...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 linearmodel.bin.set <- 
 function (v, param, binparam) 
 {
@@ -1146,6 +1171,7 @@ function (v, param, binparam)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 llike.GaussModel <- 
 function (testparam, allparam, whichtest, x, obs, model, badpred, 
     SD, ...) 
@@ -1169,6 +1195,7 @@ function (testparam, allparam, whichtest, x, obs, model, badpred,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 llike.GaussModelSD <- 
 function (testparam, allparam, whichtest, x, pred, obs, model, 
     badsd, ...) 
@@ -1197,6 +1224,7 @@ function (testparam, allparam, whichtest, x, pred, obs, model,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 metrop1step <- 
 function (func, start.param, scale.param, adjust, target, ...) 
 {
@@ -1230,6 +1258,7 @@ function (func, start.param, scale.param, adjust, target, ...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 model.xy <- 
 function (x, y, predfunc, llikefunc, badpredpar, badsdpar = NULL, 
     start.predpar, sdfunc = NULL, start.sdpar = NULL, llikefuncSD, 
@@ -1338,6 +1367,7 @@ function (x, y, predfunc, llikefunc, badpredpar, badsdpar = NULL,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 pts.to.interceptslope <- 
 function (pt1, pt2) 
 {
@@ -1372,6 +1402,7 @@ function (pt1, pt2)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 enoughSamplePerBin <- 
 function (x, b, ...) 
 {
@@ -1392,6 +1423,7 @@ function (x, b, ...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 wideEnoughBins <- 
 function (x, b, ...) 
 {
@@ -1411,6 +1443,7 @@ function (x, b, ...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 fill.dimension <- 
 function (dataarray, class1, class2, fill = 0) 
 {
@@ -1428,6 +1461,7 @@ function (dataarray, class1, class2, fill = 0)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 rndown5 <- 
 function (s) 
 return(5 * floor(s/5))
@@ -1438,6 +1472,7 @@ return(5 * floor(s/5))
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 calculateBinModel.AIC <- 
 function (fit, type = "optim") 
 {
@@ -1459,6 +1494,7 @@ function (fit, type = "optim")
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 calculateBinModel.BIC <- 
 function (fit) 
 {
@@ -1474,6 +1510,7 @@ function (fit)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 CI <- 
 function (x, prob = c(0.025, 0.975), na.rm = FALSE) 
 return(quantile(x, prob = prob, na.rm = na.rm))
@@ -1484,6 +1521,7 @@ return(quantile(x, prob = prob, na.rm = na.rm))
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 pst <- 
 function (...) 
 {
@@ -1504,6 +1542,7 @@ function (...)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 IfElse <- 
 function (test, a, b) 
 {
@@ -1518,6 +1557,7 @@ function (test, a, b)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 logit <- 
 function (p) 
 {
@@ -1535,6 +1575,7 @@ function (p)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 drp <- 
 function (x) 
 {
@@ -1547,6 +1588,7 @@ function (x)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 defineSDpar <- 
 function (x, nopar) 
 {
@@ -1562,6 +1604,7 @@ function (x, nopar)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 linear.model.ctr <- 
 function (x, param, xcenter = NULL) 
 {
@@ -1576,6 +1619,7 @@ function (x, param, xcenter = NULL)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 llike.linearbin.optim <- 
 function (param, x, y, predfunc, nomainpar, badpredpar, llikefunc, 
     sdfunc, badsdpar, ...) 
@@ -1608,6 +1652,7 @@ function (param, x, y, predfunc, nomainpar, badpredpar, llikefunc,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 linear.model <- 
 function (x, param) 
 {
@@ -1624,6 +1669,7 @@ function (x, param)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 arrangeParam.llike <- 
 function (testparam, allparam, whichtest) 
 {
@@ -1639,6 +1685,7 @@ function (testparam, allparam, whichtest)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 arrangeParam.Gibbs <- 
 function (i, j, allparam) 
 {
@@ -1656,6 +1703,7 @@ function (i, j, allparam)
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 colMedians <- 
 function (mat, na.rm = TRUE) 
 return(apply(mat, 2, median, na.rm = na.rm))
@@ -1666,6 +1714,7 @@ return(apply(mat, 2, median, na.rm = na.rm))
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 addBinParam <- 
 function (x, best, bin) 
 {

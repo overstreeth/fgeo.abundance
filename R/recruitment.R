@@ -174,6 +174,7 @@ recruitment_df <- function(census1,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 fill.dimension <- function(dataarray, class1, class2, fill = 0) {
  result=data.frame(matrix(fill,nrow=length(class1),ncol=length(class2)))
  rownames(result)=class1
@@ -189,6 +190,7 @@ fill.dimension <- function(dataarray, class1, class2, fill = 0) {
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 find.climits <- function(N, D, alpha = .05, kind = 'upper') {
  if(kind=='lower')
   {
@@ -209,6 +211,7 @@ find.climits <- function(N, D, alpha = .05, kind = 'upper') {
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 drp <- function(x) {
   return(drop(as.matrix(x)))
 }
