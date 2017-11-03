@@ -1,15 +1,19 @@
 library(tidyverse)
-census <- bciex::bci12t7mini
+census <- forestr::bci12t7mini
 
 few_sp <- count(census, sp) %>% arrange(n) %>% tail(3) %>% pull(sp)
 census <- census %>% filter(sp  %in% few_sp)
 
-elevation <- bciex::bci_elevation
+elevation <- forestr::bci_elevation
 elevation <- dplyr::rename(elevation, gx = x, gy = y)
 
 under250 <- census %>% filter(gx <250, gy < 250) 
 map_sp(under250, "hybapr", xlim = c(0, 800), ylim = c(0, 900))
-map_sp(census, "hybapr")
+
+print(map_sp_invisible(census, "hybapr"))
+map_sp_pdf(census, "hybapr")
+
+
 
 xlimit <- c(0, max(census$gx, na.rm = TRUE))
 ylimit <- c(0, max(census$gy, na.rm = TRUE))

@@ -12,6 +12,8 @@ census <- census %>% dplyr::filter(sp  %in% few_sp)
 # Selecting all species in the example dataset
 all_species <- unique(census$sp)
 
+
+
 context("map_sp")
 
 test_that("errs with wrong inputs.", {
@@ -56,3 +58,24 @@ test_that("output is an invisible and named list and prints pdf w/ message", {
   )
 })
 
+
+context("map_sp_invisible()")
+
+test_that("output is invisible", {
+  # map_sp() and map_sp_pdf() must return equal
+  x <- map_sp(census, "hybapr")
+  expect_message(expect_equal(map_sp_pdf(census, "hybapr"), x))
+  
+  # But map_sp_pdf() retunrs invisibly
+  # There should be a message: "Saving as"
+  expect_message(
+    # This fails because there is no output -- output is invisible
+    expect_error(
+      expect_output(map_sp_pdf(census, "hybapr"), ""), "produced no output"
+    ),
+    "Saving as"
+  )
+    
+
+
+})

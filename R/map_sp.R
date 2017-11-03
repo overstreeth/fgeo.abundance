@@ -104,14 +104,12 @@ map_sp <- function(census,
                    high = "#56B1F7",
                    bins = NULL,
                    ...) {
-  check_map_sp(census, species)
-  
-  plots <- lapply(X = species, FUN = map_one_sp, census = census, 
-    xlim = xlim, ylim = ylim, theme = theme,
-    elevation = elevation, line_size = line_size, low = low, high = high,
-    bins = bins, ...)
-  names(plots) <- species
-  print(plots)
+  p <- map_sp_invisible(
+    census = census, species = species, xlim = xlim, ylim = ylim, 
+    theme = theme, elevation = elevation, line_size = line_size, low = low,
+    high = high, bins = bins, ...
+  )
+  print(p)
 }
 
 #' @export
@@ -132,7 +130,7 @@ map_sp_pdf <- function(census,
   file <- check_file_extension(file)
   message("Saving as ", file)
   
-  plots <- map_sp(census = census, species = species, 
+  plots <- map_sp_invisible(census = census, species = species, 
     xlim = xlim, ylim = ylim, theme = theme, 
     elevation = elevation, line_size = line_size, low = low, high = high, 
     bins = bins, ...)
@@ -140,6 +138,32 @@ map_sp_pdf <- function(census,
   on.exit(dev.off())
   invisible(lapply(plots, print))
   
+  invisible(plots)
+}
+
+#' Do the heavy lifting and return invisible
+#' 
+#' Allows the map to be printed visibly or invisibly afterwards.
+#' 
+#' @noRd
+map_sp_invisible <- function(census,
+                             species,
+                             xlim = NULL,
+                             ylim = NULL,
+                             theme = ggplot2::theme_bw(),
+                             elevation = NULL,
+                             line_size = 0.5,
+                             low = "#132B43",
+                             high = "#56B1F7",
+                             bins = NULL,
+                             ...) {
+  check_map_sp(census, species)
+  
+  plots <- lapply(X = species, FUN = map_one_sp, census = census, 
+    xlim = xlim, ylim = ylim, theme = theme,
+    elevation = elevation, line_size = line_size, low = low, high = high,
+    bins = bins, ...)
+  names(plots) <- species
   invisible(plots)
 }
 
