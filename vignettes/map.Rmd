@@ -137,7 +137,7 @@ map_sp(census, c("hybapr", "faraoc"), elevation = elev)
 
 # Customizing Your Maps
 
-You may want to customize your maps. For example, you may want to change some the looks of the points; the general theme of the map; or the colour of the elevation lines. These are relatively common changes.
+You may want to customize your maps. For example, you may want to change some properties of the points or elevation lines (e.g. colour); or the general theme of the map. These are relatively common changes.
 
 ## Most Common Changes
 
@@ -151,18 +151,7 @@ map_sp(census, "hybapr",
   size = 4, shape = 22, fill = "green", colour = "black", stroke = 2)
 ```
 
-### Changing the Theme
-
-You can change the general look of your map by changing its theme. A number of pre-set themes are available in the __ggplot2__ package (see `?ggplot2::theme_bw()`).
-
-```{r, fig.align="default", out.width="45%", fig.widh=(6 * 0.45 / 0.7)}
-map_sp(census, "hybapr", theme = ggplot2::theme_classic())
-map_sp(census, "hybapr", theme = ggplot2::theme_dark())
-
-# (Printing side by side to save space)
-```
-
-### Changing the Elevation Lines
+### Changing Properties of the Elevation Lines
 
 You can also customize the elevation lines. This example shows all the available options:
 
@@ -173,6 +162,18 @@ You can also customize the elevation lines. This example shows all the available
 ```{r}
 map_sp(census, "hybapr", 
   elevation = elev, line_size = 1, low = "red", high = "blue", bins = 4)
+```
+
+
+### Changing the Theme
+
+You can change the general look of your map by changing its theme. A number of pre-set themes are available in the __ggplot2__ package (see `?ggplot2::theme_bw()`).
+
+```{r, fig.align="default", out.width="45%", fig.widh=(6 * 0.45 / 0.7)}
+map_sp(census, "hybapr", theme = ggplot2::theme_classic())
+map_sp(census, "hybapr", theme = ggplot2::theme_dark())
+
+# (Printing side by side to save space)
 ```
 
 ## Less Common Changes
@@ -190,8 +191,20 @@ map_sp_pdf(census, spp, elevation = elev, file = "bad-name1")
 
 map_sp_pdf(census, spp, elevation = elev, file = "bad-name2.png")
 
-map_sp_pdf(census, spp, elevation = elev, file = "good-name.pdf")
 ```
+
+This is OK. (Note that you can suppress messages)
+
+```{r}
+map_sp_pdf(census, spp, elevation = elev, file = "good-name.pdf")
+
+# Same without any message
+suppressMessages(
+  map_sp_pdf(census, spp, elevation = elev, file = "good-name.pdf")
+)
+```
+
+
 
 ### Change x and y Limits
 
@@ -227,10 +240,7 @@ To plot multiple maps on one page you can use `gridExtra::maparrange()`:
 library(gridExtra)
 
 all_species <- unique(census$sp)
-# Saving a .pdf with one species per page
-maps <- map_sp_pdf(census, all_species)
-
-# Reusing plots assigned to `maps` above; using a multi-species layout
+maps <- map_sp(census, all_species)
 multipaged <- marrangeGrob(maps, nrow = 1, ncol = 2)
 multipaged
 ```
