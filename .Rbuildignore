@@ -1,0 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rprofile$
+^data-raw$
+^LICENSE\.md$
+^README\.Rmd$
+^man-roxygen$
+^docs$
+^_pkgdown\.yml$
+^tmp\.R$
+^clean_pdf\.R$

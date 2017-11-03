@@ -1,0 +1,59 @@
+  template:
+    params:
+      bootswatch: united
+  
+  
+  
+  home:
+    links:
+    - text: Learn more
+      href: http://www.forestgeo.si.edu/
+  
+  
+  
+  reference:
+    - title: "xxx Function category"
+      desc: >
+        xxx Function subcategory
+      contents:
+        - xxxfunctionname
+        - xxxfunctionname
+  
+    - title: "xxx Function category"
+      desc: >
+        xxx Function subcategory
+      contents:
+        - xxxfunctionname
+        - xxxfunctionname
+  
+    - title: "xxx Dataset category"
+      desc: >
+        xxx Dataset subcategory
+      contents:
+        - xxxdatasetname
+        - xxxdatasetname
+  
+  
+  
+  articles:
+    - title: "xxx Tutorial category"
+      desc: >
+        xxx Tutorial subcategory
+      contents:
+      - xxxtutorialname
+  
+    - title: "xxx Tutorial category"
+      desc: >
+        xxx Tutorial subcategory
+      contents:
+      - xxxtutorialname
+  
+  
+  
+  navbar:
+    type: default
+    left:
+      - text: Functions Index
+        href: reference/index.html
+      - text: Tutorials
+        href: articles/index.html

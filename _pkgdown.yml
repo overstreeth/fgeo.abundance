@@ -1,0 +1,61 @@
+template:
+  params:
+    bootswatch: united
+
+home:
+  links:
+  - text: Learn more
+    href: http://www.forestgeo.si.edu/
+
+reference:
+  - title: "Abundance and friends"
+    desc: >
+      Functions that input data from one census
+    contents: 
+      - abundance
+      - abundance_tally
+      - basal_area
+      - basal_area_ind
+
+  - title: "Demography"
+    desc: >
+      Functions that input data from two censuses
+    contents:
+      - growth
+      - growth_df
+      - mortality
+      - mortality_df
+      - recruitment
+      - recruitment_df
+
+
+  - title: "Mapping"
+    desc: >
+      Functions to map species distributions
+    contents:
+      - map_sp
+      - map_sp_pdf
+
+  - title: "Data sets"
+    contents: 
+      - bci12t7mini
+      - bci12s7mini
+
+articles:
+  - title: "Calculations within a single censuses"
+    contents:
+    - demography
+  - title: "Calculations between two censuses"
+    contents:
+    - abundance
+  - title: "Mapping species distribution"
+    contents:
+    - map
+
+navbar:
+  type: default
+  left:
+    - text: Functions Index
+      href: reference/index.html
+    - text: Tutorials
+      href: articles/index.html
