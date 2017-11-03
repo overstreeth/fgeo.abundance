@@ -61,58 +61,126 @@ Thanks to Gabriel Arellano and David Kenfack for ideas and feedback.
 
 \examples{
 \dontrun{
-library(dplyr)  # to make it easer to manipulate data
-library(gridExtra)  # to arrange multiple plots in one page
+# Setup -------------------------------------------------------------------
 
-# Data for example
-census <- forestr::bci12t7mini
+# For easier data manipulation
+library(dplyr)
+# Print only a few rows of tibbles (modern dataframes) to save space
+options(dplyr.print_min = 6, dplyr.print_max = 6)
 
-# Plot to screen
+# Quick exploration with defaults -----------------------------------------
+
+# Example data. Converting dataframe to tibble for better printing
+census <- as_tibble(forestr::bci12t7mini)
+
+# Print to screen
 map_sp(census, "hybapr")
 
-# Tweak plot with arguments passed to [ggplot2::layer()]
-map_sp(census, c("hybapr", "faraoc"), color = "blue", size = 3, shape = 1)
+# Print to .pdf -- one species per page of a single file
+p <- map_sp_pdf(census, c("hybapr", "faraoc"))
+# Also print to screen -- navigate the plot's panel to view each species
+p
 
-# Selecting only a few abundant species
-count_sp <- dplyr::count(census, sp)
-decreasing_n <- dplyr::arrange(count_sp, desc(n))
-top_n <- decreasing_n$sp[1:8]
+# Add elevation data
+elev <- forestr::bci_elevation
 
-# Plot to screen
-one_per_page <- map_sp(census, top_n)
-one_per_page
+# Not the right names
+names(elev)
+elev <- rename(elev, gx = x, gy = y)
+# OK now
+elev
 
-# Print multiple page in a single .pdf file.
-# Invisibly returning a list of plots that can be reused
-one_per_page <- map_sp_pdf(census, top_n)
+# Common changes ----------------------------------------------------------
 
-# To export .png wrap your plots between png() and dev.off()
-png()
-one_per_page[1:3]
+# Changing points' properties
+map_sp(
+  census, "hybapr",
+  # Passed to ggplot2::geom_point()
+  size = 4, shape = 22, fill = "green", colour = "black", stroke = 2
+)
+
+# Changing lines' properties
+map_sp(
+  census, "hybapr", 
+  elevation = elev, line_size = 1, low = "red", high = "blue", bins = 10
+)
+
+# Dealing with overplotting
+crowded <- dplyr::tibble(
+  sp = sample(c("species1"), 10000, replace = TRUE),
+  gx = sample.int(1000, 10000, replace = TRUE),
+  gy = sample.int(500, 10000, replace = TRUE)
+)
+# Too crowded
+map_sp(crowded, c("species1"))
+# Less crowded
+map_sp(
+  crowded, c("species1"), 
+  # passing arguments to ggplot2::geom_point()
+  size = 1, alpha = 5/10, shape = 21
+)
+
+# Changing theme
+map_sp(census, "hybapr", theme = ggplot2::theme_classic())
+map_sp(census, "hybapr", theme = ggplot2::theme_dark())
+# For more options see ?ggplot2::theme_bw()
+
+# Less common changes -----------------------------------------------------
+
+# Customizing name of .pdf file. Saving to default -- working directory ("./")
+map_sp_pdf(census, "hybapr", elevation = elev, file = "./custom-name.pdf")
+# Same
+suppressMessages(
+  map_sp_pdf(census, "hybapr", elevation = elev, file = "custom-name.pdf")
+)
+
+# Changing limits
+map_sp(census, "hybapr", xlim = c(0, 1500), ylim = c(0, 1000))
+
+# Fine tunning ------------------------------------------------------------
+
+library(ggplot2)
+library(gridExtra)
+
+# Multiple maps per page
+three_species <- c("hybapr", "faraoc", "des2pa")
+maps <- map_sp(census, three_species)
+multipaged <- marrangeGrob(maps, nrow = 1, ncol = 2)
+multipaged
+# Saving to .pdf: Option 1
+ggplot2::ggsave("my_multipaged.pdf", multipaged)
+# Saving to .pdf: Option 2
+pdf()
+multipaged
 dev.off()
 
-# Reusing one_per_page
-multi_per_page <- gridExtra::marrangeGrob(one_per_page, ncol = 2, nrow = 2)
-multi_per_page
+# Custom theme; see all the options with ?ggplot2::theme()
+my_theme <- ggplot2::theme(
+  text = element_text(size = 25, face = "bold.italic", colour = "white"),
+  plot.background = element_rect(fill = "black"),
+  plot.margin = margin(2, 2, 2, 2, "cm"),
+  strip.background = element_rect(fill = "darkgreen"),
+  strip.text = element_text(colour = "white"),
+  # make grid dissapear by matching background colour
+  panel.background = element_rect(fill = "lightgreen"),
+  panel.grid.minor = element_line(colour = "lightgreen"),
+  panel.grid.major = element_line(colour = "lightgreen")
+)
+map_sp(census, "hybapr", theme = my_theme)
 
-# Saving the multipage into a .pdf
-pdf("multi_paged.pdf", paper = "letter")
-multi_per_page
-dev.off()
 
+# Extending with ggplot2 --------------------------------------------------
 
-
-# ERRORS AND WARNINGS
-
-# Match exactly the names of crucial variables
-census <- dplyr::rename(census, SP = sp)
-# This fails
-# map_sp(census, species = "hybapr")
-
-# File extension should be .pdf
-map_sp_pdf(census, top_n, file = "extention_good.pdf")  # ok
-map_sp_pdf(census, top_n, file = "extention_bad")  # replaced by default
-}
+# Adding new layers
+p0 <- map_sp(census, c("hybapr", "faraoc"))
+# To one element of the plots' list
+p0[["hybapr"]] + geom_vline(aes(xintercept = 300), colour = "red")
+# To all elements of the plots' list
+p1 <- lapply(p0, `+`, geom_vline(aes(xintercept = 300), colour = "red"))
+p1
+p2 <- lapply(p1, `+`, geom_hline(aes(yintercept = 400), colour = "blue"))
+p2
+#' }
 }
 \seealso{
 \code{\link[grDevices:pdf]{grDevices::pdf()}}, \code{\link[grDevices:png]{grDevices::png()}},

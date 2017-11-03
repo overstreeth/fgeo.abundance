@@ -307,11 +307,15 @@ Before, you used a pre-made theme. But you can create your own theme with `ggplo
 ```{r}
 # Showing only a few options; see all the options with ?ggplot2::theme()
 my_theme <- ggplot2::theme(
-  panel.background = element_rect(fill = "lightgreen"),
-  panel.grid.minor = element_line(linetype = "dashed"),
-  strip.background = element_rect(fill = "black"),
+  text = element_text(size = 25, face = "bold.italic", colour = "white"),
+  plot.background = element_rect(fill = "black"),
+  plot.margin = margin(2, 2, 2, 2, "cm"),
+  strip.background = element_rect(fill = "darkgreen"),
   strip.text = element_text(colour = "white"),
-  text = element_text(size = 25, face = "bold")
+  # make grid to dissapear by matching background colour
+  panel.background = element_rect(fill = "lightgreen"),
+  panel.grid.minor = element_line(colour = "lightgreen"),
+  panel.grid.major = element_line(colour = "lightgreen")
 )
 map_sp(census, "hybapr", theme = my_theme)
 ```
@@ -321,16 +325,20 @@ map_sp(census, "hybapr", theme = my_theme)
 Finally, you can also use the output of `map_sp()` and `map_pdf()` as the starting point for further customization with __ggplot2__ (the next section provides resources to learn __ggplot2__). That may be convenient for minor extensions; for larger ones you may prefer to start from scratch. Note that `map_sp()` and `map_sp_pdf()` output not just one plot but a list of plots. That is important to keep in mind if you want to iterate over all the plot-elements of the output list. For example, this is how you would add a new layer to one element of the plots' list:
 
 ```{r}
-plots <- map_sp(census, c("hybapr", "faraoc"))
+p0 <- map_sp(census, c("hybapr", "faraoc"))
 
 # Adding a new layer to one element of the plots' list
-plots[["hybapr"]] + geom_vline(aes(xintercept = 300), colour = "red")
+p0[["hybapr"]] + geom_vline(aes(xintercept = 300), colour = "red")
 ```
 
-And this is how you can apply the same new layer to all the plot-elements of the output list (note that the function `+` is applied to each item in the `plots` list):
+And this is how you can apply new layers to all the plot-elements of a list (note that the function `+` is applied to each item of the plots' list):
 
-```{r}
-lapply(plots, `+`, geom_vline(aes(xintercept = 300), colour = "red"))
+```{r fig.align="default", out.width="45%", fig.widh=(6 * 0.45 / 0.7)}
+p1 <- lapply(p0, `+`, geom_vline(aes(xintercept = 300), colour = "red"))
+p1
+
+p2 <- lapply(p1, `+`, geom_hline(aes(yintercept = 400), colour = "blue"))
+p2
 
 # (Printing side by side to save space)
 ```

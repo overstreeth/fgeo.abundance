@@ -165,57 +165,126 @@ output is a .pdf file.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)  <span class='co'># to make it easer to manipulate data</span>
-<span class='fu'>library</span>(<span class='no'>gridExtra</span>)  <span class='co'># to arrange multiple plots in one page</span>
+<span class='co'># Setup -------------------------------------------------------------------</span>
 
-<span class='co'># Data for example</span>
-<span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>forestr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/forestr/topics/bciYYtNmini'>bci12t7mini</a></span>
+<span class='co'># For easier data manipulation</span>
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='co'># Print only a few rows of tibbles (modern dataframes) to save space</span>
+<span class='fu'>options</span>(<span class='kw'>dplyr.print_min</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>dplyr.print_max</span> <span class='kw'>=</span> <span class='fl'>6</span>)
 
-<span class='co'># Plot to screen</span>
+<span class='co'># Quick exploration with defaults -----------------------------------------</span>
+
+<span class='co'># Example data. Converting dataframe to tibble for better printing</span>
+<span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>as_tibble</a></span>(<span class='kw pkg'>forestr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/forestr/topics/bciYYtNmini'>bci12t7mini</a></span>)
+
+<span class='co'># Print to screen</span>
 <span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>)
 
-<span class='co'># Tweak plot with arguments passed to [ggplot2::layer()]</span>
-<span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='fu'>c</span>(<span class='st'>"hybapr"</span>, <span class='st'>"faraoc"</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'># Print to .pdf -- one species per page of a single file</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>map_sp_pdf</span>(<span class='no'>census</span>, <span class='fu'>c</span>(<span class='st'>"hybapr"</span>, <span class='st'>"faraoc"</span>))
+<span class='co'># Also print to screen -- navigate the plot's panel to view each species</span>
+<span class='no'>p</span>
 
-<span class='co'># Selecting only a few abundant species</span>
-<span class='no'>count_sp</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>census</span>, <span class='no'>sp</span>)
-<span class='no'>decreasing_n</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='no'>count_sp</span>, <span class='fu'><a href='http://dplyr.tidyverse.org/reference/desc.html'>desc</a></span>(<span class='no'>n</span>))
-<span class='no'>top_n</span> <span class='kw'>&lt;-</span> <span class='no'>decreasing_n</span>$<span class='no'>sp</span>[<span class='fl'>1</span>:<span class='fl'>8</span>]
+<span class='co'># Add elevation data</span>
+<span class='no'>elev</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>forestr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/forestr/topics/bci_elevation'>bci_elevation</a></span>
 
-<span class='co'># Plot to screen</span>
-<span class='no'>one_per_page</span> <span class='kw'>&lt;-</span> <span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='no'>top_n</span>)
-<span class='no'>one_per_page</span>
+<span class='co'># Not the right names</span>
+<span class='fu'>names</span>(<span class='no'>elev</span>)
+<span class='no'>elev</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(<span class='no'>elev</span>, <span class='kw'>gx</span> <span class='kw'>=</span> <span class='no'>x</span>, <span class='kw'>gy</span> <span class='kw'>=</span> <span class='no'>y</span>)
+<span class='co'># OK now</span>
+<span class='no'>elev</span>
 
-<span class='co'># Print multiple page in a single .pdf file.</span>
-<span class='co'># Invisibly returning a list of plots that can be reused</span>
-<span class='no'>one_per_page</span> <span class='kw'>&lt;-</span> <span class='fu'>map_sp_pdf</span>(<span class='no'>census</span>, <span class='no'>top_n</span>)
+<span class='co'># Common changes ----------------------------------------------------------</span>
 
-<span class='co'># To export .png wrap your plots between png() and dev.off()</span>
-<span class='fu'>png</span>()
-<span class='no'>one_per_page</span>[<span class='fl'>1</span>:<span class='fl'>3</span>]
+<span class='co'># Changing points' properties</span>
+<span class='fu'>map_sp</span>(
+  <span class='no'>census</span>, <span class='st'>"hybapr"</span>,
+  <span class='co'># Passed to ggplot2::geom_point()</span>
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>22</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"green"</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>stroke</span> <span class='kw'>=</span> <span class='fl'>2</span>
+)
+
+<span class='co'># Changing lines' properties</span>
+<span class='fu'>map_sp</span>(
+  <span class='no'>census</span>, <span class='st'>"hybapr"</span>,
+  <span class='kw'>elevation</span> <span class='kw'>=</span> <span class='no'>elev</span>, <span class='kw'>line_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>10</span>
+)
+
+<span class='co'># Dealing with overplotting</span>
+<span class='no'>crowded</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
+  <span class='kw'>sp</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>c</span>(<span class='st'>"species1"</span>), <span class='fl'>10000</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+  <span class='kw'>gx</span> <span class='kw'>=</span> <span class='fu'>sample.int</span>(<span class='fl'>1000</span>, <span class='fl'>10000</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+  <span class='kw'>gy</span> <span class='kw'>=</span> <span class='fu'>sample.int</span>(<span class='fl'>500</span>, <span class='fl'>10000</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+)
+<span class='co'># Too crowded</span>
+<span class='fu'>map_sp</span>(<span class='no'>crowded</span>, <span class='fu'>c</span>(<span class='st'>"species1"</span>))
+<span class='co'># Less crowded</span>
+<span class='fu'>map_sp</span>(
+  <span class='no'>crowded</span>, <span class='fu'>c</span>(<span class='st'>"species1"</span>),
+  <span class='co'># passing arguments to ggplot2::geom_point()</span>
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>5</span>/<span class='fl'>10</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>21</span>
+)
+
+<span class='co'># Changing theme</span>
+<span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_classic</a></span>())
+<span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme'>theme_dark</a></span>())
+<span class='co'># For more options see ?ggplot2::theme_bw()</span>
+
+<span class='co'># Less common changes -----------------------------------------------------</span>
+
+<span class='co'># Customizing name of .pdf file. Saving to default -- working directory ("./")</span>
+<span class='fu'>map_sp_pdf</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>, <span class='kw'>elevation</span> <span class='kw'>=</span> <span class='no'>elev</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"./custom-name.pdf"</span>)
+<span class='co'># Same</span>
+<span class='fu'>suppressMessages</span>(
+  <span class='fu'>map_sp_pdf</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>, <span class='kw'>elevation</span> <span class='kw'>=</span> <span class='no'>elev</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"custom-name.pdf"</span>)
+)
+
+<span class='co'># Changing limits</span>
+<span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1500</span>), <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1000</span>))
+
+<span class='co'># Fine tunning ------------------------------------------------------------</span>
+
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'>library</span>(<span class='no'>gridExtra</span>)
+
+<span class='co'># Multiple maps per page</span>
+<span class='no'>three_species</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"hybapr"</span>, <span class='st'>"faraoc"</span>, <span class='st'>"des2pa"</span>)
+<span class='no'>maps</span> <span class='kw'>&lt;-</span> <span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='no'>three_species</span>)
+<span class='no'>multipaged</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>marrangeGrob</a></span>(<span class='no'>maps</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>multipaged</span>
+<span class='co'># Saving to .pdf: Option 1</span>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggsave'>ggsave</a></span>(<span class='st'>"my_multipaged.pdf"</span>, <span class='no'>multipaged</span>)
+<span class='co'># Saving to .pdf: Option 2</span>
+<span class='fu'>pdf</span>()
+<span class='no'>multipaged</span>
 <span class='fu'>dev.off</span>()
 
-<span class='co'># Reusing one_per_page</span>
-<span class='no'>multi_per_page</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>gridExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>marrangeGrob</a></span>(<span class='no'>one_per_page</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>multi_per_page</span>
+<span class='co'># Custom theme; see all the options with ?ggplot2::theme()</span>
+<span class='no'>my_theme</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/theme'>theme</a></span>(
+  <span class='kw'>text</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_text</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>25</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold.italic"</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"white"</span>),
+  <span class='kw'>plot.background</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_rect</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
+  <span class='kw'>plot.margin</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>margin</a></span>(<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='st'>"cm"</span>),
+  <span class='kw'>strip.background</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_rect</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"darkgreen"</span>),
+  <span class='kw'>strip.text</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_text</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"white"</span>),
+  <span class='co'># make grid dissapear by matching background colour</span>
+  <span class='kw'>panel.background</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_rect</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgreen"</span>),
+  <span class='kw'>panel.grid.minor</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_line</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"lightgreen"</span>),
+  <span class='kw'>panel.grid.major</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/element'>element_line</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"lightgreen"</span>)
+)
+<span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='st'>"hybapr"</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='no'>my_theme</span>)
 
-<span class='co'># Saving the multipage into a .pdf</span>
-<span class='fu'>pdf</span>(<span class='st'>"multi_paged.pdf"</span>, <span class='kw'>paper</span> <span class='kw'>=</span> <span class='st'>"letter"</span>)
-<span class='no'>multi_per_page</span>
-<span class='fu'>dev.off</span>()
 
+<span class='co'># Extending with ggplot2 --------------------------------------------------</span>
 
-
-<span class='co'># ERRORS AND WARNINGS</span>
-
-<span class='co'># Match exactly the names of crucial variables</span>
-<span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(<span class='no'>census</span>, <span class='kw'>SP</span> <span class='kw'>=</span> <span class='no'>sp</span>)
-<span class='co'># This fails</span>
-<span class='co'># map_sp(census, species = "hybapr")</span>
-
-<span class='co'># File extension should be .pdf</span>
-<span class='fu'>map_sp_pdf</span>(<span class='no'>census</span>, <span class='no'>top_n</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"extention_good.pdf"</span>)  <span class='co'># ok</span>
-<span class='fu'>map_sp_pdf</span>(<span class='no'>census</span>, <span class='no'>top_n</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>"extention_bad"</span>)  <span class='co'># replaced by default</span>
+<span class='co'># Adding new layers</span>
+<span class='no'>p0</span> <span class='kw'>&lt;-</span> <span class='fu'>map_sp</span>(<span class='no'>census</span>, <span class='fu'>c</span>(<span class='st'>"hybapr"</span>, <span class='st'>"faraoc"</span>))
+<span class='co'># To one element of the plots' list</span>
+<span class='no'>p0</span><span class='kw'>[[</span><span class='st'>"hybapr"</span>]] + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>geom_vline</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>xintercept</span> <span class='kw'>=</span> <span class='fl'>300</span>), <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>)
+<span class='co'># To all elements of the plots' list</span>
+<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>lapply</span>(<span class='no'>p0</span>, <span class='no'>`+`</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>geom_vline</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>xintercept</span> <span class='kw'>=</span> <span class='fl'>300</span>), <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>))
+<span class='no'>p1</span>
+<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>lapply</span>(<span class='no'>p1</span>, <span class='no'>`+`</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_abline'>geom_hline</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>yintercept</span> <span class='kw'>=</span> <span class='fl'>400</span>), <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"blue"</span>))
+<span class='no'>p2</span>
+<span class='co'>#' </span>
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
