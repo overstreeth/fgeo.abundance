@@ -33,3 +33,20 @@ NULL
 #'   bci12s6mini bci12s7mini
 #' @name bciYYsNmini
 NULL
+
+
+# Elevation Data ----------------------------------------------------------
+
+#' Elevation data from Barro Colorado Island, Panama, recorded over a 5x5m grid.
+#'
+#' Elevation data from Barro Colorado Island (BCI), Panama, recorded over a 5x5m
+#' grid.
+#'
+#' @source Lao, Suzanne \email{LAOZ@@si.edu}.
+#' @format
+#' A tibble with 20301 rows and 3 variables:
+#' * `x`, `y`: coordinates at every corner across the BCI plot (xxx which
+#' corner?).
+#' * `elev`: elevation at every corner across the plot (xxx which corner?, xxx
+#' is the unit meters?).
+"bci_elevation"
