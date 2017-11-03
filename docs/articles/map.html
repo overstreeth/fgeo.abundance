@@ -57,7 +57,7 @@
       <h1>Mapping species distribution</h1>
                         <h4 class="author">Mauro Lepore</h4>
             
-            <h4 class="date">2017-11-02</h4>
+            <h4 class="date">2017-11-03</h4>
           </div>
 
     
@@ -176,7 +176,7 @@ elev &lt;-<span class="st"> </span><span class="kw">rename</span>(my_elev, <span
 <div id="customizing-your-maps" class="section level1">
 <h1 class="hasAnchor">
 <a href="#customizing-your-maps" class="anchor"></a>Customizing Your Maps</h1>
-<p>You may want to customize your maps. For example, you may want to change some the looks of the points; the general theme of the map; or the colour of the elevation lines. These are relatively common changes.</p>
+<p>You may want to customize your maps. For example, you may want to change some properties of the points or elevation lines (e.g. colour); or the general theme of the map. These are relatively common changes.</p>
 <div id="most-common-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#most-common-changes" class="anchor"></a>Most Common Changes</h2>
@@ -190,6 +190,20 @@ elev &lt;-<span class="st"> </span><span class="kw">rename</span>(my_elev, <span
 <span class="co">#&gt; $hybapr</span></code></pre></div>
 <p><img src="map_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
+<div id="changing-properties-of-the-elevation-lines" class="section level3">
+<h3 class="hasAnchor">
+<a href="#changing-properties-of-the-elevation-lines" class="anchor"></a>Changing Properties of the Elevation Lines</h3>
+<p>You can also customize the elevation lines. This example shows all the available options:</p>
+<ul>
+<li>Change line size;</li>
+<li>set colours to represent low and high elevation;</li>
+<li>set the number of intervals in which the elevation variable is to be cut (note that the cut results in ugly numbers, with many decimals; also, with increasing bins’ number the function takes longer to run).</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, 
+  <span class="dt">elevation =</span> elev, <span class="dt">line_size =</span> <span class="dv">1</span>, <span class="dt">low =</span> <span class="st">"red"</span>, <span class="dt">high =</span> <span class="st">"blue"</span>, <span class="dt">bins =</span> <span class="dv">4</span>)
+<span class="co">#&gt; $hybapr</span></code></pre></div>
+<p><img src="map_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;"></p>
+</div>
 <div id="changing-the-theme" class="section level3">
 <h3 class="hasAnchor">
 <a href="#changing-the-theme" class="anchor"></a>Changing the Theme</h3>
@@ -200,21 +214,7 @@ elev &lt;-<span class="st"> </span><span class="kw">rename</span>(my_elev, <span
 <span class="co">#&gt; $hybapr</span>
 
 <span class="co"># (Printing side by side to save space)</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-11-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-11-2.png" width="45%"></p>
-</div>
-<div id="changing-the-elevation-lines" class="section level3">
-<h3 class="hasAnchor">
-<a href="#changing-the-elevation-lines" class="anchor"></a>Changing the Elevation Lines</h3>
-<p>You can also customize the elevation lines. This example shows all the available options:</p>
-<ul>
-<li>Change line size;</li>
-<li>set colours to represent low and high elevation;</li>
-<li>set the number of intervals in which the elevation variable is to be cut (note that the cut results in ugly numbers, with many decimals; also, with increasing bins’ number the function takes longer to run).</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, 
-  <span class="dt">elevation =</span> elev, <span class="dt">line_size =</span> <span class="dv">1</span>, <span class="dt">low =</span> <span class="st">"red"</span>, <span class="dt">high =</span> <span class="st">"blue"</span>, <span class="dt">bins =</span> <span class="dv">4</span>)
-<span class="co">#&gt; $hybapr</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-12-1.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-12-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-12-2.png" width="45%"></p>
 </div>
 </div>
 <div id="less-common-changes" class="section level2">
@@ -235,10 +235,15 @@ elev &lt;-<span class="st"> </span><span class="kw">rename</span>(my_elev, <span
 <span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"bad-name2.png"</span>)
 <span class="co">#&gt; Warning in check_file_extension(file): File extension should be .pdf.</span>
 <span class="co">#&gt;   * Replacing given file name by default file name</span>
-<span class="co">#&gt; Saving as map.pdf</span>
+<span class="co">#&gt; Saving as map.pdf</span></code></pre></div>
+<p>This is OK. (Note that you can suppress messages)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"good-name.pdf"</span>)
+<span class="co">#&gt; Saving as good-name.pdf</span>
 
-<span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"good-name.pdf"</span>)
-<span class="co">#&gt; Saving as good-name.pdf</span></code></pre></div>
+<span class="co"># Same without any message</span>
+<span class="kw">suppressMessages</span>(
+  <span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"good-name.pdf"</span>)
+)</code></pre></div>
 </div>
 <div id="change-x-and-y-limits" class="section level3">
 <h3 class="hasAnchor">
@@ -254,7 +259,7 @@ two_species &lt;-<span class="st"> </span><span class="kw">unique</span>(odd_dat
 <span class="co">#&gt; $faraoc</span>
 
 <span class="co"># (Printing side by side to save space)</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-14-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-14-2.png" width="45%"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-15-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-15-2.png" width="45%"></p>
 <p>You can overwrite the default limits with the arguments <code>xlim</code> and <code>ylim</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(odd_data, two_species, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1000</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">500</span>))
 <span class="co">#&gt; $hybapr</span>
@@ -262,7 +267,7 @@ two_species &lt;-<span class="st"> </span><span class="kw">unique</span>(odd_dat
 <span class="co">#&gt; $faraoc</span>
 
 <span class="co"># (Printing side by side to save space)</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-15-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-15-2.png" width="45%"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-16-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-16-2.png" width="45%"></p>
 </div>
 </div>
 </div>
@@ -277,14 +282,15 @@ two_species &lt;-<span class="st"> </span><span class="kw">unique</span>(odd_dat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gridExtra)
 
 all_species &lt;-<span class="st"> </span><span class="kw">unique</span>(census<span class="op">$</span>sp)
-<span class="co"># Saving a .pdf with one species per page</span>
-maps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, all_species)
-<span class="co">#&gt; Saving as map.pdf</span>
-
-<span class="co"># Reusing plots assigned to `maps` above; using a multi-species layout</span>
+maps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, all_species)
+<span class="co">#&gt; $hybapr</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $faraoc</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $des2pa</span>
 multipaged &lt;-<span class="st"> </span><span class="kw">marrangeGrob</span>(maps, <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)
 multipaged</code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-16-2.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-17-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-17-2.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-17-3.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-17-4.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-17-5.png" width="70%" style="display: block; margin: auto;"></p>
 <p>The multi-paged maps can also be saved to a .pdf.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Saving to .pdf: Option 1</span>
 ggplot2<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave</a></span>(<span class="st">"multi-paged.pdf"</span>, multipaged)
@@ -318,7 +324,7 @@ my_theme &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span cl
 )
 <span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, <span class="dt">theme =</span> my_theme)
 <span class="co">#&gt; $hybapr</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-19-1.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="learning-more" class="section level2">
 <h2 class="hasAnchor">
