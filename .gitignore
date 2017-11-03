@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 inst/doc
-clean_pdf.R
+clean_directories.R
+tmp.R
