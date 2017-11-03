@@ -5,30 +5,6 @@ forestr
 
 The goal of **forestr** is to provide tools for the analysis of forest dynamics.
 
-Overview
---------
-
-This package is in development. This branch -- the master branch -- contains nothing but some infrastructure that is common to all branches. If you want to see the work so far, please see the issue-specific branches.
-
-Installation
-------------
-
-Install forestr from ForestGEO's private GitHub repo.
-
-    # To install from a private repo, use auth_token # with a token from
-    # https://github.com/settings/tokens. You only need the repo # scope.
-
-    # install.packages("devtools")
-
-    # Install the master branch
-    devtools::install_github("forestgeo/forestr", auth_token = "abc")
-
-    # Install an ISSUE-specific branch with
-    devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
-
-    # Then, load each time before using
-    library(forestr)
-
 Functions Index
 ---------------
 
@@ -48,3 +24,22 @@ Calculations between two censuses:
 Maps:
 
 -   [Species distribution](https://bookdown.org/forestgeoguest/map/)
+
+Installation
+------------
+
+Install forestr from ForestGEO's private GitHub repo.
+
+    # To install from a private repo, use auth_token # with a token from
+    # https://github.com/settings/tokens. You only need the repo # scope.
+
+    # install.packages("devtools")
+
+    # Install the master branch
+    devtools::install_github("forestgeo/forestr", auth_token = "abc")
+
+    # Install an ISSUE-specific branch with
+    devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
+
+    # Then, load each time before using
+    library(forestr)

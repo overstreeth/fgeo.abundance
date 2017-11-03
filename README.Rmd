@@ -16,9 +16,23 @@ knitr::opts_chunk$set(
 
 The goal of __forestr__ is to provide tools for the analysis of forest dynamics. 
 
-## Overview
+## Functions Index
 
-This package is in development. This branch -- the master branch -- contains nothing but some infrastructure that is common to all branches. If you want to see the work so far, please see the issue-specific branches.
+* [Go to index](https://forestgeo.github.io/forestr/reference/index.html)
+
+## Tutorials
+
+Calculations within a single census:
+
+* [Abundance and basal area](https://bookdown.org/forestgeoguest/abundance/)
+
+Calculations between two censuses:
+
+* [Demography](https://bookdown.org/forestgeoguest/demography/)
+
+Maps:
+
+* [Species distribution](https://bookdown.org/forestgeoguest/map/)
 
 ## Installation
 
@@ -39,21 +53,3 @@ devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
 # Then, load each time before using
 library(forestr)
 ```
-
-## Functions Index
-
-* [Go to index](https://forestgeo.github.io/forestr/reference/index.html)
-
-## Tutorials
-
-Calculations within a single census:
-
-* [Abundance and basal area](https://bookdown.org/forestgeoguest/abundance/)
-
-Calculations between two censuses:
-
-* [Demography](https://bookdown.org/forestgeoguest/demography/)
-
-Maps:
-
-* [Species distribution](https://bookdown.org/forestgeoguest/map/)
