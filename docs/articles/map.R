@@ -19,23 +19,26 @@ library(ggplot2)
 update_geom_defaults("text", list(size = 14.5))
 
 ## ------------------------------------------------------------------------
+# To install from a private repo, generate a personal access token (PAT) in
+# https://github.com/settings/tokens and supply to this argument.
 GITHUB_PAT <- "your token"
 # install_github("forestgeo/forestr", auth_token = GITHUB_PAT)
 library(forestr)
 
-# Also using the package dplyr for easier data manipulation;
-# it is the most downloaded R package (https://goo.gl/bXBmkS).
+# Also using the package dplyr for easier data manipulation
+# install.packages(dplyr)
 library(dplyr)
 # Print only a few rows of tibbles (modern dataframes) to save space
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 ## ------------------------------------------------------------------------
-example_data <- dplyr::as_tibble(forestr::bci12t7mini)
+# Converting dataframe to tibble for better printing
+example_data <- as_tibble(forestr::bci12t7mini)
 
 # Let's find the top-3 most abundant species
 sp_n <- count(example_data, sp)
-arranged <- arrange(sp_n, desc(n))
-sp_top3 <- head(arranged, 3)$sp
+sp_arranged <- arrange(sp_n, desc(n))
+sp_top3 <- head(sp_arranged, 3)$sp
 sp_top3
 
 # For a this example, let's filter the data set to keep only the top-3 species
@@ -57,7 +60,7 @@ with_wrong_name <- rename(census, SP = sp)
 map_sp(with_wrong_name, c("hybapr", "faraoc"))
 
 ## ------------------------------------------------------------------------
-my_elev <- bciex::bci_elevation
+my_elev <- forestr::bci_elevation
 my_elev
 
 ## ---- error=TRUE---------------------------------------------------------

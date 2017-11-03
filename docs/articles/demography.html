@@ -68,7 +68,9 @@
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
 <p>This vignette shows you how to calculate demographic metrics with the functions <code><a href="../reference/recruitment.html">recruitment()</a></code>, <code><a href="../reference/recruitment.html">mortality()</a></code> and <code><a href="../reference/growth.html">growth()</a></code> from the <strong>forestr</strong> package – let’s load it now:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> GITHUB_PAT &lt;-<span class="st"> "your token"</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, generate a personal access token (PAT) in</span>
+<span class="co"># https://github.com/settings/tokens and supply to this argument.</span>
+ GITHUB_PAT &lt;-<span class="st"> "your token"</span>
 <span class="co"># install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)</span>
 <span class="kw">library</span>(forestr)
 
@@ -86,7 +88,6 @@
 <pre><code>?recruitment
 # same
 ?mortality</code></pre>
-<p>[xxx NOTE: CAN SOMEONE DOCUMENT “RETURNS” FOR RECRUITMENT?]</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Some data to play with</span>
 census1 &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12t6mini
 census2 &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12t7mini

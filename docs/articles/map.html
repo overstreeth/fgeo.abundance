@@ -57,33 +57,39 @@
       <h1>Mapping species distribution</h1>
                         <h4 class="author">Mauro Lepore</h4>
             
-            <h4 class="date">2017-11-01</h4>
+            <h4 class="date">2017-11-02</h4>
           </div>
 
     
     
 <div class="contents">
-<p>This vignette show you how to map species distribution with <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> from the <strong>forestr</strong> package. Let’s load <strong>forestr</strong>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">GITHUB_PAT &lt;-<span class="st"> "your token"</span>
+<div id="overview" class="section level1">
+<h1 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h1>
+<p>This vignette shows you how to map species distribution with <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> from the <strong>forestr</strong> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, generate a personal access token (PAT) in</span>
+<span class="co"># https://github.com/settings/tokens and supply to this argument.</span>
+GITHUB_PAT &lt;-<span class="st"> "your token"</span>
 <span class="co"># install_github("forestgeo/forestr", auth_token = GITHUB_PAT)</span>
 <span class="kw">library</span>(forestr)
 
-<span class="co"># Also using the package dplyr for easier data manipulation;</span>
-<span class="co"># it is the most downloaded R package (https://goo.gl/bXBmkS).</span>
+<span class="co"># Also using the package dplyr for easier data manipulation</span>
+<span class="co"># install.packages(dplyr)</span>
 <span class="kw">library</span>(dplyr)
 <span class="co"># Print only a few rows of tibbles (modern dataframes) to save space</span>
 <span class="kw">options</span>(<span class="dt">dplyr.print_min =</span> <span class="dv">6</span>, <span class="dt">dplyr.print_max =</span> <span class="dv">6</span>)</code></pre></div>
-<p><strong>forestr</strong> has some data that you will use for examples:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example_data &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">as_tibble</a></span>(forestr<span class="op">::</span>bci12t7mini)
+<p>Loading data for examples.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Converting dataframe to tibble for better printing</span>
+example_data &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(forestr<span class="op">::</span>bci12t7mini)
 
 <span class="co"># Let's find the top-3 most abundant species</span>
 sp_n &lt;-<span class="st"> </span><span class="kw">count</span>(example_data, sp)
-arranged &lt;-<span class="st"> </span><span class="kw">arrange</span>(sp_n, <span class="kw">desc</span>(n))
-sp_top3 &lt;-<span class="st"> </span><span class="kw">head</span>(arranged, <span class="dv">3</span>)<span class="op">$</span>sp
+sp_arranged &lt;-<span class="st"> </span><span class="kw">arrange</span>(sp_n, <span class="kw">desc</span>(n))
+sp_top3 &lt;-<span class="st"> </span>sp_arranged<span class="op">$</span>sp[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]
 sp_top3
 <span class="co">#&gt; [1] "hybapr" "faraoc" "des2pa"</span>
 
-<span class="co"># For a this example, let's filter the data set to keep only the top-3 species</span>
+<span class="co"># For a small example, keeping data of only the 3 most abundant species</span>
 census &lt;-<span class="st"> </span><span class="kw">filter</span>(example_data, sp  <span class="op">%in%</span><span class="st"> </span>sp_top3)
 census
 <span class="co">#&gt; # A tibble: 315 x 20</span>
@@ -98,14 +104,15 @@ census
 <span class="co">#&gt; # ... with 309 more rows, and 11 more variables: CensusID &lt;int&gt;,</span>
 <span class="co">#&gt; #   dbh &lt;dbl&gt;, pom &lt;chr&gt;, hom &lt;dbl&gt;, ExactDate &lt;chr&gt;, DFstatus &lt;chr&gt;,</span>
 <span class="co">#&gt; #   codes &lt;chr&gt;, nostems &lt;dbl&gt;, date &lt;dbl&gt;, status &lt;chr&gt;, agb &lt;dbl&gt;</span></code></pre></div>
-<p>The first section shows you how to explore your data quickly and yet get good quality maps with the available defaults. The second section shows you how to customize you maps; It is organized to show first the changes you may need for exploring your data, and second the changes you may need to precisely communicate your results.</p>
+<p>The next section shows you how to explore data quickly. You will produce good quality maps with available defaults. The section after the next one shows you how to customize you maps by making some common and less common changes. And the last section shows you how to fine tune your maps.</p>
+</div>
 <div id="exploring-data-quickly-using-defaults" class="section level1">
 <h1 class="hasAnchor">
 <a href="#exploring-data-quickly-using-defaults" class="anchor"></a>Exploring Data Quickly: Using Defaults</h1>
-<div id="species-distribution" class="section level2">
+<div id="mapping-species-distribution" class="section level2">
 <h2 class="hasAnchor">
-<a href="#species-distribution" class="anchor"></a>Species Distribution</h2>
-<p>Although the output of <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> is printed to different devices – i.e, the screen or a .pdf file – those functions are almost identical. They are documented jointly and share the same arguments.</p>
+<a href="#mapping-species-distribution" class="anchor"></a>Mapping Species Distribution</h2>
+<p>Although the output of <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> is printed to different devices – i.e, the screen or a .pdf file – those functions are almost identical. They are documented jointly and share the same arguments (except for the <code>file</code> argument that only belongs to <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code>. (These functions are not merge into a single function because their outputs are different; functions that produce different output tend to cause more problems that those which output is consistently the same).</p>
 <pre><code>?map_sp
 # Or
 ?map_sp_pdf</code></pre>
@@ -114,15 +121,20 @@ census
 <span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="kw">c</span>(<span class="st">"hybapr"</span>, <span class="st">"faraoc"</span>))
 <span class="co">#&gt; $hybapr</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $faraoc</span>
-
-<span class="co"># Save in a .pdf (defaults to working directory)</span>
+<span class="co">#&gt; $faraoc</span></code></pre></div>
+<p><img src="map_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-3-2.png" width="70%" style="display: block; margin: auto;"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Defaults to save in working directory. Returns invisibly.</span>
 <span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, <span class="kw">c</span>(<span class="st">"hybapr"</span>, <span class="st">"faraoc"</span>))
+<span class="co">#&gt; Saving as map.pdf</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Force printing the invisible output</span>
+<span class="kw">print</span>(<span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, <span class="kw">c</span>(<span class="st">"hybapr"</span>, <span class="st">"faraoc"</span>)))
+<span class="co">#&gt; Saving as map.pdf</span>
 <span class="co">#&gt; $hybapr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $faraoc</span>
-<span class="co">#&gt; Saving as map.pdf</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-3-2.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-3-3.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-3-4.png" width="70%" style="display: block; margin: auto;"></p>
+
+<span class="co"># (Printing side by side to save space)</span></code></pre></div>
+<p><img src="map_files/figure-html/unnamed-chunk-5-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-5-2.png" width="45%"></p>
 <p>Keep in mind that your census data must have specific variable-names:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Show behaviour with wrong name</span>
 with_wrong_name &lt;-<span class="st"> </span><span class="kw">rename</span>(census, <span class="dt">SP =</span> sp)
@@ -131,11 +143,11 @@ with_wrong_name &lt;-<span class="st"> </span><span class="kw">rename</span>(cen
 <span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(with_wrong_name, <span class="kw">c</span>(<span class="st">"hybapr"</span>, <span class="st">"faraoc"</span>))
 <span class="co">#&gt; Error: Check that your data contains these names: gx, gy, sp</span></code></pre></div>
 </div>
-<div id="elevation" class="section level2">
+<div id="adding-elevation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#elevation" class="anchor"></a>Elevation</h2>
+<a href="#adding-elevation" class="anchor"></a>Adding Elevation</h2>
 <p>You may have elevation data from your site.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_elev &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci_elevation
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_elev &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci_elevation
 my_elev
 <span class="co">#&gt; # A tibble: 20,301 x 3</span>
 <span class="co">#&gt;       x     y  elev</span>
@@ -158,42 +170,51 @@ elev &lt;-<span class="st"> </span><span class="kw">rename</span>(my_elev, <span
 <span class="co">#&gt; $hybapr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $faraoc</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-7-2.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-9-2.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="customizing-your-maps" class="section level1">
 <h1 class="hasAnchor">
 <a href="#customizing-your-maps" class="anchor"></a>Customizing Your Maps</h1>
-<p>Eventually you may want to customize the output of <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code>. When you are exploring your data you may want to quickly change a few things such as the some property of the points, the general theme of your map; or the colour of the elevation lines. And eventually you may want to fine tune your map for publication. This section helps you to do all of that.</p>
+<p>You may want to customize your maps. For example, you may want to change some the looks of the points; the general theme of the map; or the colour of the elevation lines. These are relatively common changes.</p>
 <div id="most-common-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#most-common-changes" class="anchor"></a>Most Common Changes</h2>
-<div id="changing-ponint-properties" class="section level3">
+<div id="changing-points-properties" class="section level3">
 <h3 class="hasAnchor">
-<a href="#changing-ponint-properties" class="anchor"></a>Changing Ponint Properties</h3>
-<p>Recall that both <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> have the same arguments; the argument <code>...</code>, in particular, allows you to pass arguments to <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">ggplot2::geom_point()</a></code>. Read <code>?ggplot2::geom_point()</code> to learn all your options; here you can see some common ones:</p>
+<a href="#changing-points-properties" class="anchor"></a>Changing Points’ Properties</h3>
+<p>Both <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> have the argument <code>...</code>, which lets you pass arguments to <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">ggplot2::geom_point()</a></code> to change points’ properties such as the shape, size, fill, colour, and stroke. Read <code>?ggplot2::geom_point()</code> to learn all your options; here you can see some common ones:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>,
   <span class="co"># Arguments passed to ggplot2::geom_point()</span>
   <span class="dt">size =</span> <span class="dv">4</span>, <span class="dt">shape =</span> <span class="dv">22</span>, <span class="dt">fill =</span> <span class="st">"green"</span>, <span class="dt">colour =</span> <span class="st">"black"</span>, <span class="dt">stroke =</span> <span class="dv">2</span>)
 <span class="co">#&gt; $hybapr</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="changing-the-theme" class="section level3">
 <h3 class="hasAnchor">
 <a href="#changing-the-theme" class="anchor"></a>Changing the Theme</h3>
-<p>You can change the overall look of your map with a pre-set ggplot theme. Learn about the available themes by reading <code>?ggplot2::theme_bw()</code>.</p>
+<p>You can change the general look of your map by changing its theme. A number of pre-set themes are available in the <strong>ggplot2</strong> package (see <code>?ggplot2::theme_bw()</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, <span class="dt">theme =</span> ggplot2<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_classic</a></span>())
-<span class="co">#&gt; $hybapr</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;"></p>
+<span class="co">#&gt; $hybapr</span>
+<span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, <span class="dt">theme =</span> ggplot2<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_dark</a></span>())
+<span class="co">#&gt; $hybapr</span>
+
+<span class="co"># (Printing side by side to save space)</span></code></pre></div>
+<p><img src="map_files/figure-html/unnamed-chunk-11-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-11-2.png" width="45%"></p>
 </div>
 <div id="changing-the-elevation-lines" class="section level3">
 <h3 class="hasAnchor">
 <a href="#changing-the-elevation-lines" class="anchor"></a>Changing the Elevation Lines</h3>
-<p>You can also customize the elevation lines. This example shows all the available options: * Change line size; * set colours to represent low and high elevation; * set the number of intervals in which the elevation variable is to be cut (note that the cut results in ugly numbers, with many decimals).</p>
+<p>You can also customize the elevation lines. This example shows all the available options:</p>
+<ul>
+<li>Change line size;</li>
+<li>set colours to represent low and high elevation;</li>
+<li>set the number of intervals in which the elevation variable is to be cut (note that the cut results in ugly numbers, with many decimals; also, with increasing bins’ number the function takes longer to run).</li>
+</ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, 
-  <span class="dt">elevation =</span> elev, <span class="dt">line_size =</span> <span class="dv">1</span>, <span class="dt">low =</span> <span class="st">"red"</span>, <span class="dt">high =</span> <span class="st">"blue"</span>, <span class="dt">bins =</span> <span class="dv">2</span>)
+  <span class="dt">elevation =</span> elev, <span class="dt">line_size =</span> <span class="dv">1</span>, <span class="dt">low =</span> <span class="st">"red"</span>, <span class="dt">high =</span> <span class="st">"blue"</span>, <span class="dt">bins =</span> <span class="dv">4</span>)
 <span class="co">#&gt; $hybapr</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="map_files/figure-html/unnamed-chunk-12-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="less-common-changes" class="section level2">
@@ -203,79 +224,68 @@ elev &lt;-<span class="st"> </span><span class="kw">rename</span>(my_elev, <span
 <div id="change-file-name" class="section level3">
 <h3 class="hasAnchor">
 <a href="#change-file-name" class="anchor"></a>Change File Name</h3>
-<p>When printing to .pdf you can provide a custom file name (and path to a directory); but note the file name must end in <em>.pdf</em> or it will be replaced by a default name:</p>
+<p>When printing to .pdf, you can provide a custom file name (including the path to a directory); but note the file name must end in <em>.pdf</em> or it will be replaced by a default name:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">spp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"hybapr"</span>, <span class="st">"faraoc"</span>)
+
 <span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"bad-name1"</span>)
 <span class="co">#&gt; Warning in check_file_extension(file): File extension should be .pdf.</span>
 <span class="co">#&gt;   * Replacing given file name by default file name</span>
-<span class="co">#&gt; $hybapr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $faraoc</span>
 <span class="co">#&gt; Saving as map.pdf</span>
+
 <span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"bad-name2.png"</span>)
 <span class="co">#&gt; Warning in check_file_extension(file): File extension should be .pdf.</span>
 <span class="co">#&gt;   * Replacing given file name by default file name</span>
-<span class="co">#&gt; $hybapr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $faraoc</span>
 <span class="co">#&gt; Saving as map.pdf</span>
+
 <span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, spp, <span class="dt">elevation =</span> elev, <span class="dt">file =</span> <span class="st">"good-name.pdf"</span>)
-<span class="co">#&gt; $hybapr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $faraoc</span>
 <span class="co">#&gt; Saving as good-name.pdf</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-11-2.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-11-3.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-11-4.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-11-5.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-11-6.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="change-x-and-y-limits" class="section level3">
 <h3 class="hasAnchor">
 <a href="#change-x-and-y-limits" class="anchor"></a>Change x and y Limits</h3>
-<p>Occasionally you may need to change the map limits. The map limits default to the range 0-max, where max is the maximum value of the variable <code>gx</code> or <code>gy</code> in the census data.</p>
-<p>In the rare case where no stem occurs at the maximum limits of your plot, the default would result in a map that spans less than the defined limits of your data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fake case: The plot maximum-limits are gx = 1000 and gy = 500; but all stems</span>
-<span class="co"># in the census occurr at lower gx and gy limits</span>
-rare_case &lt;-<span class="st"> </span><span class="kw">filter</span>(census, gx <span class="op">&lt;</span><span class="st"> </span><span class="dv">800</span>, gy <span class="op">&lt;</span><span class="st"> </span><span class="dv">200</span>)
-<span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(rare_case, <span class="kw">unique</span>(rare_case<span class="op">$</span>sp))
+<p>Occasionally you may need to change the map limits. The map limits default to the range 0-max, where max is the maximum value of the variable <code>gx</code> or <code>gy</code> in the census data. In the unlikely case where no stem occurs at the maximum limits of your plot, the default would result in a map that spans less than the defined limits of the site’s plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fake case: The maximum-limits of the site's plot are gx = 1000 and gy = 500;</span>
+<span class="co"># but all stems in the census occurr at lower gx and gy limits</span>
+odd_data &lt;-<span class="st"> </span><span class="kw">filter</span>(census, gx <span class="op">&lt;</span><span class="st"> </span><span class="dv">800</span>, gy <span class="op">&lt;</span><span class="st"> </span><span class="dv">200</span>)
+two_species &lt;-<span class="st"> </span><span class="kw">unique</span>(odd_data<span class="op">$</span>sp)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]
+<span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(odd_data, two_species)
 <span class="co">#&gt; $hybapr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $faraoc</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $des2pa</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-12-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-12-2.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-12-3.png" width="70%" style="display: block; margin: auto;"></p>
+
+<span class="co"># (Printing side by side to save space)</span></code></pre></div>
+<p><img src="map_files/figure-html/unnamed-chunk-14-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-14-2.png" width="45%"></p>
 <p>You can overwrite the default limits with the arguments <code>xlim</code> and <code>ylim</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(rare_case, <span class="kw">unique</span>(rare_case<span class="op">$</span>sp), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1000</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">500</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(odd_data, two_species, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1000</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">500</span>))
 <span class="co">#&gt; $hybapr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $faraoc</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $des2pa</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-13-2.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-13-3.png" width="70%" style="display: block; margin: auto;"></p>
+
+<span class="co"># (Printing side by side to save space)</span></code></pre></div>
+<p><img src="map_files/figure-html/unnamed-chunk-15-1.png" width="45%"><img src="map_files/figure-html/unnamed-chunk-15-2.png" width="45%"></p>
 </div>
 </div>
 </div>
 <div id="fine-tunning" class="section level1">
 <h1 class="hasAnchor">
 <a href="#fine-tunning" class="anchor"></a>Fine Tunning</h1>
-<p>This last section shows you how to fine tune your plots. For this, you will need a couple of functions from packages other than <strong>forestr</strong>. Because you this kind of changes are rare you may forget how to do them, but you can come back to notes whenever you</p>
+<p>This last section shows you how to fine tune your plots. For this, you will need a couple of functions from packages other than <strong>forestr</strong>.</p>
 <div id="multiple-plots-in-one-page" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multiple-plots-in-one-page" class="anchor"></a>Multiple Plots in One Page</h2>
-<p>To plot multiple maps on one page you can use <code>gridExtra::maparrange()</code>.</p>
+<p>To plot multiple maps on one page you can use <code>gridExtra::maparrange()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gridExtra)
-maps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, sp_top3)
-<span class="co">#&gt; $hybapr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $faraoc</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $des2pa</span>
-multipaged &lt;-<span class="st"> </span><span class="kw">marrangeGrob</span>(<span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, sp_top3), <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)
-<span class="co">#&gt; $hybapr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $faraoc</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $des2pa</span>
+
+all_species &lt;-<span class="st"> </span><span class="kw">unique</span>(census<span class="op">$</span>sp)
+<span class="co"># Saving a .pdf with one species per page</span>
+maps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/map_sp.html">map_sp_pdf</a></span>(census, all_species)
+<span class="co">#&gt; Saving as map.pdf</span>
+
+<span class="co"># Reusing plots assigned to `maps` above; using a multi-species layout</span>
+multipaged &lt;-<span class="st"> </span><span class="kw">marrangeGrob</span>(maps, <span class="dt">nrow =</span> <span class="dv">1</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)
 multipaged</code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-2.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-3.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-4.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-5.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-6.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-7.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-14-8.png" width="70%" style="display: block; margin: auto;"></p>
-<p>Now you can save your multi-paged maps to a .pdf</p>
+<p><img src="map_files/figure-html/unnamed-chunk-16-1.png" width="70%" style="display: block; margin: auto;"><img src="map_files/figure-html/unnamed-chunk-16-2.png" width="70%" style="display: block; margin: auto;"></p>
+<p>The multi-paged maps can also be saved to a .pdf.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Saving to .pdf: Option 1</span>
 ggplot2<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave</a></span>(<span class="st">"multi-paged.pdf"</span>, multipaged)
 <span class="co">#&gt; Saving 6 x 3.7 in image</span>
@@ -286,7 +296,7 @@ multipaged
 <span class="kw">dev.off</span>()
 <span class="co">#&gt; png </span>
 <span class="co">#&gt;   2</span></code></pre></div>
-<p>You can also print to other devices. If your maps span multiple pages, .png() will create one file per page.</p>
+<p>It is also possible to save the multi-paged maps to devices other than .pdf – the png() device, for example, will automatically create one file per page.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Saving to .png; this will create multiple files.</span>
 <span class="kw">png</span>()
 multipaged
@@ -294,22 +304,26 @@ multipaged
 <span class="co">#&gt; png </span>
 <span class="co">#&gt;   2</span></code></pre></div>
 </div>
-<div id="fine-tunning-the-theme" class="section level2">
+<div id="customizing-the-theme" class="section level2">
 <h2 class="hasAnchor">
-<a href="#fine-tunning-the-theme" class="anchor"></a>Fine Tunning the Theme</h2>
-<p>You may have noticed that the default value of the argument <code>theme</code> is a function from the <strong>ggplot</strong> package. Before you used a pre-made theme; but you can create your own theme with <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">ggplot2::theme()</a></code> and then pass it to <code><a href="../reference/map_sp.html">map_sp()</a></code> or <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code>.</p>
+<a href="#customizing-the-theme" class="anchor"></a>Customizing the Theme</h2>
+<p>Before, you used a pre-made theme. But you can create your own theme with <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">ggplot2::theme()</a></code>, save it as an object, and pass that object to <code><a href="../reference/map_sp.html">map_sp()</a></code> or <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Showing only a few options; see all the options with ?ggplot2::theme()</span>
-mytheme &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(
+my_theme &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(
   <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">"lightgreen"</span>),
   <span class="dt">panel.grid.minor =</span> <span class="kw">element_line</span>(<span class="dt">linetype =</span> <span class="st">"dashed"</span>),
   <span class="dt">strip.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">"black"</span>),
   <span class="dt">strip.text =</span> <span class="kw">element_text</span>(<span class="dt">colour =</span> <span class="st">"white"</span>),
   <span class="dt">text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">25</span>, <span class="dt">face =</span> <span class="st">"bold"</span>)
 )
-<span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, <span class="dt">theme =</span> mytheme)
+<span class="kw"><a href="../reference/map_sp.html">map_sp</a></span>(census, <span class="st">"hybapr"</span>, <span class="dt">theme =</span> my_theme)
 <span class="co">#&gt; $hybapr</span></code></pre></div>
-<p><img src="map_files/figure-html/unnamed-chunk-17-1.png" width="70%" style="display: block; margin: auto;"></p>
-<p><strong>ggplot2</strong> is the engine of <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code>, but these functions are built so you can use them without knowing anything about <strong>ggplot2</strong>. Yet you may want to know more about it. <strong>ggplot2</strong> is not an arbitrary collection of functions that you need to memorize; instead it is one implementation of <a href="https://goo.gl/E514ar">The Grammar of Graphics</a>. You can learn <strong>ggplot2</strong> from <a href="https://goo.gl/tVvLQZ">this website</a>; this specialized, paid book: <a href="https://goo.gl/R6wJk9">ggplot2: Elegant Graphics for Data Analysis</a>; or this general, free book <a href="http://r4ds.had.co.nz/">R for Data Science</a>. Learning always has some overhead, but the learning curve of <strong>ggplot2</strong> is not steep. It pays off.</p>
+<p><img src="map_files/figure-html/unnamed-chunk-19-1.png" width="70%" style="display: block; margin: auto;"></p>
+</div>
+<div id="learning-more" class="section level2">
+<h2 class="hasAnchor">
+<a href="#learning-more" class="anchor"></a>Learning More</h2>
+<p>There are many visualization systems in R. The system built in <code><a href="../reference/map_sp.html">map_sp()</a></code> and <code><a href="../reference/map_sp.html">map_sp_pdf()</a></code> is that of the <strong>ggplot2</strong> package. <strong>ggplot2</strong> is not an arbitrary collection of functions; it is one implementation of <a href="https://goo.gl/E514ar">The Grammar of Graphics</a>. Good places to learn <strong>ggplot2</strong> include <a href="https://goo.gl/tVvLQZ">this website</a>; this specialized, paid book: <a href="https://goo.gl/R6wJk9">ggplot2: Elegant Graphics for Data Analysis</a>; and this general, free book <a href="http://r4ds.had.co.nz/">R for Data Science</a>.</p>
 </div>
 </div>
 </div>
@@ -320,10 +334,11 @@ mytheme &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span cla
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li>
+<li><a href="#overview">Overview</a></li>
+      <li>
 <a href="#exploring-data-quickly-using-defaults">Exploring Data Quickly: Using Defaults</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#species-distribution">Species Distribution</a></li>
-      <li><a href="#elevation">Elevation</a></li>
+<li><a href="#mapping-species-distribution">Mapping Species Distribution</a></li>
+      <li><a href="#adding-elevation">Adding Elevation</a></li>
       </ul>
 </li>
       <li>
@@ -335,7 +350,8 @@ mytheme &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span cla
       <li>
 <a href="#fine-tunning">Fine Tunning</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#multiple-plots-in-one-page">Multiple Plots in One Page</a></li>
-      <li><a href="#fine-tunning-the-theme">Fine Tunning the Theme</a></li>
+      <li><a href="#customizing-the-theme">Customizing the Theme</a></li>
+      <li><a href="#learning-more">Learning More</a></li>
       </ul>
 </li>
       </ul>
