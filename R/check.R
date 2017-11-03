@@ -36,6 +36,8 @@ check_crucial_names <- function(cns, nms) {
 }
 
 #' Wrap multiple checks in map_sp() and map_sp_pdf() for clarity.
+#' @export
+#' @keywords internal
 #' @noRd
 check_map_sp <- function(cns, sp) {
   assertive::assert_is_data.frame(cns)
