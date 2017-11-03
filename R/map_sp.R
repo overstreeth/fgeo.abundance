@@ -150,6 +150,7 @@ map_sp_pdf <- function(census,
 map_sp_invisible <- function(census, species, ...) {
   check_map_sp(census, species)
   
+  # `...` passess all args to all funs; So pass args matched only in one fun.
   plots <- lapply(X = species, FUN = map_one_sp, census = census, ...)
   names(plots) <- species
   invisible(plots)
