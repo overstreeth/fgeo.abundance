@@ -2,7 +2,8 @@ context("group")
 
 stem <- bci12s7mini
 
-library(tidyverse)
+library(dplyr)
+library(tibble)
 
 stem <- bci12s7mini
 

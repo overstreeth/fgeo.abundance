@@ -1,6 +1,6 @@
 context("basal_area")
 
-library(tidyverse)
+library(dplyr)
 
 df <- data.frame(
   sp = rep(letters[1:3], each = 2),

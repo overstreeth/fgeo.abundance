@@ -1,6 +1,6 @@
 context("abundance")
 
-library(tidyverse)
+suppressWarnings(library(dplyr))
 
 stem <- bci12s7mini
 
