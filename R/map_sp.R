@@ -141,28 +141,16 @@ map_sp_pdf <- function(census,
   invisible(plots)
 }
 
-#' Do the heavy lifting and return invisible
+#' Do the heavy lifting and return invisible.
 #' 
-#' Allows the map to be printed visibly or invisibly afterwards.
+#' Allows the map to be printed visibly with map_sp() or invisibly with
+#' map_sp_pdf().
 #' 
 #' @noRd
-map_sp_invisible <- function(census,
-                             species,
-                             xlim = NULL,
-                             ylim = NULL,
-                             theme = ggplot2::theme_bw(),
-                             elevation = NULL,
-                             line_size = 0.5,
-                             low = "#132B43",
-                             high = "#56B1F7",
-                             bins = NULL,
-                             ...) {
+map_sp_invisible <- function(census, species, ...) {
   check_map_sp(census, species)
   
-  plots <- lapply(X = species, FUN = map_one_sp, census = census, 
-    xlim = xlim, ylim = ylim, theme = theme,
-    elevation = elevation, line_size = line_size, low = low, high = high,
-    bins = bins, ...)
+  plots <- lapply(X = species, FUN = map_one_sp, census = census, ...)
   names(plots) <- species
   invisible(plots)
 }
