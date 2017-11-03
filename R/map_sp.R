@@ -109,7 +109,7 @@ map_sp <- function(census,
     theme = theme, elevation = elevation, line_size = line_size, low = low,
     high = high, bins = bins, ...
   )
-  print(p)
+  p
 }
 
 #' @export
