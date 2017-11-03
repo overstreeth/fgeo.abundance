@@ -194,10 +194,15 @@ map_basic <- function(census, xlim, ylim, theme = ggplot2::theme_bw(), ...) {
     ggplot2::aes(x = gx, y = gy)
   ) +
     ggplot2::geom_point(...) +
-    ggplot2::facet_grid(. ~ sp) +
-    ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
     ggplot2::labs(x = NULL, y = NULL) +
-    theme
+    ggplot2::coord_fixed(xlim = xlim, ylim = ylim) +
+    ggplot2::scale_x_continuous(minor_breaks = seq(xlim[1], xlim[2], 20)) +
+    ggplot2::scale_y_continuous(minor_breaks = seq(ylim[1], ylim[2], 20)) +
+    theme +
+    ggplot2::theme(
+      panel.grid.minor = ggplot2::element_line(linetype = "dashed")
+    ) +
+    labs(title = unique(census$sp))
 }
 
 #' Add elevation lines to a ggplot.
