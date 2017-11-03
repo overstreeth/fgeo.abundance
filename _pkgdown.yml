@@ -41,21 +41,9 @@ reference:
       - bci12t7mini
       - bci12s7mini
 
-articles:
-  - title: "Calculations within a single censuses"
-    contents:
-    - demography
-  - title: "Calculations between two censuses"
-    contents:
-    - abundance
-  - title: "Mapping species distribution"
-    contents:
-    - map
-
 navbar:
   type: default
   left:
     - text: Functions Index
       href: reference/index.html
-    - text: Tutorials
-      href: articles/index.html
+
