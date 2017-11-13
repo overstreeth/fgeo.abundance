@@ -39,9 +39,10 @@ Maps:
 Install forestr from ForestGEO's private GitHub repo.
 
 ```
-# To install from a private repo, use auth_token # with a token from
-# https://github.com/settings/tokens. You only need the repo # scope.
-
+# To install from a private repo, use auth_token with a token
+# from https://github.com/settings/tokens. You only need the
+# repo scope. Best practice is to save your PAT in env var called
+# GITHUB_PAT (see ?Sys.setenv)
 # install.packages("devtools")
 
 # Install the master branch
