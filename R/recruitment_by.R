@@ -30,8 +30,8 @@
 #     is_empty2 = is_empty2,
 #     are_both_non_empty = !(is_empty1 | is_empty2)
 #   ) %>% 
-#     filter(are_both_non_empty) %>% 
-#     select(-is_empty1, -is_empty2, -are_both_non_empty)
+#     dplyr::filter(are_both_non_empty) %>% 
+#     dplyr::select-is_empty1, -is_empty2, -are_both_non_empty)
 #   
 #   # Calculate recruitment for each data set
 #   recruitment <- mutate(cns_non_empty, 
