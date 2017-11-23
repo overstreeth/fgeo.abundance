@@ -50,7 +50,7 @@ head(n[ordered_by_species, ])
 
 library(dplyr)
 
-alive <- filter(stem, status == "A")
+alive <- dplyr::filter(stem, status == "A")
 
 grouped <- group_by(alive, quadrat, sp)
 summarise(grouped, n = n())
