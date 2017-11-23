@@ -24,7 +24,11 @@ Imports:
     purrr,
     tibble,
     tidyr,
-    rlang
+    rlang (>= 0.1.2),
+    grDevices,
+    graphics,
+    stats,
+    utils
 Suggests: 
     covr,
     gridExtra,

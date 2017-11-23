@@ -5,7 +5,7 @@
 
 #' Tidy eval helpers
 #'
-#' These six functions provide tidy eval-compatible ways to capture
+#' These functions provide tidy eval-compatible ways to capture
 #' symbols (`sym()`, `syms()`, `ensym()`), expressions (`expr()`,
 #' `exprs()`, `enexpr()`), and quosures (`quo()`, `quos()`, `enquo()`).
 #' To learn more about tidy eval and how to use these tools, read
@@ -14,17 +14,15 @@
 #' @md
 #' @name tidyeval
 #' @keywords internal
-#' @aliases          quo quos enquo sym syms ensym expr exprs enexpr
-#' @importFrom rlang quo quos enquo
-#' @export           quo quos enquo
-#' @importFrom rlang sym syms ensym
-#' @export           sym syms ensym
-#' @importFrom rlang expr exprs enexpr
-#' @export           expr exprs enexpr
+#' @aliases          quo quos enquo sym syms expr exprs enexpr quo_name
+#' @importFrom rlang quo quos enquo sym syms expr exprs enexpr quo_name
+#' @export           quo quos enquo sym syms expr exprs enexpr quo_name
+# #' @importFrom rlang UQ UQS .data .env `:=`
 NULL
 
 # Flag inline helpers as global variables so R CMD check doesn't warn
-utils::globalVariables(c(":=", ".data", ".env"))
+# utils::globalVariables(c(":=", ".data", ".env"))
+utils::globalVariables(c(".data"))
 
 
 
@@ -33,3 +31,20 @@ utils::globalVariables(c(":=", ".data", ".env"))
 # Flag inline helpers as global variables so R CMD check doesn't warn
 utils::globalVariables("n")
 
+
+
+# ctfs --------------------------------------------------------------------
+
+
+#' Functions used by ctfs
+#' 
+#' These functions become necessary for functions that come from __cfts__.
+#' 
+#' @md
+#' @name ctfs
+#' @keywords internal
+#' @importFrom grDevices X11 dev.off graphics.off pdf x11
+#' @importFrom graphics hist lines par plot points text
+#' @importFrom stats dnorm median optim qbeta qt quantile rgamma rnorm runif sd
+#' @importFrom utils file.edit
+NULL
