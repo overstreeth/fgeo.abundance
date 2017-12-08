@@ -1,5 +1,7 @@
 
-# rlang -------------------------------------------------------------------
+# Global functions --------------------------------------------------------
+
+# rlang
 
 # built with `usethis::use_tidy_eval()``
 
@@ -17,24 +19,11 @@
 #' @aliases          quo quos enquo sym syms expr exprs enexpr quo_name
 #' @importFrom rlang quo quos enquo sym syms expr exprs enexpr quo_name
 #' @export           quo quos enquo sym syms expr exprs enexpr quo_name
-# #' @importFrom rlang UQ UQS .data .env `:=`
 NULL
 
-# Flag inline helpers as global variables so R CMD check doesn't warn
-# utils::globalVariables(c(":=", ".data", ".env"))
-utils::globalVariables(c(".data"))
 
 
-
-# dplyr -------------------------------------------------------------------
-
-# Flag inline helpers as global variables so R CMD check doesn't warn
-utils::globalVariables("n")
-
-
-
-# ctfs --------------------------------------------------------------------
-
+# ctfs
 
 #' Functions used by ctfs
 #' 
@@ -48,3 +37,19 @@ utils::globalVariables("n")
 #' @importFrom stats dnorm median optim qbeta qt quantile rgamma rnorm runif sd
 #' @importFrom utils file.edit
 NULL
+
+
+
+# global variables --------------------------------------------------------
+
+# Flag inline helpers as global variables so R CMD check doesn't warn
+utils::globalVariables(
+  c(
+    # rlang
+    ".data",
+    # dplyr
+    "n",
+    # ggplot2
+    "gx", "gy"
+  )
+)
