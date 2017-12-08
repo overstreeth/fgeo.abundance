@@ -1,3 +1,11 @@
+url: https://forestgeo.github.io/forestr/
+
+authors:
+  Mauro Lepore:
+    href: https://github.com/maurolepore
+  CTFS-ForestGEO:
+    href: http://www.forestgeo.si.edu/
+
 template:
   params:
     bootswatch: united
@@ -6,6 +14,66 @@ home:
   links:
   - text: Learn more
     href: http://www.forestgeo.si.edu/
+
+
+
+
+
+
+navbar:
+  type: default
+  left:
+    - text: Index
+      href: reference/index.html
+    - text: Tutorials
+      href: articles/index.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+navbar:
+  
+  type: default
+
+left:
+  - text: Functions Index
+    href: reference/index.html
+
+right:
+  - text: Turorials
+    href: articles/index.html
+
+  - text: Apps
+    menu:
+    - text: Nothing to show yet
+      
+    - text: news
+    href: news/index.html
+
+    - icon: fa-gavel
+    href: https://github.com/maurolepore
+
+    - icon: fa-github
+    href: https://github.com/forestgeo/forestr
+
+
 
 reference:
   - title: "Abundance and friends"
@@ -41,9 +109,10 @@ reference:
       - bci12t7mini
       - bci12s7mini
 
-navbar:
-  type: default
-  left:
-    - text: Functions Index
-      href: reference/index.html
 
+
+articles:
+  
+  - title: "All tutorials"
+    contents:
+    - abundance
