@@ -1,5 +1,5 @@
 Package: forestr
-Title: Tools for the Analysis of Forest Dynamics
+Title: R packages for the Analysis of Forest Dynamics
 Version: 0.0.0.9000
 Authors@R: c(
     person("Mauro", "Lepore", , "leporem@si.edu", role = c("aut", "ctr", "cre")),
