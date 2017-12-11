@@ -35,25 +35,4 @@ check_crucial_names <- function(cns, nms) {
   }
 }
 
-#' Wrap multiple checks in map_sp() and map_sp_pdf() for clarity.
-#' @noRd
-check_map_sp <- function(cns, sp) {
-  assertive::assert_is_data.frame(cns)
-  check_crucial_names(cns = cns, nms = c("gx", "gy", "sp"))
-  assertive::assert_is_character(sp)
-  assertive::assert_is_non_empty(sp)
-}
 
-#' If file extension is not .pdf, ignore the given file-name
-#' @noRd
-check_file_extension <- function(file) {
-  is_extension_ok <- grepl("*.\\.pdf", file)
-  if (is_extension_ok) {
-    return(file)
-  } else {
-    warning("File extension should be .pdf.\n",
-      "  * Replacing given file name by default file name")
-    file <- "map.pdf"
-  }
-  file
-}
