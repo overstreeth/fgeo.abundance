@@ -6,12 +6,6 @@ library(readr)
 
 
 
-# Template for package website: _pkgdown.yml  -----------------------------
-
-pkgdown_template <- readr::read_lines("./data-raw/pkgdown_template.yml")
-
-
-
 # Functions' priority -----------------------------------------------------
 
 # https://github.com/forestgeo/forestr/issues/32
@@ -56,7 +50,6 @@ functions_priority <- functions_priority %>%
 # Use objects as internal data --------------------------------------------
 
 usethis::use_data(
-  pkgdown_template, 
   functions_priority, 
   internal = TRUE, overwrite = TRUE
 )
