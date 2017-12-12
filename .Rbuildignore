@@ -11,3 +11,5 @@
 ^clean_directories\.R$
 ^\.travis\.yml$
 ^codecov\.yml$
+^inst/tutorials/demography_technical_notes_cache$
+^inst/tutorials/rsconnect$
