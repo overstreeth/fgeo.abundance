@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   [![Coverage status](https://codecov.io/gh/forestgeo/forestr/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/forestr?branch=master)
   [![CRAN status](http://www.r-pkg.org/badges/version/forestr)](https://cran.r-project.org/package=forestr)
 
-## Installation
+## Installation  
 
 Install forestr from ForestGEO's private GitHub repo.
 
