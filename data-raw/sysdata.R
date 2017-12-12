@@ -23,7 +23,6 @@ library(readr)
 # discussion finished.
 
 library(tidyverse)
-library(handy)
 
 
 
