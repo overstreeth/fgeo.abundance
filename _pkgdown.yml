@@ -21,33 +21,34 @@ navbar:
   
   type: default
 
-left:
-  - text: Functions Index
-    href: reference/index.html
-
-right:
-  - text: Turorials
-    href: articles/index.html
-    
-  - text: Apps
-    menu:
-    - text: Nothing to show
-
-  - text: News
-    href: news/index.html
-
+  left:
+    - text: Functions Index
+      href: reference/index.html
+  
+  right:
+    - text: Tutorials
+      href: articles/index.html
+      
+    - text: Apps
+      menu:
+      - text: Nothing to show
+  
+    - text: News
+      href: news/index.html
+  
     - icon: fa-gavel
-    href: https://github.com/maurolepore
-
+      href: https://github.com/maurolepore
+  
     - icon: fa-github
-    href: https://github.com/forestgeo/forestr
-
-  - text: fgeo
-    href: https://forestgeo.github.io/fgeo/
+      href: https://github.com/forestgeo/forestr
+  
+    - text: fgeo
+      href: https://forestgeo.github.io/fgeo/
 
 
 
 reference:
+
   - title: "Abundance and friends"
     desc: >
       Functions that input data from one census
@@ -82,3 +83,4 @@ articles:
   - title: "All tutorials"
     contents:
     - abundance
+    - demography
