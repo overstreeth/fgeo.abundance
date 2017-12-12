@@ -1824,18 +1824,18 @@ dgammaPlusdexp <-
       net = gamma + expon
       highvalue = max(max(z), max(gamma), max(expon), max(net))
       x = seq(0, highvalue + div, by = div)
-      dev.set(2)
+      grDevices::dev.set(2)
       hist(gamma, breaks = x, xlim = xrange)
-      dev.set(3)
+      grDevices::dev.set(3)
       hist(expon, breaks = x, xlim = xrange)
-      dev.set(4)
+      grDevices::dev.set(4)
       hist(net, breaks = x, xlim = xrange)
     }
     newmean = mean + 1 / lambda
     newvar = sd ^ 2 + 1 / (lambda ^ 2)
     newshape = newmean ^ 2 / newvar
     newrate = newmean / newvar
-    pdf.z[z > 0] = dgamma(z[z > 0], shape = newshape, rate = newrate)
+    pdf.z[z > 0] = stats::dgamma(z[z > 0], shape = newshape, rate = newrate)
     if (graphit)
       lines(z, draws * div * pdf.z)
     return(pdf.z)
@@ -1862,7 +1862,7 @@ dgammaMinusdexp <-
     a = mean * r
     part1 = a * (log(r / (r + lambda))) + log(lambda) + lambda *
       z
-    part2 = pgamma(
+    part2 = stats::pgamma(
       z,
       shape = a,
       rate = r + lambda,
@@ -1879,11 +1879,11 @@ dgammaMinusdexp <-
       highvalue = max(max(z), max(gamma), max(expon), max(net))
       lowvalue = min(min(z), min(gamma), min(expon), min(net))
       x = seq(lowvalue - div, highvalue + div, by = div)
-      dev.set(2)
+      grDevices::dev.set(2)
       hist(gamma, breaks = x, xlim = xrange)
-      dev.set(3)
+      grDevices::dev.set(3)
       hist(expon, breaks = x, xlim = xrange)
-      dev.set(4)
+      grDevices::dev.set(4)
       hist(net, breaks = x, xlim = xrange)
     }
     return(pdf.z)
