@@ -213,57 +213,57 @@ determine which stems should have dbh change calculated.</p>
 
 <span class='co'># Across entire dataset</span>
 <span class='fu'>growth</span>(<span class='no'>census1</span>, <span class='no'>census2</span>)</div><div class='output co'>#&gt; $rate
-#&gt; [1] 1.23
+#&gt; [1] 1.229134
 #&gt; 
 #&gt; $N
 #&gt; [1] 78
 #&gt; 
 #&gt; $clim
-#&gt; [1] 0.66
+#&gt; [1] 0.6596669
 #&gt; 
 #&gt; $dbhmean
-#&gt; [1] 55.1
+#&gt; [1] 55.11538
 #&gt; 
 #&gt; $time
-#&gt; [1] 4.96
+#&gt; [1] 4.958739
 #&gt; 
 #&gt; $date1
-#&gt; [1] 16584
+#&gt; [1] 16584.45
 #&gt; 
 #&gt; $date2
-#&gt; [1] 18396
+#&gt; [1] 18395.63
 #&gt; </div><div class='input'>
 <span class='co'># Within groups defined by one "splitting" variable</span>
 <span class='co'># Note warning if split variable has grups which dbh is full of NA</span>
 <span class='no'>growth_metrics</span> <span class='kw'>&lt;-</span> <span class='fu'>growth</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>split1</span> <span class='kw'>=</span> <span class='no'>census1</span>$<span class='no'>sp</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: At least one split-group contains all `dbh` values equal to NA.</span>
 #&gt; <span class='warning'>  * Consider removing those groups before running this function.</span></div><div class='input'><span class='co'># View just a few species with `head()`</span>
 <span class='fu'>lapply</span>(<span class='no'>growth_metrics</span>, <span class='no'>head</span>)</div><div class='output co'>#&gt; $rate
-#&gt; acaldi alibed alsebl beilpe calolo cassel 
-#&gt;  0.402     NA  1.209  1.014     NA  1.033 
+#&gt;    acaldi    alibed    alsebl    beilpe    calolo    cassel 
+#&gt; 0.4020363        NA 1.2087700 1.0140873        NA 1.0329468 
 #&gt; 
 #&gt; $N
 #&gt; acaldi alibed alsebl beilpe calolo cassel 
 #&gt;      1      0      2      2      0      1 
 #&gt; 
 #&gt; $clim
-#&gt; acaldi alibed alsebl beilpe calolo cassel 
-#&gt;     NA     NA  5.201  0.907     NA     NA 
+#&gt;   acaldi   alibed   alsebl   beilpe   calolo   cassel 
+#&gt;       NA       NA 5.200918 0.907424       NA       NA 
 #&gt; 
 #&gt; $dbhmean
 #&gt; acaldi alibed alsebl beilpe calolo cassel 
 #&gt;     11     NA     67    113     NA     33 
 #&gt; 
 #&gt; $time
-#&gt; acaldi alibed alsebl beilpe calolo cassel 
-#&gt;   4.97     NA   4.96   4.94     NA   4.84 
+#&gt;   acaldi   alibed   alsebl   beilpe   calolo   cassel 
+#&gt; 4.974675       NA 4.956879 4.939083       NA 4.840520 
 #&gt; 
 #&gt; $date1
-#&gt; acaldi alibed alsebl beilpe calolo cassel 
-#&gt;  16625     NA  16612  16634     NA  16554 
+#&gt;  acaldi  alibed  alsebl  beilpe  calolo  cassel 
+#&gt; 16625.0      NA 16612.0 16633.5      NA 16554.0 
 #&gt; 
 #&gt; $date2
-#&gt; acaldi alibed alsebl beilpe calolo cassel 
-#&gt;  18442     NA  18423  18438     NA  18322 
+#&gt;  acaldi  alibed  alsebl  beilpe  calolo  cassel 
+#&gt; 18442.0      NA 18422.5 18437.5      NA 18322.0 
 #&gt; </div><div class='input'>
 <span class='co'># Within groups defined by two "splitting" variables</span>
 <span class='co'># Also warnings here (one warning per problematic splitting variable)</span>
@@ -323,88 +323,88 @@ determine which stems should have dbh change calculated.</p>
 
 <span class='co'># Calculate not annual growth rate but relative growth rate</span>
 <span class='fu'>growth</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"E"</span>)</div><div class='output co'>#&gt; $rate
-#&gt; [1] 0.0228
+#&gt; [1] 0.02281451
 #&gt; 
 #&gt; $N
 #&gt; [1] 78
 #&gt; 
 #&gt; $clim
-#&gt; [1] 0.00723
+#&gt; [1] 0.00723472
 #&gt; 
 #&gt; $dbhmean
-#&gt; [1] 55.1
+#&gt; [1] 55.11538
 #&gt; 
 #&gt; $time
-#&gt; [1] 4.96
+#&gt; [1] 4.958739
 #&gt; 
 #&gt; $date1
-#&gt; [1] 16584
+#&gt; [1] 16584.45
 #&gt; 
 #&gt; $date2
-#&gt; [1] 18396
+#&gt; [1] 18395.63
 #&gt; </div><div class='input'><span class='co'># Return `sd` instead of `clim`</span>
 <span class='fu'>growth</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>stdev</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $rate
-#&gt; [1] 1.23
+#&gt; [1] 1.229134
 #&gt; 
 #&gt; $N
 #&gt; [1] 78
 #&gt; 
 #&gt; $sd
-#&gt; [1] 2.93
+#&gt; [1] 2.926403
 #&gt; 
 #&gt; $dbhmean
-#&gt; [1] 55.1
+#&gt; [1] 55.11538
 #&gt; 
 #&gt; $time
-#&gt; [1] 4.96
+#&gt; [1] 4.958739
 #&gt; 
 #&gt; $date1
-#&gt; [1] 16584
+#&gt; [1] 16584.45
 #&gt; 
 #&gt; $date2
-#&gt; [1] 18396
+#&gt; [1] 18395.63
 #&gt; </div><div class='input'><span class='co'># Include all living trees</span>
 <span class='fu'>growth</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>mindbh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; $rate
-#&gt; [1] 1.23
+#&gt; [1] 1.229134
 #&gt; 
 #&gt; $N
 #&gt; [1] 78
 #&gt; 
 #&gt; $clim
-#&gt; [1] 0.66
+#&gt; [1] 0.6596669
 #&gt; 
 #&gt; $dbhmean
-#&gt; [1] 55.1
+#&gt; [1] 55.11538
 #&gt; 
 #&gt; $time
-#&gt; [1] 4.96
+#&gt; [1] 4.958739
 #&gt; 
 #&gt; $date1
-#&gt; [1] 16584
+#&gt; [1] 16584.45
 #&gt; 
 #&gt; $date2
-#&gt; [1] 18396
+#&gt; [1] 18395.63
 #&gt; </div><div class='input'><span class='co'># Measure growth not based on `dbh` but on `agb`</span>
 <span class='fu'>growth</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>growthcol</span> <span class='kw'>=</span> <span class='st'>"agb"</span>)</div><div class='output co'>#&gt; $rate
-#&gt; [1] 0.00333
+#&gt; [1] 0.00332635
 #&gt; 
 #&gt; $N
 #&gt; [1] 78
 #&gt; 
 #&gt; $clim
-#&gt; [1] 0.00375
+#&gt; [1] 0.00374775
 #&gt; 
 #&gt; $dbhmean
-#&gt; [1] 55.1
+#&gt; [1] 55.11538
 #&gt; 
 #&gt; $time
-#&gt; [1] 4.96
+#&gt; [1] 4.958739
 #&gt; 
 #&gt; $date1
-#&gt; [1] 16584
+#&gt; [1] 16584.45
 #&gt; 
 #&gt; $date2
-#&gt; [1] 18396
+#&gt; [1] 18395.63
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

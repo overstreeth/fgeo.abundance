@@ -121,14 +121,14 @@ head(long_format, 10)
 #> # A tibble: 10 x 3
 #>     split  metric        value
 #>     <chr>   <chr>        <dbl>
-#>  1 drypst       N 5.000000e+00
-#>  2 drypst       D 0.000000e+00
-#>  3 drypst    rate 0.000000e+00
-#>  4 drypst   lower 0.000000e+00
-#>  5 drypst   upper 1.240803e-01
-#>  6 drypst    time 4.954962e+00
-#>  7 drypst   date1 1.664880e+04
-#>  8 drypst   date2 1.845860e+04
-#>  9 drypst dbhmean 6.100000e+01
-#> 10 socrex       N 3.000000e+00
+#>  1 gustsu       N 1.000000e+00
+#>  2 gustsu       D 0.000000e+00
+#>  3 gustsu    rate 0.000000e+00
+#>  4 gustsu   lower 0.000000e+00
+#>  5 gustsu   upper 3.728177e-01
+#>  6 gustsu    time 4.947296e+00
+#>  7 gustsu   date1 1.664500e+04
+#>  8 gustsu   date2 1.845200e+04
+#>  9 gustsu dbhmean 1.050000e+02
+#> 10 laetth       N 2.000000e+00
 ```
