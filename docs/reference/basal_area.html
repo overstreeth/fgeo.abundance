@@ -52,19 +52,41 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Index</a>
-</li>
-<li>
-  <a href="../articles/index.html">Tutorials</a>
+  <a href="../reference/index.html">Functions Index</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/forestgeo/forestr">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="../articles/index.html">Tutorials</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Apps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Nothing to show</li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
+<li>
+  <a href="https://github.com/maurolepore">
+    <span class="fa fa-gavel"></span>
      
   </a>
+</li>
+<li>
+  <a href="https://github.com/forestgeo/forestr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://forestgeo.github.io/fgeo/">fgeo</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -134,22 +156,22 @@ mm^2.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='no'>bci12s7mini</span>
 
-<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 720  NA  NA  NA  NA  NA</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt; [1] 407150.4       NA       NA       NA       NA       NA</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 720  NA  NA  NA  NA  NA</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt; [1] 407150     NA     NA     NA     NA     NA</div><div class='input'>
 <span class='fu'>head</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt;   quadrat     sp basal_area
-#&gt; 1    0000 soroaf 2642.07942
-#&gt; 2    0002 hybapr   95.03318
-#&gt; 3    0006 hybapr  475.16589
-#&gt; 4    0009 faraoc 1809.55737
-#&gt; 5    0009 hybapr    0.00000
-#&gt; 6    0020 tet2pa 3117.24531</div><div class='input'>
+#&gt; 1    0000 soroaf       2642
+#&gt; 2    0002 hybapr         95
+#&gt; 3    0006 hybapr        475
+#&gt; 4    0009 faraoc       1810
+#&gt; 5    0009 hybapr          0
+#&gt; 6    0020 tet2pa       3117</div><div class='input'>
 <span class='co'># Silent</span>
 <span class='fu'>head</span>(<span class='fu'>suppressMessages</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>)))</div><div class='output co'>#&gt;   quadrat     sp basal_area
-#&gt; 1    0000 soroaf 2642.07942
-#&gt; 2    0002 hybapr   95.03318
-#&gt; 3    0006 hybapr  475.16589
-#&gt; 4    0009 faraoc 1809.55737
-#&gt; 5    0009 hybapr    0.00000
-#&gt; 6    0020 tet2pa 3117.24531</div></pre>
+#&gt; 1    0000 soroaf       2642
+#&gt; 2    0002 hybapr         95
+#&gt; 3    0006 hybapr        475
+#&gt; 4    0009 faraoc       1810
+#&gt; 5    0009 hybapr          0
+#&gt; 6    0020 tet2pa       3117</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -170,7 +192,7 @@ mm^2.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Mauro Lepore, CTFS-ForestGEO.</p>
+  <p>Developed by <a href='https://github.com/maurolepore'>Mauro Lepore</a>, <a href='http://www.forestgeo.si.edu/'>CTFS-ForestGEO</a>.</p>
 </div>
 
 <div class="pkgdown">

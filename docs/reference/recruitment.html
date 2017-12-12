@@ -52,19 +52,41 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Index</a>
-</li>
-<li>
-  <a href="../articles/index.html">Tutorials</a>
+  <a href="../reference/index.html">Functions Index</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/forestgeo/forestr">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="../articles/index.html">Tutorials</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Apps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Nothing to show</li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
+<li>
+  <a href="https://github.com/maurolepore">
+    <span class="fa fa-gavel"></span>
      
   </a>
+</li>
+<li>
+  <a href="https://github.com/forestgeo/forestr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://forestgeo.github.io/fgeo/">fgeo</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -189,85 +211,85 @@ either census are deleted from all calculations.</p>
 #&gt; [1] 71
 #&gt; 
 #&gt; $rate
-#&gt; [1] 0.02759928
+#&gt; [1] 0.0276
 #&gt; 
 #&gt; $lower
-#&gt; [1] 0.02185356
+#&gt; [1] 0.0219
 #&gt; 
 #&gt; $upper
-#&gt; [1] 0.03475338
+#&gt; [1] 0.0348
 #&gt; 
 #&gt; $time
-#&gt; [1] 4.969261
+#&gt; [1] 4.97
 #&gt; 
 #&gt; $date1
-#&gt; [1] 16578.29
+#&gt; [1] 16578
 #&gt; 
 #&gt; $date2
-#&gt; [1] 18393.99
+#&gt; [1] 18394
 #&gt; </div><div class='input'>
 <span class='co'># Easier to view and filter when you split by some variable with many groups</span>
 <span class='co'># (note warning when some groups have dbh values full of NA)</span>
 <span class='fu'>recruitment_df</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>split1</span> <span class='kw'>=</span> <span class='no'>census1</span>$<span class='no'>sp</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: At least one split-group contains all `dbh` values equal to NA.</span>
 #&gt; <span class='warning'>  * Consider removing those groups before running this function.</span></div><div class='output co'>#&gt; # A tibble: 1,152 x 3
-#&gt;     split metric        value
-#&gt;     &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;
-#&gt;  1 acaldi     N2 5.000000e+00
-#&gt;  2 acaldi      R 2.000000e+00
-#&gt;  3 acaldi   rate 1.032320e-01
-#&gt;  4 acaldi  lower 2.540176e-02
-#&gt;  5 acaldi  upper 3.034520e-01
-#&gt;  6 acaldi   time 4.948324e+00
-#&gt;  7 acaldi  date1 1.663900e+04
-#&gt;  8 acaldi  date2 1.846360e+04
-#&gt;  9 aegipa     N2 0.000000e+00
-#&gt; 10 aegipa      R 0.000000e+00
+#&gt;     split metric    value
+#&gt;     &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;
+#&gt;  1 acaldi     N2 5.00e+00
+#&gt;  2 acaldi      R 2.00e+00
+#&gt;  3 acaldi   rate 1.03e-01
+#&gt;  4 acaldi  lower 2.54e-02
+#&gt;  5 acaldi  upper 3.03e-01
+#&gt;  6 acaldi   time 4.95e+00
+#&gt;  7 acaldi  date1 1.66e+04
+#&gt;  8 acaldi  date2 1.85e+04
+#&gt;  9 aegipa     N2 0.00e+00
+#&gt; 10 aegipa      R 0.00e+00
 #&gt; # ... with 1,142 more rows</div><div class='input'>
 <span class='co'># Same for `mortality()`; lets explore a few species</span>
 (<span class='no'>all_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>mortality_df</span>(<span class='no'>census1</span>, <span class='no'>census2</span>, <span class='kw'>split1</span> <span class='kw'>=</span> <span class='no'>census1</span>$<span class='no'>sp</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: At least one split-group contains all `dbh` values equal to NA.</span>
 #&gt; <span class='warning'>  * Consider removing those groups before running this function.</span></div><div class='output co'>#&gt; # A tibble: 1,296 x 3
-#&gt;     split  metric        value
-#&gt;     &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;
-#&gt;  1 acaldi       N 3.000000e+00
-#&gt;  2 acaldi       D 0.000000e+00
-#&gt;  3 acaldi    rate 0.000000e+00
-#&gt;  4 acaldi   lower 0.000000e+00
-#&gt;  5 acaldi   upper 1.867879e-01
-#&gt;  6 acaldi    time 4.937258e+00
-#&gt;  7 acaldi   date1 1.663900e+04
-#&gt;  8 acaldi   date2 1.844233e+04
-#&gt;  9 acaldi dbhmean 1.300000e+01
-#&gt; 10 aegipa       N 0.000000e+00
+#&gt;     split  metric    value
+#&gt;     &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;
+#&gt;  1 acaldi       N 3.00e+00
+#&gt;  2 acaldi       D 0.00e+00
+#&gt;  3 acaldi    rate 0.00e+00
+#&gt;  4 acaldi   lower 0.00e+00
+#&gt;  5 acaldi   upper 1.87e-01
+#&gt;  6 acaldi    time 4.94e+00
+#&gt;  7 acaldi   date1 1.66e+04
+#&gt;  8 acaldi   date2 1.84e+04
+#&gt;  9 acaldi dbhmean 1.30e+01
+#&gt; 10 aegipa       N 0.00e+00
 #&gt; # ... with 1,286 more rows</div><div class='input'><span class='no'>few_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>unique</span>(<span class='no'>all_sp</span>$<span class='no'>split</span>), <span class='fl'>3</span>)
 <span class='no'>long_format</span> <span class='kw'>&lt;-</span> <span class='fu'>subset</span>(<span class='no'>all_sp</span>, <span class='no'>split</span> <span class='kw'>%in%</span> <span class='no'>few_sp</span>)
 <span class='fu'>head</span>(<span class='no'>long_format</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 3
-#&gt;     split  metric        value
-#&gt;     &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;
-#&gt;  1 coccma       N 2.000000e+00
-#&gt;  2 coccma       D 0.000000e+00
-#&gt;  3 coccma    rate 0.000000e+00
-#&gt;  4 coccma   lower 0.000000e+00
-#&gt;  5 coccma   upper 2.462287e-01
-#&gt;  6 coccma    time 4.993840e+00
-#&gt;  7 coccma   date1 1.651800e+04
-#&gt;  8 coccma   date2 1.834200e+04
-#&gt;  9 coccma dbhmean 3.650000e+01
-#&gt; 10 guarsp       N 2.000000e+00</div><div class='input'>
+#&gt;     split  metric    value
+#&gt;     &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;
+#&gt;  1 coccma       N 2.00e+00
+#&gt;  2 coccma       D 0.00e+00
+#&gt;  3 coccma    rate 0.00e+00
+#&gt;  4 coccma   lower 0.00e+00
+#&gt;  5 coccma   upper 2.46e-01
+#&gt;  6 coccma    time 4.99e+00
+#&gt;  7 coccma   date1 1.65e+04
+#&gt;  8 coccma   date2 1.83e+04
+#&gt;  9 coccma dbhmean 3.65e+01
+#&gt; 10 guarsp       N 2.00e+00</div><div class='input'>
 <span class='co'># From long to wide format</span>
 <span class='fu'>library</span>(<span class='no'>tidyr</span>)
 <span class='no'>wide_format</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/spread'>spread</a></span>(<span class='no'>long_format</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>split</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>value</span>)
 <span class='no'>wide_format</span></div><div class='output co'>#&gt; # A tibble: 9 x 4
-#&gt;    metric       coccma       guarsp       tropra
-#&gt; *   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
-#&gt; 1       D 0.000000e+00 1.000000e+00 0.000000e+00
-#&gt; 2   date1 1.651800e+04 1.657200e+04 1.663600e+04
-#&gt; 3   date2 1.834200e+04 1.838950e+04 1.844200e+04
-#&gt; 4 dbhmean 3.650000e+01 1.400000e+02 1.100000e+01
-#&gt; 5   lower 0.000000e+00 1.990465e-02 0.000000e+00
-#&gt; 6       N 2.000000e+00 2.000000e+00 1.000000e+00
-#&gt; 7    rate 0.000000e+00 1.392968e-01 0.000000e+00
-#&gt; 8    time 4.993840e+00 4.976044e+00 4.944559e+00
-#&gt; 9   upper 2.462287e-01 4.745298e-01 3.730241e-01</div></pre>
+#&gt;    metric   coccma   guarsp   tropra
+#&gt; *   &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1       D 0.00e+00 1.00e+00 0.00e+00
+#&gt; 2   date1 1.65e+04 1.66e+04 1.66e+04
+#&gt; 3   date2 1.83e+04 1.84e+04 1.84e+04
+#&gt; 4 dbhmean 3.65e+01 1.40e+02 1.10e+01
+#&gt; 5   lower 0.00e+00 1.99e-02 0.00e+00
+#&gt; 6       N 2.00e+00 2.00e+00 1.00e+00
+#&gt; 7    rate 0.00e+00 1.39e-01 0.00e+00
+#&gt; 8    time 4.99e+00 4.98e+00 4.94e+00
+#&gt; 9   upper 2.46e-01 4.75e-01 3.73e-01</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -288,7 +310,7 @@ either census are deleted from all calculations.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Mauro Lepore, CTFS-ForestGEO.</p>
+  <p>Developed by <a href='https://github.com/maurolepore'>Mauro Lepore</a>, <a href='http://www.forestgeo.si.edu/'>CTFS-ForestGEO</a>.</p>
 </div>
 
 <div class="pkgdown">

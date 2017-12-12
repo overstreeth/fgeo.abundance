@@ -121,14 +121,14 @@ head(long_format, 10)
 #> # A tibble: 10 x 3
 #>     split  metric        value
 #>     <chr>   <chr>        <dbl>
-#>  1 beilpe       N 4.000000e+00
-#>  2 beilpe       D 0.000000e+00
-#>  3 beilpe    rate 0.000000e+00
-#>  4 beilpe   lower 0.000000e+00
-#>  5 beilpe   upper 1.487977e-01
-#>  6 beilpe    time 4.958248e+00
-#>  7 beilpe   date1 1.656325e+04
-#>  8 beilpe   date2 1.837425e+04
-#>  9 beilpe dbhmean 7.900000e+01
-#> 10 ocotwh       N 1.000000e+00
+#>  1 drypst       N 5.000000e+00
+#>  2 drypst       D 0.000000e+00
+#>  3 drypst    rate 0.000000e+00
+#>  4 drypst   lower 0.000000e+00
+#>  5 drypst   upper 1.240803e-01
+#>  6 drypst    time 4.954962e+00
+#>  7 drypst   date1 1.664880e+04
+#>  8 drypst   date2 1.845860e+04
+#>  9 drypst dbhmean 6.100000e+01
+#> 10 socrex       N 3.000000e+00
 ```

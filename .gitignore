@@ -4,3 +4,4 @@
 .Ruserdata
 clean_directories.R
 tmp.R
+inst/doc

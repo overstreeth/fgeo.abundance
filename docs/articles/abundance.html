@@ -29,18 +29,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">Index</a>
-</li>
-<li>
-  <a href="../articles/index.html">Tutorials</a>
+  <a href="../reference/index.html">Functions Index</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/forestgeo/forestr">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="../articles/index.html">Tutorials</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Apps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li class="dropdown-header">Nothing to show</li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
+<li>
+  <a href="https://github.com/maurolepore">
+    <span class="fa fa-gavel"></span>
      
   </a>
+</li>
+<li>
+  <a href="https://github.com/forestgeo/forestr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://forestgeo.github.io/fgeo/">fgeo</a>
 </li>
       </ul>
 </div>
@@ -110,10 +132,18 @@ fails &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abund
 <p>In R there is always more than one way to get the same result. An alternative is to use <strong>dplyr</strong>, and instead of passing _“quoted grouping variables”__, you can pass <strong>bare grouping variables</strong>. No approach is good or bad – the most suitable one depends on the situation</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># With forestr you can assign a string of variable names and pass use it later</span>
 quoted_vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"quadrat"</span>, <span class="st">"sp"</span>)
-with_forestr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance.html">abundance</a></span>(stem, quoted_vars)<span class="er">)</span>
+with_forestr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance.html">abundance</a></span>(stem, quoted_vars)
 
 <span class="co"># Compare</span>
 <span class="kw">library</span>(dplyr)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 alive &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(stem, status <span class="op">==</span><span class="st"> "A"</span>)
 <span class="co"># With dplyr you use bare variable names</span>
 with_dplyr &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(alive, quadrat, sp)
@@ -121,21 +151,40 @@ with_dplyr &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span cl
 <span class="co"># You cant reuse grouping variables saved as strings</span>
 <span class="co"># (other tricks work but are beyond the scope of this tutorial)</span>
 fails &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(alive, quoted_vars)
+<span class="co">#&gt; Error in grouped_df_impl(data, unname(vars), drop): Column `quoted_vars` is unknown</span>
 <span class="co"># This also fails, not but trowing an error but by giving the wrong output</span>
 also_fails &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(alive, <span class="st">"quadrat"</span>, <span class="st">"sp"</span>)
 
 <span class="co"># Whatever you choose, if you do it right you get the same results</span>
 alternatives &lt;-<span class="st"> </span><span class="kw">list</span>(with_forestr, with_dplyr)
 <span class="kw">lapply</span>(alternatives, head)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;   quadrat     sp n</span>
+<span class="co">#&gt; 1    0000 soroaf 1</span>
+<span class="co">#&gt; 2    0002 hybapr 1</span>
+<span class="co">#&gt; 3    0006 hybapr 2</span>
+<span class="co">#&gt; 4    0009 faraoc 1</span>
+<span class="co">#&gt; 5    0009 hybapr 1</span>
+<span class="co">#&gt; 6    0020 tet2pa 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt;   quadrat     sp     n</span>
+<span class="co">#&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
+<span class="co">#&gt; 1    0000 soroaf     1</span>
+<span class="co">#&gt; 2    0002 hybapr     1</span>
+<span class="co">#&gt; 3    0006 hybapr     2</span>
+<span class="co">#&gt; 4    0009 faraoc     1</span>
+<span class="co">#&gt; 5    0009 hybapr     1</span>
+<span class="co">#&gt; 6    0020 tet2pa     1</span>
 
 is_var_identical &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, var) {<span class="kw">identical</span>(x[[<span class="st">"var"</span>]], y[[<span class="st">"var"</span>]])}
 <span class="kw">is_var_identical</span>(with_forestr, with_dplyr, <span class="st">"quadrat"</span>)
+<span class="co">#&gt; [1] TRUE</span>
 <span class="kw">is_var_identical</span>(with_forestr, with_dplyr, <span class="st">"sp"</span>)
+<span class="co">#&gt; [1] TRUE</span>
 <span class="kw">is_var_identical</span>(with_forestr, with_dplyr, <span class="st">"n"</span>)
-<span class="co">#&gt; Error: &lt;text&gt;:3:45: unexpected ')'</span>
-<span class="co">#&gt; 2: quoted_vars &lt;- c("quadrat", "sp")</span>
-<span class="co">#&gt; 3: with_forestr &lt;- abundance(stem, quoted_vars))</span>
-<span class="co">#&gt;                                                ^</span></code></pre></div>
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
 </div>
 <div id="basal-area" class="section level1">
 <h1 class="hasAnchor">
@@ -193,7 +242,7 @@ silent &lt;-<span class="st"> </span><span class="kw">suppressMessages</span>(<s
 
 
       <footer><div class="copyright">
-  <p>Developed by Mauro Lepore, CTFS-ForestGEO.</p>
+  <p>Developed by <a href="https://github.com/maurolepore">Mauro Lepore</a>, <a href="http://www.forestgeo.si.edu/">CTFS-ForestGEO</a>.</p>
 </div>
 
 <div class="pkgdown">
