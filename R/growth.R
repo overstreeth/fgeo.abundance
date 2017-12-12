@@ -764,8 +764,34 @@ function (fit, bins = 1:4, regclr = "green", modelclr = "blue",
     }
 }
 
-
-
+# This object comes from the example of `?ctfs::run.growthbin.manyspp`, in the
+# CTFS R Package. More appropriately, the argument `spp` should default to
+# `NULL`, but I'm leaving the code in its original state to avoid unpredictable
+# effects of the change. I recommend not just this change but to refactor all 
+# the functions from the CTFS R Package -- that is a major task that may be 
+# addressed at another time.
+spp20 <- c(
+  'tri2tu',
+  'alsebl',
+  'tet2pa',
+  'tachve',
+  'beilpe',
+  'pri2co',
+  'quaras',
+  'ocotwh',
+  'hirttr',
+  'gar2in',
+  'protpa',
+  'protte',
+  'eugeoe',
+  'virose',
+  'guargu',
+  'maquco',
+  'jac1co',
+  'cecrin',
+  'cordbi',
+  'micoar'
+)
 #' Internal.
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
@@ -1796,6 +1822,8 @@ holdcomb$site <- sitename
 return(holdcomb)
   }
 
+
+
 #' Internal.
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
@@ -1820,7 +1848,7 @@ dgammaPlusdexp <-
     part2 = numeric()
     if (graphit) {
       gamma = rgamma(draws, shape = a, rate = r)
-      expon = rexp(draws, rate = lambda)
+      expon = stats::rexp(draws, rate = lambda)
       net = gamma + expon
       highvalue = max(max(z), max(gamma), max(expon), max(net))
       x = seq(0, highvalue + div, by = div)
@@ -1840,6 +1868,8 @@ dgammaPlusdexp <-
       lines(z, draws * div * pdf.z)
     return(pdf.z)
   }
+
+
 
 #' Internal.
 #'
@@ -1874,7 +1904,7 @@ dgammaMinusdexp <-
     pdf.z[z <= 0] = exp(part1[z <= 0])
     if (graphit) {
       gamma = rgamma(draws, shape = a, rate = r)
-      expon = rexp(draws, rate = lambda)
+      expon = stats::rexp(draws, rate = lambda)
       net = gamma - expon
       highvalue = max(max(z), max(gamma), max(expon), max(net))
       lowvalue = min(min(z), min(gamma), min(expon), min(net))
@@ -1888,6 +1918,8 @@ dgammaMinusdexp <-
     }
     return(pdf.z)
   }
+
+
 
 #' Internal.
 #'
@@ -1905,6 +1937,8 @@ rsymexp <-
     y[right] = center+-log(2 * (1 - r[right])) / rate
     return(y)
   }
+
+
 
 #' Internal.
 #'
