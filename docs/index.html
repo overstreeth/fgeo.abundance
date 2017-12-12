@@ -29,18 +29,40 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="reference/index.html">Index</a>
-</li>
-<li>
-  <a href="articles/index.html">Tutorials</a>
+  <a href="reference/index.html">Functions Index</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/forestgeo/forestr">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="articles/index.html">Tutorials</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Apps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li class="dropdown-header">Nothing to show</li>
+  </ul>
+</li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
+<li>
+  <a href="https://github.com/maurolepore">
+    <span class="fa fa-gavel"></span>
      
   </a>
+</li>
+<li>
+  <a href="https://github.com/forestgeo/forestr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://forestgeo.github.io/fgeo/">fgeo</a>
 </li>
       </ul>
 </div>
@@ -59,51 +81,129 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="forestr" class="section level1">
+<div id="forestr-analyse-abundance-and-demography" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#forestr" class="anchor"></a>forestr</h1></div>
-<p>The goal of <strong>forestr</strong> is to provide tools for the analysis of forest dynamics.</p>
-<div id="functions-index" class="section level2">
-<h2 class="hasAnchor">
-<a href="#functions-index" class="anchor"></a>Functions Index</h2>
-<ul>
-<li><a href="https://forestgeo.github.io/forestr/reference/index.html">Go to index</a></li>
-</ul>
-</div>
-<div id="tutorials" class="section level2">
-<h2 class="hasAnchor">
-<a href="#tutorials" class="anchor"></a>Tutorials</h2>
-<p>Calculations within a single census:</p>
-<ul>
-<li><a href="https://bookdown.org/forestgeoguest/abundance/">Abundance and basal area</a></li>
-</ul>
-<p>Calculations between two censuses:</p>
-<ul>
-<li><a href="https://bookdown.org/forestgeoguest/demography/">Demography</a></li>
-</ul>
-<p>Maps:</p>
-<ul>
-<li><a href="https://bookdown.org/forestgeoguest/map/">Species distribution</a></li>
-</ul>
-</div>
+<a href="#forestr-analyse-abundance-and-demography" class="anchor"></a>forestr: analyse abundance and demography <img src="https://i.imgur.com/39pvr4n.png" align="right" height="44">
+</h1></div>
+
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install forestr from ForestGEO’s private GitHub repo.</p>
-<pre><code># To install from a private repo, use auth_token with a token
-# from https://github.com/settings/tokens. You only need the
-# repo scope. Best practice is to save your PAT in env var called
-# GITHUB_PAT (see ?Sys.setenv)
-# install.packages("devtools")
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, see auth_token at https://goo.gl/re1LFe</span>
+<span class="co"># install.packages("remotes")</span>
+remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/forestr"</span>)</code></pre></div>
+<div id="example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h3>
+<p>Abundance and basal area.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
 
-# Install the master branch
-devtools::install_github("forestgeo/forestr", auth_token = "abc")
+stem &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12s7mini
 
-# Install an ISSUE-specific branch with
-devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
+<span class="kw">head</span>(<span class="kw"><a href="reference/abundance.html">abundance</a></span>(stem))
+<span class="co">#&gt;   quadrat     sp n</span>
+<span class="co">#&gt; 1    0000 soroaf 1</span>
+<span class="co">#&gt; 2    0002 hybapr 1</span>
+<span class="co">#&gt; 3    0006 hybapr 2</span>
+<span class="co">#&gt; 4    0009 faraoc 1</span>
+<span class="co">#&gt; 5    0009 hybapr 1</span>
+<span class="co">#&gt; 6    0020 tet2pa 1</span>
 
-# Then, load each time before using
-library(forestr)</code></pre>
+<span class="kw">head</span>(<span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(stem))
+<span class="co">#&gt; Units of returned values are the square of the input units.</span>
+<span class="co">#&gt;   quadrat     sp basal_area</span>
+<span class="co">#&gt; 1    0000 soroaf 2642.07942</span>
+<span class="co">#&gt; 2    0002 hybapr   95.03318</span>
+<span class="co">#&gt; 3    0006 hybapr  475.16589</span>
+<span class="co">#&gt; 4    0009 faraoc 1809.55737</span>
+<span class="co">#&gt; 5    0009 hybapr    0.00000</span>
+<span class="co">#&gt; 6    0020 tet2pa 3117.24531</span></code></pre></div>
+<p>Demography: recruitment and mortality.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Some data to play with</span>
+census1 &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12t6mini
+census2 &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12t7mini
+
+<span class="kw"><a href="reference/recruitment.html">recruitment</a></span>(census1, census2)
+<span class="co">#&gt; $N2</span>
+<span class="co">#&gt; [1] 554</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $R</span>
+<span class="co">#&gt; [1] 71</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $rate</span>
+<span class="co">#&gt; [1] 0.02759928</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $lower</span>
+<span class="co">#&gt; [1] 0.02185356</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $upper</span>
+<span class="co">#&gt; [1] 0.03475338</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $time</span>
+<span class="co">#&gt; [1] 4.969261</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $date1</span>
+<span class="co">#&gt; [1] 16578.29</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $date2</span>
+<span class="co">#&gt; [1] 18393.99</span>
+
+<span class="co"># Easier to view and filter when you split by some variable with many groups</span>
+<span class="co"># (note warning when some groups have dbh values full of NA)</span>
+<span class="kw"><a href="reference/recruitment.html">recruitment_df</a></span>(census1, census2, <span class="dt">split1 =</span> census1<span class="op">$</span>sp)
+<span class="co">#&gt; Warning in check_if_all_dbh_is_na(census1, census2, split = split1): At least one split-group contains all `dbh` values equal to NA.</span>
+<span class="co">#&gt;   * Consider removing those groups before running this function.</span>
+<span class="co">#&gt; # A tibble: 1,152 x 3</span>
+<span class="co">#&gt;     split metric        value</span>
+<span class="co">#&gt;     &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 acaldi     N2 5.000000e+00</span>
+<span class="co">#&gt;  2 acaldi      R 2.000000e+00</span>
+<span class="co">#&gt;  3 acaldi   rate 1.032320e-01</span>
+<span class="co">#&gt;  4 acaldi  lower 2.540176e-02</span>
+<span class="co">#&gt;  5 acaldi  upper 3.034520e-01</span>
+<span class="co">#&gt;  6 acaldi   time 4.948324e+00</span>
+<span class="co">#&gt;  7 acaldi  date1 1.663900e+04</span>
+<span class="co">#&gt;  8 acaldi  date2 1.846360e+04</span>
+<span class="co">#&gt;  9 aegipa     N2 0.000000e+00</span>
+<span class="co">#&gt; 10 aegipa      R 0.000000e+00</span>
+<span class="co">#&gt; # ... with 1,142 more rows</span>
+
+<span class="co"># Same for `mortality()`; lets explore a few species</span>
+(all_sp &lt;-<span class="st"> </span><span class="kw"><a href="reference/recruitment.html">mortality_df</a></span>(census1, census2, <span class="dt">split1 =</span> census1<span class="op">$</span>sp))
+<span class="co">#&gt; Warning in check_if_all_dbh_is_na(census1, census2, split = split1): At least one split-group contains all `dbh` values equal to NA.</span>
+<span class="co">#&gt;   * Consider removing those groups before running this function.</span>
+<span class="co">#&gt; # A tibble: 1,296 x 3</span>
+<span class="co">#&gt;     split  metric        value</span>
+<span class="co">#&gt;     &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 acaldi       N 3.000000e+00</span>
+<span class="co">#&gt;  2 acaldi       D 0.000000e+00</span>
+<span class="co">#&gt;  3 acaldi    rate 0.000000e+00</span>
+<span class="co">#&gt;  4 acaldi   lower 0.000000e+00</span>
+<span class="co">#&gt;  5 acaldi   upper 1.867879e-01</span>
+<span class="co">#&gt;  6 acaldi    time 4.937258e+00</span>
+<span class="co">#&gt;  7 acaldi   date1 1.663900e+04</span>
+<span class="co">#&gt;  8 acaldi   date2 1.844233e+04</span>
+<span class="co">#&gt;  9 acaldi dbhmean 1.300000e+01</span>
+<span class="co">#&gt; 10 aegipa       N 0.000000e+00</span>
+<span class="co">#&gt; # ... with 1,286 more rows</span>
+few_sp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">unique</span>(all_sp<span class="op">$</span>split), <span class="dv">3</span>)
+long_format &lt;-<span class="st"> </span><span class="kw">subset</span>(all_sp, split <span class="op">%in%</span><span class="st"> </span>few_sp)
+<span class="kw">head</span>(long_format, <span class="dv">10</span>)
+<span class="co">#&gt; # A tibble: 10 x 3</span>
+<span class="co">#&gt;     split  metric        value</span>
+<span class="co">#&gt;     &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 casear       N 1.000000e+00</span>
+<span class="co">#&gt;  2 casear       D 1.000000e+00</span>
+<span class="co">#&gt;  3 casear    rate          Inf</span>
+<span class="co">#&gt;  4 casear   lower 3.509959e-02</span>
+<span class="co">#&gt;  5 casear   upper          Inf</span>
+<span class="co">#&gt;  6 casear    time 4.903491e+00</span>
+<span class="co">#&gt;  7 casear   date1 1.671300e+04</span>
+<span class="co">#&gt;  8 casear   date2 1.850400e+04</span>
+<span class="co">#&gt;  9 casear dbhmean 4.100000e+02</span>
+<span class="co">#&gt; 10 sapiau       N 1.000000e+00</span></code></pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -124,8 +224,16 @@ library(forestr)</code></pre>
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Mauro Lepore <br><small class="roles"> Author, contractor, maintainer </small> </li>
-<li>CTFS-ForestGEO <br><small class="roles"> Copyright holder, funder </small> </li>
+<li>
+<a href="https://github.com/maurolepore">Mauro Lepore</a> <br><small class="roles"> Author, contractor, maintainer </small> </li>
+<li>
+<a href="http://www.forestgeo.si.edu/">CTFS-ForestGEO</a> <br><small class="roles"> Copyright holder, funder </small> </li>
+</ul>
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/forestgeo/forestr"><img src="https://travis-ci.org/forestgeo/forestr.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://codecov.io/github/forestgeo/forestr?branch=master"><img src="https://codecov.io/gh/forestgeo/forestr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=forestr"><img src="http://www.r-pkg.org/badges/version/forestr" alt="CRAN status"></a></li>
 </ul>
 </div>
 
@@ -133,7 +241,7 @@ library(forestr)</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Mauro Lepore, CTFS-ForestGEO.</p>
+  <p>Developed by <a href="https://github.com/maurolepore">Mauro Lepore</a>, <a href="http://www.forestgeo.si.edu/">CTFS-ForestGEO</a>.</p>
 </div>
 
 <div class="pkgdown">

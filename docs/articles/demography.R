@@ -1,19 +1,4 @@
----
-title: "Demography"
-author: "Mauro Lepore"
-date: "2017-10-22"
-output:
-  rmarkdown::html_vignette:
-    toc: true
-    toc_depth: 6
-vignette: >
-  %\VignetteIndexEntry{Demography}
-  %\VignetteEncoding{UTF-8}
-editor_options: 
-  chunk_output_type: console
----
-
-```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+## ----setup, echo = FALSE, message=FALSE, warning=FALSE-------------------
 # hadley's settings
 set.seed(1014)
 options(digits = 3)
@@ -31,13 +16,8 @@ knitr::opts_chunk$set(
 )
 
 options(dplyr.print_min = 6, dplyr.print_max = 6)
-```
 
-# Overview
-
-This vignette shows you how to calculate demographic metrics with the functions `recruitment()`, `mortality()` and `growth()` from the __forestr__ package -- let's load it now:
-
-```{r}
+## ------------------------------------------------------------------------
 # To install from a private repo, generate a personal access token (PAT) in
 # https://github.com/settings/tokens and supply to this argument.
  GITHUB_PAT <- "your token"
@@ -48,23 +28,8 @@ library(forestr)
 library(tibble)
 # Print no more than 10 rows to save space and time
 options(tibble.print_max = 10)
-```
 
-You may be familiar with the functions `abundance()`, `basal_area()` and `biomass()`, which input data from a single census and calculate a single metric per individual stem or group of stems. Unlike those functions, the ones you'll see here operate quite differently: `recruitment()`, `mortality()` and `growth()` input data from two censuses and calculate multiple metrics across the entire data set, optionally spiting the data set by some variable. Because those two groups of functions work quite differently (the group of `abundance()` versus that of `recruitment()`) making their interphases and output feel similar is not straight forward -- so prepare for a little-different experience.
-
-This is how this document is organized. You'll see `recruitment()` and `mortality()` together and `growth()` separately. In each section you'll first see the new `<FUNCTION>_df()` versions of those functions and then you'll see the traditional versions; and you will also see how all that compares to the orignal versions in the CTFS R Package. Then in the previous last section you'll learn about some proposed changes to these functions, and at the end you'll see some details only relevant to those interested in the software development side of things.
-
-# Recruitment and Mortality
-
-Currently `recruitment()` and `mortality()` are more similar to each other than they are to `growth()`. (From a technical point of view the most important difference is that `growth()` has currently many more arguments than the other two functions). To reflect that relationship  `recruitment()` and `mortality()` are documented together. The next two commands present you with the same help file.
-
-```
-?recruitment
-# same
-?mortality
-```
-
-```{r, error=TRUE}
+## ---- error=TRUE---------------------------------------------------------
 # Some data to play with
 census1 <- forestr::bci12t6mini
 census2 <- forestr::bci12t7mini
@@ -155,14 +120,8 @@ with_ctfs <- ctfs::recruitment(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
 
 # More informative error (gets picket up at the top of the function)
 with_forestr <- forestr::recruitment(wrong_nm1, wrong_nm2, split1 = wrong_nm1$sp)
-```
 
-# Growth
-
-Compared to `recruitment()` and `mortality()`, `growth()` has currently many more arguments, so it's documented separately. Yet much of the documentation is the same -- `growth()` inherits arguments and description from `recruitment()` and `mortality()` (see `?growth()`). This section starts with what `growth()` shares with `recruitment()` and `mortality()` and then shows some arguments exclusive of `growth()`.
-
-
-```{r, error=TRUE}
+## ---- error=TRUE---------------------------------------------------------
 # Using the same data as above.
 # You can expect the same warnings about `dbh` eualt to NA within some groups
 # defined by `split1 = census1$sp` and `split2 = census1$quadrat`
@@ -258,50 +217,18 @@ unlist(growth(census1, census2, mindbh = NULL))
 
 # Measure growth not based on `dbh` but on `agb`
 unlist(growth(census1, census2, growthcol = "agb"))
-```
 
-# Future Improvements
-
-* All three functions, `recruitment()`, `mortality()` and `growth()`, could be defined with less arguments and the same arguments. That would make the functions easier to use and easier to document. The removed arguments could be either dropped completely or transformed into a function on their own. For example, the argument `mindbh` filters stems which `dbh` is at least a given value; such filtering is useful in many other situations. If we extract it into its own function, if can be reused without the need of duplicating code inside each function that currently has the `mindbh` argument. That way, a census would be filtered before it is passed to any demography function. That helps not only users but also code-readers to see more-obviously what's going on.
-
-* If all demography functions have (almost) the same arguments [not the case now -- `growth()` has many more arguments], all demography functions could share the same documentation. That will help users to understand how each function relates to the oters, and also help the maintainers to keep the documentation synchronized [although __roxygen2__ provides tools for inheriting documentation].
-
-* Some arguments' defaults may change to more conservative values. For example, `mindbh = 10` is the current default; that may change to `mindbh = NULL`, which conservatively includes all stems (even if excluding stems is common, in this case safety may be more important than comfort).
-
-* If time allows all demography functions shown here should be reviewed and either refactored to make them easier to maintain or completely rewritten (as we did with `abundance()`, `basal_area()` and `biomass()`).
-
-# Technical Notes
-
-> The single biggest way to improve both the quality of your code and your productivity isto reuse good code.
-
-― from "Code Complete (Developer Best Practices)" (https://goo.gl/83hsHb)
-
-The __forestr__ package evolves from the CTFS R Package (http://ctfs.si.edu/Public/CTFSRPackage/). In general, functions in __forestr__ and the CTFS R Package may or may not share the same names or code. But the functions shown here, in particular, are almost identical to those in the CTFS R Package, both in name and code. While small, the changes in __forestr__ make the functions considerably more reliable: They provide more informative warnings and when inputs are wrong they throw clearer error messages. The differences may become bigger with time, but now, by reusing big chunks of code from the CTFS R Package, users can get good a number of useful futures relatively quickly.
-
-That gain in development-speed comes at a cost: With the inherited code comes inherited complexity. Consider the functions used here. The following three figures show that `recruitment()` and `mortality()` depend on just a few functions, but the dependencies of `growth()` are many more.
-
-```{r, echo=FALSE, message=FALSE}
+## ---- echo=FALSE, message=FALSE------------------------------------------
 library(DependenciesGraphs)
 library(handy)
 library(ctfs)
-```
 
-* Dependencies of `recruitment()`:
-
-```{r, echo=FALSE}
+## ---- echo=FALSE---------------------------------------------------------
 explore_dependencies("ctfs", "recruitment")
-```
 
-* Dependencies of `mortality()`:
-
-```{r, echo=FALSE}
+## ---- echo=FALSE---------------------------------------------------------
 explore_dependencies("ctfs", "mortality")
-```
 
-* Dependencies of `growth()`:
-
-```{r, echo=FALSE}
+## ---- echo=FALSE---------------------------------------------------------
 explore_dependencies("ctfs", "growth")
-```
 
-While reducing code complexity is central to developing good software, providing users with the functionality they need is arguably the priority. Taking time into account, I propose to add the most important features first and to reduce the system's complexity second -- maybe after we release first version.

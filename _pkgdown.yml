@@ -17,65 +17,38 @@ home:
 
 
 
-
-
-
-navbar:
-  type: default
-  left:
-    - text: Index
-      href: reference/index.html
-    - text: Tutorials
-      href: articles/index.html
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 navbar:
   
   type: default
 
-left:
-  - text: Functions Index
-    href: reference/index.html
-
-right:
-  - text: Turorials
-    href: articles/index.html
-
-  - text: Apps
-    menu:
-    - text: Nothing to show yet
+  left:
+    - text: Functions Index
+      href: reference/index.html
+  
+  right:
+    - text: Tutorials
+      href: articles/index.html
       
-    - text: news
-    href: news/index.html
-
+    - text: Apps
+      menu:
+      - text: Nothing to show
+  
+    - text: News
+      href: news/index.html
+  
     - icon: fa-gavel
-    href: https://github.com/maurolepore
-
+      href: https://github.com/maurolepore
+  
     - icon: fa-github
-    href: https://github.com/forestgeo/forestr
+      href: https://github.com/forestgeo/forestr
+  
+    - text: fgeo
+      href: https://forestgeo.github.io/fgeo/
 
 
 
 reference:
+
   - title: "Abundance and friends"
     desc: >
       Functions that input data from one census
@@ -96,18 +69,12 @@ reference:
       - recruitment
       - recruitment_df
 
-
-  - title: "Mapping"
-    desc: >
-      Functions to map species distributions
-    contents:
-      - map_sp
-      - map_sp_pdf
-
   - title: "Data sets"
     contents: 
       - bci12t7mini
+      - bci12t6mini
       - bci12s7mini
+      - bci12s6mini
 
 
 
@@ -116,3 +83,4 @@ articles:
   - title: "All tutorials"
     contents:
     - abundance
+    - demography

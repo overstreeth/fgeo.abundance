@@ -9,4 +9,5 @@
 ^_pkgdown\.yml$
 ^tmp\.R$
 ^clean_directories\.R$
-^inst$
+^\.travis\.yml$
+^codecov\.yml$
