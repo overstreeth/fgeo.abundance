@@ -772,7 +772,7 @@ function (fit, bins = 1:4, regclr = "green", modelclr = "blue",
 #' @keywords internal
 #' @noRd
 run.growthbin.manyspp <- 
-function (growthdata, size = "dbh", spp = NULL, minabund300 = 15, 
+function (growthdata, size = "dbh", spp = spp20, minabund300 = 15, 
     minTotal = 40, dbhunit = "mm", sdmodel = linear.model.ctr, 
     startpar = c(0.03, 0.005), startsdpar = c(0.04, 0), badsdfunc = NULL, 
     binoption = 1:4, noreps = 5000, noburn = 2500, noshow = 500, 
