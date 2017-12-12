@@ -772,7 +772,7 @@ function (fit, bins = 1:4, regclr = "green", modelclr = "blue",
 #' @keywords internal
 #' @noRd
 run.growthbin.manyspp <- 
-function (growthdata, size = "dbh", spp = spp20, minabund300 = 15, 
+function (growthdata, size = "dbh", spp = NULL, minabund300 = 15, 
     minTotal = 40, dbhunit = "mm", sdmodel = linear.model.ctr, 
     startpar = c(0.03, 0.005), startsdpar = c(0.04, 0), badsdfunc = NULL, 
     binoption = 1:4, noreps = 5000, noburn = 2500, noshow = 500, 
@@ -782,12 +782,12 @@ function (growthdata, size = "dbh", spp = spp20, minabund300 = 15,
     on.exit(cat(onesp, "\n"))
     outputfile = pst(path, outputname, ".rdata")
     for (onesp in spp) {
-        spdata = subset(growthdata, sp == onesp)
+        spdata = subset(growthdata, growthdata$sp == onesp)
         total = dim(spdata)[1]
         if (dbhunit == "mm") 
-            nobig = dim(subset(spdata, dbh >= log(300)))[1]
+            nobig = dim(subset(spdata, spdata$dbh >= log(300)))[1]
         else if (dbhunit == "cm") 
-            nobig = dim(subset(spdata, dbh >= log(30)))[1]
+            nobig = dim(subset(spdata, spdata$dbh >= log(30)))[1]
         if (total >= minTotal & nobig >= minabund300) {
             result[[onesp]] = run.growthfit.bin(growthdata = spdata, 
                 size = size, binoption = binoption, startpar = startpar, 
