@@ -12,45 +12,53 @@ knitr::opts_chunk$set(
 )
 ```
 
-# forestr
+# forestr: analyse abundance and demography <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
 
-The goal of __forestr__ is to provide tools for the analysis of forest dynamics. 
-
-## Functions Index
-
-* [Go to index](https://forestgeo.github.io/forestr/reference/index.html)
-
-## Tutorials
-
-Calculations within a single census:
-
-* [Abundance and basal area](https://bookdown.org/forestgeoguest/abundance/)
-
-Calculations between two censuses:
-
-* [Demography](https://bookdown.org/forestgeoguest/demography/)
-
-Maps:
-
-* [Species distribution](https://bookdown.org/forestgeoguest/map/)
+  [![Travis build status](https://travis-ci.org/forestgeo/forestr.svg?branch=master)](https://travis-ci.org/forestgeo/forestr)
+  [![Coverage status](https://codecov.io/gh/forestgeo/forestr/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/forestr?branch=master)
+  [![CRAN status](http://www.r-pkg.org/badges/version/forestr)](https://cran.r-project.org/package=forestr)
 
 ## Installation
 
 Install forestr from ForestGEO's private GitHub repo.
 
+```R
+# To install from a private repo, see auth_token at https://goo.gl/re1LFe
+# install.packages("remotes")
+remotes::install_github(repo = "forestgeo/forestr")
 ```
-# To install from a private repo, use auth_token with a token
-# from https://github.com/settings/tokens. You only need the
-# repo scope. Best practice is to save your PAT in env var called
-# GITHUB_PAT (see ?Sys.setenv)
-# install.packages("devtools")
 
-# Install the master branch
-devtools::install_github("forestgeo/forestr", auth_token = "abc")
+### Example
 
-# Install an ISSUE-specific branch with
-devtools::install_github("forestgeo/forestr@ISSUE", auth_token = "abc")
+Abundance and basal area.
 
-# Then, load each time before using
+```{r}
 library(forestr)
+
+stem <- forestr::bci12s7mini
+
+head(abundance(stem))
+
+head(basal_area(stem))
+
+```
+
+Demography: recruitment and mortality.
+
+```{r}
+# Some data to play with
+census1 <- forestr::bci12t6mini
+census2 <- forestr::bci12t7mini
+
+recruitment(census1, census2)
+
+# Easier to view and filter when you split by some variable with many groups
+# (note warning when some groups have dbh values full of NA)
+recruitment_df(census1, census2, split1 = census1$sp)
+
+# Same for `mortality()`; lets explore a few species
+(all_sp <- mortality_df(census1, census2, split1 = census1$sp))
+few_sp <- sample(unique(all_sp$split), 3)
+long_format <- subset(all_sp, split %in% few_sp)
+head(long_format, 10)
 ```
