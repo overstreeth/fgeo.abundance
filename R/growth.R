@@ -313,6 +313,7 @@ function (fit, bins = 1:4, makegraph = TRUE, conflines = 0, newgraph = TRUE,
         fit.onesp = fit[[spp[i]]]
         for (j in 1:length(fit.onesp)) {
             BIC[i, j] = calculateBinModel.BIC(fit.onesp[[j]])
+            # This line should err because calculateBinModel.DIC does not exist
             DIC[i, j] = calculateBinModel.DIC(fit.onesp[[j]])
             AICopt[i, j] = calculateBinModel.AIC(fit.onesp[[j]], 
                 type = "optim")
@@ -336,7 +337,7 @@ function (fit, bins = 1:4, makegraph = TRUE, conflines = 0, newgraph = TRUE,
             plural = "bin"
         else plural = "bins"
         if (newgraph & makegraph) 
-            x11(height = 5, width = 9)
+          grDevices::dev.new(height = 5, width = 9)
         if (makegraph) 
             graph.growthmodel.spp(fit = fit.onesp[[best]], whichpred = "pred", 
                 graphdiv = 15, modelclr = "blue", maintitle = paste(spp[i], 
@@ -450,7 +451,7 @@ function (spp, fitlist, whichbin = 1, regclr = "green", modelclr = "blue",
     }
     for (onesp in spp) {
         if (is.null(export)) 
-            x11(height = 5, width = 9)
+            grDevices::dev.new(height = 5, width = 9)
         graph.growthmodel.spp(fit = fitlist[[onesp]][[whichbin]], 
             graphdiv = 20, add = FALSE, modelclr = "blue", maintitle = onesp)
     }
@@ -465,13 +466,13 @@ function (spp, fitlist, whichbin = 1, regclr = "green", modelclr = "blue",
 #' @noRd
 graph.outliers <- 
 function (full, trimmed, fit = NULL, allspp = NULL, size = "agb", 
-    export = NULL, wind = X11) 
+    export = NULL) 
 {
     if (is.null(allspp)) 
         allspp = names(fit)
     for (onesp in allspp) {
         if (is.null(export)) 
-            wind(height = 7, width = 9)
+            grDevices::dev.new(height = 7, width = 9)
         graph.outliers.spp(full = full, trimmed = trimmed, spname = onesp, 
             fit = fit, size = size, export = export)
     }
@@ -749,7 +750,7 @@ function (fit, bins = 1:4, regclr = "green", modelclr = "blue",
     clrlist = c("blue", "red", "gray", "black", "orange")
     for (onesp in allspp) {
         if (is.null(export) & newgraph) 
-            x11(height = 5, width = 9)
+            grDevices::dev.new(height = 5, width = 9)
         for (b in bins) {
             if (b == bins[[1]]) 
                 graph.growthmodel.spp(fit = fit[[onesp]][[b]], 
@@ -1735,3 +1736,184 @@ function (x, best, bin)
 
 
 
+
+
+
+
+
+
+
+
+# Add to silent check() notes ---------------------------------------------
+
+#' Internal.
+#'
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
+#' @noRd
+assembleBinOutput <-
+  function (inputtable, fulldata, sitename)
+  {
+    holder <- inputtable
+    spechold <- dimnames(holder$slope)[[1]]
+    maxbinhold <- apply(holder$slope, 1, function(x) {
+      length(x[is.na(x) == F])
+    })
+    numbins <- length(holder$slopes[1, ])
+    spp <- rownames(holder$slopes)
+    numspec <- length(spp)
+    holdcomb <- data.frame(spechold, maxbinhold)
+    rownames(holdcomb) = spp
+    dimnames(holdcomb)[[2]][1:2] <- c("Species", "MaxBin")
+    for (i in 1:numbins) {
+      holdcomb <- cbind(holdcomb, holder$slope[, i], holder$upper[,
+        i], holder$lower[, i])
+      dimnames(holdcomb)[[2]][(3 * i):(3 * i + 2)] <-
+        c(paste("slope",
+          i, sep = ""),
+          paste("upper", i, sep = ""),
+          paste("lower",
+            i, sep = ""))
+    }
+    holdcomb$unit = holdcomb$sample = holdcomb$bigsample = NA
+    for (i in 1:numspec) {
+      holdcomb$slopelast[i] <- holdcomb[spp[i], (holdcomb$MaxBin[i] *
+          3)]
+      holdcomb$upperlast[i] <-
+        holdcomb[spp[i], (holdcomb$MaxBin[i] *
+            3 + 1)]
+      holdcomb$lowerlast[i] <-
+        holdcomb[spp[i], (holdcomb$MaxBin[i] *
+            3 + 2)]
+      if (!is.null(fulldata[[spp[i]]][[1]]$summary)) {
+        summ = fulldata[[spp[i]]][[1]]$summary
+        holdcomb[spp[i], c("sample", "bigsample")] = c(summ$totalsample,
+          summ$totalbig)
+        holdcomb[spp[i], "unit"] = summ$dbhunit
+      }
+    }
+holdcomb$site <- sitename
+return(holdcomb)
+  }
+
+#' Internal.
+#'
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
+#' @noRd
+dgammaPlusdexp <-
+  function (z,
+    mean,
+    sd,
+    lambda,
+    draws = 10000,
+    div = 0.01,
+    xrange = c(0,
+      25),
+    xmax = 4,
+    graphit = FALSE)
+  {
+    r = mean / (sd ^ 2)
+    a = mean * r
+    pdf.z = numeric()
+    pdf.z[z <= 0] = 0
+    part2 = numeric()
+    if (graphit) {
+      gamma = rgamma(draws, shape = a, rate = r)
+      expon = rexp(draws, rate = lambda)
+      net = gamma + expon
+      highvalue = max(max(z), max(gamma), max(expon), max(net))
+      x = seq(0, highvalue + div, by = div)
+      dev.set(2)
+      hist(gamma, breaks = x, xlim = xrange)
+      dev.set(3)
+      hist(expon, breaks = x, xlim = xrange)
+      dev.set(4)
+      hist(net, breaks = x, xlim = xrange)
+    }
+    newmean = mean + 1 / lambda
+    newvar = sd ^ 2 + 1 / (lambda ^ 2)
+    newshape = newmean ^ 2 / newvar
+    newrate = newmean / newvar
+    pdf.z[z > 0] = dgamma(z[z > 0], shape = newshape, rate = newrate)
+    if (graphit)
+      lines(z, draws * div * pdf.z)
+    return(pdf.z)
+  }
+
+#' Internal.
+#'
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
+#' @noRd
+dgammaMinusdexp <-
+  function (z,
+    mean,
+    sd,
+    lambda,
+    draws = 10000,
+    div = 0.01,
+    xrange = c(0,
+      25),
+    xmax = 4,
+    graphit = F)
+  {
+    r = mean / (sd ^ 2)
+    a = mean * r
+    part1 = a * (log(r / (r + lambda))) + log(lambda) + lambda *
+      z
+    part2 = pgamma(
+      z,
+      shape = a,
+      rate = r + lambda,
+      lower.tail = FALSE,
+      log.p = TRUE
+    )
+    pdf.z = numeric()
+    pdf.z[z > 0] = exp(part1 + part2)[z > 0]
+    pdf.z[z <= 0] = exp(part1[z <= 0])
+    if (graphit) {
+      gamma = rgamma(draws, shape = a, rate = r)
+      expon = rexp(draws, rate = lambda)
+      net = gamma - expon
+      highvalue = max(max(z), max(gamma), max(expon), max(net))
+      lowvalue = min(min(z), min(gamma), min(expon), min(net))
+      x = seq(lowvalue - div, highvalue + div, by = div)
+      dev.set(2)
+      hist(gamma, breaks = x, xlim = xrange)
+      dev.set(3)
+      hist(expon, breaks = x, xlim = xrange)
+      dev.set(4)
+      hist(net, breaks = x, xlim = xrange)
+    }
+    return(pdf.z)
+  }
+
+#' Internal.
+#'
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
+#' @noRd
+rsymexp <- 
+  function (n, center, rate)
+  {
+    y = numeric()
+    r = runif(n)
+    left = r < 0.5
+    right = r >= 0.5
+    y[left] = center + log(2 * r[left]) / rate
+    y[right] = center+-log(2 * (1 - r[right])) / rate
+    return(y)
+  }
+
+#' Internal.
+#'
+#' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
+#' @keywords internal
+#' @noRd
+pospower <- 
+function (x, expon)
+{
+  result = sign(x) * (abs(x) ^ (expon))
+  return(result)
+}

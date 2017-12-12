@@ -32,7 +32,7 @@ NULL
 #' @md
 #' @name ctfs
 #' @keywords internal
-#' @importFrom grDevices X11 dev.off graphics.off pdf x11
+#' @importFrom grDevices dev.off graphics.off pdf
 #' @importFrom graphics hist lines par plot points text
 #' @importFrom stats dnorm median optim qbeta qt quantile rgamma rnorm runif sd
 #' @importFrom utils file.edit
