@@ -21,25 +21,6 @@
 #' @export           quo quos enquo sym syms expr exprs enexpr quo_name
 NULL
 
-
-
-# ctfs
-
-#' Functions used by ctfs
-#' 
-#' These functions become necessary for functions that come from __cfts__.
-#' 
-#' @md
-#' @name ctfs
-#' @keywords internal
-#' @importFrom grDevices dev.off graphics.off pdf
-#' @importFrom graphics hist lines par plot points text
-#' @importFrom stats dnorm median optim qbeta qt quantile rgamma rnorm runif sd
-#' @importFrom utils file.edit
-NULL
-
-
-
 # global variables --------------------------------------------------------
 
 # Flag inline helpers as global variables so R CMD check doesn't warn
