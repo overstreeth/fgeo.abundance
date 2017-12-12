@@ -2,6 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-inst/doc
 clean_directories.R
 tmp.R
