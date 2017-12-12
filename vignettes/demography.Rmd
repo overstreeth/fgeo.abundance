@@ -8,9 +8,8 @@ output:
     toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Demography}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r setup, echo = FALSE, message=FALSE, warning=FALSE}

@@ -8,9 +8,8 @@ output:
     toc_depth: 6
 vignette: >
   %\VignetteIndexEntry{Abundance and Basal Area}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
@@ -74,7 +73,7 @@ In R there is always more than one way to get the same result. An alternative is
 ```{r, error=TRUE}
 # With forestr you can assign a string of variable names and pass use it later
 quoted_vars <- c("quadrat", "sp")
-with_forestr <- abundance(stem, quoted_vars))
+with_forestr <- abundance(stem, quoted_vars)
 
 # Compare
 library(dplyr)
