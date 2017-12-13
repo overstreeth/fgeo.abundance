@@ -13,28 +13,19 @@ Depends:
     R (>= 3.1.2)
 Imports: 
     assertive,
-    directlabels,
     dplyr,
-    ggplot2,
-    graphics,
-    grDevices,
-    purrr,
     rlang (>= 0.1.2),
-    stats,
-    tibble,
-    tidyr,
     utils
 Suggests: 
     covr,
-    ctfs,
-    gridExtra,
     knitr,
     readr,
     rmarkdown,
-    testthat
+    testthat,
+    tibble
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
+Remotes: forestgeo/ctfs
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
-Remotes: forestgeo/ctfs
