@@ -49,25 +49,13 @@ navbar:
 
 reference:
 
-  - title: "Abundance and friends"
-    desc: >
-      Functions that input data from one census
+  - title: Abundance and friends
+    desc: These functions input data from one census
     contents: 
       - abundance
       - abundance_tally
       - basal_area
       - basal_area_ind
-
-  - title: "Demography"
-    desc: >
-      Functions that input data from two censuses
-    contents:
-      - growth
-      - growth_df
-      - mortality
-      - mortality_df
-      - recruitment
-      - recruitment_df
 
   - title: "Data sets"
     contents: 
@@ -80,7 +68,6 @@ reference:
 
 articles:
   
-  - title: "All tutorials"
+  - title: All tutorials
     contents:
     - abundance
-    - demography

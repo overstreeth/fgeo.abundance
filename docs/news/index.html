@@ -107,9 +107,19 @@
     <div id="forestr-0-0-0-9000" class="section level1">
 <h1 class="hasAnchor">
 <a href="#forestr-0-0-0-9000" class="anchor"></a>forestr 0.0.0.9000</h1>
+<div id="known-issues" class="section level2">
+<h2 class="hasAnchor">
+<a href="#known-issues" class="anchor"></a>Known issues</h2>
+<ul>
+<li>Demography: <code><a href="http://www.rdocumentation.org/packages/devtools/topics/check">devtools::check()</a></code> throws the note below. The function <code>calculateBinModel.DIC()</code> does not exist in the CTFS R package nor I could find it elsewhere.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">checking R code <span class="cf">for</span> possible problems ... NOTE
+compare.growthbinmodel<span class="op">:</span><span class="st"> </span>no visible global <span class="cf">function</span> definition <span class="cf">for</span>
+  <span class="st">'calculateBinModel.DIC'</span></code></pre></div>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
+</div>
 </div>
     </div>
   </div>

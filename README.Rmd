@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# forestr: analyse abundance and demography <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
+# forestr: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
 
   [![Travis build status](https://travis-ci.org/forestgeo/forestr.svg?branch=master)](https://travis-ci.org/forestgeo/forestr)
   [![Coverage status](https://codecov.io/gh/forestgeo/forestr/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/forestr?branch=master)
@@ -41,24 +41,4 @@ head(abundance(stem))
 
 head(basal_area(stem))
 
-```
-
-Demography: recruitment and mortality.
-
-```{r}
-# Some data to play with
-census1 <- forestr::bci12t6mini
-census2 <- forestr::bci12t7mini
-
-recruitment(census1, census2)
-
-# Easier to view and filter when you split by some variable with many groups
-# (note warning when some groups have dbh values full of NA)
-recruitment_df(census1, census2, split1 = census1$sp)
-
-# Same for `mortality()`; lets explore a few species
-(all_sp <- mortality_df(census1, census2, split1 = census1$sp))
-few_sp <- sample(unique(all_sp$split), 3)
-long_format <- subset(all_sp, split %in% few_sp)
-head(long_format, 10)
 ```

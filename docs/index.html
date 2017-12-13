@@ -81,9 +81,9 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="forestr-analyse-abundance-and-demography" class="section level1">
+<div id="forestr-abundance-and-basal-area" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#forestr-analyse-abundance-and-demography" class="anchor"></a>forestr: analyse abundance and demography <img src="https://i.imgur.com/39pvr4n.png" align="right" height="44">
+<a href="#forestr-abundance-and-basal-area" class="anchor"></a>forestr: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height="44">
 </h1></div>
 
 <div id="installation" class="section level2">
@@ -119,90 +119,6 @@ stem &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12s7mini
 <span class="co">#&gt; 4    0009 faraoc 1809.55737</span>
 <span class="co">#&gt; 5    0009 hybapr    0.00000</span>
 <span class="co">#&gt; 6    0020 tet2pa 3117.24531</span></code></pre></div>
-<p>Demography: recruitment and mortality.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Some data to play with</span>
-census1 &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12t6mini
-census2 &lt;-<span class="st"> </span>forestr<span class="op">::</span>bci12t7mini
-
-<span class="kw"><a href="reference/recruitment.html">recruitment</a></span>(census1, census2)
-<span class="co">#&gt; $N2</span>
-<span class="co">#&gt; [1] 554</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $R</span>
-<span class="co">#&gt; [1] 71</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $rate</span>
-<span class="co">#&gt; [1] 0.02759928</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $lower</span>
-<span class="co">#&gt; [1] 0.02185356</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $upper</span>
-<span class="co">#&gt; [1] 0.03475338</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $time</span>
-<span class="co">#&gt; [1] 4.969261</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $date1</span>
-<span class="co">#&gt; [1] 16578.29</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $date2</span>
-<span class="co">#&gt; [1] 18393.99</span>
-
-<span class="co"># Easier to view and filter when you split by some variable with many groups</span>
-<span class="co"># (note warning when some groups have dbh values full of NA)</span>
-<span class="kw"><a href="reference/recruitment.html">recruitment_df</a></span>(census1, census2, <span class="dt">split1 =</span> census1<span class="op">$</span>sp)
-<span class="co">#&gt; Warning in check_if_all_dbh_is_na(census1, census2, split = split1): At least one split-group contains all `dbh` values equal to NA.</span>
-<span class="co">#&gt;   * Consider removing those groups before running this function.</span>
-<span class="co">#&gt; # A tibble: 1,152 x 3</span>
-<span class="co">#&gt;     split metric        value</span>
-<span class="co">#&gt;     &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 acaldi     N2 5.000000e+00</span>
-<span class="co">#&gt;  2 acaldi      R 2.000000e+00</span>
-<span class="co">#&gt;  3 acaldi   rate 1.032320e-01</span>
-<span class="co">#&gt;  4 acaldi  lower 2.540176e-02</span>
-<span class="co">#&gt;  5 acaldi  upper 3.034520e-01</span>
-<span class="co">#&gt;  6 acaldi   time 4.948324e+00</span>
-<span class="co">#&gt;  7 acaldi  date1 1.663900e+04</span>
-<span class="co">#&gt;  8 acaldi  date2 1.846360e+04</span>
-<span class="co">#&gt;  9 aegipa     N2 0.000000e+00</span>
-<span class="co">#&gt; 10 aegipa      R 0.000000e+00</span>
-<span class="co">#&gt; # ... with 1,142 more rows</span>
-
-<span class="co"># Same for `mortality()`; lets explore a few species</span>
-(all_sp &lt;-<span class="st"> </span><span class="kw"><a href="reference/recruitment.html">mortality_df</a></span>(census1, census2, <span class="dt">split1 =</span> census1<span class="op">$</span>sp))
-<span class="co">#&gt; Warning in check_if_all_dbh_is_na(census1, census2, split = split1): At least one split-group contains all `dbh` values equal to NA.</span>
-<span class="co">#&gt;   * Consider removing those groups before running this function.</span>
-<span class="co">#&gt; # A tibble: 1,296 x 3</span>
-<span class="co">#&gt;     split  metric        value</span>
-<span class="co">#&gt;     &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 acaldi       N 3.000000e+00</span>
-<span class="co">#&gt;  2 acaldi       D 0.000000e+00</span>
-<span class="co">#&gt;  3 acaldi    rate 0.000000e+00</span>
-<span class="co">#&gt;  4 acaldi   lower 0.000000e+00</span>
-<span class="co">#&gt;  5 acaldi   upper 1.867879e-01</span>
-<span class="co">#&gt;  6 acaldi    time 4.937258e+00</span>
-<span class="co">#&gt;  7 acaldi   date1 1.663900e+04</span>
-<span class="co">#&gt;  8 acaldi   date2 1.844233e+04</span>
-<span class="co">#&gt;  9 acaldi dbhmean 1.300000e+01</span>
-<span class="co">#&gt; 10 aegipa       N 0.000000e+00</span>
-<span class="co">#&gt; # ... with 1,286 more rows</span>
-few_sp &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">unique</span>(all_sp<span class="op">$</span>split), <span class="dv">3</span>)
-long_format &lt;-<span class="st"> </span><span class="kw">subset</span>(all_sp, split <span class="op">%in%</span><span class="st"> </span>few_sp)
-<span class="kw">head</span>(long_format, <span class="dv">10</span>)
-<span class="co">#&gt; # A tibble: 10 x 3</span>
-<span class="co">#&gt;     split  metric value</span>
-<span class="co">#&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 cha2sc       N     0</span>
-<span class="co">#&gt;  2 cha2sc       D     0</span>
-<span class="co">#&gt;  3 cha2sc    rate    NA</span>
-<span class="co">#&gt;  4 cha2sc   lower    NA</span>
-<span class="co">#&gt;  5 cha2sc   upper    NA</span>
-<span class="co">#&gt;  6 cha2sc    time    NA</span>
-<span class="co">#&gt;  7 cha2sc   date1    NA</span>
-<span class="co">#&gt;  8 cha2sc   date2    NA</span>
-<span class="co">#&gt;  9 cha2sc dbhmean    NA</span>
-<span class="co">#&gt; 10 drypst       N     5</span></code></pre></div>
 </div>
 </div>
 </div>
