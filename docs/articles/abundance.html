@@ -99,7 +99,7 @@
 <h1 class="hasAnchor">
 <a href="#abundance" class="anchor"></a>Abundance</h1>
 <p>The function <code><a href="../reference/abundance.html">abundance()</a></code> provides a quick way to calculate the abundance of alive stems of each species in each quadrat – that is what it does by default (see <code><a href="../reference/abundance.html">abundance()</a></code>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bci12s7mini
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini
 
 n &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance.html">abundance</a></span>(stem)
 <span class="kw">head</span>(n)
@@ -190,7 +190,7 @@ is_var_identical &lt;-<span class="st"> </span><span class="cf">function</span>(
 <h1 class="hasAnchor">
 <a href="#basal-area" class="anchor"></a>Basal Area</h1>
 <p>Compared to <code><a href="../reference/abundance.html">abundance()</a></code>, <code><a href="../reference/basal_area.html">basal_area()</a></code> behaves very similarly: it provides a quick way to calculate the basal area of alive trees of each species within each quadrat:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bci12s7mini
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini
 ba &lt;-<span class="st"> </span><span class="kw"><a href="../reference/basal_area.html">basal_area</a></span>(stem)
 <span class="co">#&gt; Units of returned values are the square of the input units.</span>
 <span class="kw">head</span>(ba)

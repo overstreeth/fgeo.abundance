@@ -30,7 +30,7 @@ Count number of individuals in total (\code{abundance_tally()}) or by groups
 (\code{abundance()}).
 }
 \examples{
-stem <- bci12s7mini
+stem <- bciex::bci12s7mini
 
 # Returns a data frame by groups
 n <- abundance(stem)

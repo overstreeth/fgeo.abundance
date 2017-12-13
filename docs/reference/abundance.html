@@ -147,7 +147,7 @@ group defined by <code>group_by</code>.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='no'>bci12s7mini</span>
+    <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bciex</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/bciex/topics/bciYYsNmini'>bci12s7mini</a></span>
 
 <span class='co'># Returns a data frame by groups</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>stem</span>)
@@ -174,14 +174,8 @@ group defined by <code>group_by</code>.</p></li>
 
 <span class='co'># ALTERNATIVES</span>
 
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+
 <span class='no'>alive</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>stem</span>, <span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"A"</span>)
 
 <span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)

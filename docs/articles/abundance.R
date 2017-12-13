@@ -25,7 +25,7 @@ options(dplyr.print_min = 10, dplyr.print_max = 10)
 library(forestr)
 
 ## ------------------------------------------------------------------------
-stem <- bci12s7mini
+stem <- bciex::bci12s7mini
 
 n <- abundance(stem)
 head(n)
@@ -67,7 +67,7 @@ is_var_identical(with_forestr, with_dplyr, "sp")
 is_var_identical(with_forestr, with_dplyr, "n")
 
 ## ------------------------------------------------------------------------
-stem <- bci12s7mini
+stem <- bciex::bci12s7mini
 ba <- basal_area(stem)
 head(ba)
 

@@ -23,7 +23,7 @@ Abundance and basal area.
 ``` r
 library(forestr)
 
-stem <- forestr::bci12s7mini
+stem <- bciex::bci12s7mini
 
 head(abundance(stem))
 #>   quadrat     sp n

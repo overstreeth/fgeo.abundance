@@ -1,11 +1,11 @@
 context("group")
 
-stem <- bci12s7mini
+stem <- bciex::bci12s7mini
 
 library(dplyr)
 library(tibble)
 
-stem <- bci12s7mini
+stem <- bciex::bci12s7mini
 
 df <- data.frame(
   sp = rep(letters[1:3], each = 2),

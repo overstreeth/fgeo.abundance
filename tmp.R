@@ -2,7 +2,7 @@ library(tidyverse)
 
 
 
-census <- forestr::bci12t7mini
+census <- bciex::bci12t7mini
 
 few_sp <- count(census, sp) %>% arrange(n) %>% tail(3) %>% pull(sp)
 census <- census %>% filter(sp  %in% few_sp)

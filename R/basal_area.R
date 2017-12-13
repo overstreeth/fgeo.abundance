@@ -20,7 +20,7 @@
 #' @rdname basal_area
 #'
 #' @examples
-#' stem <- bci12s7mini
+#' stem <- bciex::bci12s7mini
 #' 
 #' head(stem$dbh)
 #' head(basal_area_ind(stem$dbh))

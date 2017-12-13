@@ -57,13 +57,6 @@ reference:
       - basal_area
       - basal_area_ind
 
-  - title: "Data sets"
-    contents: 
-      - bci12t7mini
-      - bci12t6mini
-      - bci12s7mini
-      - bci12s6mini
-
 
 
 articles:
