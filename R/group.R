@@ -1,5 +1,10 @@
 group <- function(x, group_by, only_alive) {
-  assertive::assert_is_non_empty(x)
+  if (length(x) == 0) {
+    stop(
+      "The data frame passed to `x` is empty.\n",
+      "  * Provide a non empty data frame"
+    )
+  }
     
   if (only_alive) {
     x <- x[x$status == "A", ]

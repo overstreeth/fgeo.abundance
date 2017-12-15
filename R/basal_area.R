@@ -43,7 +43,12 @@ basal_area <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
 #' @export
 #' @rdname basal_area
 basal_area_ind <- function(diameter) {
-  assertive::assert_is_non_empty(diameter)
+  if (length(diameter) == 0) {
+    stop(
+      "The vector passed to `diameter` is empty.\n",
+      "  * Provide a non empty vector."
+    )
+  }
   
   message("Units of returned values are the square of the input units.")
   1/4 * pi * (diameter)^2
