@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abundance and Basal Area • forestr</title>
+<title>Abundance and Basal Area • fgeo.abundance</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">forestr</a>
+      <a class="navbar-brand" href="../index.html">fgeo.abundance</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/forestgeo/forestr">
+  <a href="https://github.com/forestgeo/fgeo.abundance">
     <span class="fa fa-github"></span>
      
   </a>
@@ -88,12 +88,12 @@
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
-<p>This vignette shows you how to calculate abundance and basal area with the functions <code><a href="../reference/abundance.html">abundance()</a></code>, <code><a href="../reference/basal_area.html">basal_area()</a></code>, and friends from the <strong>forestr</strong> package – let’s load it now:</p>
+<p>This vignette shows you how to calculate abundance and basal area with the functions <code><a href="../reference/abundance.html">abundance()</a></code>, <code><a href="../reference/basal_area.html">basal_area()</a></code>, and friends from the <strong>fgeo.abundance</strong> package – let’s load it now:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, generate a personal access token (PAT) in</span>
 <span class="co"># https://github.com/settings/tokens and supply to this argument.</span>
  GITHUB_PAT &lt;-<span class="st"> "your token"</span>
-<span class="co"># install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)</span>
-<span class="kw">library</span>(forestr)</code></pre></div>
+<span class="co"># install_github("forestgeo/fgeo.abundance", auth_token = GITHUB_PAT)</span>
+<span class="kw">library</span>(fgeo.abundance)</code></pre></div>
 </div>
 <div id="abundance" class="section level1">
 <h1 class="hasAnchor">
@@ -130,9 +130,9 @@ n &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance
 fails &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance.html">abundance</a></span>(stem, <span class="dt">group_by =</span> <span class="ot">NULL</span>)
 <span class="co">#&gt; Error in group(x = x, group_by = group_by, only_alive = only_alive): group_by can't be NULL.</span></code></pre></div>
 <p>In R there is always more than one way to get the same result. An alternative is to use <strong>dplyr</strong>, and instead of passing _“quoted grouping variables”__, you can pass <strong>bare grouping variables</strong>. No approach is good or bad – the most suitable one depends on the situation</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># With forestr you can assign a string of variable names and pass use it later</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># With fgeo.abundance you can assign a string of variable names and pass use it later</span>
 quoted_vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"quadrat"</span>, <span class="st">"sp"</span>)
-with_forestr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance.html">abundance</a></span>(stem, quoted_vars)
+with_fgeo.abundance &lt;-<span class="st"> </span><span class="kw"><a href="../reference/abundance.html">abundance</a></span>(stem, quoted_vars)
 
 <span class="co"># Compare</span>
 <span class="kw">library</span>(dplyr)
@@ -156,7 +156,7 @@ fails &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="
 also_fails &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(alive, <span class="st">"quadrat"</span>, <span class="st">"sp"</span>)
 
 <span class="co"># Whatever you choose, if you do it right you get the same results</span>
-alternatives &lt;-<span class="st"> </span><span class="kw">list</span>(with_forestr, with_dplyr)
+alternatives &lt;-<span class="st"> </span><span class="kw">list</span>(with_fgeo.abundance, with_dplyr)
 <span class="kw">lapply</span>(alternatives, head)
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt;   quadrat     sp n</span>
@@ -179,11 +179,11 @@ alternatives &lt;-<span class="st"> </span><span class="kw">list</span>(with_for
 <span class="co">#&gt; 6    0020 tet2pa     1</span>
 
 is_var_identical &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, var) {<span class="kw">identical</span>(x[[<span class="st">"var"</span>]], y[[<span class="st">"var"</span>]])}
-<span class="kw">is_var_identical</span>(with_forestr, with_dplyr, <span class="st">"quadrat"</span>)
+<span class="kw">is_var_identical</span>(with_fgeo.abundance, with_dplyr, <span class="st">"quadrat"</span>)
 <span class="co">#&gt; [1] TRUE</span>
-<span class="kw">is_var_identical</span>(with_forestr, with_dplyr, <span class="st">"sp"</span>)
+<span class="kw">is_var_identical</span>(with_fgeo.abundance, with_dplyr, <span class="st">"sp"</span>)
 <span class="co">#&gt; [1] TRUE</span>
-<span class="kw">is_var_identical</span>(with_forestr, with_dplyr, <span class="st">"n"</span>)
+<span class="kw">is_var_identical</span>(with_fgeo.abundance, with_dplyr, <span class="st">"n"</span>)
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 </div>
 <div id="basal-area" class="section level1">

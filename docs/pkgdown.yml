@@ -1,6 +1,6 @@
 urls:
-  reference: https://forestgeo.github.io/forestr//reference
-  article: https://forestgeo.github.io/forestr//articles
+  reference: https://forestgeo.github.io/fgeo.abundance//reference
+  article: https://forestgeo.github.io/fgeo.abundance//articles
 articles:
   abundance: abundance.html
 

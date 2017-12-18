@@ -21,8 +21,8 @@ options(dplyr.print_min = 10, dplyr.print_max = 10)
 # To install from a private repo, generate a personal access token (PAT) in
 # https://github.com/settings/tokens and supply to this argument.
  GITHUB_PAT <- "your token"
-# install_github("forestgeo/forestr@iss49_demography", auth_token = GITHUB_PAT)
-library(forestr)
+# install_github("forestgeo/fgeo.abundance", auth_token = GITHUB_PAT)
+library(fgeo.abundance)
 
 ## ------------------------------------------------------------------------
 stem <- bciex::bci12s7mini
@@ -41,9 +41,9 @@ abundance_tally(stem, only_alive = FALSE)
 fails <- abundance(stem, group_by = NULL)
 
 ## ---- error=TRUE---------------------------------------------------------
-# With forestr you can assign a string of variable names and pass use it later
+# With fgeo.abundance you can assign a string of variable names and pass use it later
 quoted_vars <- c("quadrat", "sp")
-with_forestr <- abundance(stem, quoted_vars)
+with_fgeo.abundance <- abundance(stem, quoted_vars)
 
 # Compare
 library(dplyr)
@@ -58,13 +58,13 @@ fails <- dplyr::count(alive, quoted_vars)
 also_fails <- dplyr::count(alive, "quadrat", "sp")
 
 # Whatever you choose, if you do it right you get the same results
-alternatives <- list(with_forestr, with_dplyr)
+alternatives <- list(with_fgeo.abundance, with_dplyr)
 lapply(alternatives, head)
 
 is_var_identical <- function(x, y, var) {identical(x[["var"]], y[["var"]])}
-is_var_identical(with_forestr, with_dplyr, "quadrat")
-is_var_identical(with_forestr, with_dplyr, "sp")
-is_var_identical(with_forestr, with_dplyr, "n")
+is_var_identical(with_fgeo.abundance, with_dplyr, "quadrat")
+is_var_identical(with_fgeo.abundance, with_dplyr, "sp")
+is_var_identical(with_fgeo.abundance, with_dplyr, "n")
 
 ## ------------------------------------------------------------------------
 stem <- bciex::bci12s7mini

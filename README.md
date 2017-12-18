@@ -1,19 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-forestr: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
-=======================================================================================================
+fgeo.abundance: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
+==============================================================================================================
 
-[![Travis build status](https://travis-ci.org/forestgeo/forestr.svg?branch=master)](https://travis-ci.org/forestgeo/forestr) [![Coverage status](https://codecov.io/gh/forestgeo/forestr/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/forestr?branch=master) [![CRAN status](http://www.r-pkg.org/badges/version/forestr)](https://cran.r-project.org/package=forestr)
+[![Travis build status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https://travis-ci.org/forestgeo/fgeo.abundance) [![Coverage status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/fgeo.abundance?branch=master) [![CRAN status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
 
 Installation
 ------------
 
-Install forestr from ForestGEO's private GitHub repo.
+Install **fgeo.abundance** from ForestGEO's private GitHub repo.
 
 ``` r
 # To install from a private repo, see auth_token at https://goo.gl/re1LFe
 # install.packages("remotes")
-remotes::install_github(repo = "forestgeo/forestr")
+remotes::install_github(repo = "forestgeo/fgeo.abundance")
 ```
 
 ### Example
@@ -21,7 +21,7 @@ remotes::install_github(repo = "forestgeo/forestr")
 Abundance and basal area.
 
 ``` r
-library(forestr)
+library(fgeo.abundance)
 
 stem <- bciex::bci12s7mini
 

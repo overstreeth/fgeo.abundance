@@ -1,4 +1,4 @@
 library(testthat)
-library(forestr)
+library(fgeo.abundance)
 
-test_check("forestr")
+test_check("fgeo.abundance")

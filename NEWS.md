@@ -1,3 +1,12 @@
+# fgeo.abundance 0.0.0.9001
+
+* Rename as package as __fgeo.abundance__.
+
+# forestr 0.0.0.9001
+
+* Move demography functions out of __forestr__ into __fgeo.demography__.
+
+
 # forestr 0.0.0.9000
 
 ## Known issues

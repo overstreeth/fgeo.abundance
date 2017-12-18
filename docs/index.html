@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R packages for the Analysis of Forest Dynamics • forestr</title>
+<title>R packages for the Analysis of Forest Dynamics • fgeo.abundance</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">forestr</a>
+      <a class="navbar-brand" href="index.html">fgeo.abundance</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/forestgeo/forestr">
+  <a href="https://github.com/forestgeo/fgeo.abundance">
     <span class="fa fa-github"></span>
      
   </a>
@@ -81,23 +81,23 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="forestr-abundance-and-basal-area" class="section level1">
+<div id="fgeo-abundance-abundance-and-basal-area" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#forestr-abundance-and-basal-area" class="anchor"></a>forestr: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height="44">
+<a href="#fgeo-abundance-abundance-and-basal-area" class="anchor"></a>fgeo.abundance: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height="44">
 </h1></div>
 
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install forestr from ForestGEO’s private GitHub repo.</p>
+<p>Install <strong>fgeo.abundance</strong> from ForestGEO’s private GitHub repo.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, see auth_token at https://goo.gl/re1LFe</span>
 <span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/forestr"</span>)</code></pre></div>
+remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/fgeo.abundance"</span>)</code></pre></div>
 <div id="example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h3>
 <p>Abundance and basal area.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(forestr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fgeo.abundance)
 
 stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini
 
@@ -129,9 +129,9 @@ stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini
     <h2 class="hasAnchor">
 <a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/forestgeo/forestr">https://​github.com/​forestgeo/​forestr</a>
+<li>Browse source code at <br><a href="https://github.com/forestgeo/fgeo.abundance">https://​github.com/​forestgeo/​fgeo.abundance</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/forestgeo/forestr/issues">https://​github.com/​forestgeo/​forestr/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/forestgeo/fgeo.abundance/issues">https://​github.com/​forestgeo/​fgeo.abundance/​issues</a>
 </li>
 <li>Learn more at <br><a href="http://www.forestgeo.si.edu/">http://​www.forestgeo.si.edu/​</a>
 </li>
@@ -147,9 +147,9 @@ stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/forestgeo/forestr"><img src="https://travis-ci.org/forestgeo/forestr.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://codecov.io/github/forestgeo/forestr?branch=master"><img src="https://codecov.io/gh/forestgeo/forestr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://cran.r-project.org/package=forestr"><img src="http://www.r-pkg.org/badges/version/forestr" alt="CRAN status"></a></li>
+<li><a href="https://travis-ci.org/forestgeo/fgeo.abundance"><img src="https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://codecov.io/github/forestgeo/fgeo.abundance?branch=master"><img src="https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=fgeo.abundance"><embed src="http://www.r-pkg.org/badges/version/fgeo.abundance"></embed></a></li>
 </ul>
 </div>
 

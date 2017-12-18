@@ -1,4 +1,4 @@
-url: https://forestgeo.github.io/forestr/
+url: https://forestgeo.github.io/fgeo.abundance/
 
 authors:
   Mauro Lepore:
@@ -40,7 +40,7 @@ navbar:
       href: https://github.com/maurolepore
   
     - icon: fa-github
-      href: https://github.com/forestgeo/forestr
+      href: https://github.com/forestgeo/fgeo.abundance
   
     - text: fgeo
       href: https://forestgeo.github.io/fgeo/
