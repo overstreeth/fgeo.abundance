@@ -23,7 +23,6 @@ knitr::opts_chunk$set(
 Install __fgeo.abundance__ from ForestGEO's private GitHub repo.
 
 ```R
-# To install from a private repo, see auth_token at https://goo.gl/re1LFe
 # install.packages("remotes")
 remotes::install_github(repo = "forestgeo/fgeo.abundance")
 ```
@@ -34,10 +33,16 @@ Abundance and basal area.
 
 ```{r}
 library(fgeo.abundance)
+library(dplyr)
 
-stem <- bciex::bci12s7mini
+stem <- tibble(
+  quadrat = paste0(0, 1:3),
+  sp = letters[1:3],
+  status = c("A", "A", "D"),
+  dbh = 1:3
+)
 
-head(abundance(stem))
+abundance(stem)
 
-head(basal_area(stem))
+basal_area(stem)
 ```

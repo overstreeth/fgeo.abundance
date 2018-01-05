@@ -90,35 +90,40 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install <strong>fgeo.abundance</strong> from ForestGEO’s private GitHub repo.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, see auth_token at https://goo.gl/re1LFe</span>
-<span class="co"># install.packages("remotes")</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/fgeo.abundance"</span>)</code></pre></div>
 <div id="example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h3>
 <p>Abundance and basal area.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fgeo.abundance)
+<span class="kw">library</span>(dplyr)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 
-stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini
+stem &lt;-<span class="st"> </span><span class="kw">tibble</span>(
+  <span class="dt">quadrat =</span> <span class="kw">paste0</span>(<span class="dv">0</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),
+  <span class="dt">sp =</span> letters[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],
+  <span class="dt">status =</span> <span class="kw">c</span>(<span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"D"</span>),
+  <span class="dt">dbh =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
+)
 
-<span class="kw">head</span>(<span class="kw"><a href="reference/abundance.html">abundance</a></span>(stem))
-<span class="co">#&gt;   quadrat     sp n</span>
-<span class="co">#&gt; 1    0000 soroaf 1</span>
-<span class="co">#&gt; 2    0002 hybapr 1</span>
-<span class="co">#&gt; 3    0006 hybapr 2</span>
-<span class="co">#&gt; 4    0009 faraoc 1</span>
-<span class="co">#&gt; 5    0009 hybapr 1</span>
-<span class="co">#&gt; 6    0020 tet2pa 1</span>
+<span class="kw"><a href="reference/abundance.html">abundance</a></span>(stem)
+<span class="co">#&gt;   quadrat sp n</span>
+<span class="co">#&gt; 1      01  a 1</span>
+<span class="co">#&gt; 2      02  b 1</span>
 
-<span class="kw">head</span>(<span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(stem))
+<span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(stem)
 <span class="co">#&gt; Units of returned values are the square of the input units.</span>
-<span class="co">#&gt;   quadrat     sp basal_area</span>
-<span class="co">#&gt; 1    0000 soroaf 2642.07942</span>
-<span class="co">#&gt; 2    0002 hybapr   95.03318</span>
-<span class="co">#&gt; 3    0006 hybapr  475.16589</span>
-<span class="co">#&gt; 4    0009 faraoc 1809.55737</span>
-<span class="co">#&gt; 5    0009 hybapr    0.00000</span>
-<span class="co">#&gt; 6    0020 tet2pa 3117.24531</span></code></pre></div>
+<span class="co">#&gt;   quadrat sp basal_area</span>
+<span class="co">#&gt; 1      01  a  0.7853982</span>
+<span class="co">#&gt; 2      02  b  3.1415927</span></code></pre></div>
 </div>
 </div>
 </div>

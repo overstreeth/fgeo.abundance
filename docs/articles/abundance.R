@@ -18,10 +18,8 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 10, dplyr.print_max = 10)
 
 ## ------------------------------------------------------------------------
-# To install from a private repo, generate a personal access token (PAT) in
-# https://github.com/settings/tokens and supply to this argument.
- GITHUB_PAT <- "your token"
-# install_github("forestgeo/fgeo.abundance", auth_token = GITHUB_PAT)
+# install.packages("remotes")
+remotes::install_github(repo = "forestgeo/fgeo.abundance")
 library(fgeo.abundance)
 
 ## ------------------------------------------------------------------------

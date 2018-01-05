@@ -89,10 +89,13 @@
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
 <p>This vignette shows you how to calculate abundance and basal area with the functions <code><a href="../reference/abundance.html">abundance()</a></code>, <code><a href="../reference/basal_area.html">basal_area()</a></code>, and friends from the <strong>fgeo.abundance</strong> package – let’s load it now:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To install from a private repo, generate a personal access token (PAT) in</span>
-<span class="co"># https://github.com/settings/tokens and supply to this argument.</span>
- GITHUB_PAT &lt;-<span class="st"> "your token"</span>
-<span class="co"># install_github("forestgeo/fgeo.abundance", auth_token = GITHUB_PAT)</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
+remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/fgeo.abundance"</span>)
+<span class="co">#&gt; Using github PAT from envvar GITHUB_PAT</span>
+<span class="co">#&gt; Downloading GitHub repo forestgeo/fgeo.abundance@master</span>
+<span class="co">#&gt; Using github PAT from envvar GITHUB_PAT</span>
+<span class="co">#&gt; Downloading GitHub repo forestgeo/bciex@master</span>
+<span class="co">#&gt; Skipping 1 packages not available: bciex</span>
 <span class="kw">library</span>(fgeo.abundance)</code></pre></div>
 </div>
 <div id="abundance" class="section level1">
@@ -169,14 +172,14 @@ alternatives &lt;-<span class="st"> </span><span class="kw">list</span>(with_fge
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
 <span class="co">#&gt; # A tibble: 6 x 3</span>
-<span class="co">#&gt;   quadrat     sp     n</span>
-<span class="co">#&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1    0000 soroaf     1</span>
-<span class="co">#&gt; 2    0002 hybapr     1</span>
-<span class="co">#&gt; 3    0006 hybapr     2</span>
-<span class="co">#&gt; 4    0009 faraoc     1</span>
-<span class="co">#&gt; 5    0009 hybapr     1</span>
-<span class="co">#&gt; 6    0020 tet2pa     1</span>
+<span class="co">#&gt;   quadrat sp         n</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;</span>
+<span class="co">#&gt; 1 0000    soroaf     1</span>
+<span class="co">#&gt; 2 0002    hybapr     1</span>
+<span class="co">#&gt; 3 0006    hybapr     2</span>
+<span class="co">#&gt; 4 0009    faraoc     1</span>
+<span class="co">#&gt; 5 0009    hybapr     1</span>
+<span class="co">#&gt; 6 0020    tet2pa     1</span>
 
 is_var_identical &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, var) {<span class="kw">identical</span>(x[[<span class="st">"var"</span>]], y[[<span class="st">"var"</span>]])}
 <span class="kw">is_var_identical</span>(with_fgeo.abundance, with_dplyr, <span class="st">"quadrat"</span>)

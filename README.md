@@ -11,7 +11,6 @@ Installation
 Install **fgeo.abundance** from ForestGEO's private GitHub repo.
 
 ``` r
-# To install from a private repo, see auth_token at https://goo.gl/re1LFe
 # install.packages("remotes")
 remotes::install_github(repo = "forestgeo/fgeo.abundance")
 ```
@@ -22,25 +21,31 @@ Abundance and basal area.
 
 ``` r
 library(fgeo.abundance)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 
-stem <- bciex::bci12s7mini
+stem <- tibble(
+  quadrat = paste0(0, 1:3),
+  sp = letters[1:3],
+  status = c("A", "A", "D"),
+  dbh = 1:3
+)
 
-head(abundance(stem))
-#>   quadrat     sp n
-#> 1    0000 soroaf 1
-#> 2    0002 hybapr 1
-#> 3    0006 hybapr 2
-#> 4    0009 faraoc 1
-#> 5    0009 hybapr 1
-#> 6    0020 tet2pa 1
+abundance(stem)
+#>   quadrat sp n
+#> 1      01  a 1
+#> 2      02  b 1
 
-head(basal_area(stem))
+basal_area(stem)
 #> Units of returned values are the square of the input units.
-#>   quadrat     sp basal_area
-#> 1    0000 soroaf 2642.07942
-#> 2    0002 hybapr   95.03318
-#> 3    0006 hybapr  475.16589
-#> 4    0009 faraoc 1809.55737
-#> 5    0009 hybapr    0.00000
-#> 6    0020 tet2pa 3117.24531
+#>   quadrat sp basal_area
+#> 1      01  a  0.7853982
+#> 2      02  b  3.1415927
 ```
