@@ -36,10 +36,15 @@ options(dplyr.print_min = 10, dplyr.print_max = 10)
 
 This vignette shows you how to calculate abundance and basal area with the functions `abundance()`, `basal_area()`, and friends from the __fgeo.abundance__ package -- let's load it now:
 
-```{r}
+```R
 # install.packages("remotes")
 remotes::install_github(repo = "forestgeo/fgeo.abundance")
+```
+
+```{r}
+# Setup
 library(fgeo.abundance)
+stem <- bciex::bci12s7mini
 ```
 
 # Abundance
@@ -47,8 +52,6 @@ library(fgeo.abundance)
 The function `abundance()` provides a quick way to calculate the abundance of alive stems of each species in each quadrat -- that is what it does by default (see `abundance()`):
 
 ```{r}
-stem <- bciex::bci12s7mini
-
 n <- abundance(stem)
 head(n)
 
