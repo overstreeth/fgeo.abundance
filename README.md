@@ -1,14 +1,18 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-fgeo.abundance: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
-==============================================================================================================
 
-[![Travis build status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https://travis-ci.org/forestgeo/fgeo.abundance) [![Coverage status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/fgeo.abundance?branch=master) [![CRAN status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
+# <img src="https://i.imgur.com/m8FNhQR.png" align="right" height=88 /> fgeo.abundance: Calculate abundance and basal area
 
-Installation
-------------
+[![Travis build
+status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https://travis-ci.org/forestgeo/fgeo.abundance)
+[![Coverage
+status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/fgeo.abundance?branch=master)
+[![CRAN
+status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
 
-Install **fgeo.abundance** from ForestGEO's private GitHub repo.
+## Installation
+
+Install **fgeo.abundance** from ForestGEO’s private GitHub repo.
 
 ``` r
 # install.packages("remotes")

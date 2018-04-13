@@ -4,9 +4,9 @@
 \name{fgeo.abundance-package}
 \alias{fgeo.abundance}
 \alias{fgeo.abundance-package}
-\title{fgeo.abundance: R packages for the Analysis of Forest Dynamics}
+\title{fgeo.abundance: Calculate Abundance and Basal Area}
 \description{
-Tools for the analysis of forest dynamics.
+Calculate abundance and basal area.
 }
 \seealso{
 Useful links:

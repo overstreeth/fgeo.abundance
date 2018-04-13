@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# fgeo.abundance: Abundance and basal area <img src="https://i.imgur.com/39pvr4n.png" align="right" height=44 />
+# <img src="https://i.imgur.com/m8FNhQR.png" align="right" height=88 /> fgeo.abundance: Calculate abundance and basal area
 
   [![Travis build status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https://travis-ci.org/forestgeo/fgeo.abundance)
   [![Coverage status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/fgeo.abundance?branch=master)
