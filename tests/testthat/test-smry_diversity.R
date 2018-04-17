@@ -40,3 +40,17 @@ test_that("fails with informative error", {
   )
   expect_error(smry_diversity(col = n))
 })
+
+test_that("output is equal to vegan", {
+  div <- smry_diversity(cns, n)
+  shan <- vegan::diversity(cns$n, "shannon")
+  simp <- vegan::diversity(cns$n, "simpson")
+  invs <- vegan::diversity(cns$n, "invsimpson")
+  pull_metric <- function(x, metric) {
+    dplyr::filter(x, diversity == metric)$value
+  }
+  
+  expect_true(dplyr::near(pull_metric(div, "shannon"), shan))
+  expect_true(dplyr::near(pull_metric(div, "simpson"), simp))
+  expect_true(dplyr::near(pull_metric(div, "invsimpson"), invs))
+})
