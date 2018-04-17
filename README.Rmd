@@ -27,7 +27,9 @@ Install __fgeo.abundance__ from ForestGEO's private GitHub repo.
 remotes::install_github(repo = "forestgeo/fgeo.abundance")
 ```
 
-### Example
+For details on how to install packages from GitHub, see [this article](https://goo.gl/dQKEeg).
+
+## Example
 
 Abundance and basal area.
 

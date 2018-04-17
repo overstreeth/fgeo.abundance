@@ -21,21 +21,8 @@ navbar:
   
   type: default
 
-  left:
-    - text: Functions Index
-      href: reference/index.html
-  
   right:
-    - text: Tutorials
-      href: articles/index.html
-      
-    - text: Apps
-      menu:
-      - text: Nothing to show
-  
-    - text: News
-      href: news/index.html
-  
+
     - icon: fa-gavel
       href: https://github.com/maurolepore
   
@@ -49,18 +36,11 @@ navbar:
 
 reference:
 
-  - title: Abundance and friends
-    desc: These functions input data from one census
+  - title: Summaries of abundance and diversity
     contents: 
       - abundance
       - abundance_tally
       - basal_area
       - basal_area_ind
+      - smry_diversity
 
-
-
-articles:
-  
-  - title: All tutorials
-    contents:
-    - abundance

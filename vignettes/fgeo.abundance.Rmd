@@ -1,7 +1,7 @@
 ---
 title: "Abundance and Basal Area"
 author: "Mauro Lepore"
-date: "2017-10-25"
+date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -13,19 +13,18 @@ vignette: >
 ---
 
 ```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
-# hadley's settings
 set.seed(1014)
 options(digits = 3)
 
 knitr::opts_chunk$set(
-  echo = TRUE,  # {mine}
+  echo = TRUE,
   comment = "#>",
   collapse = TRUE,
   # cache = TRUE,
   out.width = "70%",
   fig.align = "center",
   fig.width = 6,
-  fig.asp = 0.618,  # 1 / phi
+  fig.asp = 0.618,
   fig.show = "hold"
 )
 
