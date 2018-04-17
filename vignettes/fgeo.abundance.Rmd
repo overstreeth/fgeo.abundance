@@ -33,16 +33,18 @@ options(dplyr.print_min = 10, dplyr.print_max = 10)
 
 # Overview
 
-This vignette shows you how to calculate abundance and basal area with the functions `abundance()`, `basal_area()`, and friends from the __fgeo.abundance__ package -- let's load it now:
-
-```R
-# install.packages("remotes")
-remotes::install_github(repo = "forestgeo/fgeo.abundance")
-```
+__fgeo.abundance__ calculates abundance, basal area and diversity. This article shows how to calculate abundance and basal area. Learn more by searching functions and reading their help files [here](https://forestgeo.github.io/fgeo/reference/index.html).
 
 ```{r}
-# Setup
+# install.packages("remotes")
+# remotes::install_github(repo = "forestgeo/fgeo.abundance")
 library(fgeo.abundance)
+```
+
+(See [installation](https://forestgeo.github.io/fgeo.abundance/#installation).)
+
+```{r}
+# Example data
 stem <- bciex::bci12s7mini
 ```
 
@@ -96,7 +98,6 @@ is_var_identical(with_fgeo.abundance, with_dplyr, "quadrat")
 is_var_identical(with_fgeo.abundance, with_dplyr, "sp")
 is_var_identical(with_fgeo.abundance, with_dplyr, "n")
 ```
-
 
 # Basal Area
 

@@ -10,36 +10,31 @@ status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge
 [![CRAN
 status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
 
-## Installation
+**fgeo.abundance** calculates abundance, basal area and diversity.
 
-Install **fgeo.abundance** from ForestGEO’s private GitHub repo.
+## Installation
 
 ``` r
 # install.packages("remotes")
 remotes::install_github(repo = "forestgeo/fgeo.abundance")
 ```
 
-### Example
+For details on how to install packages from GitHub, see [this
+article](https://goo.gl/dQKEeg).
+
+## Example
 
 Abundance and basal area.
 
 ``` r
 library(fgeo.abundance)
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 
-stem <- tibble(
+stem <- data.frame(
   quadrat = paste0(0, 1:3),
   sp = letters[1:3],
   status = c("A", "A", "D"),
-  dbh = 1:3
+  dbh = 1:3,
+  stringsAsFactors = FALSE
 )
 
 abundance(stem)
@@ -52,4 +47,20 @@ basal_area(stem)
 #>   quadrat sp basal_area
 #> 1      01  a  0.7853982
 #> 2      02  b  3.1415927
+
+smry_diversity(abundance(stem), n)
+#>    diversity     value
+#> 1    shannon 0.6931472
+#> 2 invsimpson 2.0000000
+#> 3    simpson 0.5000000
 ```
+
+## Information
+
+  - [Getting help](SUPPORT.md).
+  - [Contributing](CONTRIBUTING.md).
+  - [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Acknowledgements
+
+Thanks to all partners of ForestGEO, for sharing their ideas and code.

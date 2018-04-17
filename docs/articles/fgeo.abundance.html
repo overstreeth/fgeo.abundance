@@ -82,7 +82,7 @@
       <h1>Abundance and Basal Area</h1>
                         <h4 class="author">Mauro Lepore</h4>
             
-            <h4 class="date">2017-10-25</h4>
+            <h4 class="date">2018-04-17</h4>
       
       <small>Source: <a href="https://github.com/forestgeo/fgeo.abundance/blob/master/vignettes/fgeo.abundance.Rmd"><code>vignettes/fgeo.abundance.Rmd</code></a></small>
 
@@ -94,12 +94,13 @@
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
-<p>This vignette shows you how to calculate abundance and basal area with the functions <code><a href="../reference/abundance.html">abundance()</a></code>, <code><a href="../reference/basal_area.html">basal_area()</a></code>, and friends from the <strong>fgeo.abundance</strong> package – let’s load it now:</p>
+<p><strong>fgeo.abundance</strong> calculates abundance, basal area and diversity. This article shows how to calculate abundance and basal area. Learn more by searching functions and reading their help files <a href="https://forestgeo.github.io/fgeo/reference/index.html">here</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/fgeo.abundance"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Setup</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(fgeo.abundance)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># remotes::install_github(repo = "forestgeo/fgeo.abundance")</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(fgeo.abundance)</a></code></pre></div>
+<p>(See <a href="https://forestgeo.github.io/fgeo.abundance/#installation">installation</a>.)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Example data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">stem &lt;-<span class="st"> </span>bciex<span class="op">::</span>bci12s7mini</a></code></pre></div>
 </div>
 <div id="abundance" class="section level1">
 <h1 class="hasAnchor">
