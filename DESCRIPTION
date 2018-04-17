@@ -17,7 +17,9 @@ Imports:
     rlang (>= 0.1.2),
     utils,
     vegan,
-    ggplot2
+    ggplot2,
+    tidyr,
+    magrittr
 Suggests: 
     covr,
     knitr,
