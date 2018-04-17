@@ -22,6 +22,15 @@ Adds a column \code{diversity}, of Shannon and Simpson diversity indices
 calculated with \code{\link[vegan:diversity]{vegan::diversity()}}. The output is a dataframe, convenient
 for workflows with general purpose tools such as \strong{dplyr} and \strong{ggplot2}.
 }
+\section{Acknowledgements}{
+
+\itemize{
+\item David Kenfack inspired the need for this function.
+\item A talk by Jenny Bryan (rstd.io/row-work) inspired the fundamental
+implementation details.
+}
+}
+
 \examples{
 library(dplyr)
 library(ggplot2)

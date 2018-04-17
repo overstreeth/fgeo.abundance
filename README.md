@@ -64,3 +64,5 @@ smry_diversity(abundance(stem), n)
 ## Acknowledgements
 
 Thanks to all partners of ForestGEO, for sharing their ideas and code.
+Special thanks for inspiring ideas to David Kenfack and Jenny Bryan
+([@JennyBryan](https://twitter.com/JennyBryan)).

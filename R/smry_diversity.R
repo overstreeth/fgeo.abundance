@@ -12,6 +12,12 @@
 #'
 #' @return A summary of the input dataframe, with the additional column 
 #' `diversity`.
+#' 
+#' @section Acknowledgements:
+#' * David Kenfack inspired the need for this function. 
+#' * A talk by Jenny Bryan (rstd.io/row-work) inspired the fundamental
+#'   implementation details.
+#' 
 #' @export
 #'
 #' @examples
