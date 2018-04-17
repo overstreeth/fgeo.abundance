@@ -14,3 +14,4 @@
 ^inst/tutorials/demography_technical_notes_cache$
 ^inst/tutorials/rsconnect$
 ^\.github$
+^tmp\.sh$

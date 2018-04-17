@@ -5,3 +5,4 @@
 clean_directories.R
 tmp.R
 inst/doc
+tmp.sh
