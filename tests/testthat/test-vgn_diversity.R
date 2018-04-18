@@ -34,11 +34,10 @@ test_that("groups as expected", {
 })
 
 test_that("fails with informative error", {
-  expect_error(
-    vgn_diversity(cns),
-    "is missing"
-  )
-  expect_error(vgn_diversity(col = n))
+  not_dataframe <- 1
+  expect_error(vgn_diversity(not_dataframe), "is not TRUE")
+  expect_error(vgn_diversity(cns), "is missing")
+  expect_error(vgn_diversity(abundance = n), "is missing")
 })
 
 test_that("output is equal to vegan", {

@@ -160,8 +160,8 @@ implementation details.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
-<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
-
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)</div><div class='output co'>#&gt; <span class='message'>Want to understand how all the pieces fit together? Buy the ggplot2</span>
+#&gt; <span class='message'>book: http://ggplot2.org/book/</span></div><div class='input'>
 <span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
   <span class='kw'>quadrat</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"0000"</span>, <span class='st'>"0001"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>),
   <span class='kw'>sp</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>), <span class='fl'>2</span>),
@@ -169,32 +169,32 @@ implementation details.</p></li>
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 <span class='no'>census</span></div><div class='output co'>#&gt;   quadrat  sp  n
-#&gt; 1    0000 sp1  9
-#&gt; 2    0000 sp2 83
-#&gt; 3    0000 sp3 59
-#&gt; 4    0001 sp1 16
-#&gt; 5    0001 sp2  1
-#&gt; 6    0001 sp3 45</div><div class='input'>
+#&gt; 1    0000 sp1 61
+#&gt; 2    0000 sp2 16
+#&gt; 3    0000 sp3  1
+#&gt; 4    0001 sp1 46
+#&gt; 5    0001 sp2 48
+#&gt; 6    0001 sp3 28</div><div class='input'>
 <span class='no'>ungrouped</span> <span class='kw'>&lt;-</span> <span class='no'>census</span>
-<span class='fu'>vgn_diversity</span>(<span class='no'>ungrouped</span>, <span class='no'>n</span>)</div><div class='output co'>#&gt;        index     value
-#&gt; 1    shannon 1.4046033
-#&gt; 2 invsimpson 3.5631037
-#&gt; 3    simpson 0.7193458</div><div class='input'>
+<span class='fu'>vgn_diversity</span>(<span class='no'>ungrouped</span>, <span class='no'>n</span>)</div><div class='output co'>#&gt;        index    value
+#&gt; 1    shannon 1.546509
+#&gt; 2 invsimpson 4.356349
+#&gt; 3    simpson 0.770450</div><div class='input'>
 <span class='no'>by_quadrat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
 <span class='fu'>vgn_diversity</span>(<span class='no'>by_quadrat</span>, <span class='no'>n</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
 #&gt;   quadrat index      value
 #&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
-#&gt; 1 0000    shannon    0.864
-#&gt; 2 0000    invsimpson 2.18 
-#&gt; 3 0000    simpson    0.542
-#&gt; 4 0001    shannon    0.649
-#&gt; 5 0001    invsimpson 1.68 
-#&gt; 6 0001    simpson    0.406</div><div class='input'>
+#&gt; 1 0000    shannon    0.573
+#&gt; 2 0000    invsimpson 1.53 
+#&gt; 3 0000    simpson    0.346
+#&gt; 4 0001    shannon    1.07 
+#&gt; 5 0001    invsimpson 2.86 
+#&gt; 6 0001    simpson    0.650</div><div class='input'>
 <span class='fu'>vgn_diversity</span>(<span class='no'>by_quadrat</span>, <span class='no'>n</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='st'>"shannon"</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 3
 #&gt;   quadrat index   value
 #&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
-#&gt; 1 0000    shannon 0.864
-#&gt; 2 0001    shannon 0.649</div><div class='input'>
+#&gt; 1 0000    shannon 0.573
+#&gt; 2 0001    shannon 1.07 </div><div class='input'>
 <span class='co'># The output of `vgn_diversity` flows well into common pipelines:</span>
 
 <span class='no'>diversity</span> <span class='kw'>&lt;-</span> <span class='no'>census</span> <span class='kw'>%&gt;%</span>
@@ -203,12 +203,12 @@ implementation details.</p></li>
 <span class='no'>diversity</span></div><div class='output co'>#&gt; # A tibble: 6 x 3
 #&gt;   quadrat index      value
 #&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
-#&gt; 1 0000    shannon    0.864
-#&gt; 2 0000    invsimpson 2.18 
-#&gt; 3 0000    simpson    0.542
-#&gt; 4 0001    shannon    0.649
-#&gt; 5 0001    invsimpson 1.68 
-#&gt; 6 0001    simpson    0.406</div><div class='input'>
+#&gt; 1 0000    shannon    0.573
+#&gt; 2 0000    invsimpson 1.53 
+#&gt; 3 0000    simpson    0.346
+#&gt; 4 0001    shannon    1.07 
+#&gt; 5 0001    invsimpson 2.86 
+#&gt; 6 0001    simpson    0.650</div><div class='input'>
 <span class='co'># A plot</span>
 <span class='no'>diversity</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>quadrat</span>, <span class='no'>value</span>)) +
@@ -219,9 +219,9 @@ implementation details.</p></li>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>value</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 2
 #&gt;   index       mean
 #&gt;   &lt;chr&gt;      &lt;dbl&gt;
-#&gt; 1 invsimpson 1.93 
-#&gt; 2 shannon    0.756
-#&gt; 3 simpson    0.474</div></pre>
+#&gt; 1 invsimpson 2.19 
+#&gt; 2 shannon    0.823
+#&gt; 3 simpson    0.498</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

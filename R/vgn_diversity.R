@@ -57,8 +57,9 @@
 #'   group_by(index) %>%
 #'   summarise(mean = mean(value))
 vgn_diversity <- function(x, 
-                           abundance, 
-                           index = c("shannon", "invsimpson", "simpson")) {
+                          abundance, 
+                          index = c("shannon", "invsimpson", "simpson")) {
+  stopifnot(is.data.frame(x))
   abundance <- rlang::enquo(abundance)
   abundance_is_missing <- identical(as.character(abundance[[2]]), "")
   if (abundance_is_missing) {
