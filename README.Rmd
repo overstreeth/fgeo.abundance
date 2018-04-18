@@ -48,7 +48,7 @@ abundance(stem)
 
 basal_area(stem)
 
-smry_diversity(abundance(stem), n)
+vgn_diversity(abundance(stem), n)
 ```
 
 ## Information

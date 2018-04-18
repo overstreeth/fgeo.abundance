@@ -5,7 +5,7 @@
 #' for workflows with general purpose tools such as __dplyr__ and __ggplot2__.
 #'
 #' @param x A dataframe.
-#' @param col A column in `x`.
+#' @param abundance A numeric column in `x` giving the abundance by species.
 #' @param index An index as described
 #' 
 #' @seealso [vegan::diversity()].
@@ -24,52 +24,55 @@
 #' library(dplyr)
 #' library(ggplot2)
 #' 
-#' cns <- data.frame(
-#'   CensusID = factor(rep(c(1, 2), 3)),
-#'   quadrat = "0000",
+#' census <- data.frame(
+#'   quadrat = rep(c("0000", "0001"), each = 3),
 #'   sp = rep(paste0("sp", 1:3), 2),
-#'   n = sample.int(100, 6)
+#'   n = sample.int(100, 6),
+#'   stringsAsFactors = FALSE
 #' )
-#' cns
+#' census
 #' 
-#' smry_diversity(cns, n)
+#' ungrouped <- census
+#' vgn_diversity(ungrouped, n)
 #' 
-#' # The output of `smry_diversity` flows well into common pipelines:
+#' by_quadrat <- group_by(census, quadrat)
+#' vgn_diversity(by_quadrat, n)
 #' 
-#' diversity <- cns %>%
-#'   group_by(CensusID) %>%
-#'   smry_diversity(n)
-#' # Same
-#' diversity <- group_by(cns, CensusID)
-#' diversity <- smry_diversity(diversity, n)
+#' vgn_diversity(by_quadrat, n, index = "shannon")
 #' 
+#' # The output of `vgn_diversity` flows well into common pipelines:
+#' 
+#' diversity <- census %>%
+#'   group_by(quadrat) %>%
+#'   vgn_diversity(n)
 #' diversity
 #' 
 #' # A plot
 #' diversity %>%
-#'   ggplot(aes(CensusID, value)) +
-#'   geom_col(aes(fill = diversity), position = "dodge")
+#'   ggplot(aes(quadrat, value)) +
+#'   geom_col(aes(fill = index), position = "dodge")
+#' 
 #' # A summary
 #' diversity %>%
-#'   group_by(diversity) %>%
-#'   summarise(mean_diversity = mean(value))
-smry_diversity <- function(x, 
-                           col, 
+#'   group_by(index) %>%
+#'   summarise(mean = mean(value))
+vgn_diversity <- function(x, 
+                           abundance, 
                            index = c("shannon", "invsimpson", "simpson")) {
-  col <- rlang::enquo(col)
-  col_is_missing <- identical(as.character(col[[2]]), "")
-  if (col_is_missing) {
-    abort("Argument `col` is missing. Must provide `col`.")
+  abundance <- rlang::enquo(abundance)
+  abundance_is_missing <- identical(as.character(abundance[[2]]), "")
+  if (abundance_is_missing) {
+    abort("Argument `abundance` is missing. Must provide `abundance`.")
   }
 
   div <- dplyr::summarise(
-    x, diversity = enframe_diversity(x = !! col, index = index)
+    x, diversity = enframe_diversity(x = !! abundance, index = index)
   )
   tidyr::unnest(tidyr::unnest(div))
 }
 
 enframe_diversity <- function(x, index) {
-  div <- tibble::enframe(diversity_ls(x, index = index), name = "diversity")
+  div <- tibble::enframe(diversity_ls(x, index = index), name = "index")
   list(div)
 }
 

@@ -42,5 +42,5 @@ reference:
       - abundance_tally
       - basal_area
       - basal_area_ind
-      - smry_diversity
+      - vgn_diversity
 

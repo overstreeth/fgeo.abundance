@@ -48,8 +48,8 @@ basal_area(stem)
 #> 1      01  a  0.7853982
 #> 2      02  b  3.1415927
 
-smry_diversity(abundance(stem), n)
-#>    diversity     value
+vgn_diversity(abundance(stem), n)
+#>        index     value
 #> 1    shannon 0.6931472
 #> 2 invsimpson 2.0000000
 #> 3    simpson 0.5000000
