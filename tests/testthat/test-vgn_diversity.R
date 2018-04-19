@@ -111,7 +111,6 @@ test_that("outputs equal to vegan with different species accross groups", {
 
 
 
-
 # Compare with vegan ------------------------------------------------------
 
 # Setup
