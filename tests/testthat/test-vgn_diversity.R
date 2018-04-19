@@ -114,7 +114,7 @@ test_that("outputs equal to vegan with different species accross groups", {
 
 
 
-# Compare with vegan ------------------------------------------------------
+# Compare with vegan using BCI --------------------------------------------
 
 # Setup
 
@@ -185,3 +185,7 @@ test_that("Ceros don't matter", {
     length() == 1
     expect_true(out)
 })
+
+
+
+# Compare with vegan using toy data ---------------------------------------
