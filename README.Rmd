@@ -43,12 +43,14 @@ stem <- data.frame(
   dbh = 1:3,
   stringsAsFactors = FALSE
 )
-
-abundance(stem)
+stem
 
 basal_area(stem)
 
-vgn_diversity(abundance(stem), n)
+abund <- abundance(stem)
+abund
+
+vgn_diversity(abund, n)
 ```
 
 ## Information

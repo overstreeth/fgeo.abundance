@@ -38,17 +38,13 @@
 #' 
 #' by_quadrat <- group_by(census, quadrat)
 #' vgn_diversity(by_quadrat, n)
-#' # Is a shortcut for ...
 #' 
-#' div <- mutate(
+#' # Similar alternative
+#' summarise(
 #'   by_quadrat,
 #'   specnumber = vegan::specnumber(n),
 #'   shannon = vegan::diversity(n)
 #' )
-#' gather(ungroup(div), "index", "value", specnumber:shannon) %>% 
-#'   select(quadrat, index, value) %>% 
-#'   unique() %>% 
-#'   arrange(quadrat, desc(index))
 #' 
 #' # The output of `vgn_diversity` flows well into common pipelines:
 #' 

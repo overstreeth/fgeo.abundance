@@ -109,11 +109,11 @@
 <a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">dbh =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(stem)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;   quadrat sp n</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 1      01  a 1</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 2      02  b 1</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">stem</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;   quadrat sp status dbh</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; 1      01  a      A   1</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 2      02  b      A   2</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 3      03  c      D   3</span></a>
 <a class="sourceLine" id="cb2-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"><span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(stem)</a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; Units of returned values are the square of the input units.</span></a>
@@ -121,11 +121,16 @@
 <a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; 1      01  a  0.7853982</span></a>
 <a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; 2      02  b  3.1415927</span></a>
 <a class="sourceLine" id="cb2-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw"><a href="reference/vgn_diversity.html">vgn_diversity</a></span>(<span class="kw"><a href="reference/abundance.html">abundance</a></span>(stem), n)</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;        index     value</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; 1    shannon 0.6931472</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; 2 invsimpson 2.0000000</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; 3    simpson 0.5000000</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-22" data-line-number="22">abund &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance.html">abundance</a></span>(stem)</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">abund</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;   quadrat sp n</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; 1      01  a 1</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; 2      02  b 1</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="kw"><a href="reference/vgn_diversity.html">vgn_diversity</a></span>(abund, n)</a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt;        index     value</span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt; 1 specnumber 2.0000000</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt; 2    shannon 0.6931472</span></a></code></pre></div>
 </div>
 <div id="information" class="section level2">
 <h2 class="hasAnchor">
