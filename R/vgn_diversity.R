@@ -58,7 +58,9 @@
 #'   summarise(mean = mean(value))
 vgn_diversity <- function(x, 
                           abundance, 
-                          index = c("shannon", "invsimpson", "simpson")) {
+                          index = c(
+                            "specnumber", "shannon", "invsimpson", "simpson"
+                          )) {
   stopifnot(is.data.frame(x))
   abundance <- rlang::enquo(abundance)
   abundance_is_missing <- identical(as.character(abundance[[2]]), "")
@@ -73,11 +75,42 @@ vgn_diversity <- function(x,
 }
 
 enframe_diversity <- function(x, index) {
-  div <- tibble::enframe(diversity_ls(x, index = index), name = "index")
+  div <- tibble::enframe(vegan_diversity_ls(x, index = index), name = "index")
   list(div)
 }
 
-diversity_ls <- function(x, index = c("shannon", "invsimpson", "simpson")) {
-  purrr::map(.x = index, ~vegan::diversity(x, .x, MARGIN = 2)) %>%
-    purrr::set_names(index)
+vegan_diversity_ls <- function(x, index = c("specnumber")) {
+  check_god_idx(index)
+  out <- c(vegan_specnumber(x, index), vegan_diversity(x, index))
+  out[!is.na(out)]
 }
+  
+check_god_idx <- function(index) {
+  good_idx <- c("specnumber", "shannon", "invsimpson", "simpson")
+  some_invalid_idx <- !all(index %in% good_idx)
+  if (some_invalid_idx) {
+    abort(paste0("Invalid `index` (valid: ", good_idx, ")"))
+  }
+  invisible()
+}
+
+vegan_specnumber <- function(x, index) {
+  out <- ifelse(
+    "specnumber" %in% index, 
+    vegan::specnumber(x, MARGIN = 1),
+    NA
+  )
+  c(specnumber = out)
+}
+
+vegan_diversity <- function(x, index) {
+  div_index <- setdiff(index, "specnumber")
+  out <- if (length(div_index) > 0) {
+    purrr::map(.x = div_index, ~vegan::diversity(x, .x, MARGIN = 2)) %>% 
+      purrr::set_names(div_index)
+  } else {
+    NA
+  }
+  out
+}
+

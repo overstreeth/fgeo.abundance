@@ -4,7 +4,8 @@
 \alias{vgn_diversity}
 \title{Shannon and Simpson diversity indices.}
 \usage{
-vgn_diversity(x, abundance, index = c("shannon", "invsimpson", "simpson"))
+vgn_diversity(x, abundance, index = c("specnumber", "shannon", "invsimpson",
+  "simpson"))
 }
 \arguments{
 \item{x}{A dataframe.}

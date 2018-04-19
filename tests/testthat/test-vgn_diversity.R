@@ -53,3 +53,25 @@ test_that("output is equal to vegan", {
   expect_true(dplyr::near(pull_metric(div, "simpson"), simp))
   expect_true(dplyr::near(pull_metric(div, "invsimpson"), invs))
 })
+
+
+test_that("specnumber is named", {
+  census <- data.frame(
+    quadrat = rep(c("0000", "0001"), each = 3),
+    sp = rep(paste0("sp", 1:3), 2),
+    n = sample.int(100, 6),
+    stringsAsFactors = FALSE
+  )
+  out <- vgn_diversity(census, n)
+  expect_true("specnumber" %in% out$index)
+})
+
+test_that("works with only one kind of diversity metric", {
+  expect_silent(vgn_diversity(cns, n, index = "specnumber"))
+  expect_silent(vgn_diversity(cns, n, index = "shannon"))
+})
+
+test_that("works with combined indices", {
+  expect_silent(vgn_diversity(cns, n, index = c("specnumber", "shannon")))
+  expect_silent(vgn_diversity(cns, n, index = c("shannon", "specnumber")))
+})
