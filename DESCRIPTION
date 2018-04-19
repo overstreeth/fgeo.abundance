@@ -1,5 +1,5 @@
 Package: fgeo.abundance
-Title: Calculate Abundance, Basal Area and Diversity.
+Title: Calculate Abundance, Basal Area and Diversity
 Version: 0.0.0.9002
 Authors@R: c(
     person("Mauro", "Lepore", , "leporem@si.edu", role = c("aut", "ctr", "cre")),
