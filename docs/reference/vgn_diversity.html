@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Shannon and Simpson diversity indices. — vgn_diversity • fgeo.abundance</title>
+<title>Diversity metrics from vegan. — vgn_diversity • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,11 +25,12 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Shannon and Simpson diversity indices. — vgn_diversity" />
+<meta property="og:title" content="Diversity metrics from vegan. — vgn_diversity" />
 
-<meta property="og:description" content="Adds a column diversity, of Shannon and Simpson diversity indices
-calculated with vegan::diversity(). The output is a dataframe, convenient
-for workflows with general purpose tools such as dplyr and ggplot2." />
+<meta property="og:description" content="Calculates common diversity metrics documented in vegan::diversity().
+Compared to the output of vegan, these functions output a dataframe
+conveniently structure for workflows with general purpose tools such as
+dplyr and ggplot2." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,14 +111,15 @@ for workflows with general purpose tools such as dplyr and ggplot2." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Shannon and Simpson diversity indices.</h1>
+    <h1>Diversity metrics from vegan.</h1>
     <small>Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/vgn_diversity.R'><code>R/vgn_diversity.R</code></a></small>
     </div>
 
     
-    <p>Adds a column <code>diversity</code>, of Shannon and Simpson diversity indices
-calculated with <code><a href='http://www.rdocumentation.org/packages/vegan/topics/diversity'>vegan::diversity()</a></code>. The output is a dataframe, convenient
-for workflows with general purpose tools such as <strong>dplyr</strong> and <strong>ggplot2</strong>.</p>
+    <p>Calculates common diversity metrics documented in <code><a href='http://www.rdocumentation.org/packages/vegan/topics/diversity'>vegan::diversity()</a></code>.
+Compared to the output of <strong>vegan</strong>, these functions output a dataframe
+conveniently structure for workflows with general purpose tools such as
+<strong>dplyr</strong> and <strong>ggplot2</strong>.</p>
     
 
     <pre class="usage"><span class='fu'>vgn_diversity</span>(<span class='no'>x</span>, <span class='no'>abundance</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"specnumber"</span>, <span class='st'>"shannon"</span>))</pre>
@@ -135,7 +137,7 @@ for workflows with general purpose tools such as <strong>dplyr</strong> and <str
     </tr>
     <tr>
       <th>index</th>
-      <td><p>Some of c("specnumber", "shannon", "invsimpson", "simpson")</p></td>
+      <td><p>Some of c("specnumber", "shannon", "invsimpson", "simpson").</p></td>
     </tr>
     </table>
     

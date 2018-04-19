@@ -2,7 +2,7 @@
 % Please edit documentation in R/vgn_diversity.R
 \name{vgn_diversity}
 \alias{vgn_diversity}
-\title{Shannon and Simpson diversity indices.}
+\title{Diversity metrics from vegan.}
 \usage{
 vgn_diversity(x, abundance, index = c("specnumber", "shannon"))
 }
@@ -11,16 +11,17 @@ vgn_diversity(x, abundance, index = c("specnumber", "shannon"))
 
 \item{abundance}{A numeric column in \code{x} giving the abundance by species.}
 
-\item{index}{Some of c("specnumber", "shannon", "invsimpson", "simpson")}
+\item{index}{Some of c("specnumber", "shannon", "invsimpson", "simpson").}
 }
 \value{
 A summary of the input dataframe, with the additional column
 \code{diversity}.
 }
 \description{
-Adds a column \code{diversity}, of Shannon and Simpson diversity indices
-calculated with \code{\link[vegan:diversity]{vegan::diversity()}}. The output is a dataframe, convenient
-for workflows with general purpose tools such as \strong{dplyr} and \strong{ggplot2}.
+Calculates common diversity metrics documented in \code{\link[vegan:diversity]{vegan::diversity()}}.
+Compared to the output of \strong{vegan}, these functions output a dataframe
+conveniently structure for workflows with general purpose tools such as
+\strong{dplyr} and \strong{ggplot2}.
 }
 \section{Acknowledgements}{
 

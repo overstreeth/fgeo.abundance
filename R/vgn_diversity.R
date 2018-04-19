@@ -1,12 +1,13 @@
-#' Shannon and Simpson diversity indices.
+#' Diversity metrics from vegan.
 #' 
-#' Adds a column `diversity`, of Shannon and Simpson diversity indices
-#' calculated with [vegan::diversity()]. The output is a dataframe, convenient
-#' for workflows with general purpose tools such as __dplyr__ and __ggplot2__.
+#' Calculates common diversity metrics documented in [vegan::diversity()].
+#' Compared to the output of __vegan__, these functions output a dataframe
+#' conveniently structure for workflows with general purpose tools such as
+#' __dplyr__ and __ggplot2__.
 #'
 #' @param x A dataframe.
 #' @param abundance A numeric column in `x` giving the abundance by species.
-#' @param index Some of c("specnumber", "shannon", "invsimpson", "simpson")
+#' @param index Some of c("specnumber", "shannon", "invsimpson", "simpson").
 #' 
 #' @seealso [vegan::diversity()].
 #'
