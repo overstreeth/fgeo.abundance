@@ -1,6 +1,9 @@
 context("vgn_diversity.R")
 
+library(purrr)
 library(dplyr)
+library(tidyr)
+library(vegan)
 
 cns <- data.frame(
   CensusID = factor(rep(c(1, 2), 3)),
@@ -115,11 +118,7 @@ test_that("outputs equal to vegan with different species accross groups", {
 
 # Setup
 
-library(tidyverse)
-library(fgeo.abundance)
-library(vegan)
 data(BCI)
-
 bci_wide <- BCI %>% 
   rowid_to_column() %>% 
   as.tibble()
@@ -186,7 +185,3 @@ test_that("Ceros don't matter", {
     length() == 1
     expect_true(out)
 })
-
-
-
-
