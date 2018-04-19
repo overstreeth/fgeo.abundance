@@ -4,15 +4,14 @@
 \alias{vgn_diversity}
 \title{Shannon and Simpson diversity indices.}
 \usage{
-vgn_diversity(x, abundance, index = c("specnumber", "shannon", "invsimpson",
-  "simpson"))
+vgn_diversity(x, abundance, index = c("specnumber", "shannon"))
 }
 \arguments{
 \item{x}{A dataframe.}
 
 \item{abundance}{A numeric column in \code{x} giving the abundance by species.}
 
-\item{index}{An index as described}
+\item{index}{Some of c("specnumber", "shannon", "invsimpson", "simpson")}
 }
 \value{
 A summary of the input dataframe, with the additional column
@@ -38,10 +37,11 @@ library(ggplot2)
 
 census <- data.frame(
   quadrat = rep(c("0000", "0001"), each = 3),
-  sp = rep(paste0("sp", 1:3), 2),
+  sp = paste0("sp", c(1:3, 1, 4, 5)),
   n = sample.int(100, 6),
   stringsAsFactors = FALSE
 )
+census <- census[1:5, ]
 census
 
 ungrouped <- census
@@ -49,8 +49,17 @@ vgn_diversity(ungrouped, n)
 
 by_quadrat <- group_by(census, quadrat)
 vgn_diversity(by_quadrat, n)
+# Is a shortcut for ...
 
-vgn_diversity(by_quadrat, n, index = "shannon")
+div <- mutate(
+  by_quadrat,
+  specnumber = vegan::specnumber(n),
+  shannon = vegan::diversity(n)
+)
+gather(ungroup(div), "index", "value", specnumber:shannon) \%>\% 
+  select(quadrat, index, value) \%>\% 
+  unique() \%>\% 
+  arrange(quadrat, desc(index))
 
 # The output of `vgn_diversity` flows well into common pipelines:
 

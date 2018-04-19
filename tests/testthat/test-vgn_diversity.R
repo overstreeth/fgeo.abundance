@@ -41,14 +41,16 @@ test_that("fails with informative error", {
 })
 
 test_that("output is equal to vegan", {
-  div <- vgn_diversity(cns, n)
+  div <- vgn_diversity(
+    cns, n, c("shannon", "simpson", "invsimpson", "specnumber")
+  )
   shan <- vegan::diversity(cns$n, "shannon")
   simp <- vegan::diversity(cns$n, "simpson")
   invs <- vegan::diversity(cns$n, "invsimpson")
+  
   pull_metric <- function(x, metric) {
     dplyr::filter(x, index == metric)$value
   }
-  
   expect_true(dplyr::near(pull_metric(div, "shannon"), shan))
   expect_true(dplyr::near(pull_metric(div, "simpson"), simp))
   expect_true(dplyr::near(pull_metric(div, "invsimpson"), invs))
@@ -75,3 +77,38 @@ test_that("works with combined indices", {
   expect_silent(vgn_diversity(cns, n, index = c("specnumber", "shannon")))
   expect_silent(vgn_diversity(cns, n, index = c("shannon", "specnumber")))
 })
+
+
+
+test_that("outputs equal to vegan with different species accross groups", {
+  census <- data.frame(
+    quadrat = rep(c("0000", "0001"), each = 3),
+    sp = paste0("sp", c(1:3, 1, 4, 5)),
+    n = sample.int(100, 6),
+    stringsAsFactors = FALSE
+  )
+  census <- census[1:5, ]
+
+  ref <- census %>% 
+    group_by(quadrat) %>% 
+    mutate(
+      specnumber = vegan::specnumber(n),
+      shannon = vegan::diversity(n, "shannon"),
+      simpson = vegan::diversity(n, "simpson"),
+      invsimpson = vegan::diversity(n, "invsimpson")
+    )
+  
+  indices <- c("shannon", "simpson", "invsimpson", "specnumber")
+  out <- census %>% 
+    group_by(quadrat) %>% 
+    vgn_diversity(n, indices)
+  
+  compare_idx <- function(idx, out, ref) {
+    setdiff(unique(ref[[idx]]), out[out$index == idx, ][["value"]])
+  }
+  difference <- length(unlist(lapply(indices, compare_idx, out, ref)))
+  
+  expect_equal(difference, 0)
+})
+
+

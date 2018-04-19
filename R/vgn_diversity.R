@@ -6,7 +6,7 @@
 #'
 #' @param x A dataframe.
 #' @param abundance A numeric column in `x` giving the abundance by species.
-#' @param index An index as described
+#' @param index Some of c("specnumber", "shannon", "invsimpson", "simpson")
 #' 
 #' @seealso [vegan::diversity()].
 #'
@@ -26,10 +26,11 @@
 #' 
 #' census <- data.frame(
 #'   quadrat = rep(c("0000", "0001"), each = 3),
-#'   sp = rep(paste0("sp", 1:3), 2),
+#'   sp = paste0("sp", c(1:3, 1, 4, 5)),
 #'   n = sample.int(100, 6),
 #'   stringsAsFactors = FALSE
 #' )
+#' census <- census[1:5, ]
 #' census
 #' 
 #' ungrouped <- census
@@ -37,8 +38,17 @@
 #' 
 #' by_quadrat <- group_by(census, quadrat)
 #' vgn_diversity(by_quadrat, n)
+#' # Is a shortcut for ...
 #' 
-#' vgn_diversity(by_quadrat, n, index = "shannon")
+#' div <- mutate(
+#'   by_quadrat,
+#'   specnumber = vegan::specnumber(n),
+#'   shannon = vegan::diversity(n)
+#' )
+#' gather(ungroup(div), "index", "value", specnumber:shannon) %>% 
+#'   select(quadrat, index, value) %>% 
+#'   unique() %>% 
+#'   arrange(quadrat, desc(index))
 #' 
 #' # The output of `vgn_diversity` flows well into common pipelines:
 #' 
@@ -56,11 +66,7 @@
 #' diversity %>%
 #'   group_by(index) %>%
 #'   summarise(mean = mean(value))
-vgn_diversity <- function(x, 
-                          abundance, 
-                          index = c(
-                            "specnumber", "shannon", "invsimpson", "simpson"
-                          )) {
+vgn_diversity <- function(x, abundance, index = c("specnumber", "shannon")) {
   stopifnot(is.data.frame(x))
   abundance <- rlang::enquo(abundance)
   abundance_is_missing <- identical(as.character(abundance[[2]]), "")
@@ -75,17 +81,18 @@ vgn_diversity <- function(x,
 }
 
 enframe_diversity <- function(x, index) {
-  div <- tibble::enframe(vegan_diversity_ls(x, index = index), name = "index")
+  div <- combine_diversity_indices(x, index = index) %>% 
+    tibble::enframe(name = "index")
   list(div)
 }
 
-vegan_diversity_ls <- function(x, index = c("specnumber")) {
-  check_god_idx(index)
+combine_diversity_indices <- function(x, index = c("specnumber")) {
+  check_indices(index)
   out <- c(vegan_specnumber(x, index), vegan_diversity(x, index))
   out[!is.na(out)]
 }
   
-check_god_idx <- function(index) {
+check_indices <- function(index) {
   good_idx <- c("specnumber", "shannon", "invsimpson", "simpson")
   some_invalid_idx <- !all(index %in% good_idx)
   if (some_invalid_idx) {
