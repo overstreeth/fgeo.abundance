@@ -72,8 +72,8 @@
 #' # Richness by quadrat:
 #' # Count is designed so that you can call it repeatedly, each time rolling up a
 #' # level of detail.
-#' # Now, each row by quadrat is a unique species, so counting rows gives
-#' richness
+#' # Now, each row by quadrat is a unique species, so counting rows gives 
+#' # richness
 #' census %>% 
 #'   count(quadrat, sp) %>% 
 #'   count(quadrat)

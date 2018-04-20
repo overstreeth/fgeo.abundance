@@ -250,8 +250,9 @@ ForestGEO.</p>
 <span class='co'># Richness by quadrat:</span>
 <span class='co'># Count is designed so that you can call it repeatedly, each time rolling up a</span>
 <span class='co'># level of detail.</span>
-<span class='co'># Now, each row by quadrat is a unique species, so counting rows gives</span>
-<span class='no'>richness</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'richness' not found</span></div><div class='input'><span class='no'>census</span> <span class='kw'>%&gt;%</span>
+<span class='co'># Now, each row by quadrat is a unique species, so counting rows gives </span>
+<span class='co'># richness</span>
+<span class='no'>census</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>, <span class='no'>sp</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat    nn
