@@ -2,7 +2,7 @@ context("abundance")
 
 suppressWarnings(library(dplyr))
 
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 
 df <- data.frame(
   sp = rep(letters[1:3], each = 2),
@@ -72,7 +72,7 @@ test_that("tricky objects in global environment cause no scoping issues", {
 
 context("abundance_tally")
 
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 
 df <- data.frame(
   sp = rep(letters[1:3], each = 2),

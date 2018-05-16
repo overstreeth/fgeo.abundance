@@ -45,7 +45,7 @@ library(fgeo.abundance)
 
 ```{r}
 # Example data
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 ```
 
 # Abundance
@@ -104,7 +104,7 @@ is_var_identical(with_fgeo.abundance, with_dplyr, "n")
 Compared to `abundance()`, `basal_area()` behaves very similarly: it provides a quick way to calculate the basal area of alive trees of each species within each quadrat:
 
 ```{r}
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 ba <- basal_area(stem)
 head(ba)
 

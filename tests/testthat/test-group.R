@@ -1,11 +1,11 @@
 context("group")
 
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 
 library(dplyr)
 library(tibble)
 
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 
 df <- data.frame(
   sp = rep(letters[1:3], each = 2),

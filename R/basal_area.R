@@ -20,7 +20,7 @@
 #' @rdname basal_area
 #'
 #' @examples
-#' stem <- bciex::bci12s7mini
+#' stem <- fgeo.data::luquillo_stem_random_tiny
 #' 
 #' head(stem$dbh)
 #' head(basal_area_ind(stem$dbh))

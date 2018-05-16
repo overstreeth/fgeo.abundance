@@ -12,14 +12,14 @@ BugReports: https://github.com/forestgeo/fgeo.abundance/issues
 Depends: 
     R (>= 3.1.2)
 Imports: 
-    bciex,
     dplyr,
-    rlang (>= 0.1.2),
-    utils,
-    vegan,
+    fgeo.data,
     ggplot2,
+    magrittr,
+    rlang (>= 0.1.2),
     tidyr,
-    magrittr
+    utils,
+    vegan
 Suggests: 
     covr,
     knitr,
@@ -29,8 +29,9 @@ Suggests:
     testthat,
     tibble
 VignetteBuilder: knitr
+Remotes: 
+    forestgeo/bciex
 Encoding: UTF-8
 LazyData: true
-Remotes: forestgeo/bciex
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1

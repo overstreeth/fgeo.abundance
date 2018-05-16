@@ -35,7 +35,7 @@ you input diameter measured in mm, the output will be an area measured in
 mm^2.
 }
 \examples{
-stem <- bciex::bci12s7mini
+stem <- fgeo.data::luquillo_stem_random_tiny
 
 head(stem$dbh)
 head(basal_area_ind(stem$dbh))

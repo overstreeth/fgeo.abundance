@@ -25,7 +25,7 @@
 #' @seealso [dplyr::tally()], [dplyr::count()].
 #' @family grouped summaries
 #' @examples
-#' stem <- bciex::bci12s7mini
+#' stem <- fgeo.data::luquillo_stem_random_tiny
 #' 
 #' # Returns a data frame by groups
 #' n <- abundance(stem)
