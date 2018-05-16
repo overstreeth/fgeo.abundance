@@ -84,7 +84,6 @@
 #' census %>% 
 #'   add_count(quadrat, sp) %>% 
 #'   filter(n == 1)
-#' @export
 abundance <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
   grouped <- group(x = x, group_by = group_by, only_alive = only_alive)
   count <- dplyr::summarise(grouped, n = n())
