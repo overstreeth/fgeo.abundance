@@ -2,66 +2,25 @@
 % Please edit documentation in R/abundance.R
 \name{abundance}
 \alias{abundance}
-\alias{abundance_tally}
-\title{Count number of individuals in total or by groups.}
-\usage{
-abundance(x, group_by = c("quadrat", "sp"), only_alive = TRUE)
-
-abundance_tally(x, only_alive = TRUE)
-}
-\arguments{
-\item{x}{Census data.}
-
-\item{group_by}{Character string giving the names of variables to group by.}
-
-\item{only_alive}{If TRUE, counts only alive individuals (`status == "A"`).
-If FALSE counts individuals of all available statuses.}
-}
-\value{
-\itemize{
-\item \code{abundance_tally()}: An integer giving the number of rows in \code{x}, which
-for census data equals the number of unique individuals.
-\item \code{abundance()}: a data frame giving the number of individuals in each
-group defined by \code{group_by}.
-}
-}
+\alias{tally}
+\alias{count}
+\alias{add_tally}
+\alias{add_count}
+\title{Count individuals by group.}
 \description{
-Count number of individuals in total (\code{abundance_tally()}) or by groups
-(\code{abundance()}). These functions wrap functions in the \strong{dplyr} package to
-provide shortcuts similar to those in the original CTFSRPackage (see
-Warning).
+To calculate the abundance of individuals by groups is a particular case of
+the more general issue of counting observations. This is such a common action
+that there are great tools for doing just that. Some of the most widely used
+and well tested are \code{count()}, \code{tally()}, \code{add_count()} and \code{add_tally()}
+from the \strong{dplyr} package. For convenience, those functions are reexported
+by by \strong{fgeo.abundance} so they will be available to you when you run
+\code{library(fgeo.abundance)}. The examples below are show specifically how these
+functions apply to ForestGEO data. To learn more about these functions, and
+to see more general examples, please refer to the original documentation of
+\code{\link[dplyr:count]{dplyr::count()}}.
 }
-\section{Warning}{
-
-You should prefer using dplyr directly (see Examples) -- it is more explicit
-and general, which will make your code more readable by people outside
-ForestGEO.
-}
-
 \examples{
-stem <- fgeo.data::luquillo_stem_random_tiny
-
-# Returns a data frame by groups
-n <- abundance(stem)
-head(n)
-
-# Instead of a data frame, return an integer representing a tally
-abundance_tally(stem)
-
-# Count not only alive
-n <- abundance(stem, group_by = c("status", "sp"), only_alive = FALSE)
-ordered_by_species <- order(n$sp)
-head(n[ordered_by_species, ])
-
-
-
-# ALTERNATIVE: Prefer dplyr; it is more general and explicit
-library(dplyr)
-
-alive <- dplyr::filter(stem, status == "A")
-grouped <- count(alive, quadrat, sp)
-
-census <- tibble(
+census <- tibble::tibble(
   stemID = 1:6,
   quadrat = paste0("000", rep(1:2, each = 3)),
   sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
@@ -71,39 +30,30 @@ census
 
 # Abundance (rows count) by quadrat
 count(census, quadrat)
-# same
-census \%>\% count(quadrat)
 
 # Abundance (rows count) by species
 count(census, sp)
 
 # Abundance (rows count) by quadrat by species
 count(census, quadrat, sp)
-# same
-census \%>\% count(quadrat, sp)
-
 
 # Richness by quadrat:
-# Count is designed so that you can call it repeatedly, each time rolling up a
-# level of detail.
+# Count is designed so that you can call it repeatedly, each time rolling up
+# a level of detail.
 # Now, each row by quadrat is a unique species, so counting rows gives
 # richness
-census \%>\%
-  count(quadrat, sp) \%>\%
-  count(quadrat)
+n_quad_sp <- count(census, quadrat, sp)
+richness_quad <- count(n_quad_sp, quadrat)
+richness_quad
 
 # Singleton:
 # add_count() is useful for groupwise filtering e.g.: show only species that
 # have a single member
-census \%>\%
-  add_count(quadrat, sp) \%>\%
-  filter(n == 1)
+out <- add_count(census, quadrat, sp)
+subset(out, n == 1)
 }
 \seealso{
-\code{\link[dplyr:tally]{dplyr::tally()}}, \code{\link[dplyr:count]{dplyr::count()}}.
+\code{\link[dplyr:count]{dplyr::count()}}.
 
 Other grouped summaries: \code{\link{basal_area}}
-}
-\author{
-Gabriel Arellano, Sean McMahon & Mauro Lepore.
 }

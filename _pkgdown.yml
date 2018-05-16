@@ -39,7 +39,6 @@ reference:
   - title: Summaries of abundance and diversity
     contents: 
       - abundance
-      - abundance_tally
       - basal_area
       - basal_area_ind
       - vgn_diversity
