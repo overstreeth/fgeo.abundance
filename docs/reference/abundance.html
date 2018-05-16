@@ -162,7 +162,7 @@ group defined by <code>group_by</code>.</p></li>
     <h2 class="hasAnchor" id="warning"><a class="anchor" href="#warning"></a>Warning</h2>
 
     
-    <p>You should prefer using dplyr dirctly (see Examples) -- it is more explicit
+    <p>You should prefer using dplyr directly (see Examples) -- it is more explicit
 and general, which will make your code more readable by people outside
 ForestGEO.</p>
     
@@ -196,8 +196,14 @@ ForestGEO.</p>
 
 
 <span class='co'># ALTERNATIVE: Prefer dplyr; it is more general and explicit</span>
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)
-
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
 <span class='no'>alive</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>stem</span>, <span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"A"</span>)
 <span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
 
@@ -251,7 +257,7 @@ ForestGEO.</p>
 <span class='co'># Richness by quadrat:</span>
 <span class='co'># Count is designed so that you can call it repeatedly, each time rolling up a</span>
 <span class='co'># level of detail.</span>
-<span class='co'># Now, each row by quadrat is a unique species, so counting rows gives </span>
+<span class='co'># Now, each row by quadrat is a unique species, so counting rows gives</span>
 <span class='co'># richness</span>
 <span class='no'>census</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>, <span class='no'>sp</span>) <span class='kw'>%&gt;%</span>

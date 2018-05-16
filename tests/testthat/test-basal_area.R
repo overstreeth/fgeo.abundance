@@ -11,7 +11,7 @@ df <- data.frame(
 
 test_that("returns a data frame", {
   result <- suppressMessages(basal_area(df))
-  expect_type(result , "list")
+  expect_type(result, "list")
   expect_true(is.data.frame(basal_area(df)))
 })
 
@@ -32,7 +32,7 @@ test_that("returns the correct sum", {
     dbh = rnorm(6)
   )
   df$ba <- suppressMessages(basal_area_ind(df$dbh))
-  
+
   actual <- sum(basal_area(df, "quadrat", FALSE) %>% pull(basal_area))
   expected <- sum(df$ba)
   expect_equal(actual, expected)
@@ -43,7 +43,7 @@ test_that("Argument only_alive works as expected", {
     basal_area(df, group_by = "status", only_alive = FALSE)
   )
   expect_length(unique(result$status), 2)
-  
+
   # Using default group_by = c("quadrat", "sp")
   result <- suppressMessages(basal_area(df, only_alive = FALSE))
   expect_equal(nrow(result), 6)
@@ -63,31 +63,30 @@ test_that("weird arguments throw error", {
   expect_error(basal_area(NULL))
   expect_error(basal_area(numeric(0)))
   expect_error(basal_area(NA))
-  
-  expect_error(basal_area(df, group_by = NULL))
-  
-  expect_error(basal_area(df, only_alive = NULL))  
 
+  expect_error(basal_area(df, group_by = NULL))
+
+  expect_error(basal_area(df, only_alive = NULL))
 })
 
 test_that("tricky objects in global environment cause no scoping issues", {
   # Create a confusing variable on the global environment
   # confusing because `parsed_groups` exists in the function's body
-  parsed_groups <- c("status")  # this should be ignored
-  nms <- basal_area(df) %>% 
-    as_tibble() %>% 
+  parsed_groups <- c("status") # this should be ignored
+  nms <- basal_area(df) %>%
+    as_tibble() %>%
     names()
   expect_false("status" %in% nms)
 
-  group_by <- c("status")  # this should be ignored
-  nms <- basal_area(df) %>% 
-    as_tibble() %>% 
+  group_by <- c("status") # this should be ignored
+  nms <- basal_area(df) %>%
+    as_tibble() %>%
     names()
   expect_false("status" %in% nms)
 
-  group_by <- c("status")  # this should be ignored
-  nms <- basal_area(df, group_by = group_by) %>% 
-    as_tibble() %>% 
+  group_by <- c("status") # this should be ignored
+  nms <- basal_area(df, group_by = group_by) %>%
+    as_tibble() %>%
     names()
   expect_true("status" %in% nms)
 })

@@ -33,7 +33,7 @@ Warning).
 }
 \section{Warning}{
 
-You should prefer using dplyr dirctly (see Examples) -- it is more explicit
+You should prefer using dplyr directly (see Examples) -- it is more explicit
 and general, which will make your code more readable by people outside
 ForestGEO.
 }
@@ -86,17 +86,17 @@ census \%>\% count(quadrat, sp)
 # Richness by quadrat:
 # Count is designed so that you can call it repeatedly, each time rolling up a
 # level of detail.
-# Now, each row by quadrat is a unique species, so counting rows gives 
+# Now, each row by quadrat is a unique species, so counting rows gives
 # richness
-census \%>\% 
-  count(quadrat, sp) \%>\% 
+census \%>\%
+  count(quadrat, sp) \%>\%
   count(quadrat)
 
 # Singleton:
 # add_count() is useful for groupwise filtering e.g.: show only species that
 # have a single member
-census \%>\% 
-  add_count(quadrat, sp) \%>\% 
+census \%>\%
+  add_count(quadrat, sp) \%>\%
   filter(n == 1)
 }
 \seealso{

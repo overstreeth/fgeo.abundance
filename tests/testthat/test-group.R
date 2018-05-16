@@ -35,27 +35,27 @@ test_that("weird arguments throw error", {
   expect_error(group(NULL, group_by = "status", only_alive = TRUE))
   expect_error(group(numeric(0), group_by = "status", only_alive = TRUE))
   expect_error(group(NA, group_by = "status", only_alive = TRUE))
-  
+
   expect_error(group(df, group_by = NULL, only_alive = TRUE))
-  
-  expect_error(group(df, group_by = "status", only_alive = NULL))  
+
+  expect_error(group(df, group_by = "status", only_alive = NULL))
 })
 
 test_that("tricky objects in global environment cause no scoping issues", {
   # Create a confusing variable on the global environment
   # confusing because `parsed_groups` exists in the function's body
-  parsed_groups <- c("status")  # this should be ignored
-  res <- group(df, group_by = c("quadrat", "sp"), only_alive = TRUE) %>% 
+  parsed_groups <- c("status") # this should be ignored
+  res <- group(df, group_by = c("quadrat", "sp"), only_alive = TRUE) %>%
     as_tibble()
   expect_false("status" %in% groups(res))
 
-  group_by <- c("status")  # this should be ignored
-  res <- group(df, group_by = c("quadrat", "sp"), only_alive = TRUE) %>% 
-  as_tibble()
+  group_by <- c("status") # this should be ignored
+  res <- group(df, group_by = c("quadrat", "sp"), only_alive = TRUE) %>%
+    as_tibble()
   expect_false("status" %in% groups(res))
-  
-  group_by <- c("status")  # this should be ignored
-  res <- group(df, group_by = group_by, only_alive = TRUE) %>% 
-  as_tibble()
+
+  group_by <- c("status") # this should be ignored
+  res <- group(df, group_by = group_by, only_alive = TRUE) %>%
+    as_tibble()
   expect_true("status" %in% groups(res))
 })

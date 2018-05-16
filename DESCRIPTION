@@ -13,24 +13,24 @@ Depends:
     R (>= 3.1.2)
 Imports: 
     dplyr,
-    fgeo.data,
-    ggplot2,
     magrittr,
     rlang (>= 0.1.2),
     tidyr,
-    utils,
     vegan
 Suggests: 
     covr,
+    fgeo.data,
+    ggplot2,
     knitr,
     purrr,
     readr,
     rmarkdown,
     testthat,
-    tibble
+    tibble,
+    utils
 VignetteBuilder: knitr
 Remotes: 
-    forestgeo/bciex
+    forestgeo/fgeo.data
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

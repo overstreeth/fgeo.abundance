@@ -23,7 +23,7 @@ Compared to the output of \strong{vegan}, these functions output a dataframe
 conveniently structure for workflows with general purpose tools such as
 \strong{dplyr} and \strong{ggplot2}.
 }
-\section{Acknowledgements}{
+\section{Acknowledgments}{
 
 \itemize{
 \item David Kenfack inspired the need for this function.

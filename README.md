@@ -67,7 +67,7 @@ vgn_diversity(abund, n)
   - [Contributing](CONTRIBUTING.md).
   - [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Acknowledgements
+## Acknowledgments
 
 Thanks to all partners of ForestGEO, for sharing their ideas and code.
 Special thanks for inspiring ideas to David Kenfack and Jenny Bryan

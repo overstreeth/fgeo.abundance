@@ -170,18 +170,18 @@ mm^2.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/fgeo.data/topics/census_luquillo'>luquillo_stem_random_tiny</a></span>
 
-<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 155.0 168.0 118.0  50.4  51.0  18.0</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt; [1] 18869 22167 10936  1995  2043   254</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 155.0 168.0 118.0  50.4  51.0  18.0</div><div class='input'><span class='fu'>head</span>(<span class='fu'>basal_area_ind</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt; [1] 18869.191 22167.078 10935.884  1995.037  2042.821   254.469</div><div class='input'>
 <span class='fu'>head</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>))</div><div class='output co'>#&gt; <span class='message'>Units of returned values are the square of the input units.</span></div><div class='output co'>#&gt;   quadrat     sp basal_area
-#&gt; 1     402 PREMON     324640
-#&gt; 2     402 SLOBER      15573
-#&gt; 3     517 CASARB      74819
-#&gt; 4     517 PREMON     171304</div><div class='input'>
+#&gt; 1     402 PREMON  324640.40
+#&gt; 2     402 SLOBER   15572.56
+#&gt; 3     517 CASARB   74819.17
+#&gt; 4     517 PREMON  171303.98</div><div class='input'>
 <span class='co'># Silent</span>
 <span class='fu'>head</span>(<span class='fu'>suppressMessages</span>(<span class='fu'>basal_area</span>(<span class='no'>stem</span>)))</div><div class='output co'>#&gt;   quadrat     sp basal_area
-#&gt; 1     402 PREMON     324640
-#&gt; 2     402 SLOBER      15573
-#&gt; 3     517 CASARB      74819
-#&gt; 4     517 PREMON     171304</div></pre>
+#&gt; 1     402 PREMON  324640.40
+#&gt; 2     402 SLOBER   15572.56
+#&gt; 3     517 CASARB   74819.17
+#&gt; 4     517 PREMON  171303.98</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

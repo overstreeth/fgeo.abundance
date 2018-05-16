@@ -1,5 +1,5 @@
 #' Diversity metrics from vegan.
-#' 
+#'
 #' Calculates common diversity metrics documented in [vegan::diversity()].
 #' Compared to the output of __vegan__, these functions output a dataframe
 #' conveniently structure for workflows with general purpose tools such as
@@ -8,23 +8,23 @@
 #' @param x A dataframe.
 #' @param abundance A numeric column in `x` giving the abundance by species.
 #' @param index Some of c("specnumber", "shannon", "invsimpson", "simpson").
-#' 
+#'
 #' @seealso [vegan::diversity()].
 #'
-#' @return A summary of the input dataframe, with the additional column 
+#' @return A summary of the input dataframe, with the additional column
 #' `diversity`.
-#' 
-#' @section Acknowledgements:
-#' * David Kenfack inspired the need for this function. 
+#'
+#' @section Acknowledgments:
+#' * David Kenfack inspired the need for this function.
 #' * A talk by Jenny Bryan (rstd.io/row-work) inspired the fundamental
 #'   implementation details.
-#' 
+#'
 #' @export
 #'
 #' @examples
 #' library(dplyr)
 #' library(ggplot2)
-#' 
+#'
 #' census <- data.frame(
 #'   quadrat = rep(c("0000", "0001"), each = 3),
 #'   sp = paste0("sp", c(1:3, 1, 4, 5)),
@@ -33,32 +33,32 @@
 #' )
 #' census <- census[1:5, ]
 #' census
-#' 
+#'
 #' ungrouped <- census
 #' vgn_diversity(ungrouped, n)
-#' 
+#'
 #' by_quadrat <- group_by(census, quadrat)
 #' vgn_diversity(by_quadrat, n)
-#' 
+#'
 #' # Similar alternative
 #' summarise(
 #'   by_quadrat,
 #'   specnumber = vegan::specnumber(n),
 #'   shannon = vegan::diversity(n)
 #' )
-#' 
+#'
 #' # The output of `vgn_diversity` flows well into common pipelines:
-#' 
+#'
 #' diversity <- census %>%
 #'   group_by(quadrat) %>%
 #'   vgn_diversity(n)
 #' diversity
-#' 
+#'
 #' # A plot
 #' diversity %>%
 #'   ggplot(aes(quadrat, value)) +
 #'   geom_col(aes(fill = index), position = "dodge")
-#' 
+#'
 #' # A summary
 #' diversity %>%
 #'   group_by(index) %>%
@@ -72,13 +72,14 @@ vgn_diversity <- function(x, abundance, index = c("specnumber", "shannon")) {
   }
 
   div <- dplyr::summarise(
-    x, diversity = enframe_diversity(x = !! abundance, index = index)
+    x,
+    diversity = enframe_diversity(x = !!abundance, index = index)
   )
   tidyr::unnest(tidyr::unnest(div))
 }
 
 enframe_diversity <- function(x, index) {
-  div <- combine_diversity_indices(x, index = index) %>% 
+  div <- combine_diversity_indices(x, index = index) %>%
     tibble::enframe(name = "index")
   list(div)
 }
@@ -88,7 +89,7 @@ combine_diversity_indices <- function(x, index = c("specnumber")) {
   out <- c(vegan_specnumber(x, index), vegan_diversity(x, index))
   out[!is.na(out)]
 }
-  
+
 check_indices <- function(index) {
   good_idx <- c("specnumber", "shannon", "invsimpson", "simpson")
   some_invalid_idx <- !all(index %in% good_idx)
@@ -100,7 +101,7 @@ check_indices <- function(index) {
 
 vegan_specnumber <- function(x, index) {
   out <- ifelse(
-    "specnumber" %in% index, 
+    "specnumber" %in% index,
     vegan::specnumber(x, MARGIN = 1),
     NA
   )
@@ -110,11 +111,10 @@ vegan_specnumber <- function(x, index) {
 vegan_diversity <- function(x, index) {
   div_index <- setdiff(index, "specnumber")
   out <- if (length(div_index) > 0) {
-    purrr::map(.x = div_index, ~vegan::diversity(x, .x, MARGIN = 2)) %>% 
+    purrr::map(.x = div_index, ~ vegan::diversity(x, .x, MARGIN = 2)) %>%
       purrr::set_names(div_index)
   } else {
     NA
   }
   out
 }
-
