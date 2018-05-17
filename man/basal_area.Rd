@@ -20,10 +20,13 @@ If FALSE counts individuals of all available statuses.}
 \item{diameter}{A vector giving the individuals' diameter (generally, \code{x$dbh}).}
 }
 \value{
+Each individual calculation is simply the area of a circle given its
+diameter; thus the unit of the returned value is the square of the input
+units unit (i.e. for input in mm, output is mm^2; for input in cm, output is
+cm^2, and so on).
 \itemize{
 \item \code{basal_area_ind()}: A numeric vector giving the basal area of each
-individual in the same units as the input vector. This is simply the
-area of a circle given its diameter.
+individual.
 }
 }
 \description{

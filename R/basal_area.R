@@ -11,11 +11,15 @@
 #' @template only_alive
 #' @param diameter A vector giving the individuals' diameter (generally, `x$dbh`).
 #'
-#' @return
+#' @return Each individual calculation is simply the area of a circle given its
+#'   diameter; thus the unit of the returned value is the square of the input
+#'   units unit (i.e. for input in mm, output is mm^2; for input in cm, output is
+#'   cm^2, and so on).
 #'   * `basal_area_ind()`: A numeric vector giving the basal area of each
-#'     individual in the same units as the input vector. This is simply the
-#'     area of a circle given its diameter.
+#'   individual.
+#' 
 #' @family grouped summaries
+#' 
 #' @export
 #' @rdname basal_area
 #'
@@ -32,24 +36,26 @@
 basal_area <- function(x, group_by = c("quadrat", "sp"), only_alive = TRUE) {
   grouped <- group(x = x, group_by = group_by, only_alive = only_alive)
 
-  sum_basal_area <- function(diameter) {
-    sum(suppressMessages(basal_area_ind(diameter)), na.rm = TRUE)
-  }
-  count <- dplyr::summarise(grouped, basal_area = sum_basal_area(.data$dbh))
-  message("Units of returned values are the square of the input units.")
-  as.data.frame(count, stringsAsFactors = FALSE)
+  dplyr::summarise(
+    grouped, 
+    basal_area = sum(basal_area_ind(.data$dbh), na.rm = TRUE)
+  )
 }
 
 #' @export
 #' @rdname basal_area
 basal_area_ind <- function(diameter) {
-  if (length(diameter) == 0) {
-    stop(
-      "The vector passed to `diameter` is empty.\n",
-      "  * Provide a non empty vector."
-    )
-  }
-
-  message("Units of returned values are the square of the input units.")
+  check_basal_area_ind(d = diameter)
   1 / 4 * pi * (diameter)^2
 }
+
+check_basal_area_ind <- function(d) {
+  
+  if (identical(length(d), 0)) {
+    abort(paste(
+      "The vector passed to `diameter` is empty.\n",
+      "  * Provide a non empty vector."
+    ))
+  }
+  invisible(d)
+}  
