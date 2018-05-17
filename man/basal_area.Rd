@@ -2,22 +2,21 @@
 % Please edit documentation in R/basal_area.R
 \name{basal_area}
 \alias{basal_area}
-\alias{basal_area_ind}
-\title{Basal area.}
+\alias{basal_area.numeric}
+\title{Basal area of each individual.}
 \usage{
-basal_area(x, group_by = c("quadrat", "sp"), only_alive = TRUE)
+basal_area(x)
 
-basal_area_ind(diameter)
+\method{basal_area}{numeric}(x, group_by, only_alive)
 }
 \arguments{
-\item{x}{Census data.}
+\item{x}{A vector giving the individuals' diameter or a dataframe with
+individuals' diameter stored in the column \code{dbh}.}
 
 \item{group_by}{Character string giving the names of variables to group by.}
 
-\item{only_alive}{If TRUE, counts only alive individuals (`status == "A"`).
+\item{only_alive}{If TRUE, counts only alive individuals (\code{status == "A"}).
 If FALSE counts individuals of all available statuses.}
-
-\item{diameter}{A vector giving the individuals' diameter (generally, \code{x$dbh}).}
 }
 \value{
 Each individual calculation is simply the area of a circle given its
@@ -25,23 +24,19 @@ diameter; thus the unit of the returned value is the square of the input
 units unit (i.e. for input in mm, output is mm^2; for input in cm, output is
 cm^2, and so on).
 \itemize{
-\item \code{basal_area_ind()}: A numeric vector giving the basal area of each
+\item \code{basal_area.numeric()}: A numeric vector giving the basal area of each
 individual.
 }
 }
 \description{
-Basal area of each individual (\code{basal_area_ind()}).
-}
-\details{
-Units of returned values are the square of the input units. For example, if
-you input diameter measured in mm, the output will be an area measured in
-mm^2.
+Basal area of each individual. The input can be either a vector or a
+dataframe.
 }
 \examples{
 stem <- fgeo.data::luquillo_stem_random_tiny
 
 head(stem$dbh)
-head(basal_area_ind(stem$dbh))
+head(basal_area.numeric(stem$dbh))
 
 head(basal_area(stem))
 
