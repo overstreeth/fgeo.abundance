@@ -32,26 +32,65 @@ For details on how to install packages from GitHub, see [this article](https://g
 
 ## Example
 
-Abundance and basal area.
-
 ```{r}
+library(dplyr)
+library(fgeo.base)
 library(fgeo.abundance)
 
-stem <- data.frame(
-  quadrat = paste0(0, 1:3),
-  sp = letters[1:3],
-  status = c("A", "A", "D"),
-  dbh = 1:3,
-  stringsAsFactors = FALSE
-)
-stem
+stem <- fgeo.data::luquillo_stem_random_tiny
+```
 
-basal_area(stem)
+```{r}
+pick <- keep_dbh_min(stem, 10)
+pick <- drop_status(pick, "G")
+# Same
+pick <- stem %>% 
+  keep_dbh_min(10) %>% 
+  drop_status("G")
 
-abund <- abundance(stem)
-abund
+pick
+```
 
-vgn_diversity(abund, n)
+### Basal area
+
+```{r}
+# Add basal area to a dataframe
+ba <- basal_area(pick$dbh)
+pick$ba <- ba
+# Same in one step
+pick <- mutate(pick, ba = basal_area(dbh))
+# Reordering columns to show `ba` first
+select(pick, ba, everything())
+
+# Summarize basal area
+basal_area(pick)
+
+# Now by groups
+basal_area(group_by(pick, quadrat))
+```
+
+### Abundance
+
+```{r}
+# Summarize abundance (rows count) by quadrat by species
+abundance <- count(pick, quadrat, sp)
+abundance
+
+# add_count() is useful for groupwise filtering. E.g.: to keep all data from
+# species which abundance per quadrat is under some treshold
+with_abundance <- add_count(pick, quadrat, sp)
+under_treshold <- filter(with_abundance, n < 20)
+select(under_treshold, quadrat, sp, n, everything())
+```
+
+### Metrics of diversity
+
+```{r}
+vgn_diversity(abundance, n)
+
+# Same result, different format
+vegan::specnumber(abundance$n)
+vegan::diversity(abundance$n, "shannon")
 ```
 
 ## Information

@@ -16,9 +16,6 @@
 #' @family grouped summaries
 #' 
 #' @seealso [dplyr::count()].
-#' @importFrom dplyr tally count add_tally add_count
-#' @export           tally count add_tally add_count
-#' @aliases          tally count add_tally add_count
 #' 
 #' @examples
 #' census <- tibble::tibble(

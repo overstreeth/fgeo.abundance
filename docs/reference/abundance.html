@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count number of individuals in total or by groups. — abundance • fgeo.abundance</title>
+<title>Count individuals by group. — abundance • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,12 +28,18 @@
 
 
 
-<meta property="og:title" content="Count number of individuals in total or by groups. — abundance" />
+<meta property="og:title" content="Count individuals by group. — abundance" />
 
-<meta property="og:description" content="Count number of individuals in total (abundance_tally()) or by groups
-(abundance()). These functions wrap functions in the dplyr package to
-provide shortcuts similar to those in the original CTFSRPackage (see
-Warning)." />
+<meta property="og:description" content="To calculate the abundance of individuals by groups is a particular case of
+the more general issue of counting observations. This is such a common action
+that there are great tools for doing just that. Some of the most widely used
+and well tested are count(), tally(), add_count() and add_tally()
+from the dplyr package. For convenience, those functions are reexported
+by by fgeo.abundance so they will be available to you when you run
+library(fgeo.abundance). The examples below are show specifically how these
+functions apply to ForestGEO data. To learn more about these functions, and
+to see more general examples, please refer to the original documentation of
+dplyr::count()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -74,9 +80,6 @@ Warning)." />
   </a>
 </li>
 <li>
-  <a href="../articles/fgeo.abundance.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -112,106 +115,38 @@ Warning)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count number of individuals in total or by groups.</h1>
+    <h1>Count individuals by group.</h1>
     <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/abundance.R'><code>R/abundance.R</code></a></small>
     <div class="hidden name"><code>abundance.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Count number of individuals in total (<code>abundance_tally()</code>) or by groups
-(<code>abundance()</code>). These functions wrap functions in the <strong>dplyr</strong> package to
-provide shortcuts similar to those in the original CTFSRPackage (see
-Warning).</p>
+    <p>To calculate the abundance of individuals by groups is a particular case of
+the more general issue of counting observations. This is such a common action
+that there are great tools for doing just that. Some of the most widely used
+and well tested are <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>count()</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>tally()</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_count()</a></code> and <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_tally()</a></code>
+from the <strong>dplyr</strong> package. For convenience, those functions are reexported
+by by <strong>fgeo.abundance</strong> so they will be available to you when you run
+<code>library(fgeo.abundance)</code>. The examples below are show specifically how these
+functions apply to ForestGEO data. To learn more about these functions, and
+to see more general examples, please refer to the original documentation of
+<code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count()</a></code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>abundance</span>(<span class='no'>x</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"quadrat"</span>, <span class='st'>"sp"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>abundance_tally</span>(<span class='no'>x</span>, <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>Census data.</p></td>
-    </tr>
-    <tr>
-      <th>group_by</th>
-      <td><p>Character string giving the names of variables to group by.</p></td>
-    </tr>
-    <tr>
-      <th>only_alive</th>
-      <td><p>If TRUE, counts only alive individuals (`status == "A"`).
-If FALSE counts individuals of all available statuses.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    
-<ul>
-<li><p><code>abundance_tally()</code>: An integer giving the number of rows in <code>x</code>, which
-for census data equals the number of unique individuals.</p></li>
-<li><p><code>abundance()</code>: a data frame giving the number of individuals in each
-group defined by <code>group_by</code>.</p></li>
-</ul>
-
-    
-    <h2 class="hasAnchor" id="warning"><a class="anchor" href="#warning"></a>Warning</h2>
-
-    
-    <p>You should prefer using dplyr directly (see Examples) -- it is more explicit
-and general, which will make your code more readable by people outside
-ForestGEO.</p>
-    
+        
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::tally()</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count()</a></code>.</p>
-<p>Other grouped summaries: <code><a href='basal_area.html'>basal_area</a></code></p></div>
+    <div class='dont-index'><p><code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/fgeo.data/topics/census_luquillo'>luquillo_stem_random_tiny</a></span>
-
-<span class='co'># Returns a data frame by groups</span>
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>stem</span>)
-<span class='fu'>head</span>(<span class='no'>n</span>)</div><div class='output co'>#&gt;   quadrat     sp  n
-#&gt; 1     402 PREMON 16
-#&gt; 2     402 SLOBER 14
-#&gt; 3     517 CASARB 22
-#&gt; 4     517 PREMON 13</div><div class='input'>
-<span class='co'># Instead of a data frame, return an integer representing a tally</span>
-<span class='fu'>abundance_tally</span>(<span class='no'>stem</span>)</div><div class='output co'>#&gt; [1] 65</div><div class='input'>
-<span class='co'># Count not only alive</span>
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'>abundance</span>(<span class='no'>stem</span>, <span class='kw'>group_by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"status"</span>, <span class='st'>"sp"</span>), <span class='kw'>only_alive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>ordered_by_species</span> <span class='kw'>&lt;-</span> <span class='fu'>order</span>(<span class='no'>n</span>$<span class='no'>sp</span>)
-<span class='fu'>head</span>(<span class='no'>n</span>[<span class='no'>ordered_by_species</span>, ])</div><div class='output co'>#&gt;   status     sp  n
-#&gt; 1      A CASARB 22
-#&gt; 4      G CASARB 10
-#&gt; 2      A PREMON 29
-#&gt; 3      A SLOBER 14
-#&gt; 5      P SLOBER  2</div><div class='input'>
-
-
-<span class='co'># ALTERNATIVE: Prefer dplyr; it is more general and explicit</span>
-<span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
-<span class='no'>alive</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>stem</span>, <span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"A"</span>)
-<span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>alive</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
-
-<span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
+    <pre class="examples"><div class='input'><span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
   <span class='kw'>stemID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>6</span>,
   <span class='kw'>quadrat</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"000"</span>, <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>)),
   <span class='kw'>sp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>)), <span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>))),
-  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
+  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>sample</span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
 )
 <span class='no'>census</span></div><div class='output co'>#&gt; # A tibble: 6 x 4
 #&gt;   stemID quadrat sp        dbh
@@ -224,11 +159,6 @@ ForestGEO.</p>
 #&gt; 6      6 0002    sp3   13.0   </div><div class='input'>
 <span class='co'># Abundance (rows count) by quadrat</span>
 <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   quadrat     n
-#&gt;   &lt;chr&gt;   &lt;int&gt;
-#&gt; 1 0001        3
-#&gt; 2 0002        3</div><div class='input'><span class='co'># same</span>
-<span class='no'>census</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat     n
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        3
@@ -246,22 +176,15 @@ ForestGEO.</p>
 #&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;
 #&gt; 1 0001    sp1       2
 #&gt; 2 0001    sp2       1
-#&gt; 3 0002    sp3       3</div><div class='input'><span class='co'># same</span>
-<span class='no'>census</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
-#&gt;   quadrat sp        n
-#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;
-#&gt; 1 0001    sp1       2
-#&gt; 2 0001    sp2       1
 #&gt; 3 0002    sp3       3</div><div class='input'>
-
 <span class='co'># Richness by quadrat:</span>
-<span class='co'># Count is designed so that you can call it repeatedly, each time rolling up a</span>
-<span class='co'># level of detail.</span>
+<span class='co'># Count is designed so that you can call it repeatedly, each time rolling up</span>
+<span class='co'># a level of detail.</span>
 <span class='co'># Now, each row by quadrat is a unique species, so counting rows gives</span>
 <span class='co'># richness</span>
-<span class='no'>census</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>, <span class='no'>sp</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>quadrat</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
+<span class='no'>n_quad_sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+<span class='no'>richness_quad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>n_quad_sp</span>, <span class='no'>quadrat</span>)
+<span class='no'>richness_quad</span></div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat    nn
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        2
@@ -269,9 +192,8 @@ ForestGEO.</p>
 <span class='co'># Singleton:</span>
 <span class='co'># add_count() is useful for groupwise filtering e.g.: show only species that</span>
 <span class='co'># have a single member</span>
-<span class='no'>census</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_count</a></span>(<span class='no'>quadrat</span>, <span class='no'>sp</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>n</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 5
+<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+<span class='fu'>subset</span>(<span class='no'>out</span>, <span class='no'>n</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 5
 #&gt;   stemID quadrat sp      dbh     n
 #&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
 #&gt; 1      3 0001    sp2    3.63     1</div></pre>
@@ -279,20 +201,11 @@ ForestGEO.</p>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#warning">Warning</a></li>
-
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-Gabriel Arellano, Sean McMahon &amp; Mauro Lepore.
 
   </div>
 </div>

@@ -2,10 +2,6 @@
 % Please edit documentation in R/abundance.R
 \name{abundance}
 \alias{abundance}
-\alias{tally}
-\alias{count}
-\alias{add_tally}
-\alias{add_count}
 \title{Count individuals by group.}
 \description{
 To calculate the abundance of individuals by groups is a particular case of
@@ -54,6 +50,4 @@ subset(out, n == 1)
 }
 \seealso{
 \code{\link[dplyr:count]{dplyr::count()}}.
-
-Other grouped summaries: \code{\link{basal_area}}
 }

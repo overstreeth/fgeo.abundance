@@ -2,21 +2,26 @@
 % Please edit documentation in R/basal_area.R
 \name{basal_area}
 \alias{basal_area}
+\alias{basal_area.default}
+\alias{basal_area.data.frame}
 \alias{basal_area.numeric}
 \title{Basal area of each individual.}
 \usage{
-basal_area(x)
+basal_area(x, ...)
 
-\method{basal_area}{numeric}(x, group_by, only_alive)
+\method{basal_area}{default}(x, ...)
+
+\method{basal_area}{data.frame}(x, dbh = dbh, ...)
+
+\method{basal_area}{numeric}(x, ...)
 }
 \arguments{
-\item{x}{A vector giving the individuals' diameter or a dataframe with
-individuals' diameter stored in the column \code{dbh}.}
+\item{x}{Numeric vector or dataframe giving the individuals' diameter.}
 
-\item{group_by}{Character string giving the names of variables to group by.}
+\item{...}{Other arguments passed to methods.}
 
-\item{only_alive}{If TRUE, counts only alive individuals (\code{status == "A"}).
-If FALSE counts individuals of all available statuses.}
+\item{dbh}{If \code{x} is a dataframe, \code{dbh} is the bare name of the column giving
+individual's diameter.}
 }
 \value{
 Each individual calculation is simply the area of a circle given its
@@ -29,20 +34,44 @@ individual.
 }
 }
 \description{
-Basal area of each individual. The input can be either a vector or a
-dataframe.
+\code{basal_area()} is a generic function with methods for numeric vectors and
+dataframes. To calculate basal area within groups, feed
+\code{basal_area()} with a dataframe previously grouped with \code{group_by()} (see
+examples and section See also). \code{group_by()} comes from \strong{dplyr} but for
+convenience it is reexported by \strong{fgeo.abundance}.
 }
 \examples{
+library(dplyr)
+
 stem <- fgeo.data::luquillo_stem_random_tiny
 
-head(stem$dbh)
-head(basal_area.numeric(stem$dbh))
+# Calculate basal area on a vector
+ba <- basal_area(stem$dbh)
+ba
 
-head(basal_area(stem))
+# Add result to the original dataframe
+stem$ba <- ba
+# Same
+stem <- mutate(stem, ba = basal_area(dbh))
+# Reordering columns to show `ba` first
+select(stem, ba, everything())
 
-# Silent
-head(suppressMessages(basal_area(stem)))
+# Calculate basal area on the entire dataframe
+basal_area(stem)
+
+# Now by groups
+basal_area(group_by(stem, quadrat))
+
+grouped <- group_by(stem, quadrat, sp)
+basal_area(grouped)
+
+# Also works on ViewFullTable
+vft <- fgeo.data::luquillo_vft_4quad
+head(basal_area(vft$DBH))
+
+grouped_vft <- group_by(vft, CensusID, QuadratName)
+basal_area(grouped_vft, dbh = DBH)
 }
 \seealso{
-Other grouped summaries: \code{\link{abundance}}
+\code{\link[dplyr:group_by]{dplyr::group_by()}}.
 }

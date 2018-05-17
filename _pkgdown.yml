@@ -40,6 +40,5 @@ reference:
     contents: 
       - abundance
       - basal_area
-      - basal_area_ind
       - vgn_diversity
 
