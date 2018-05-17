@@ -31,33 +31,17 @@ test_that("returns the correct sum", {
     quadrat = 1:6,
     dbh = rnorm(6)
   )
-  df$ba <- suppressMessages(basal_area(df$dbh))
+  df$ba <- basal_area(df$dbh)
+  
+  actual <- df %>% 
+    group_by(quadrat) %>% 
+    basal_area() %>% 
+    pull(basal_area) %>% 
+    sum()
 
-  actual <- sum(basal_area(df, "quadrat", FALSE) %>% pull(basal_area))
   expected <- sum(df$ba)
   expect_equal(actual, expected)
 })
-
-test_that("Argument only_alive works as expected", {
-  result <- suppressMessages(
-    basal_area(df, group_by = "status", only_alive = FALSE)
-  )
-  expect_length(unique(result$status), 2)
-
-  # Using default group_by = c("quadrat", "sp")
-  result <- suppressMessages(basal_area(df, only_alive = FALSE))
-  expect_equal(nrow(result), 6)
-
-  result <- suppressMessages(basal_area(df, only_alive = TRUE))
-  expect_equal(nrow(result), 3)
-})
-
-
-test_that("group_by = NULL throws error", {
-  expect_error(basal_area(df, group_by = NULL))
-})
-
-
 
 test_that("weird arguments throw error", {
   expect_error(basal_area(NULL))
@@ -67,25 +51,11 @@ test_that("weird arguments throw error", {
 })
 
 test_that("tricky objects in global environment cause no scoping issues", {
-  # Create a confusing variable on the global environment
-  # confusing because `parsed_groups` exists in the function's body
-  parsed_groups <- c("status") # this should be ignored
-  nms <- basal_area(df) %>%
-    as_tibble() %>%
-    names()
-  expect_false("status" %in% nms)
-
   group_by <- c("status") # this should be ignored
   nms <- basal_area(df) %>%
     as_tibble() %>%
     names()
   expect_false("status" %in% nms)
-
-  group_by <- c("status") # this should be ignored
-  nms <- basal_area(df, group_by = group_by) %>%
-    as_tibble() %>%
-    names()
-  expect_true("status" %in% nms)
 })
 
 

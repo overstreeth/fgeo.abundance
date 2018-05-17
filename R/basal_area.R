@@ -41,30 +41,14 @@ basal_area.default <- function(x) {
 }
 
 #' @export
-basal_area.data.frame <- function(x, 
-                                  group_by = c("quadrat", "sp"), 
-                                  only_alive = TRUE) {
-  grouped <- group(x = x, group_by = group_by, only_alive = only_alive)
-
+basal_area.data.frame <- function(x) {
   dplyr::summarise(
-    grouped, 
-    basal_area = sum(basal_area.numeric(.data$dbh), na.rm = TRUE)
+    x, basal_area = sum(basal_area.numeric(.data$dbh), na.rm = TRUE)
   )
 }
 
 #' @export
 basal_area.numeric <- function(x) {
-  check_ba_num(x)
+  stopifnot(length(x) > 0)
   1 / 4 * pi * (x)^2
 }
-
-check_ba_num <- function(x) {
-  
-  if (identical(length(x), 0)) {
-    abort(paste(
-      "The vector passed to `diameter` is empty.\n",
-      "  * Provide a non empty vector."
-    ))
-  }
-  invisible(x)
-}  
