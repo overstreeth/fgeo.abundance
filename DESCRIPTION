@@ -13,7 +13,6 @@ Depends:
     R (>= 3.1.2)
 Imports: 
     dplyr,
-    magrittr,
     rlang (>= 0.1.2),
     tidyr,
     vegan
@@ -21,14 +20,14 @@ Suggests:
     covr,
     fgeo.data,
     ggplot2,
+    janitor,
     knitr,
-    purrr,
+    magrittr,
     readr,
     rmarkdown,
     testthat,
     tibble,
-    utils,
-    janitor
+    utils
 VignetteBuilder: knitr
 Remotes: 
     forestgeo/fgeo.data

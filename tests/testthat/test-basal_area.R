@@ -12,7 +12,7 @@ df <- data.frame(
 test_that("retuns a numeric vector", {
   result <- basal_area(df$dbh)
   expect_type(result, "double")
-  expect_true(purrr::is_vector(result))
+  expect_true(rlang::is_vector(result))
 })
 
 test_that("returns the expected data structure", {

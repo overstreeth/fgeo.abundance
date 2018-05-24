@@ -111,8 +111,8 @@ vegan_specnumber <- function(x, index) {
 vegan_diversity <- function(x, index) {
   div_index <- setdiff(index, "specnumber")
   out <- if (length(div_index) > 0) {
-    purrr::map(.x = div_index, ~ vegan::diversity(x, .x, MARGIN = 2)) %>%
-      purrr::set_names(div_index)
+  out <- lapply(div_index, function(id) vegan::diversity(x, id, MARGIN = 2))
+  stats::setNames(out, div_index)
   } else {
     NA
   }
