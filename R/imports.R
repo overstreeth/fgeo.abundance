@@ -13,3 +13,25 @@
 #' @export           quo quos enquo sym syms ensym expr exprs enexpr quo_name
 #' @importFrom rlang UQ UQS .data :=
 NULL
+
+#' Pipe operator
+#'
+#' See \code{magrittr::\link[magrittr]{\%>\%}} for details.
+#'
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+NULL
+
+#' Reexports from dplyr.
+#' 
+#' @name reexports
+#' @keywords internal
+#' @aliases          tally count add_tally add_count group_by
+#' @importFrom dplyr tally count add_tally add_count group_by
+#' @export           tally count add_tally add_count group_by
+NULL
+
