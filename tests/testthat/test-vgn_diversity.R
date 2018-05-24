@@ -3,6 +3,7 @@ context("vgn_diversity.R")
 library(purrr)
 library(dplyr)
 library(tidyr)
+library(tibble)
 library(vegan)
 
 cns <- data.frame(
@@ -120,8 +121,8 @@ test_that("outputs equal to vegan with different species accross groups", {
 
 data(BCI)
 bci_wide <- BCI %>%
-  rowid_to_column() %>%
-  as.tibble()
+  tibble::rowid_to_column() %>%
+  tibble::as.tibble()
 bci_long <- gather(bci_wide, "sp", "n", -rowid)
 
 # Funs
