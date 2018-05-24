@@ -43,7 +43,14 @@ convenience it is reexported by \strong{fgeo.abundance}.
 \examples{
 library(dplyr)
 
-stem <- fgeo.data::luquillo_stem_random_tiny
+stem <- tibble::tibble(
+  stemID = 1:6,
+  quadrat = paste0("000", rep(1:2, each = 3)),
+  sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
+  dbh = abs(sample(rnorm(100), 6) * 10)
+)
+stem
+
 
 # Calculate basal area on a vector
 ba <- basal_area(stem$dbh)
@@ -60,17 +67,8 @@ select(stem, ba, everything())
 basal_area(stem)
 
 # Now by groups
-basal_area(group_by(stem, quadrat))
-
 grouped <- group_by(stem, quadrat, sp)
 basal_area(grouped)
-
-# Also works on ViewFullTable
-vft <- fgeo.data::luquillo_vft_4quad
-head(basal_area(vft$DBH))
-
-grouped_vft <- group_by(vft, CensusID, QuadratName)
-basal_area(grouped_vft, dbh = DBH)
 }
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}.

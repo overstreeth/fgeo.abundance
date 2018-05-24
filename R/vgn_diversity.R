@@ -112,7 +112,7 @@ vegan_diversity <- function(x, index) {
   div_index <- setdiff(index, "specnumber")
   out <- if (length(div_index) > 0) {
   out <- lapply(div_index, function(id) vegan::diversity(x, id, MARGIN = 2))
-  stats::setNames(out, div_index)
+  rlang::set_names(out, div_index)
   } else {
     NA
   }

@@ -173,84 +173,53 @@ individual.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
 
-<span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/fgeo.data/topics/census_luquillo'>luquillo_stem_random_tiny</a></span>
+<span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
+  <span class='kw'>stemID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>6</span>,
+  <span class='kw'>quadrat</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"000"</span>, <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>)),
+  <span class='kw'>sp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>)), <span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>))),
+  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
+)
+<span class='no'>stem</span></div><div class='output co'>#&gt; # A tibble: 6 x 4
+#&gt;   stemID quadrat sp      dbh
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1      1 0001    sp1   18.8 
+#&gt; 2      2 0001    sp1    1.08
+#&gt; 3      3 0001    sp2    7.96
+#&gt; 4      4 0002    sp3    8.95
+#&gt; 5      5 0002    sp3    5.58
+#&gt; 6      6 0002    sp3   15.3 </div><div class='input'>
 
 <span class='co'># Calculate basal area on a vector</span>
 <span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='fu'>basal_area</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)
-<span class='no'>ba</span></div><div class='output co'>#&gt;  [1] 18869.19088 22167.07776 10935.88403  1995.03700  2042.82062   254.46900
-#&gt;  [7]   314.15927   397.60782   593.95736   113.09734   572.55526 18869.19088
-#&gt; [13] 23506.18163 16512.99639  1809.55737  3959.19214   128.67964   651.44065
-#&gt; [19]   158.36769 20867.24380 23506.18163 16971.66891  2375.82944  9503.31778
-#&gt; [25]   134.78218   897.27028   463.76976   387.07563   136.84778   235.06182
-#&gt; [31]   206.11989 16286.01632 11499.01451 18869.19088 26015.52876  2375.82944
-#&gt; [37] 15174.67792   897.27028   419.09631   165.12996   506.70748   237.78715
-#&gt; [43] 16741.54725 14526.72443    84.94867  5944.67870 17907.86352 19359.27933
-#&gt; [49] 23235.21927 17203.36137  2375.82944 19113.44970   855.29860   510.70516
-#&gt; [55]   237.78715 16741.54725 14957.12262  6082.12338 19359.27933 23506.18163
-#&gt; [61] 17203.36137 20106.19298 16741.54725 15614.50089  5944.67870          NA
-#&gt; [67]          NA          NA          NA          NA          NA          NA
-#&gt; [73]          NA          NA          NA          NA          NA</div><div class='input'>
+<span class='no'>ba</span></div><div class='output co'>#&gt; [1] 276.5601619   0.9090446  49.7067633  62.9069616  24.4557975 182.8790810</div><div class='input'>
 <span class='co'># Add result to the original dataframe</span>
 <span class='no'>stem</span>$<span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='no'>ba</span>
 <span class='co'># Same</span>
 <span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='no'>stem</span>, <span class='kw'>ba</span> <span class='kw'>=</span> <span class='fu'>basal_area</span>(<span class='no'>dbh</span>))
 <span class='co'># Reordering columns to show `ba` first</span>
-<span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>stem</span>, <span class='no'>ba</span>, <span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>everything</a></span>())</div><div class='output co'>#&gt; # A tibble: 77 x 20
-#&gt;        ba treeID stemID tag   StemTag sp     quadrat    gx    gy MeasureID
-#&gt;     &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
-#&gt;  1 18869.  10775  13496 1128  1128    PREMON 402      79.3  39.8     13496
-#&gt;  2 22167.  10863  13603 1129  1129    PREMON 402      79.0  36.5     13603
-#&gt;  3 10936.  23710  29640 14434 14434   PREMON 517      82.7 330.      29640
-#&gt;  4  1995.  25331  31937 16164 16164   SLOBER 402      70.8  21.0     31937
-#&gt;  5  2043.  63997  77760 75062 75062   CASARB 517      86.0 340.      77760
-#&gt;  6   254.  63997  77761 75062 75063   CASARB 517      86.0 340.      77761
-#&gt;  7   314.  63997  77762 75062 75064   CASARB 517      86.0 340.      77762
-#&gt;  8   398.  63997  77763 75062 75065   CASARB 517      86.0 340.      77763
-#&gt;  9   594.  63997  77764 75062 75066   CASARB 517      86.0 340.      77764
-#&gt; 10   113.  64070  77850 75147 75147   CASARB 517      99.8 325.      77850
-#&gt; # ... with 67 more rows, and 10 more variables: CensusID &lt;int&gt;, dbh &lt;dbl&gt;,
-#&gt; #   pom &lt;chr&gt;, hom &lt;dbl&gt;, ExactDate &lt;dbl&gt;, DFstatus &lt;chr&gt;, codes &lt;chr&gt;,
-#&gt; #   countPOM &lt;dbl&gt;, status &lt;chr&gt;, date &lt;dbl&gt;</div><div class='input'>
+<span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>stem</span>, <span class='no'>ba</span>, <span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>everything</a></span>())</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;        ba stemID quadrat sp      dbh
+#&gt;     &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+#&gt; 1 277.         1 0001    sp1   18.8 
+#&gt; 2   0.909      2 0001    sp1    1.08
+#&gt; 3  49.7        3 0001    sp2    7.96
+#&gt; 4  62.9        4 0002    sp3    8.95
+#&gt; 5  24.5        5 0002    sp3    5.58
+#&gt; 6 183.         6 0002    sp3   15.3 </div><div class='input'>
 <span class='co'># Calculate basal area on the entire dataframe</span>
 <span class='fu'>basal_area</span>(<span class='no'>stem</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;   basal_area
 #&gt;        &lt;dbl&gt;
-#&gt; 1    586336.</div><div class='input'>
+#&gt; 1       597.</div><div class='input'>
 <span class='co'># Now by groups</span>
-<span class='fu'>basal_area</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>stem</span>, <span class='no'>quadrat</span>))</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   quadrat basal_area
-#&gt;   &lt;chr&gt;        &lt;dbl&gt;
-#&gt; 1 402        340213.
-#&gt; 2 517        246123.</div><div class='input'>
 <span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>stem</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
-<span class='fu'>basal_area</span>(<span class='no'>grouped</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
+<span class='fu'>basal_area</span>(<span class='no'>grouped</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt; # Groups:   quadrat [?]
-#&gt;   quadrat sp     basal_area
-#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;
-#&gt; 1 402     PREMON    324640.
-#&gt; 2 402     SLOBER     15573.
-#&gt; 3 517     CASARB     74819.
-#&gt; 4 517     PREMON    171304.</div><div class='input'>
-<span class='co'># Also works on ViewFullTable</span>
-<span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/fgeo.data/topics/luquillo_vft_4quad'>luquillo_vft_4quad</a></span>
-<span class='fu'>head</span>(<span class='fu'>basal_area</span>(<span class='no'>vft</span>$<span class='no'>DBH</span>))</div><div class='output co'>#&gt; [1]        NA  26880.25        NA  91326.88 107521.01 110446.62</div><div class='input'>
-<span class='no'>grouped_vft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>vft</span>, <span class='no'>CensusID</span>, <span class='no'>QuadratName</span>)
-<span class='fu'>basal_area</span>(<span class='no'>grouped_vft</span>, <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='no'>DBH</span>)</div><div class='output co'>#&gt; # A tibble: 12 x 3
-#&gt; # Groups:   CensusID [?]
-#&gt;    CensusID QuadratName basal_area
-#&gt;       &lt;int&gt; &lt;chr&gt;            &lt;dbl&gt;
-#&gt;  1        4 621           1449189.
-#&gt;  2        4 622           1431360.
-#&gt;  3        4 721           1401168.
-#&gt;  4        4 722           1469214.
-#&gt;  5        5 621           1306077.
-#&gt;  6        5 622           1650672.
-#&gt;  7        5 721           1359760.
-#&gt;  8        5 722           1377121.
-#&gt;  9        6 621           1205149.
-#&gt; 10        6 622           1345448.
-#&gt; 11        6 721           1191424.
-#&gt; 12        6 722           1268563.</div></pre>
+#&gt;   quadrat sp    basal_area
+#&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1 0001    sp1        277. 
+#&gt; 2 0001    sp2         49.7
+#&gt; 3 0002    sp3        270. </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
