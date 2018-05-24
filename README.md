@@ -165,6 +165,142 @@ vegan::diversity(abundance$n, "shannon")
 #> [1] 1.367825
 ```
 
+### More ways to count things
+
+`janitor::tabyl()` and `base::table()` are useful tools for counting
+things. Their output is sometimes best suited for some analyses, for
+example with **vegan**.
+
+``` r
+if (!requireNamespace("janitor", quietly = TRUE)) {
+  stop(
+    "This section uses janitor, install it with:\n",
+    "install.packages('janitor')"
+  )
+}
+library(janitor)
+
+# Compare
+count(pick, quadrat, sp)
+#> # A tibble: 4 x 3
+#>   quadrat sp         n
+#>   <chr>   <chr>  <int>
+#> 1 402     PREMON    16
+#> 2 402     SLOBER    16
+#> 3 517     CASARB    22
+#> 4 517     PREMON    13
+
+tabyl(pick, quadrat, sp)
+#>  quadrat CASARB PREMON SLOBER
+#>      402      0     16     16
+#>      517     22     13      0
+
+# Useful for vegan
+freq <- table(pick$quadrat, pick$sp)
+freq
+#>      
+#>       CASARB PREMON SLOBER
+#>   402      0     16     16
+#>   517     22     13      0
+
+vegan::specaccum(freq)
+#> Warning in cor(x > 0): the standard deviation is zero
+#> Species Accumulation Curve
+#> Accumulation method: exact
+#> Call: vegan::specaccum(comm = freq) 
+#> 
+#>             
+#> Sites    1 2
+#> Richness 2 3
+#> sd       0 0
+
+vegan::diversity(freq, "shannon")
+#>       402       517 
+#> 0.6931472 0.6597116
+```
+
+`janitor::tabyl()` works well with data in 3 dimensions; it outputs a
+list of dataframes, which are often easier to work with than the output
+of `base::table()`.
+
+``` r
+tabyl(pick, CensusID, quadrat, sp)
+#> $CASARB
+#>  CensusID 402 517
+#>         1   0   6
+#>         2   0   3
+#>         3   0   6
+#>         4   0   4
+#>         5   0   2
+#>         6   0   1
+#> 
+#> $PREMON
+#>  CensusID 402 517
+#>         1   2   1
+#>         2   2   1
+#>         3   3   2
+#>         4   3   3
+#>         5   3   3
+#>         6   3   3
+#> 
+#> $SLOBER
+#>  CensusID 402 517
+#>         1   2   0
+#>         2   2   0
+#>         3   5   0
+#>         4   4   0
+#>         5   3   0
+#>         6   0   0
+
+tabyl(pick, CensusID, quadrat, sp, show_missing_levels = FALSE)
+#> $CASARB
+#>  CensusID 517
+#>         1   6
+#>         2   3
+#>         3   6
+#>         4   4
+#>         5   2
+#>         6   1
+#> 
+#> $PREMON
+#>  CensusID 402 517
+#>         1   2   1
+#>         2   2   1
+#>         3   3   2
+#>         4   3   3
+#>         5   3   3
+#>         6   3   3
+#> 
+#> $SLOBER
+#>  CensusID 402
+#>         1   2
+#>         2   2
+#>         3   5
+#>         4   4
+#>         5   3
+```
+
+And makes it easy to format tables by using a declarative style, best
+suited for composing multiple operations with the pipe (`%>%`) and
+produces neat output with `knitr::kable()`.
+
+``` r
+tab <- tabyl(pick, quadrat, sp)
+tab %>% 
+  adorn_totals("row") %>% 
+  adorn_percentages() %>% 
+  adorn_pct_formatting() %>% 
+  adorn_title("top") %>% 
+  knitr::kable()
+```
+
+|         | sp     |        |        |
+| ------- | :----- | ------ | ------ |
+| quadrat | CASARB | PREMON | SLOBER |
+| 402     | 0.0%   | 50.0%  | 50.0%  |
+| 517     | 62.9%  | 37.1%  | 0.0%   |
+| Total   | 32.8%  | 43.3%  | 23.9%  |
+
 ## Information
 
   - [Getting help](SUPPORT.md).

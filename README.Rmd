@@ -93,6 +93,54 @@ vegan::specnumber(abundance$n)
 vegan::diversity(abundance$n, "shannon")
 ```
 
+### More ways to count things
+
+`janitor::tabyl()` and `base::table()` are useful tools for counting things.
+Their output is sometimes best suited for some analyses, for example with __vegan__.
+
+```{r}
+if (!requireNamespace("janitor", quietly = TRUE)) {
+  stop(
+    "This section uses janitor, install it with:\n",
+    "install.packages('janitor')"
+  )
+}
+library(janitor)
+
+# Compare
+count(pick, quadrat, sp)
+
+tabyl(pick, quadrat, sp)
+
+# Useful for vegan
+freq <- table(pick$quadrat, pick$sp)
+freq
+
+vegan::specaccum(freq)
+
+vegan::diversity(freq, "shannon")
+```
+
+`janitor::tabyl()` works well with data in 3 dimensions; it outputs a list of dataframes, which are often easier to work with than the output of `base::table()`.
+
+```{r}
+tabyl(pick, CensusID, quadrat, sp)
+
+tabyl(pick, CensusID, quadrat, sp, show_missing_levels = FALSE)
+```
+
+And makes it easy to format tables by using a declarative style, best suited for composing multiple operations with the pipe (`%>%`) and produces neat output with `knitr::kable()`.
+
+```{r}
+tab <- tabyl(pick, quadrat, sp)
+tab %>% 
+  adorn_totals("row") %>% 
+  adorn_percentages() %>% 
+  adorn_pct_formatting() %>% 
+  adorn_title("top") %>% 
+  knitr::kable()
+```
+
 ## Information
 
 * [Getting help](SUPPORT.md).

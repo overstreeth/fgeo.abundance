@@ -226,6 +226,153 @@
 <a class="sourceLine" id="cb6-11" data-line-number="11">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/diversity">diversity</a></span>(abundance<span class="op">$</span>n, <span class="st">"shannon"</span>)</a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; [1] 1.367825</span></a></code></pre></div>
 </div>
+<div id="more-ways-to-count-things" class="section level3">
+<h3 class="hasAnchor">
+<a href="#more-ways-to-count-things" class="anchor"></a>More ways to count things</h3>
+<p><code><a href="http://www.rdocumentation.org/packages/janitor/topics/tabyl">janitor::tabyl()</a></code> and <code><a href="http://www.rdocumentation.org/packages/base/topics/table">base::table()</a></code> are useful tools for counting things. Their output is sometimes best suited for some analyses, for example with <strong>vegan</strong>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">"janitor"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw">stop</span>(</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="st">"This section uses janitor, install it with:</span><span class="ch">\n</span><span class="st">"</span>,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="st">"install.packages('janitor')"</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">}</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">library</span>(janitor)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co"># Compare</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(pick, quadrat, sp)</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;   quadrat sp         n</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 1 402     PREMON    16</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 2 402     SLOBER    16</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; 3 517     CASARB    22</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 4 517     PREMON    13</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="kw">tabyl</span>(pick, quadrat, sp)</a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  quadrat CASARB PREMON SLOBER</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;      402      0     16     16</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;      517     22     13      0</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co"># Useful for vegan</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">freq &lt;-<span class="st"> </span><span class="kw">table</span>(pick<span class="op">$</span>quadrat, pick<span class="op">$</span>sp)</a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">freq</a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;      </span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt;       CASARB PREMON SLOBER</span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt;   402      0     16     16</span></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt;   517     22     13      0</span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/specaccum">specaccum</a></span>(freq)</a>
+<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; Warning in cor(x &gt; 0): the standard deviation is zero</span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; Species Accumulation Curve</span></a>
+<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="co">#&gt; Accumulation method: exact</span></a>
+<a class="sourceLine" id="cb7-36" data-line-number="36"><span class="co">#&gt; Call: vegan::specaccum(comm = freq) </span></a>
+<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-38" data-line-number="38"><span class="co">#&gt;             </span></a>
+<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="co">#&gt; Sites    1 2</span></a>
+<a class="sourceLine" id="cb7-40" data-line-number="40"><span class="co">#&gt; Richness 2 3</span></a>
+<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt; sd       0 0</span></a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/diversity">diversity</a></span>(freq, <span class="st">"shannon"</span>)</a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt;       402       517 </span></a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; 0.6931472 0.6597116</span></a></code></pre></div>
+<p><code><a href="http://www.rdocumentation.org/packages/janitor/topics/tabyl">janitor::tabyl()</a></code> works well with data in 3 dimensions; it outputs a list of dataframes, which are often easier to work with than the output of <code><a href="http://www.rdocumentation.org/packages/base/topics/table">base::table()</a></code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">tabyl</span>(pick, CensusID, quadrat, sp)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; $CASARB</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  CensusID 402 517</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;         1   0   6</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;         2   0   3</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;         3   0   6</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;         4   0   4</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;         5   0   2</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;         6   0   1</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; $PREMON</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  CensusID 402 517</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;         1   2   1</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;         2   2   1</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;         3   3   2</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;         4   3   3</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;         5   3   3</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;         6   3   3</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; $SLOBER</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  CensusID 402 517</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;         1   2   0</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;         2   2   0</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;         3   5   0</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;         4   4   0</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt;         5   3   0</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt;         6   0   0</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="kw">tabyl</span>(pick, CensusID, quadrat, sp, <span class="dt">show_missing_levels =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; $CASARB</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt;  CensusID 517</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt;         1   6</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt;         2   3</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt;         3   6</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt;         4   4</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt;         5   2</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt;         6   1</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; $PREMON</span></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt;  CensusID 402 517</span></a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt;         1   2   1</span></a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt;         2   2   1</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt;         3   3   2</span></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt;         4   3   3</span></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt;         5   3   3</span></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;         6   3   3</span></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt; $SLOBER</span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt;  CensusID 402</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt;         1   2</span></a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;         2   2</span></a>
+<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;         3   5</span></a>
+<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;         4   4</span></a>
+<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;         5   3</span></a></code></pre></div>
+<p>And makes it easy to format tables by using a declarative style, best suited for composing multiple operations with the pipe (<code>%&gt;%</code>) and produces neat output with <code><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">knitr::kable()</a></code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">tab &lt;-<span class="st"> </span><span class="kw">tabyl</span>(pick, quadrat, sp)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">tab <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">adorn_totals</span>(<span class="st">"row"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw">adorn_percentages</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw">adorn_pct_formatting</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw">adorn_title</span>(<span class="st">"top"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</a></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th></th>
+<th align="left">sp</th>
+<th></th>
+<th></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>quadrat</td>
+<td align="left">CASARB</td>
+<td>PREMON</td>
+<td>SLOBER</td>
+</tr>
+<tr class="even">
+<td>402</td>
+<td align="left">0.0%</td>
+<td>50.0%</td>
+<td>50.0%</td>
+</tr>
+<tr class="odd">
+<td>517</td>
+<td align="left">62.9%</td>
+<td>37.1%</td>
+<td>0.0%</td>
+</tr>
+<tr class="even">
+<td>Total</td>
+<td align="left">32.8%</td>
+<td>43.3%</td>
+<td>23.9%</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="information" class="section level2">
 <h2 class="hasAnchor">
