@@ -1,4 +1,8 @@
-# fgeo.abundance 0.0.0.9001
+# fgeo.abundance 0.0.0.9003
+
+* New `abundance()`, `basal_area()` and friends calculate these metrics by groups and also filter data by status.
+
+# fgeo.abundance 0.0.0.9002
 
 * Rename as package as __fgeo.abundance__.
 
