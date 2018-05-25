@@ -30,8 +30,8 @@ NULL
 #' 
 #' @name reexports
 #' @keywords internal
-#' @aliases          tally count add_tally add_count group_by
-#' @importFrom dplyr tally count add_tally add_count group_by
-#' @export           tally count add_tally add_count group_by
+#' @aliases          tally count add_tally add_count group_by ungroup
+#' @importFrom dplyr tally count add_tally add_count group_by ungroup
+#' @export           tally count add_tally add_count group_by ungroup
 NULL
 

@@ -7,6 +7,7 @@
 \alias{add_tally}
 \alias{add_count}
 \alias{group_by}
+\alias{ungroup}
 \title{Reexports from dplyr.}
 \description{
 Reexports from dplyr.
