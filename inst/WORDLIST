@@ -1,7 +1,6 @@
-Arellano
 CTFS
-CTFSRPackage
 dplyr
+dplyr's
 eval
 fgeo
 ForestGEO
@@ -10,16 +9,10 @@ ggplot
 invsimpson
 io
 Kenfack
-knitr
 Lepore
-quadrat
 quosures
-rmarkdown
+rlang
 rstd
 shannon
 simpson
 specnumber
-toc
-VignetteEncoding
-VignetteEngine
-VignetteIndexEntry

@@ -5,6 +5,7 @@
 \alias{quo}
 \alias{quos}
 \alias{enquo}
+\alias{enquos}
 \alias{sym}
 \alias{syms}
 \alias{ensym}
