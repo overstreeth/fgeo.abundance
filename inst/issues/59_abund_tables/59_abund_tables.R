@@ -1,36 +1,28 @@
+# From Suzanne:
+# In the datasets, you should look at the "plotcensusnumber" or "censusid"
+# instead of the years. Some censuses may take more than one year, or there may
+# be some big trees that do not get measured until the next year, during the
+# summer. The years in the publications refer to the average or the median year.
+
+# Cocoli should have the exact same number of censuses, but Sherman will have
+# one more census. Please download the datasets (BCI and Sherman/Cocoli again)
+# from the following site:
+
+
+
 library(tidyverse)
 library(fs)
 
-# Cocoli and Sherman ------------------------------------------------------
+# Data from Suzanne -------------------------------------------------------
 
-# Source of ViewFullTable.csv: Suzanne Lao via http://bit.ly/2sJbDQp.
+path <- "../fgeo.data/inst/private/data-raw-private"
+vft_bci <- fgeo.tool::read_vft(fs::path(path, "ViewFullTable_bci.csv"))
+vft_sher_coco <- fgeo.tool::read_vft(
+  fs::path(path, "ViewFullTable_sherman_cocoli.csv")
+)
 
-file <- here::here("inst/issues/59_abund_tables/ViewFullTable.csv")
-vft <- fgeo.tool::read_vft(file)
-cocoli <- vft %>% filter(PlotName == "cocoli")
-sherman <- vft %>% filter(PlotName == "sherman")
+# TODO: Make tables.
 
-vft %>%
-  select(PlotName, ExactDate) %>% 
-  group_by(PlotName) %>% 
-  transmute(years = gsub("(^....).*", "\\1", ExactDate)) %>% 
-  unique() %>% 
-  arrange(PlotName, years)
-
-
-
-# BCI ---------------------------------------------------------------------
-
-library(tidyverse)
-
-dates <- "../bci/data-raw/ViewFullTable/ViewFullTable.txt" %>% 
-  fgeo.tool::read_vft() %>% 
-  pull(ExactDate)
-
-years <- year(dates) %>% unique()
-tibble(BCI = years) %>% 
-  arrange(years) %>% 
-  print(n = nrow(.))
 
 
 
