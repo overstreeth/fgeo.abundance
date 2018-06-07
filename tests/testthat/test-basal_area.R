@@ -63,3 +63,18 @@ test_that("tricky objects in global environment cause no scoping issues", {
   expect_false("status" %in% nms)
 })
 
+
+
+context("add_basal_area")
+
+test_that("returns similar to basal_area(group_by()) but all rows", {
+  stop("missing test")
+})
+
+test_that("returns dataframe with expected structure", {
+  stop("missing test. test for names and s3 class")
+})
+
+test_that("deals with grouping", {
+  stop("missing test. returns dfm with groups equal to input. does not add groups")
+})

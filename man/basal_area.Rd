@@ -5,6 +5,7 @@
 \alias{basal_area.default}
 \alias{basal_area.data.frame}
 \alias{basal_area.numeric}
+\alias{add_basal_area}
 \title{Basal area of each individual.}
 \usage{
 basal_area(x, ...)
@@ -14,6 +15,8 @@ basal_area(x, ...)
 \method{basal_area}{data.frame}(x, dbh = dbh, ...)
 
 \method{basal_area}{numeric}(x, ...)
+
+add_basal_area(x, ..., dbh = dbh)
 }
 \arguments{
 \item{x}{Numeric vector or dataframe giving the individuals' diameter.}
@@ -38,7 +41,8 @@ individual.
 dataframes. To calculate basal area within groups, feed
 \code{basal_area()} with a dataframe previously grouped with \code{group_by()} (see
 examples and section See also). \code{group_by()} comes from \strong{dplyr} but for
-convenience it is reexported by \strong{fgeo.abundance}.
+convenience it is reexported by \strong{fgeo.abundance}. \code{add_basal_area()} adds
+a column \code{basal_area}
 }
 \examples{
 library(dplyr)
@@ -50,25 +54,35 @@ stem <- tibble::tibble(
   dbh = abs(sample(rnorm(100), 6) * 10)
 )
 stem
+basal_area(stem$dbh)
+add_basal_area(stem)
 
-
-# Calculate basal area on a vector
-ba <- basal_area(stem$dbh)
-ba
-
-# Add result to the original dataframe
-stem$ba <- ba
-# Same
-stem <- mutate(stem, ba = basal_area(dbh))
-# Reordering columns to show `ba` first
-select(stem, ba, everything())
-
-# Calculate basal area on the entire dataframe
+# Sum across all rows
 basal_area(stem)
 
-# Now by groups
-grouped <- group_by(stem, quadrat, sp)
-basal_area(grouped)
+# Sum across rows by groups
+basal_area(
+  group_by(stem, quadrat, sp)
+)
+# Same but returns all rows
+add_basal_area(stem, quadrat, sp)
+
+# Dealing with missing values
+stem2 <- stem
+stem2[6, 4] <- NA
+stem2
+
+# basal_area() of missing dbh in a vector results in NA
+basal_area(stem2$dbh)
+# add_basal_area() of missing dbh in a dataframe results in NA
+# Same if using add_basal_area()
+add_basal_area(stem2)
+
+# But basal_area() of missing dbh in a dataframe ignores NA's
+basal_area(stem2)
+basal_area(group_by(stem2, quadrat, sp))
+# Missing dbh is ignored, and `basal_area` refers to the group not each row.
+add_basal_area(stem2, quadrat, sp)
 }
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}.
