@@ -336,7 +336,7 @@ abundance
 Basal area.
 
 ```{r}
-basal_area <- with_year %>% 
+  basal_area <- with_year %>% 
   dplyr::group_by(species, Family, year) %>%
   basal_area(dbh = DBH) %>% 
   arrange(species, Family, year) %>% 
