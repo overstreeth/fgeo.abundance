@@ -69,27 +69,28 @@ basal_area <- function(x, ...) {
   UseMethod("basal_area")
 }
 
-#' @export
 #' @rdname basal_area
+#' @export
 basal_area.default <- function(x, ...) {
   abort(paste("Can't deal with objects of class", class(x)))
 }
 
-#' @export
 #' @rdname basal_area
+#' @export
 basal_area.data.frame <- function(x, dbh = dbh, ...) {
   dbh <- enquo(dbh)
   dplyr::summarise(x, basal_area = sum(basal_area.numeric(!!dbh), na.rm = TRUE))
 }
 
-#' @export
 #' @rdname basal_area
+#' @export
 basal_area.numeric <- function(x, ...) {
   stopifnot(length(x) > 0)
   1 / 4 * pi * (x)^2
 }
 
 #' @rdname basal_area
+#' @export
 add_basal_area <- function(x, ..., dbh = dbh) {
   dbh <- enquo(dbh)
   g <- dplyr::group_vars(x)
