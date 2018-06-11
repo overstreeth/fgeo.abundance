@@ -1,17 +1,11 @@
-context("fgeo_pick")
-
-
-
 context("pick_plotname")
 
 vft <- data.frame(PlotName = c("a", "b"), stringsAsFactors = FALSE)
 
 test_that("errs as expected", {
   expect_error(pick_plotname("not dfm", "a"), "not TRUE")
-  expect_message(
-    expect_warning(pick_plotname(vft, "bad"), "wasn't detected"),
-    "Using"
-  )
+  expect_error(pick_plotname(vft, "bad"), "wasn't detected")
+  expect_message(pick_plotname(vft), "Using")
 })
 
 test_that("has correct structure", {
@@ -20,12 +14,7 @@ test_that("has correct structure", {
   expect_equal(nrow(out), 1)
   expect_equal(names(out), "PlotName")
   expect_equal(out[[1]], "a")
-})
 
-
-
-context("filter_tree_status")
-
-test_that("fails as expected", {
-  
+  out <- suppressMessages(suppressWarnings(pick_plotname(vft, "b")))
+  expect_equal(out[[1]], "b")
 })
