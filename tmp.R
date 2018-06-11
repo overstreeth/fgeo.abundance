@@ -3,15 +3,10 @@ vft <- readr::read_csv(here::here("inst/issues/59_abund_tables/vft_pick.csv"))
 
 picked <- pick_plotname(vft, "bci") %>% 
   fgeo.base::pick_dbh_min(1)
+
 fgeo_abundance(picked, .status = "alive", exclude = FALSE)
+
 fgeo_basal_area(picked, .status = "alive", exclude = FALSE)
-
-
-
-
-
-
-
 
 
 
@@ -34,5 +29,9 @@ fgeo_abund <- function(vft, plot_nm) {
 }
 
 plots <- sort(unique(vft$PlotName))
+
+# FIXME:  
+# Error in sanitize_Status_DBH_ExaxtDate(vft, valid_status) : 
+# argument "valid_status" is missing, with no default
 purrr::map(plots, ~fgeo_ba(vft, .x))
 purrr::map(plots, ~fgeo_abund(vft, .x))

@@ -1,4 +1,4 @@
-#' Pick useful observations from a ViewFullTable.
+#' Create tables fgeo_abundance and fgeo_basal_area.
 #'
 #' @inheritParams pick_plotname
 #' @param valid_status String giving possible values of `Status`.
@@ -6,10 +6,38 @@
 #'
 #' @return A dataframe.
 #' @examples
-#' \dontrun{
-#' pick_fgeo(vft)
-#' }
-#' @noRd
+fgeo_abundance <- function(vft, 
+                           .status = "dead", 
+                           exclude = TRUE,
+                           valid_status = c(
+                             "dead", "alive", "broken below", "missing"
+                           )) {
+  vft %>% 
+    filter_tree_status_by_census(.status, exclude, valid_status) %>%
+    mean_years() %>% 
+    drop_if_na("year") %>% 
+    dplyr::count(species, Family, year) %>% 
+    tidyr::spread(year, n, fill = 0) %>% 
+    dplyr::arrange(species, Family)
+}
+
+#' @export
+#' @rdname fgeo_abundance
+fgeo_basal_area <- function(vft, 
+                            .status = "dead", 
+                            exclude = TRUE,
+                            valid_status = c(
+                              "dead", "alive", "broken below", "missing"
+                            )) {
+  vft %>% 
+    filter_tree_status_by_census(.status, exclude, valid_status) %>%
+    mean_years() %>% 
+    dplyr::group_by(species, Family, year) %>%
+    basal_area(dbh = DBH) %>% 
+    dplyr::arrange(species, Family, year) %>% 
+    dplyr::ungroup() %>% 
+    tidyr::spread(year, basal_area, fill = 0)
+}
 
 # Add `status_tree` by census and pick or drop alive or dead trees.
 filter_tree_status_by_census <- function(vft, .status, exclude, valid_status) {
@@ -30,10 +58,22 @@ filter_tree_status_by_census <- function(vft, .status, exclude, valid_status) {
   fgeo.tool::filter_status(
     with_status_tree, wood = "tree", .status = .status, exclude = exclude
   )
-  
 }
 
-# Sanitize
+mean_years <- function(vft) {
+  years <-  vft %>% 
+    dplyr::group_by(PlotCensusNumber) %>% 
+    dplyr::summarise(
+      year = round(mean(lubridate::year(ExactDate), na.rm = TRUE))
+    ) %>% 
+    unique() %>% 
+    dplyr::arrange(PlotCensusNumber) %>% 
+    dplyr::ungroup()
+  dplyr::left_join(vft, years, by = "PlotCensusNumber") %>% 
+    dplyr::mutate(species = paste(Genus, SpeciesName)) %>% 
+    dplyr::arrange(year)
+}
+
 sanitize_Status_DBH_ExaxtDate <- function(vft, valid_status) {
   # * status
   vft_warned <- inform_if_bad_status(vft, valid_status)
@@ -60,8 +100,6 @@ inform_if_bad_status <- function(vft, status_arg) {
 identical_status_levels <- function(status_col, status_arg) {
   identical(sort(unique(status_col)), sort(unique(status_arg)))
 }
-
-
 
 fix_status_if_bad_or_err <- function(vft, status_arg) {
   status_ok <- all(sort(unique(vft$Status)) %in% status_arg)
@@ -90,8 +128,6 @@ fix_bad_status <- function(vft, status_col, status_arg) {
   vft
 }
 
-
-
 drop_if_missing_dbh <- function(dfm) {
   missing_dbh <- is.na(dfm$DBH)
   if (any(missing_dbh)) {
@@ -103,8 +139,6 @@ drop_if_missing_dbh <- function(dfm) {
   dplyr::filter(dfm, !is.na(DBH))
 }
 
-
-
 drop_if_missing_dates <- function(x) {
   missing_dates <- is.na(x$ExactDate)
   if (any(missing_dates)) {
@@ -114,72 +148,8 @@ drop_if_missing_dates <- function(x) {
   invisible(x)
 }
 
-
-
-mean_years <- function(vft) {
-  years <-  vft %>% 
-    dplyr::group_by(PlotCensusNumber) %>% 
-    dplyr::summarise(
-      year = round(mean(lubridate::year(ExactDate), na.rm = TRUE))
-    ) %>% 
-    unique() %>% 
-    dplyr::arrange(PlotCensusNumber) %>% 
-    dplyr::ungroup()
-  dplyr::left_join(vft, years, by = "PlotCensusNumber") %>% 
-    dplyr::mutate(species = paste(Genus, SpeciesName)) %>% 
-    dplyr::arrange(year)
-}
-
-fgeo_abundance <- function(vft, 
-                           .status = "dead", 
-                           exclude = TRUE,
-                           valid_status = c(
-                             "dead", "alive", "broken below", "missing"
-                           )) {
-  vft %>% 
-    filter_tree_status_by_census(.status, exclude, valid_status) %>%
-    mean_years() %>% 
-    drop_if_na("year") %>% 
-    dplyr::count(species, Family, year) %>% 
-    tidyr::spread(year, n, fill = 0) %>% 
-    dplyr::arrange(species, Family)
-}
-
-# TODO: Move to fgeo.base.
-# TODO: write a data.frame and vector method.
-drop_if_na <- function(dfm, x) {
-  .x <- dfm[[x]]
-  missing <- is.na(.x)
-  if (any(missing)) {
-    warning(
-      "Dropping ", sum(missing), " rows with missing `", x, "` values.", 
-      call. = FALSE
-    )
-  }
-  dfm[!missing, , drop = FALSE]
-}
-
-fgeo_basal_area <- function(vft, 
-                           .status = "dead", 
-                           exclude = TRUE,
-                           valid_status = c(
-                             "dead", "alive", "broken below", "missing"
-                           )) {
-  vft %>% 
-    filter_tree_status_by_census(.status, exclude, valid_status) %>%
-    mean_years() %>% 
-    dplyr::group_by(species, Family, year) %>%
-    basal_area(dbh = DBH) %>% 
-    dplyr::arrange(species, Family, year) %>% 
-    dplyr::ungroup() %>% 
-    tidyr::spread(year, basal_area, fill = 0)
-}
-
-
-
 # Utils -------------------------------------------------------------------
 
 commas <- function(...) {
   paste0(..., collapse = ", ")
 }
-

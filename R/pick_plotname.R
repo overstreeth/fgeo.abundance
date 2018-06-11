@@ -1,9 +1,7 @@
-# TODO: Move to fgeo.base
-
-#' Pick a single plot from a ViewFullTable.
+#' Pick the given or first census (alpha sorted) from a ViewFullTable.
 #' 
-#' This is a convenient wrapper around `dplyr::filter()` warns if multiple
-#' plots are detected and detaults to pick the first plot in alphabetical order.
+#' This function performs a very simple action but is valuable mostly for its
+#' checks.
 #'
 #' @param vft Dataframe; particularly a ForestGEO ViewFullTable.
 #' @param plot_nm Length-1 character vector of the value of `PlotName` to pick
@@ -13,7 +11,9 @@
 #' @export
 #'
 #' @examples
-#' 
+#' vft <- data.frame(PlotName = c("a", "b"), stringsAsFactors = FALSE)
+#' pick_plotname(vft)
+#' pick_plotname(vft, "b")
 pick_plotname <- function(vft, plot_nm = NULL) {
   stopifnot(is.data.frame(vft))
   fgeo.base::check_crucial_names(vft, "PlotName")
@@ -29,5 +29,4 @@ pick_plotname <- function(vft, plot_nm = NULL) {
   message("Using: ", plot_nm[[1]], ".")
   vft[vft$PlotName == plot_nm[[1]], , drop = FALSE]
 }
-
 
