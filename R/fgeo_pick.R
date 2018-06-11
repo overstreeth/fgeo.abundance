@@ -10,8 +10,9 @@
 #' pick_fgeo(vft)
 #' }
 #' @noRd
-pick_one_plot <- function(vft, 
-                          plot_nm = sort(unique(vft$PlotName)), 
+
+# Add tree status (column `status_tree`) and pick or drop alive or dead trees.
+filter_tree_status <- function(vft, 
                           valid_status = c(
                             "dead", "alive", "broken below", "missing"
                           ), 
@@ -19,42 +20,36 @@ pick_one_plot <- function(vft,
                           exclude = TRUE) {
   crucial <- c("PlotName", "Status", "DBH", "ExactDate", "PlotCensusNumber")
   fgeo.base::check_crucial_names(vft, crucial)
+  single_plotname <- length(unique(vft$PlotName)) == 1
+  stopifnot(single_plotname)
+  stopifnot(length(.status) == 1, .status %in% c("dead", "alive"))
+
+  sane <- sanitize_Status_DBH_ExaxtDate(vft, valid_status)
   
-  vft_one <- pick_plotname(vft, plot_nm)
-  
-  vft_over_one <- fgeo.base::pick_dbh_min(vft_one, 1)
-  dbh_range <- paste(range(vft_one$DBH, na.rm = TRUE), collapse = "-")
-  message("Detected `DBH` values ranging ", dbh_range)
-  
-  
-  # Status
-  
-  # sanitize_status()
-  vft_warned <- inform_if_bad_status(vft_over_one, valid_status)
-  vft_good_status <- fix_status_if_bad_or_err(vft_warned, valid_status)
-  
-  # add tree status by census
   message("Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.")
-  stts_tree <- vft_good_status %>% 
+  with_status_tree <- sane %>% 
     dplyr::group_by(PlotCensusNumber) %>% 
     fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") %>% 
     dplyr::ungroup()
   
-  # filter status
   filtering <- ifelse(exclude, "Dropping", "Picking")
   message(filtering, " rows where `Status = ", .status, "`.")
-  not_dead <- fgeo.tool::filter_status(
-    stts_tree, wood = "tree", .status = .status, exclude = exclude
+  fgeo.tool::filter_status(
+    with_status_tree, wood = "tree", .status = .status, exclude = exclude
   )
   
-  # sanitize_dbh()
-  not_na_dbh <- drop_if_missing_dbh(not_dead)
-  drop_if_missing_dates(not_na_dbh)
 }
 
-
-
-
+# Sanitize
+sanitize_Status_DBH_ExaxtDate <- function(vft, valid_status) {
+  # * status
+  vft_warned <- inform_if_bad_status(vft, valid_status)
+  vft_good_status <- fix_status_if_bad_or_err(vft_warned, valid_status)
+  # * dbh
+  not_na_dbh <- drop_if_missing_dbh(vft_good_status)
+  # * ExactDate
+  drop_if_missing_dates(not_na_dbh)
+}
 
 #' Pick a single plot from a ViewFullTable.
 #' 
@@ -69,15 +64,38 @@ pick_one_plot <- function(vft,
 #' @export
 #'
 #' @examples
-pick_plotname <- function(vft, plot_nm = sort(unique(vft$PlotName))) {
-  if (length(plot_nm) > 1) {
-    message(
-      "Detected more than one `PlotName`: (", commas(plot_nm), ")\n",
-      "* Using ", plot_nm[[1]]
-    )
-  }
-  dplyr::filter(vft, PlotName == plot_nm[[1]])
+
+# TODO: Move to fgeo.base
+pick_plotname <- function(vft, plot_nm) {
+  check_pick_plotname(vft, plot_nm)
+  
+  first <- sort(unique(vft$PlotName))[[1]]
+  message("* Using `PlotName = ", first, "`.")
+  vft[vft$PlotName == first, , drop = FALSE]
 }
+
+check_pick_plotname <- function(vft, plot_nm) {
+    stopifnot(is.data.frame(vft), is.character(plot_nm))
+    fgeo.base::check_crucial_names(vft, "PlotName")
+    .plot_nm <- sort(unique(vft$PlotName))
+    if (length(.plot_nm) > 1) {
+      warning(
+        "Detected more than one `PlotName` (", commas(.plot_nm), ").", 
+        call. = FALSE
+      )
+    }
+    if (!plot_nm %in% .plot_nm) {
+      warning(plot_nm, " wasn't detected in `PlotName`.", call. = FALSE)
+    }
+  }
+
+
+
+
+
+
+
+
 
 
 
