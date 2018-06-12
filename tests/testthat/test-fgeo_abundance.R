@@ -1,4 +1,4 @@
-context("fgeo_abundance")
+context("byyr_abundance")
 
 test_that("works with luquillo", {
   suppressMessages(
@@ -7,7 +7,7 @@ test_that("works with luquillo", {
         dplyr::sample_n(10) %>% 
         pick_plotname("luquillo") %>% 
         fgeo.base::pick_dbh_min(2)
-      out <- fgeo_abundance(luq)
+      out <- byyr_abundance(luq)
     })
   )
   expect_is(out, "data.frame")
@@ -27,18 +27,18 @@ vft <- tibble::tibble(
 )
 
 test_that("has expected structure", {
-  out <- suppressWarnings(suppressMessages(fgeo_abundance(vft)))
+  out <- suppressWarnings(suppressMessages(byyr_abundance(vft)))
   expect_is(out, "data.frame")
   expect_named(out, c("species", "Family", "2000", "2001"))
 })
 
 test_that("fails with informative error", {
-  expect_error(fgeo_abundance(1))
-  expect_error(fgeo_abundance())
+  expect_error(byyr_abundance(1))
+  expect_error(byyr_abundance())
 
   suppressWarnings(suppressMessages({
     expect_error(
-      fgeo_abundance(vft, .valid_status = "bad input"), "failed to fix status"
+      byyr_abundance(vft, .valid_status = "bad input"), "failed to fix status"
     )
   }))
 })
@@ -54,26 +54,26 @@ tiny <- tibble::tribble(
 )
 
 test_that("known output", {
-  all_alive <- suppressWarnings(suppressMessages(fgeo_abundance(tiny)))
+  all_alive <- suppressWarnings(suppressMessages(byyr_abundance(tiny)))
   expect_equal(all_alive$`2000`, c(1, 1))
   expect_equal(all_alive$`2001`, c(1, 1))
   
   tiny_12d <- tiny
   tiny_12d[tiny_12d$Tag == "0001" & tiny_12d$CensusID == 2, ]$Status <- "dead"
-  one_dead_in_cns2 <- suppressWarnings(suppressMessages(fgeo_abundance(tiny_12d)))
+  one_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_abundance(tiny_12d)))
   expect_equal(one_dead_in_cns2$`2000`, c(1, 1))
   expect_equal(one_dead_in_cns2$`2001`, c(0, 1))
 
   tiny_22d <- tiny
   tiny_22d[tiny_22d$Tag == "0002" & tiny_22d$CensusID == 2, ]$Status <- "dead"
-  two_dead_in_cns2 <- suppressWarnings(suppressMessages(fgeo_abundance(tiny_22d)))
+  two_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_abundance(tiny_22d)))
   expect_equal(two_dead_in_cns2$`2000`, c(1, 1))
   expect_equal(two_dead_in_cns2$`2001`, c(1, 0))
 })
 
 
 
-context("fgeo_basal_area")
+context("byyr_basal_area")
 
 test_that("works with luquillo", {
   suppressMessages(
@@ -82,7 +82,7 @@ test_that("works with luquillo", {
         dplyr::sample_n(10) %>% 
         pick_plotname("luquillo") %>% 
         fgeo.base::pick_dbh_min(2)
-      out <- fgeo_basal_area(luq, .status = "alive", exclude = FALSE)
+      out <- byyr_basal_area(luq)
     })
   )
   expect_is(out, "data.frame")
@@ -102,24 +102,18 @@ vft <- tibble::tibble(
 )
 
 test_that("has expected structure", {
-  out <- suppressWarnings(suppressMessages(fgeo_basal_area(vft)))
+  out <- suppressWarnings(suppressMessages(byyr_basal_area(vft)))
   expect_is(out, "data.frame")
   expect_named(out, c("species", "Family", "2000", "2001"))
 })
 
 test_that("fails with informative error", {
-  expect_error(fgeo_basal_area(1))
-  expect_error(fgeo_basal_area())
+  expect_error(byyr_basal_area(1))
+  expect_error(byyr_basal_area())
   
   suppressWarnings(suppressMessages({
     expect_error(
-      fgeo_basal_area(vft, .valid_status = "bad input"), "failed to fix status"
-    )
-    expect_error(
-      fgeo_basal_area(vft, .status = "bad input"), "is not TRUE"
-    )
-    expect_error(
-      fgeo_basal_area(vft, .status = "A"), "is not TRUE"
+      byyr_basal_area(vft, .valid_status = "bad input"), "failed to fix status"
     )
   }))
 })
@@ -133,20 +127,20 @@ tiny <- tibble::tribble(
 )
 
 test_that("known output", {
-  alive <- suppressWarnings(suppressMessages(fgeo_basal_area(tiny)))
+  alive <- suppressWarnings(suppressMessages(byyr_basal_area(tiny)))
   expect_equal(alive$`2000`, c(basal_area(1), basal_area(1)))
   expect_equal(alive$`2001`, c(basal_area(1), basal_area(1)))
   
   tiny_12d <- tiny
   tiny_12d[tiny_12d$Tag == "0001" & tiny_12d$CensusID == 2, ]$Status <- "dead"
-  one_dead_in_cns2 <- suppressWarnings(suppressMessages(fgeo_basal_area(tiny_12d)))
+  one_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_basal_area(tiny_12d)))
   
   expect_equal(one_dead_in_cns2$`2000`, c(basal_area(1), basal_area(1)))
   expect_equal(one_dead_in_cns2$`2001`, c(0, basal_area(1)))
   
   tiny_22d <- tiny
   tiny_22d[tiny_22d$Tag == "0002" & tiny_22d$CensusID == 2, ]$Status <- "dead"
-  two_dead_in_cns2 <- suppressWarnings(suppressMessages(fgeo_basal_area(tiny_22d)))
+  two_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_basal_area(tiny_22d)))
   expect_equal(two_dead_in_cns2$`2000`, c(basal_area(1), basal_area(1)))
   expect_equal(two_dead_in_cns2$`2001`, c(basal_area(1), 0))
 })
