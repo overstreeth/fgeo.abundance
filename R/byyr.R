@@ -1,12 +1,10 @@
-#' Create tables byyr_abundance and byyr_basal_area.
+#' Create tables of abundance and basal area by round mean year.
 #'
 #' @param vft A dataframe; particularly a ForestGEO ViewFullTable.
 #' @param .valid_status String giving possible values of `Status`.
-#' @inheritParams fgeo.tool::filter_status
 #'
 #' @return A dataframe.
 #' 
-#' @export
 #' @examples
 #' vft <- data.frame(
 #'   Tag = c("0001", "0001", "0002", "0002"),
@@ -31,6 +29,11 @@
 #' pick <- vft %>% 
 #'   pick_plotname("p") %>% 
 #'   fgeo.base::pick_dbh_min(10)
+#' @name byyr
+NULL
+
+#' @rdname byyr
+#' @export
 byyr_abundance <- function(vft, 
                            .valid_status = c(
                              "dead", "alive", "broken below", "missing")
@@ -43,7 +46,9 @@ byyr_abundance <- function(vft,
   fgeo.base::check_crucial_names(vft, crucial)
   
   vft %>% 
-    filter_tree_status_by_census(.status = "dead", exclude = TRUE, .valid_status) %>%
+    filter_tree_status_by_census(
+      .status = "dead", exclude = TRUE, .valid_status
+    ) %>%
     mean_years() %>% 
     drop_if_na("year") %>% 
     dplyr::count(.data$species, .data$Family, .data$year) %>% 
@@ -51,7 +56,7 @@ byyr_abundance <- function(vft,
     dplyr::arrange(.data$species, .data$Family)
 }
 
-#' @rdname byyr_abundance
+#' @rdname byyr
 #' @export
 byyr_basal_area <- function(vft, 
                             .valid_status = c(
@@ -173,10 +178,4 @@ drop_if_missing_dates <- function(x) {
   }
   x <- x[!missing_dates, , drop = FALSE]
   invisible(x)
-}
-
-# Utils -------------------------------------------------------------------
-
-commas <- function(...) {
-  paste0(..., collapse = ", ")
 }
