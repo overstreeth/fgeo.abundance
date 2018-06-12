@@ -6,3 +6,5 @@ clean_directories.R
 tmp.R
 inst/doc
 tmp.sh
+inst/issues/59_abund_tables/vft.csv
+inst/issues/59_abund_tables/ViewFullTable.csv
