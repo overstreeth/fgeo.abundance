@@ -5,26 +5,51 @@
 \alias{fgeo_basal_area}
 \title{Create tables fgeo_abundance and fgeo_basal_area.}
 \usage{
-fgeo_abundance(vft, .status = "dead", exclude = TRUE,
-  .valid_status = c("dead", "alive", "broken below", "missing"))
+fgeo_abundance(vft, .valid_status = c("dead", "alive", "broken below",
+  "missing"))
 
 fgeo_basal_area(vft, .status = "dead", exclude = TRUE,
   .valid_status = c("dead", "alive", "broken below", "missing"))
 }
 \arguments{
-\item{vft}{Dataframe; particularly a ForestGEO ViewFullTable.}
+\item{vft}{A dataframe; particularly a ForestGEO ViewFullTable.}
+
+\item{.valid_status}{String giving possible values of \code{Status}.}
 
 \item{.status}{Character vector; Must be one of possible values of the
 variable giving the status of the dataframe \code{x}.}
 
 \item{exclude}{Logical; \code{TRUE} filters the data to exclude the values passed
 to \code{.status}.}
-
-\item{.valid_status}{String giving possible values of \code{Status}.}
 }
 \value{
 A dataframe.
 }
 \description{
 Create tables fgeo_abundance and fgeo_basal_area.
+}
+\examples{
+vft <- data.frame(
+  Tag = c("0001", "0001", "0002", "0002"),
+  PlotName = "p",
+  Status = c("alive", "dead", "alive", "missing"),
+  DBH = c(1, 1, 10, 10),
+  ExactDate = c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
+  PlotCensusNumber = c(1, 2, 1, 2),
+  CensusID = c(1, 2, 1, 2),
+  Genus = c("A", "A", "B", "B"),
+  SpeciesName = c("a", "a", "b", "b"),
+  Family = "f",
+  stringsAsFactors = FALSE
+)
+
+fgeo_abundance(vft)
+suppressWarnings(fgeo_basal_area(vft))
+basal_area(1)
+basal_area(10)
+
+# You may want to filter the data first
+pick <- vft \%>\% 
+  pick_plotname("p") \%>\% 
+  fgeo.base::pick_dbh_min(10)
 }

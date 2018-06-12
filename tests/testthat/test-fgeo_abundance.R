@@ -7,7 +7,7 @@ test_that("works with luquillo", {
         dplyr::sample_n(10) %>% 
         pick_plotname("luquillo") %>% 
         fgeo.base::pick_dbh_min(2)
-      out <- fgeo_abundance(luq, .status = "alive", exclude = FALSE)
+      out <- fgeo_abundance(luq)
     })
   )
   expect_is(out, "data.frame")
@@ -40,15 +40,8 @@ test_that("fails with informative error", {
     expect_error(
       fgeo_abundance(vft, .valid_status = "bad input"), "failed to fix status"
     )
-    expect_error(
-      fgeo_abundance(vft, .status = "bad input"), "is not TRUE"
-    )
-    expect_error(
-      fgeo_abundance(vft, .status = "A"), "is not TRUE"
-    )
   }))
 })
-
 
 
 

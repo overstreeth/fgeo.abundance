@@ -1,6 +1,6 @@
 #' Create tables fgeo_abundance and fgeo_basal_area.
 #'
-#' @inheritParams pick_plotname
+#' @param vft A dataframe; particularly a ForestGEO ViewFullTable.
 #' @param .valid_status String giving possible values of `Status`.
 #' @inheritParams fgeo.tool::filter_status
 #'
@@ -8,23 +8,33 @@
 #' 
 #' @export
 #' @examples
-#' vft <- tibble::tribble(
-#'   ~Tag, ~PlotName, ~Status, ~DBH,   ~ExactDate, ~PlotCensusNumber, ~CensusID, ~Genus, ~SpeciesName, ~Family,
-#'   "0001",     "p", "alive",   1L, "2000-01-01",                1L,        1L,    "A",          "a",     "f",
-#'   "0001",     "p",  "dead",   1L, "2001-01-01",                2L,        2L,    "A",          "a",     "f",
-#'   "0002",     "p", "alive",  10L, "2000-01-01",                1L,        1L,    "B",          "b",     "f",
-#'   "0002",     "p", "alive",  10L, "2001-01-01",                2L,        2L,    "B",          "b",     "f",
+#' vft <- data.frame(
+#'   Tag = c("0001", "0001", "0002", "0002"),
+#'   PlotName = "p",
+#'   Status = c("alive", "dead", "alive", "missing"),
+#'   DBH = c(1, 1, 10, 10),
+#'   ExactDate = c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
+#'   PlotCensusNumber = c(1, 2, 1, 2),
+#'   CensusID = c(1, 2, 1, 2),
+#'   Genus = c("A", "A", "B", "B"),
+#'   SpeciesName = c("a", "a", "b", "b"),
+#'   Family = "f",
+#'   stringsAsFactors = FALSE
 #' )
+#' 
 #' fgeo_abundance(vft)
 #' suppressWarnings(fgeo_basal_area(vft))
 #' basal_area(1)
 #' basal_area(10)
+#' 
+#' # You may want to filter the data first
+#' pick <- vft %>% 
+#'   pick_plotname("p") %>% 
+#'   fgeo.base::pick_dbh_min(10)
 fgeo_abundance <- function(vft, 
-                           .status = "dead", 
-                           exclude = TRUE,
                            .valid_status = c(
-                             "dead", "alive", "broken below", "missing"
-                           )) {
+                             "dead", "alive", "broken below", "missing")
+                           ) {
   stopifnot(is.data.frame(vft))
   crucial <- c(
     "Genus", "SpeciesName", "Family", "Status", "DBH", "ExactDate", 
@@ -33,7 +43,7 @@ fgeo_abundance <- function(vft,
   fgeo.base::check_crucial_names(vft, crucial)
   
   vft %>% 
-    filter_tree_status_by_census(.status, exclude, .valid_status) %>%
+    filter_tree_status_by_census(.status = "dead", exclude = TRUE, .valid_status) %>%
     mean_years() %>% 
     drop_if_na("year") %>% 
     dplyr::count(species, Family, year) %>% 

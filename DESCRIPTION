@@ -13,6 +13,9 @@ Depends:
     R (>= 3.1.2)
 Imports: 
     dplyr,
+    fgeo.base,
+    fgeo.tool,
+    lubridate,
     rlang (>= 0.1.2),
     tibble,
     tidyr,
@@ -29,7 +32,9 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 Remotes: 
-    forestgeo/fgeo.data
+    forestgeo/fgeo.base,
+    forestgeo/fgeo.data,
+    forestgeo/fgeo.tool
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

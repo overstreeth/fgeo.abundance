@@ -11,6 +11,14 @@ drop_if_na(dfm, x)
 
 \item{x}{String giving a column name of \code{dfm}.}
 }
+\value{
+A dataframe.
+}
 \description{
 Valuable mostly for its warning.
+}
+\examples{
+dfm <- data.frame(a = 1, b = NA)
+drop_if_na(dfm, "b")
+drop_if_na(dfm, "a")
 }
