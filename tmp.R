@@ -1,12 +1,51 @@
-load_all()
-vft <- readr::read_csv(here::here("inst/issues/59_abund_tables/vft_pick.csv"))
+tiny <- tibble::tribble(
+  ~Tag, ~PlotName, ~Status, ~DBH,   ~ExactDate, ~PlotCensusNumber, ~CensusID, ~Genus, ~SpeciesName, ~Family,
+  "0001",     "p", "alive",   1L, "2000-01-01",                1L,        1L,    "A",          "a",     "f",
+  "0001",     "p",  "dead",   1L, "2001-01-01",                2L,        2L,    "A",          "a",     "f",
+  "0002",     "p", "alive",  10L, "2000-01-01",                1L,        1L,    "B",          "b",     "f",
+  "0002",     "p", "alive",  10L, "2001-01-01",                2L,        2L,    "B",          "b",     "f",
+)
+fgeo_abundance(tiny)
+suppressMessages(fgeo_basal_area(tiny))
+basal_area(1)
 
-picked <- pick_plotname(vft, "bci") %>% 
-  fgeo.base::pick_dbh_min(1)
 
-fgeo_abundance(picked, .status = "alive", exclude = FALSE)
 
-fgeo_basal_area(picked, .status = "alive", exclude = FALSE)
+
+
+
+
+
+
+
+test_that("known output", {
+  alive <- suppressWarnings(suppressMessages(fgeo_basal_area(tiny)))
+  expect_equal(alive$`2000`, c(basal_area(1), basal_area(1)))
+  expect_equal(alive$`2001`, c(basal_area(1), basal_area(1)))
+  
+  
+  expect_equal(one_dead_in_cns2$`2000`, c(basal_area(1), basal_area(1)))
+  expect_equal(one_dead_in_cns2$`2001`, c(0, basal_area(1)))
+  
+  tiny_22d <- tiny
+  tiny_22d[tiny_22d$Tag == "0002" & tiny_22d$CensusID == 2, ]$Status <- "dead"
+  two_dead_in_cns2 <- suppressWarnings(suppressMessages(fgeo_basal_area(tiny_22d)))
+  expect_equal(two_dead_in_cns2$`2000`, c(basal_area(1), basal_area(1)))
+  expect_equal(two_dead_in_cns2$`2001`, c(basal_area(1), 0))
+})
+
+
+
+
+
+
+
+# Stuff
+
+
+
+
+
 
 
 

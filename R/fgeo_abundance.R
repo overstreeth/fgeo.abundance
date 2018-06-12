@@ -1,19 +1,39 @@
 #' Create tables fgeo_abundance and fgeo_basal_area.
 #'
 #' @inheritParams pick_plotname
-#' @param valid_status String giving possible values of `Status`.
+#' @param .valid_status String giving possible values of `Status`.
 #' @inheritParams fgeo.tool::filter_status
 #'
 #' @return A dataframe.
+#' 
+#' @export
 #' @examples
+#' vft <- tibble::tribble(
+#'   ~Tag, ~PlotName, ~Status, ~DBH,   ~ExactDate, ~PlotCensusNumber, ~CensusID, ~Genus, ~SpeciesName, ~Family,
+#'   "0001",     "p", "alive",   1L, "2000-01-01",                1L,        1L,    "A",          "a",     "f",
+#'   "0001",     "p",  "dead",   1L, "2001-01-01",                2L,        2L,    "A",          "a",     "f",
+#'   "0002",     "p", "alive",  10L, "2000-01-01",                1L,        1L,    "B",          "b",     "f",
+#'   "0002",     "p", "alive",  10L, "2001-01-01",                2L,        2L,    "B",          "b",     "f",
+#' )
+#' fgeo_abundance(vft)
+#' suppressWarnings(fgeo_basal_area(vft))
+#' basal_area(1)
+#' basal_area(10)
 fgeo_abundance <- function(vft, 
                            .status = "dead", 
                            exclude = TRUE,
-                           valid_status = c(
+                           .valid_status = c(
                              "dead", "alive", "broken below", "missing"
                            )) {
+  stopifnot(is.data.frame(vft))
+  crucial <- c(
+    "Genus", "SpeciesName", "Family", "Status", "DBH", "ExactDate", 
+    "PlotCensusNumber"
+  )
+  fgeo.base::check_crucial_names(vft, crucial)
+  
   vft %>% 
-    filter_tree_status_by_census(.status, exclude, valid_status) %>%
+    filter_tree_status_by_census(.status, exclude, .valid_status) %>%
     mean_years() %>% 
     drop_if_na("year") %>% 
     dplyr::count(species, Family, year) %>% 
@@ -21,16 +41,16 @@ fgeo_abundance <- function(vft,
     dplyr::arrange(species, Family)
 }
 
-#' @export
 #' @rdname fgeo_abundance
+#' @export
 fgeo_basal_area <- function(vft, 
                             .status = "dead", 
                             exclude = TRUE,
-                            valid_status = c(
+                            .valid_status = c(
                               "dead", "alive", "broken below", "missing"
                             )) {
   vft %>% 
-    filter_tree_status_by_census(.status, exclude, valid_status) %>%
+    filter_tree_status_by_census(.status, exclude, .valid_status) %>%
     mean_years() %>% 
     dplyr::group_by(species, Family, year) %>%
     basal_area(dbh = DBH) %>% 
@@ -40,12 +60,10 @@ fgeo_basal_area <- function(vft,
 }
 
 # Add `status_tree` by census and pick or drop alive or dead trees.
-filter_tree_status_by_census <- function(vft, .status, exclude, valid_status) {
-  crucial <- c("Status", "DBH", "ExactDate", "PlotCensusNumber")
-  fgeo.base::check_crucial_names(vft, crucial)
+filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
   stopifnot(length(.status) == 1, .status %in% c("dead", "alive"))
 
-  sane <- sanitize_Status_DBH_ExaxtDate(vft, valid_status)
+  sane <- sanitize_Status_DBH_ExaxtDate(vft, .valid_status)
   
   message("Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.")
   with_status_tree <- sane %>% 
@@ -74,41 +92,39 @@ mean_years <- function(vft) {
     dplyr::arrange(year)
 }
 
-sanitize_Status_DBH_ExaxtDate <- function(vft, valid_status) {
+sanitize_Status_DBH_ExaxtDate <- function(vft, .valid_status) {
   # * status
-  vft_warned <- inform_if_bad_status(vft, valid_status)
-  vft_good_status <- fix_status_if_bad_or_err(vft_warned, valid_status)
+  vft_warned <- inform_if_bad_status(vft, .valid_status)
+  vft_good_status <- fix_status_if_bad_or_err(vft_warned, .valid_status)
   # * dbh
   not_na_dbh <- drop_if_missing_dbh(vft_good_status)
   # * ExactDate
   drop_if_missing_dates(not_na_dbh)
 }
 
-inform_if_bad_status <- function(vft, status_arg) {
-  status_ok <- all(sort(unique(vft$Status)) %in% status_arg)
+inform_if_bad_status <- function(vft, .valid_status) {
+  status_ok <- all(sort(unique(vft$Status)) %in% .valid_status)
   if (!status_ok) {
     message(
       "Unique values of column `Status` and argument `valid_status` ", 
       "should match:\n",
-      "* Status col: ", commas(sort(unique(status_arg))), ".\n",
+      "* Status col: ", commas(sort(unique(.valid_status))), ".\n",
       "* valid_status arg: ", commas(sort(unique(vft$Status))), "."
     )
   }
   invisible(vft)
 }
 
-identical_status_levels <- function(status_col, status_arg) {
-  identical(sort(unique(status_col)), sort(unique(status_arg)))
-}
-
-fix_status_if_bad_or_err <- function(vft, status_arg) {
-  status_ok <- all(sort(unique(vft$Status)) %in% status_arg)
+fix_status_if_bad_or_err <- function(vft, .valid_status) {
+  status_ok <- all(sort(unique(vft$Status)) %in% .valid_status)
   if (!status_ok) {
     message("Fixing status automatically.")
-    vft <- fix_bad_status(vft, vft$Status, status_arg)
+    vft <- fix_bad_status(
+      vft, status_col = vft$Status, status_arg = .valid_status
+    )
     
     tryCatch(
-      testthat::expect_silent(inform_if_bad_status(vft, status_arg)),
+      testthat::expect_silent(inform_if_bad_status(vft, .valid_status)),
       error = function(cond) {
         stop(
           "Tried but failed to fix status automatically.\n",
