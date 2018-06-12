@@ -1,6 +1,7 @@
 context("byyr_abundance")
 
 test_that("works with luquillo", {
+  skip_if_not_installed("luquillo")
   suppressMessages(
     suppressWarnings({
       luq <- luquillo::ViewFullTable_luquillo %>% 
