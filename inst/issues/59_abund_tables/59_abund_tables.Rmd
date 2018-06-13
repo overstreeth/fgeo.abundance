@@ -153,7 +153,10 @@ sites[3] %>% names()
 sites[[3]] %>% arrange(Latin)
 ```
 
-More references
+See also: https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-saplings-and-trees
+
+Example:
+
 
 ![](https://i.imgur.com/tcJJRP1.png)
 
@@ -260,5 +263,3 @@ Example from https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-
 > To standardize a density per unit area, each count must be divided by the size of the plot: 50 ha at Barro Colorado, 4 ha at Cocoli, and 5.96 ha at Sherman.
 
 -- [Condit et al.](https://dash.ucdavis.edu/stash/dataset/doi:10.15146/R3MM4V)
-
-TODO: Discuss this with Suzanne.
