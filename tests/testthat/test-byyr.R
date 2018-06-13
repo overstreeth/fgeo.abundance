@@ -76,10 +76,10 @@ test_that("known output", {
 
 context("byyr_basal_area")
 
-test_that("works with luquillo", {
+test_that("works with data from site Luquillo", {
   suppressMessages(
     suppressWarnings({
-      luq <- luquillo::ViewFullTable_luquillo %>% 
+      luq <- fgeo.data::luquillo_vft_4quad %>% 
         dplyr::sample_n(10) %>% 
         pick_plotname("luquillo") %>% 
         fgeo.base::pick_dbh_min(2)
