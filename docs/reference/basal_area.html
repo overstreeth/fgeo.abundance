@@ -34,7 +34,8 @@
 dataframes. To calculate basal area within groups, feed
 basal_area() with a dataframe previously grouped with group_by() (see
 examples and section See also). group_by() comes from dplyr but for
-convenience it is reexported by fgeo.abundance." />
+convenience it is reexported by fgeo.abundance. add_basal_area() adds
+a column basal_area" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,7 +122,8 @@ convenience it is reexported by fgeo.abundance." />
 dataframes. To calculate basal area within groups, feed
 <code>basal_area()</code> with a dataframe previously grouped with <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code> (see
 examples and section See also). <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code> comes from <strong>dplyr</strong> but for
-convenience it is reexported by <strong>fgeo.abundance</strong>.</p>
+convenience it is reexported by <strong>fgeo.abundance</strong>. <code>add_basal_area()</code> adds
+a column <code>basal_area</code></p>
     
     </div>
 
@@ -134,7 +136,9 @@ convenience it is reexported by <strong>fgeo.abundance</strong>.</p>
 <span class='fu'>basal_area</span>(<span class='no'>x</span>, <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='no'>dbh</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for numeric</span>
-<span class='fu'>basal_area</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>basal_area</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='fu'>add_basal_area</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='no'>dbh</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,46 +184,92 @@ individual.</p></li>
   <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
 )
 <span class='no'>stem</span></div><div class='output co'>#&gt; # A tibble: 6 x 4
-#&gt;   stemID quadrat sp      dbh
-#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1      1 0001    sp1   18.8 
-#&gt; 2      2 0001    sp1    1.08
-#&gt; 3      3 0001    sp2    7.96
-#&gt; 4      4 0002    sp3    8.95
-#&gt; 5      5 0002    sp3    5.58
-#&gt; 6      6 0002    sp3   15.3 </div><div class='input'>
-
-<span class='co'># Calculate basal area on a vector</span>
-<span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='fu'>basal_area</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)
-<span class='no'>ba</span></div><div class='output co'>#&gt; [1] 276.5601619   0.9090446  49.7067633  62.9069616  24.4557975 182.8790810</div><div class='input'>
-<span class='co'># Add result to the original dataframe</span>
-<span class='no'>stem</span>$<span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='no'>ba</span>
-<span class='co'># Same</span>
-<span class='no'>stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='no'>stem</span>, <span class='kw'>ba</span> <span class='kw'>=</span> <span class='fu'>basal_area</span>(<span class='no'>dbh</span>))
-<span class='co'># Reordering columns to show `ba` first</span>
-<span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>stem</span>, <span class='no'>ba</span>, <span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>everything</a></span>())</div><div class='output co'>#&gt; # A tibble: 6 x 5
-#&gt;        ba stemID quadrat sp      dbh
-#&gt;     &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1 277.         1 0001    sp1   18.8 
-#&gt; 2   0.909      2 0001    sp1    1.08
-#&gt; 3  49.7        3 0001    sp2    7.96
-#&gt; 4  62.9        4 0002    sp3    8.95
-#&gt; 5  24.5        5 0002    sp3    5.58
-#&gt; 6 183.         6 0002    sp3   15.3 </div><div class='input'>
-<span class='co'># Calculate basal area on the entire dataframe</span>
+#&gt;   stemID quadrat sp        dbh
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+#&gt; 1      1 0001    sp1    1.12  
+#&gt; 2      2 0001    sp1    0.381 
+#&gt; 3      3 0001    sp2    3.63  
+#&gt; 4      4 0002    sp3    0.0557
+#&gt; 5      5 0002    sp3   16.3   
+#&gt; 6      6 0002    sp3   13.0   </div><div class='input'><span class='fu'>basal_area</span>(<span class='no'>stem</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 9.858736e-01 1.140265e-01 1.034633e+01 2.437816e-03 2.089258e+02
+#&gt; [6] 1.324043e+02</div><div class='input'><span class='fu'>add_basal_area</span>(<span class='no'>stem</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;   stemID quadrat sp        dbh basal_area
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1      1 0001    sp1    1.12         353.
+#&gt; 2      2 0001    sp1    0.381        353.
+#&gt; 3      3 0001    sp2    3.63         353.
+#&gt; 4      4 0002    sp3    0.0557       353.
+#&gt; 5      5 0002    sp3   16.3          353.
+#&gt; 6      6 0002    sp3   13.0          353.</div><div class='input'>
+<span class='co'># Sum across all rows</span>
 <span class='fu'>basal_area</span>(<span class='no'>stem</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;   basal_area
 #&gt;        &lt;dbl&gt;
-#&gt; 1       597.</div><div class='input'>
-<span class='co'># Now by groups</span>
-<span class='no'>grouped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>stem</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
-<span class='fu'>basal_area</span>(<span class='no'>grouped</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
+#&gt; 1       353.</div><div class='input'>
+<span class='co'># Sum across rows by groups</span>
+<span class='fu'>basal_area</span>(
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>stem</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt; # Groups:   quadrat [?]
 #&gt;   quadrat sp    basal_area
 #&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
-#&gt; 1 0001    sp1        277. 
-#&gt; 2 0001    sp2         49.7
-#&gt; 3 0002    sp3        270. </div></pre>
+#&gt; 1 0001    sp1         1.10
+#&gt; 2 0001    sp2        10.3 
+#&gt; 3 0002    sp3       341.  </div><div class='input'><span class='co'># Same but returns all rows</span>
+<span class='fu'>add_basal_area</span>(<span class='no'>stem</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;   stemID quadrat sp        dbh basal_area
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1      1 0001    sp1    1.12         1.10
+#&gt; 2      2 0001    sp1    0.381        1.10
+#&gt; 3      3 0001    sp2    3.63        10.3 
+#&gt; 4      4 0002    sp3    0.0557     341.  
+#&gt; 5      5 0002    sp3   16.3        341.  
+#&gt; 6      6 0002    sp3   13.0        341.  </div><div class='input'>
+<span class='co'># Dealing with missing values</span>
+<span class='no'>stem2</span> <span class='kw'>&lt;-</span> <span class='no'>stem</span>
+<span class='no'>stem2</span>[<span class='fl'>6</span>, <span class='fl'>4</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='no'>stem2</span></div><div class='output co'>#&gt; # A tibble: 6 x 4
+#&gt;   stemID quadrat sp        dbh
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+#&gt; 1      1 0001    sp1    1.12  
+#&gt; 2      2 0001    sp1    0.381 
+#&gt; 3      3 0001    sp2    3.63  
+#&gt; 4      4 0002    sp3    0.0557
+#&gt; 5      5 0002    sp3   16.3   
+#&gt; 6      6 0002    sp3   NA     </div><div class='input'>
+<span class='co'># basal_area() of missing dbh in a vector results in NA</span>
+<span class='fu'>basal_area</span>(<span class='no'>stem2</span>$<span class='no'>dbh</span>)</div><div class='output co'>#&gt; [1] 9.858736e-01 1.140265e-01 1.034633e+01 2.437816e-03 2.089258e+02
+#&gt; [6]           NA</div><div class='input'><span class='co'># add_basal_area() of missing dbh in a dataframe results in NA</span>
+<span class='co'># Same if using add_basal_area()</span>
+<span class='fu'>add_basal_area</span>(<span class='no'>stem2</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;   stemID quadrat sp        dbh basal_area
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1      1 0001    sp1    1.12         220.
+#&gt; 2      2 0001    sp1    0.381        220.
+#&gt; 3      3 0001    sp2    3.63         220.
+#&gt; 4      4 0002    sp3    0.0557       220.
+#&gt; 5      5 0002    sp3   16.3          220.
+#&gt; 6      6 0002    sp3   NA            220.</div><div class='input'>
+<span class='co'># But basal_area() of missing dbh in a dataframe ignores NA's</span>
+<span class='fu'>basal_area</span>(<span class='no'>stem2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
+#&gt;   basal_area
+#&gt;        &lt;dbl&gt;
+#&gt; 1       220.</div><div class='input'><span class='fu'>basal_area</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>stem2</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 3
+#&gt; # Groups:   quadrat [?]
+#&gt;   quadrat sp    basal_area
+#&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1 0001    sp1         1.10
+#&gt; 2 0001    sp2        10.3 
+#&gt; 3 0002    sp3       209.  </div><div class='input'><span class='co'># Missing dbh is ignored, and `basal_area` refers to the group not each row.</span>
+<span class='fu'>add_basal_area</span>(<span class='no'>stem2</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;   stemID quadrat sp        dbh basal_area
+#&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1      1 0001    sp1    1.12         1.10
+#&gt; 2      2 0001    sp1    0.381        1.10
+#&gt; 3      3 0001    sp2    3.63        10.3 
+#&gt; 4      4 0002    sp3    0.0557     209.  
+#&gt; 5      5 0002    sp3   16.3        209.  
+#&gt; 6      6 0002    sp3   NA          209.  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

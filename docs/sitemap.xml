@@ -7,10 +7,22 @@
     <loc>https://forestgeo.github.io/fgeo.abundance//reference/basal_area.html</loc>
   </url>
   <url>
+    <loc>https://forestgeo.github.io/fgeo.abundance//reference/byyr.html</loc>
+  </url>
+  <url>
     <loc>https://forestgeo.github.io/fgeo.abundance//reference/count_duplicated.html</loc>
   </url>
   <url>
+    <loc>https://forestgeo.github.io/fgeo.abundance//reference/drop_dead_trees_by_cns.html</loc>
+  </url>
+  <url>
+    <loc>https://forestgeo.github.io/fgeo.abundance//reference/drop_if_na.html</loc>
+  </url>
+  <url>
     <loc>https://forestgeo.github.io/fgeo.abundance//reference/fgeo.abundance-package.html</loc>
+  </url>
+  <url>
+    <loc>https://forestgeo.github.io/fgeo.abundance//reference/pick_plotname.html</loc>
   </url>
   <url>
     <loc>https://forestgeo.github.io/fgeo.abundance//reference/pipe.html</loc>

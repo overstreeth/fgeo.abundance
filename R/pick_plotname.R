@@ -1,3 +1,5 @@
+# TODO: Move to fgeo.base
+
 #' Pick the given or first census (alpha sorted) from a ViewFullTable.
 #' 
 #' This function performs a very simple action but is valuable mostly for its

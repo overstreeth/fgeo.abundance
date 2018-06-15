@@ -4,31 +4,30 @@
 \alias{byyr}
 \alias{byyr_abundance}
 \alias{byyr_basal_area}
-\title{Create tables of abundance and basal area by round mean year.}
+\title{Create tables of abundance and basal area by (round mean) year.}
 \usage{
-byyr_abundance(vft, .valid_status = c("dead", "alive", "broken below",
-  "missing"))
+byyr_abundance(vft)
 
-byyr_basal_area(vft, .valid_status = c("dead", "alive", "broken below",
-  "missing"))
+byyr_basal_area(vft)
 }
 \arguments{
 \item{vft}{A dataframe; particularly a ForestGEO ViewFullTable.}
-
-\item{.valid_status}{String giving possible values of \code{Status}.}
 }
 \value{
 A dataframe.
 }
 \description{
-Create tables of abundance and basal area by round mean year.
+Create tables of abundance and basal area by (round mean) year.
 }
 \examples{
+library(fgeo.tool)
+library(fgeo.base)
+
 vft <- data.frame(
   Tag = c("0001", "0001", "0002", "0002"),
   PlotName = "p",
-  Status = c("alive", "dead", "alive", "missing"),
-  DBH = c(1, 1, 10, 10),
+  Status = c("dead", "dead", "alive", "alive"),
+  DBH = c(NA, NA, 10, 100),
   ExactDate = c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
   PlotCensusNumber = c(1, 2, 1, 2),
   CensusID = c(1, 2, 1, 2),
@@ -37,14 +36,21 @@ vft <- data.frame(
   Family = "f",
   stringsAsFactors = FALSE
 )
+vft
 
-byyr_abundance(vft)
-suppressWarnings(byyr_basal_area(vft))
-basal_area(1)
-basal_area(10)
+# First pick the data you want
+pick1 <- pick_plotname(vft, "p")
+pick2 <- drop_dead_trees_by_cns(pick1)
+pick3 <- pick_dbh_min(pick2, 10)
+pick3
 
-# You may want to filter the data first
-pick <- vft \%>\% 
-  pick_plotname("p") \%>\% 
-  fgeo.base::pick_dbh_min(10)
+byyr_abundance(pick3)
+
+ba <- byyr_basal_area(pick3)
+ba
+
+# Convert units and standardize by plot size in hectares
+years <- c("2000", "2001")
+in_he <- conv_unit_at(ba, .at = years, from = "mm2", to = "hectare")
+standardize_at(in_he, .at = years, total = 50)
 }

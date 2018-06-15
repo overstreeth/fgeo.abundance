@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • fgeo.abundance</title>
+<title>Pick the given or first census (alpha sorted) from a ViewFullTable. — pick_plotname • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,13 +28,10 @@
 
 
 
-<meta property="og:title" content="Objects exported from other packages — reexports" />
+<meta property="og:title" content="Pick the given or first census (alpha sorted) from a ViewFullTable. — pick_plotname" />
 
-<meta property="og:description" content="These objects are imported from other packages. Follow the links
-below to see their documentation.
-
-  dplyrtally, add_tally, count, add_count, group_by, ungroup
-" />
+<meta property="og:description" content="This function performs a very simple action but is valuable mostly for its
+checks." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,28 +107,54 @@ below to see their documentation.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
-    <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/imports.R'><code>R/imports.R</code></a></small>
-    <div class="hidden name"><code>reexports.Rd</code></div>
+    <h1>Pick the given or first census (alpha sorted) from a ViewFullTable.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/pick_plotname.R'><code>R/pick_plotname.R</code></a></small>
+    <div class="hidden name"><code>pick_plotname.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These objects are imported from other packages. Follow the links
-below to see their documentation.</p>
-<dl class='dl-horizontal'>
-  <dt>dplyr</dt><dd><p><code><a href='http://dplyr.tidyverse.org/reference/tally.html'>tally</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_tally</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_count</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></code></p></dd>
-</dl>
+    <p>This function performs a very simple action but is valuable mostly for its
+checks.</p>
     
     </div>
 
-        
+    <pre class="usage"><span class='fu'>pick_plotname</span>(<span class='no'>vft</span>, <span class='kw'>plot_nm</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>vft</th>
+      <td><p>Dataframe; particularly a ForestGEO ViewFullTable.</p></td>
+    </tr>
+    <tr>
+      <th>plot_nm</th>
+      <td><p>Length-1 character vector of the value of <code>PlotName</code> to pick
+from <code>vft</code>.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A dataframe.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>PlotName</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>), <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>pick_plotname</span>(<span class='no'>vft</span>)</div><div class='output co'>#&gt; <span class='message'>Using: a.</span></div><div class='output co'>#&gt;   PlotName
+#&gt; 1        a</div><div class='input'><span class='fu'>pick_plotname</span>(<span class='no'>vft</span>, <span class='st'>"b"</span>)</div><div class='output co'>#&gt; <span class='message'>Using: b.</span></div><div class='output co'>#&gt;   PlotName
+#&gt; 2        b</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

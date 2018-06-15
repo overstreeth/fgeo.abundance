@@ -1,16 +1,18 @@
-#' Create tables of abundance and basal area by round mean year.
+#' Create tables of abundance and basal area by (round mean) year.
 #'
 #' @param vft A dataframe; particularly a ForestGEO ViewFullTable.
-#' @param .valid_status String giving possible values of `Status`.
 #'
 #' @return A dataframe.
 #' 
 #' @examples
+#' library(fgeo.tool)
+#' library(fgeo.base)
+#' 
 #' vft <- data.frame(
 #'   Tag = c("0001", "0001", "0002", "0002"),
 #'   PlotName = "p",
-#'   Status = c("alive", "dead", "alive", "missing"),
-#'   DBH = c(1, 1, 10, 10),
+#'   Status = c("dead", "dead", "alive", "alive"),
+#'   DBH = c(NA, NA, 10, 100),
 #'   ExactDate = c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
 #'   PlotCensusNumber = c(1, 2, 1, 2),
 #'   CensusID = c(1, 2, 1, 2),
@@ -19,36 +21,31 @@
 #'   Family = "f",
 #'   stringsAsFactors = FALSE
 #' )
+#' vft
 #' 
-#' byyr_abundance(vft)
-#' suppressWarnings(byyr_basal_area(vft))
-#' basal_area(1)
-#' basal_area(10)
+#' # First pick the data you want
+#' pick1 <- pick_plotname(vft, "p")
+#' pick2 <- drop_dead_trees_by_cns(pick1)
+#' pick3 <- pick_dbh_min(pick2, 10)
+#' pick3
 #' 
-#' # You may want to filter the data first
-#' pick <- vft %>% 
-#'   pick_plotname("p") %>% 
-#'   fgeo.base::pick_dbh_min(10)
+#' byyr_abundance(pick3)
+#' 
+#' ba <- byyr_basal_area(pick3)
+#' ba
+#' 
+#' # Convert units and standardize by plot size in hectares
+#' years <- c("2000", "2001")
+#' in_he <- conv_unit_at(ba, .at = years, from = "mm2", to = "hectare")
+#' standardize_at(in_he, .at = years, total = 50)
 #' @name byyr
 NULL
 
 #' @rdname byyr
 #' @export
-byyr_abundance <- function(vft, 
-                           .valid_status = c(
-                             "dead", "alive", "broken below", "missing")
-                           ) {
-  stopifnot(is.data.frame(vft))
-  crucial <- c(
-    "Genus", "SpeciesName", "Family", "Status", "DBH", "ExactDate", 
-    "PlotCensusNumber"
-  )
-  fgeo.base::check_crucial_names(vft, crucial)
-  
-  vft %>% 
-    filter_tree_status_by_census(
-      .status = "dead", exclude = TRUE, .valid_status
-    ) %>%
+byyr_abundance <- function(vft) {
+  check_byyr(vft) %>% 
+    drop_if_missing_dates() %>% 
     mean_years() %>% 
     drop_if_na("year") %>% 
     dplyr::count(.data$species, .data$Family, .data$year) %>% 
@@ -58,14 +55,9 @@ byyr_abundance <- function(vft,
 
 #' @rdname byyr
 #' @export
-byyr_basal_area <- function(vft, 
-                            .valid_status = c(
-                              "dead", "alive", "broken below", "missing"
-                            )) {
-  vft %>% 
-    filter_tree_status_by_census(
-      .status = "dead", exclude = TRUE, .valid_status
-    ) %>%
+byyr_basal_area <- function(vft) {
+  check_byyr(vft) %>% 
+    drop_if_missing_dates() %>% 
     mean_years() %>% 
     dplyr::group_by(.data$species, .data$Family, .data$year) %>%
     basal_area(dbh = .data$DBH) %>% 
@@ -74,23 +66,14 @@ byyr_basal_area <- function(vft,
     tidyr::spread(.data$year, basal_area, fill = 0)
 }
 
-# Add `status_tree` by census and pick or drop alive or dead trees.
-filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
-  stopifnot(length(.status) == 1, .status %in% c("dead", "alive"))
-
-  sane <- sanitize_Status_DBH_ExaxtDate(vft, .valid_status)
-  
-  message("Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.")
-  with_status_tree <- sane %>% 
-    dplyr::group_by(.data$PlotCensusNumber) %>% 
-    fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") %>% 
-    dplyr::ungroup()
-  
-  filtering <- ifelse(exclude, "Dropping", "Picking")
-  message(filtering, " rows where `Status = ", .status, "`.")
-  fgeo.tool::filter_status(
-    with_status_tree, wood = "tree", .status = .status, exclude = exclude
+check_byyr <- function(vft) {
+  stopifnot(is.data.frame(vft))
+  crucial <- c(
+    "Genus", "SpeciesName", "Family", "Status", "DBH", "ExactDate", 
+    "PlotCensusNumber"
   )
+  fgeo.base::check_crucial_names(vft, crucial)
+  invisible(vft)
 }
 
 mean_years <- function(vft) {
@@ -108,14 +91,9 @@ mean_years <- function(vft) {
     dplyr::arrange(.data$year)
 }
 
-sanitize_Status_DBH_ExaxtDate <- function(vft, .valid_status) {
-  # * status
+sanitize_Status <- function(vft, .valid_status) {
   vft_warned <- inform_if_bad_status(vft, .valid_status)
-  vft_good_status <- fix_status_if_bad_or_err(vft_warned, .valid_status)
-  # * dbh
-  not_na_dbh <- drop_if_missing_dbh(vft_good_status)
-  # * ExactDate
-  drop_if_missing_dates(not_na_dbh)
+  fix_status_if_bad_or_err(vft_warned, .valid_status)
 }
 
 inform_if_bad_status <- function(vft, .valid_status) {
@@ -158,17 +136,6 @@ fix_bad_status <- function(vft, status_col, status_arg) {
   vft$Status <- sub("^.*dead.*$", "dead", vft$Status)
   vft$Status <- sub("^.*alive.*$", "alive", vft$Status)
   vft
-}
-
-drop_if_missing_dbh <- function(dfm) {
-  missing_dbh <- is.na(dfm$DBH)
-  if (any(missing_dbh)) {
-    warning(
-      "Dropping ", sum(missing_dbh), " rows with missing `DBH` values.",
-      call. = FALSE
-    )
-  }
-  dplyr::filter(dfm, !is.na(.data$DBH))
 }
 
 drop_if_missing_dates <- function(x) {

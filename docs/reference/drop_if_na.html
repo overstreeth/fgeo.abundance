@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • fgeo.abundance</title>
+<title>Drop if missing values. — drop_if_na • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,13 +28,9 @@
 
 
 
-<meta property="og:title" content="Objects exported from other packages — reexports" />
+<meta property="og:title" content="Drop if missing values. — drop_if_na" />
 
-<meta property="og:description" content="These objects are imported from other packages. Follow the links
-below to see their documentation.
-
-  dplyrtally, add_tally, count, add_count, group_by, ungroup
-" />
+<meta property="og:description" content="Valuable mostly for its warning." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,28 +106,52 @@ below to see their documentation.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
-    <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/imports.R'><code>R/imports.R</code></a></small>
-    <div class="hidden name"><code>reexports.Rd</code></div>
+    <h1>Drop if missing values.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/drop_if_na.R'><code>R/drop_if_na.R</code></a></small>
+    <div class="hidden name"><code>drop_if_na.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These objects are imported from other packages. Follow the links
-below to see their documentation.</p>
-<dl class='dl-horizontal'>
-  <dt>dplyr</dt><dd><p><code><a href='http://dplyr.tidyverse.org/reference/tally.html'>tally</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_tally</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_count</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></code>, <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></code></p></dd>
-</dl>
+    <p>Valuable mostly for its warning.</p>
     
     </div>
 
-        
+    <pre class="usage"><span class='fu'>drop_if_na</span>(<span class='no'>dfm</span>, <span class='no'>x</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dfm</th>
+      <td><p>A dataframe.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>String giving a column name of <code>dfm</code>.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A dataframe.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>dfm</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
+<span class='fu'>drop_if_na</span>(<span class='no'>dfm</span>, <span class='st'>"b"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dropping 1 rows with missing `b` values.</span></div><div class='output co'>#&gt; [1] a b
+#&gt; &lt;0 rows&gt; (or 0-length row.names)</div><div class='input'><span class='fu'>drop_if_na</span>(<span class='no'>dfm</span>, <span class='st'>"a"</span>)</div><div class='output co'>#&gt;   a  b
+#&gt; 1 1 NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

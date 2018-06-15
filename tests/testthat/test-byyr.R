@@ -36,40 +36,38 @@ test_that("has expected structure", {
 test_that("fails with informative error", {
   expect_error(byyr_abundance(1))
   expect_error(byyr_abundance())
-
-  suppressWarnings(suppressMessages({
-    expect_error(
-      byyr_abundance(vft, .valid_status = "bad input"), "failed to fix status"
-    )
-  }))
 })
 
-
-
-tiny <- tibble::tribble(
-  ~Tag, ~PlotName, ~Status, ~DBH,   ~ExactDate, ~PlotCensusNumber, ~CensusID, ~Genus, ~SpeciesName, ~Family,
-  "0001",     "p", "alive",   1L, "2000-01-01",                1L,        1L,    "A",          "a",     "f",
-  "0001",     "p", "alive",   5L, "2001-01-01",                2L,        2L,    "A",          "a",     "f",
-  "0002",     "p", "alive",   2L, "2000-01-01",                1L,        1L,    "B",          "b",     "f",
-  "0002",     "p", "alive",   6L, "2001-01-01",                2L,        2L,    "B",          "b",     "f",
+tiny <- tibble::tibble(
+  Tag = c("0001", "0001", "0002", "0002", "0003", "0003"),
+  PlotName = c("p", "p", "p", "p", "p", "p"),
+  Status = c("alive", "alive", "alive", "alive", "alive", "alive"),
+  DBH = c(1L, 5L, 2L, 6L, 2L, 6L),
+  ExactDate =  c(
+    "2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01", "2000-01-01", 
+    "2001-01-01"
+  ),
+  PlotCensusNumber = c(1L, 2L, 1L, 2L, 1L, 2L),
+  CensusID = c(1L, 2L, 1L, 2L, 1L, 2L),
+  Genus = c("A", "A", "B", "B", "B", "B"),
+  SpeciesName = c("a", "a", "b", "b", "b", "b"),
+  Family = c("f", "f", "f", "f", "f", "f")
 )
 
 test_that("known output", {
-  all_alive <- suppressWarnings(suppressMessages(byyr_abundance(tiny)))
-  expect_equal(all_alive$`2000`, c(1, 1))
-  expect_equal(all_alive$`2001`, c(1, 1))
+  out1 <- suppressWarnings(suppressMessages(byyr_abundance(tiny)))
+  expect_equal(out1$`2000`, c(1, 2))
+  expect_equal(out1$`2001`, c(1, 2))
   
-  tiny_12d <- tiny
-  tiny_12d[tiny_12d$Tag == "0001" & tiny_12d$CensusID == 2, ]$Status <- "dead"
-  one_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_abundance(tiny_12d)))
-  expect_equal(one_dead_in_cns2$`2000`, c(1, 1))
-  expect_equal(one_dead_in_cns2$`2001`, c(0, 1))
+  tiny2 <- tiny[1:4, ]
+  out2 <- suppressWarnings(suppressMessages(byyr_abundance(tiny2)))
+  expect_equal(out2$`2000`, c(1, 1))
+  expect_equal(out2$`2001`, c(1, 1))
 
-  tiny_22d <- tiny
-  tiny_22d[tiny_22d$Tag == "0002" & tiny_22d$CensusID == 2, ]$Status <- "dead"
-  two_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_abundance(tiny_22d)))
-  expect_equal(two_dead_in_cns2$`2000`, c(1, 1))
-  expect_equal(two_dead_in_cns2$`2001`, c(1, 0))
+  tiny3 <- tiny[c(1, 3, 4), ]
+  out3 <- suppressWarnings(suppressMessages(byyr_abundance(tiny3)))
+  expect_equal(out3$`2000`, c(1, 1))
+  expect_equal(out3$`2001`, c(0, 1))
 })
 
 
@@ -111,37 +109,29 @@ test_that("has expected structure", {
 test_that("fails with informative error", {
   expect_error(byyr_basal_area(1))
   expect_error(byyr_basal_area())
-  
-  suppressWarnings(suppressMessages({
-    expect_error(
-      byyr_basal_area(vft, .valid_status = "bad input"), "failed to fix status"
-    )
-  }))
 })
 
-tiny <- tibble::tribble(
-  ~Tag, ~PlotName, ~Status, ~DBH,   ~ExactDate, ~PlotCensusNumber, ~CensusID, ~Genus, ~SpeciesName, ~Family,
-  "0001",     "p", "alive",   1L, "2000-01-01",                1L,        1L,    "A",          "a",     "f",
-  "0001",     "p", "alive",   1L, "2001-01-01",                2L,        2L,    "A",          "a",     "f",
-  "0002",     "p", "alive",   1L, "2000-01-01",                1L,        1L,    "B",          "b",     "f",
-  "0002",     "p", "alive",   1L, "2001-01-01",                2L,        2L,    "B",          "b",     "f",
+tiny <- tibble::tibble(
+  Tag = c("0001", "0001", "0002", "0002"),
+  PlotName = c("p", "p", "p", "p"),
+  Status = c("alive", "alive", "alive", "alive"),
+  DBH =   c(1L, 1L, 1L, 1L),
+  ExactDate =   c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
+  PlotCensusNumber = c(1L, 2L, 1L, 2L),
+  CensusID = c(1L, 2L, 1L, 2L),
+  Genus = c("A", "A", "B", "B"),
+  SpeciesName = c("a", "a", "b", "b"),
+  Family = c("f", "f", "f", "f")
 )
 
 test_that("known output", {
-  alive <- suppressWarnings(suppressMessages(byyr_basal_area(tiny)))
-  expect_equal(alive$`2000`, c(basal_area(1), basal_area(1)))
-  expect_equal(alive$`2001`, c(basal_area(1), basal_area(1)))
+  out1 <- suppressWarnings(suppressMessages(byyr_basal_area(tiny)))
+  expect_equal(out1$`2000`, c(basal_area(1), basal_area(1)))
+  expect_equal(out1$`2001`, c(basal_area(1), basal_area(1)))
   
-  tiny_12d <- tiny
-  tiny_12d[tiny_12d$Tag == "0001" & tiny_12d$CensusID == 2, ]$Status <- "dead"
-  one_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_basal_area(tiny_12d)))
-  
-  expect_equal(one_dead_in_cns2$`2000`, c(basal_area(1), basal_area(1)))
-  expect_equal(one_dead_in_cns2$`2001`, c(0, basal_area(1)))
-  
-  tiny_22d <- tiny
-  tiny_22d[tiny_22d$Tag == "0002" & tiny_22d$CensusID == 2, ]$Status <- "dead"
-  two_dead_in_cns2 <- suppressWarnings(suppressMessages(byyr_basal_area(tiny_22d)))
-  expect_equal(two_dead_in_cns2$`2000`, c(basal_area(1), basal_area(1)))
-  expect_equal(two_dead_in_cns2$`2001`, c(basal_area(1), 0))
+  tiny2 <- tiny
+  tiny2$DBH <- c(1, 10, 2, 20)
+  out2 <- suppressWarnings(suppressMessages(byyr_basal_area(tiny2)))
+  expect_equal(out2$`2000`, c(basal_area(1), basal_area(2)))
+  expect_equal(out2$`2001`, c(basal_area(10), basal_area(20)))
 })

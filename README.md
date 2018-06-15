@@ -42,11 +42,11 @@ stem <- fgeo.data::luquillo_stem_random_tiny
 ```
 
 ``` r
-pick <- keep_dbh_min(stem, 10)
+pick <- pick_dbh_min(stem, 10)
 pick <- drop_status(pick, "G")
 # Same
 pick <- stem %>% 
-  keep_dbh_min(10) %>% 
+  pick_dbh_min(10) %>% 
   drop_status("G")
 
 pick
@@ -125,7 +125,7 @@ abundance
 #> 3 517     CASARB    22
 #> 4 517     PREMON    13
 
-# add_count() is useful for groupwise filtering. E.g.: to keep all data from
+# add_count() is useful for groupwise filtering. E.g.: to pick all data from
 # species which abundance per quadrat is under some treshold
 with_abundance <- add_count(pick, quadrat, sp)
 under_treshold <- filter(with_abundance, n < 20)

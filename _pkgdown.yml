@@ -41,4 +41,13 @@ reference:
       - abundance
       - basal_area
       - vgn_diversity
-
+      
+  - title: Create tables of abundance and basal area
+    contents: 
+      - starts_with("byyr_")
+      
+  - title: Helpers (likely moving to fgeo.base)
+    contents: 
+      - drop_dead_trees_by_cns
+      - drop_if_na
+      - pick_plotname

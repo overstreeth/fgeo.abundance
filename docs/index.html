@@ -108,11 +108,11 @@
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">library</span>(fgeo.abundance)</a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb2-13" data-line-number="13">stem &lt;-<span class="st"> </span>fgeo.data<span class="op">::</span>luquillo_stem_random_tiny</a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pick &lt;-<span class="st"> </span><span class="kw">keep_dbh_min</span>(stem, <span class="dv">10</span>)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pick &lt;-<span class="st"> </span><span class="kw">pick_dbh_min</span>(stem, <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">pick &lt;-<span class="st"> </span><span class="kw">drop_status</span>(pick, <span class="st">"G"</span>)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># Same</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">pick &lt;-<span class="st"> </span>stem <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">keep_dbh_min</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">pick_dbh_min</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">drop_status</span>(<span class="st">"G"</span>)</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">pick</a>
@@ -188,7 +188,7 @@
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; 3 517     CASARB    22</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; 4 517     PREMON    13</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># add_count() is useful for groupwise filtering. E.g.: to keep all data from</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># add_count() is useful for groupwise filtering. E.g.: to pick all data from</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># species which abundance per quadrat is under some treshold</span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14">with_abundance &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">add_count</a></span>(pick, quadrat, sp)</a>
 <a class="sourceLine" id="cb5-15" data-line-number="15">under_treshold &lt;-<span class="st"> </span><span class="kw">filter</span>(with_abundance, n <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>)</a>
