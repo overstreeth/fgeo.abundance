@@ -39,7 +39,7 @@ vft <- data.frame(
 vft
 
 # First pick the data you want
-pick1 <- pick_plotname(vft, "p")
+pick1 <- fgeo.base::pick_plotname(vft, "p")
 pick2 <- drop_dead_trees_by_cns(pick1)
 pick3 <- pick_dbh_min(pick2, 10)
 pick3

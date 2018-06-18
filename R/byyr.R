@@ -24,7 +24,7 @@
 #' vft
 #' 
 #' # First pick the data you want
-#' pick1 <- pick_plotname(vft, "p")
+#' pick1 <- fgeo.base::pick_plotname(vft, "p")
 #' pick2 <- drop_dead_trees_by_cns(pick1)
 #' pick3 <- pick_dbh_min(pick2, 10)
 #' pick3
@@ -47,7 +47,7 @@ byyr_abundance <- function(vft) {
   check_byyr(vft) %>% 
     drop_if_missing_dates() %>% 
     mean_years() %>% 
-    drop_if_na("year") %>% 
+    fgeo.base::drop_if_na("year") %>% 
     dplyr::count(.data$species, .data$Family, .data$year) %>% 
     tidyr::spread(.data$year, n, fill = 0) %>% 
     dplyr::arrange(.data$species, .data$Family)

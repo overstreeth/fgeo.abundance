@@ -6,7 +6,7 @@ test_that("works with luquillo", {
     suppressWarnings({
       luq <- luquillo::ViewFullTable_luquillo %>% 
         dplyr::sample_n(10) %>% 
-        pick_plotname("luquillo") %>% 
+        fgeo.base::pick_plotname("luquillo") %>% 
         fgeo.base::pick_dbh_min(2)
       out <- byyr_abundance(luq)
     })
@@ -79,7 +79,7 @@ test_that("works with data from site Luquillo", {
     suppressWarnings({
       luq <- fgeo.data::luquillo_vft_4quad %>% 
         dplyr::sample_n(10) %>% 
-        pick_plotname("luquillo") %>% 
+        fgeo.base::pick_plotname("luquillo") %>% 
         fgeo.base::pick_dbh_min(2)
       out <- byyr_basal_area(luq)
     })
