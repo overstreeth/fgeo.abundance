@@ -179,7 +179,12 @@ dead).</p>
 #&gt; 2           a      f
 #&gt; 3           b      f
 #&gt; 4           b      f</div><div class='input'>
-<span class='fu'>drop_dead_trees_by_cns</span>(<span class='no'>vft</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: restarting interrupted promise evaluation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in get0(oNam, envir = ns): lazy-load database 'C:/Users/LeporeM/Documents/R/R-3.5.0/library/fgeo.base/R/fgeo.base.rdb' is corrupt</span></div></pre>
+<span class='fu'>drop_dead_trees_by_cns</span>(<span class='no'>vft</span>)</div><div class='output co'>#&gt; <span class='message'>Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.</span></div><div class='output co'>#&gt; <span class='message'>Dropping rows where `Status = dead`.</span></div><div class='output co'>#&gt; # A tibble: 2 x 11
+#&gt;   Tag   PlotName Status   DBH ExactDate  PlotCensusNumber CensusID Genus
+#&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
+#&gt; 1 0002  p        alive     10 2000-01-01                1        1 B    
+#&gt; 2 0002  p        alive    100 2001-01-01                2        2 B    
+#&gt; # ... with 3 more variables: SpeciesName &lt;chr&gt;, Family &lt;chr&gt;, status_tree &lt;chr&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

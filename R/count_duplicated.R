@@ -1,9 +1,10 @@
-#' Abundance, richness, singletons: Count individuals in total or by groups.
+#' Count individuals in total or by groups (abundance, richness, singletons).
 #' 
-#' * `count()`, `tally()`, `add_count()` and `add_tally()` help you count rows in
-#' a dataframe. They come from the __dplyr__ package and are reexported by 
-#' __fgeo.abundance__ for your convenience (see `reexports`). For details see
-#' [dplyr::count()].
+#' * `abundance()` is an identical copy of `count()`, and `add_abundance()` is
+#' an identical copy of `add_count()`. `count()`, `tally()`, `add_count()` and
+#' `add_tally()` help you count rows in a dataframe. They come from the
+#' __dplyr__ package and are reexported by __fgeo.abundance__ for your
+#' convenience (see `reexports`). For details see [dplyr::count()].
 #' * `count_duplicated` helps you count duplicated observations of a variable. It
 #' is a shortcut for `dplyr::filter(dplyr::count(x, ...) > 1)`).
 #' 
@@ -14,23 +15,27 @@
 #' may be applied to ForestGEO data. To learn more about these functions, and to
 #' see more general examples see `?dplyr::count()`.
 #' 
-#' All of these functions quote some argument to make interactive use easier. If
-#' you want to use them inside your own functions you should learn about tidy
-#' eval (implemented via the __rlang__ package). A good place to start is at
-#' __dplyr__'s website.
+#' All of these functions quote some argument to make interactive use easier.
+#' This mean that you can refer to columns of the data directly by their bare
+#' name (not using "quotes"). If you want to use them inside your own functions
+#' you should learn about tidy eval (implemented via the __rlang__ package). A
+#' good place to start is at __dplyr__'s website.
 #' 
 #' @param x A dataframe.
 #' @inheritParams dplyr::count
 #'
 #' @return A dataframe.
 #' 
-#' @aliases abundance
 #' @seealso [dplyr::count()].
 #' 
 #' @family grouped summaries
 #' 
-#' @export
+#' @section Acknowledgments:
+#' Thanks to David Kenfack for sharing ideas that helped improve these 
+#' functions.
+#' 
 #' @examples
+#' # Example data
 #' census <- tibble::tibble(
 #'   stemID = 1:6,
 #'   quadrat = paste0("000", rep(1:2, each = 3)),
@@ -40,23 +45,27 @@
 #' census
 #' 
 #' # Abundance (rows count) by quadrat
+#' abundance(census, quadrat)
+#' # Identical
 #' count(census, quadrat)
 #' 
 #' # Abundance (rows count) by quadrat by species
-#' count(census, quadrat, sp)
+#' abundance(census, quadrat, sp)
 #' 
 #' # Richness by quadrat:
 #' # Count is designed so that you can call it repeatedly, each time rolling up
 #' # a level of detail.
 #' # Now, each row by quadrat is a unique species, so counting rows gives
 #' # richness
-#' n_quad_sp <- count(census, quadrat, sp)
-#' richness_quad <- count(n_quad_sp, quadrat)
+#' n_quad_sp <- abundance(census, quadrat, sp)
+#' richness_quad <- abundance(n_quad_sp, quadrat)
 #' richness_quad
 #' 
 #' # Singleton:
-#' # add_count() is useful for groupwise filtering e.g.: show only species that
-#' # have a single member
+#' # add_abundance() is useful for groupwise filtering e.g.: show only species 
+#' # that have a single member
+#' out <- add_abundance(census, quadrat, sp)
+#' # Identical
 #' out <- add_count(census, quadrat, sp)
 #' subset(out, n == 1)
 #' # Or the complement
@@ -66,6 +75,19 @@
 #' count_duplicated(census, quadrat, sp)
 #' # Any duplicated stemID?
 #' count_duplicated(census, stemID)
+#' @name abundance
+NULL
+
+#' @rdname abundance
+#' @export
+abundance <- dplyr::count
+
+#' @rdname abundance
+#' @export
+add_abundance <- dplyr::add_count
+
+#' @rdname abundance
+#' @export
 count_duplicated <- function(x, ..., wt = NULL, sort = FALSE) {
   if (length(dplyr::group_vars(x)) != 0) {
     warn("Can't handle grouped `x`. Ungrouping to continue.")
@@ -77,3 +99,4 @@ count_duplicated <- function(x, ..., wt = NULL, sort = FALSE) {
   cnt <- rlang::eval_tidy(count_call, x)
   dplyr::filter(cnt, dplyr::last(cnt) > 1)
 }
+

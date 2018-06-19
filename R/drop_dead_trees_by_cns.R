@@ -1,7 +1,7 @@
 #' Drop dead trees by census from a ViewFullTable.
 #' 
 #' If you have a ViewFullTable and want to compute some summary on exclusively
-#' alive trees, you can't just drop dead trees accross the entire ViewFullTable. 
+#' alive trees, you can't just drop dead trees across the entire ViewFullTable. 
 #' If you do that you'll loose trees (tags) which were alive in earlier
 #' censuses. This function helps you solve that problem by (1) grouping the
 #' data by census; (2) calculating the status of each tree based on the status

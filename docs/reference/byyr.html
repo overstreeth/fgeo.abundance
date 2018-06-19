@@ -137,8 +137,10 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>fgeo.tool</span>)
-<span class='fu'>library</span>(<span class='no'>fgeo.base</span>)
-
+<span class='fu'>library</span>(<span class='no'>fgeo.base</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘fgeo.base’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:fgeo.abundance’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    commas</span></div><div class='input'>
 <span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
   <span class='kw'>Tag</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0001"</span>, <span class='st'>"0001"</span>, <span class='st'>"0002"</span>, <span class='st'>"0002"</span>),
   <span class='kw'>PlotName</span> <span class='kw'>=</span> <span class='st'>"p"</span>,
@@ -163,12 +165,29 @@
 #&gt; 3           b      f
 #&gt; 4           b      f</div><div class='input'>
 <span class='co'># First pick the data you want</span>
-<span class='no'>pick1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.base</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.base/topics/pick_plotname'>pick_plotname</a></span>(<span class='no'>vft</span>, <span class='st'>"p"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: restarting interrupted promise evaluation</span></div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in get0(oNam, envir = ns): lazy-load database 'C:/Users/LeporeM/Documents/R/R-3.5.0/library/fgeo.base/R/fgeo.base.rdb' is corrupt</span></div><div class='input'><span class='no'>pick2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='drop_dead_trees_by_cns.html'>drop_dead_trees_by_cns</a></span>(<span class='no'>pick1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in get0(oNam, envir = ns): lazy-load database 'C:/Users/LeporeM/Documents/R/R-3.5.0/library/fgeo.base/R/fgeo.base.rdb' is corrupt</span></div><div class='input'><span class='no'>pick3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.base/topics/pick_drop'>pick_dbh_min</a></span>(<span class='no'>pick2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: internal error -3 in R_decompress1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): lazy-load database 'C:/Users/LeporeM/Documents/R/R-3.5.0/library/fgeo.base/R/fgeo.base.rdb' is corrupt</span></div><div class='input'><span class='no'>pick3</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'pick3' not found</span></div><div class='input'>
-<span class='fu'>byyr_abundance</span>(<span class='no'>pick3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(vft): object 'pick3' not found</span></div><div class='input'>
-<span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='fu'>byyr_basal_area</span>(<span class='no'>pick3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(vft): object 'pick3' not found</span></div><div class='input'><span class='no'>ba</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'ba' not found</span></div><div class='input'>
+<span class='no'>pick1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.base</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.base/topics/pick_plotname'>pick_plotname</a></span>(<span class='no'>vft</span>, <span class='st'>"p"</span>)</div><div class='output co'>#&gt; <span class='message'>Using: p.</span></div><div class='input'><span class='no'>pick2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='drop_dead_trees_by_cns.html'>drop_dead_trees_by_cns</a></span>(<span class='no'>pick1</span>)</div><div class='output co'>#&gt; <span class='message'>Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.</span></div><div class='output co'>#&gt; <span class='message'>Dropping rows where `Status = dead`.</span></div><div class='input'><span class='no'>pick3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.base/topics/pick_drop'>pick_dbh_min</a></span>(<span class='no'>pick2</span>, <span class='fl'>10</span>)
+<span class='no'>pick3</span></div><div class='output co'>#&gt; # A tibble: 2 x 11
+#&gt;   Tag   PlotName Status   DBH ExactDate  PlotCensusNumber CensusID Genus
+#&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
+#&gt; 1 0002  p        alive     10 2000-01-01                1        1 B    
+#&gt; 2 0002  p        alive    100 2001-01-01                2        2 B    
+#&gt; # ... with 3 more variables: SpeciesName &lt;chr&gt;, Family &lt;chr&gt;, status_tree &lt;chr&gt;</div><div class='input'>
+<span class='fu'>byyr_abundance</span>(<span class='no'>pick3</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
+#&gt;   species Family `2000` `2001`
+#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 B b     f           1      1</div><div class='input'>
+<span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='fu'>byyr_basal_area</span>(<span class='no'>pick3</span>)
+<span class='no'>ba</span></div><div class='output co'>#&gt; # A tibble: 1 x 4
+#&gt;   species Family `2000` `2001`
+#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 B b     f        78.5  7854.</div><div class='input'>
 <span class='co'># Convert units and standardize by plot size in hectares</span>
 <span class='no'>years</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"2000"</span>, <span class='st'>"2001"</span>)
-<span class='no'>in_he</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/conv_unit_at'>conv_unit_at</a></span>(<span class='no'>ba</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"mm2"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"hectare"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in inv_which(.x, .at): object 'ba' not found</span></div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/standardize_at'>standardize_at</a></span>(<span class='no'>in_he</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='fl'>50</span>)</div><div class='output co'>#&gt; <span class='error'>Error in inv_which(.x, .at): object 'in_he' not found</span></div></pre>
+<span class='no'>in_he</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/conv_unit_at'>conv_unit_at</a></span>(<span class='no'>ba</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"mm2"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"hectare"</span>)
+<span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/standardize_at'>standardize_at</a></span>(<span class='no'>in_he</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='fl'>50</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
+#&gt;   species Family   `2000`       `2001`
+#&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+#&gt; 1 B b     f      1.57e-10 0.0000000157</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

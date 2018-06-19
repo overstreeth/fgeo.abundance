@@ -115,7 +115,7 @@ basal_area(group_by(pick, quadrat))
 
 ``` r
 # Summarize abundance (rows count) by quadrat by species
-abundance <- count(pick, quadrat, sp)
+abundance <- abundance(pick, quadrat, sp)
 abundance
 #> # A tibble: 4 x 3
 #>   quadrat sp         n
@@ -125,9 +125,9 @@ abundance
 #> 3 517     CASARB    22
 #> 4 517     PREMON    13
 
-# add_count() is useful for groupwise filtering. E.g.: to pick all data from
+# add_abundance() is useful for groupwise filtering. E.g.: to pick all data from
 # species which abundance per quadrat is under some treshold
-with_abundance <- add_count(pick, quadrat, sp)
+with_abundance <- add_abundance(pick, quadrat, sp)
 under_treshold <- filter(with_abundance, n < 20)
 select(under_treshold, quadrat, sp, n, everything())
 #> # A tibble: 45 x 21
@@ -181,7 +181,7 @@ if (!requireNamespace("janitor", quietly = TRUE)) {
 library(janitor)
 
 # Compare
-count(pick, quadrat, sp)
+abundance(pick, quadrat, sp)
 #> # A tibble: 4 x 3
 #>   quadrat sp         n
 #>   <chr>   <chr>  <int>
