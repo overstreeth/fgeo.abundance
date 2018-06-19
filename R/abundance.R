@@ -1,12 +1,12 @@
 #' Count individuals in total or by groups (abundance, richness, singletons).
 #' 
-#' * `abundance()` is an identical copy of `count()`, and `add_abundance()` is
-#' an identical copy of `add_count()`. `count()`, `tally()`, `add_count()` and
-#' `add_tally()` help you count rows in a dataframe. They come from the
-#' __dplyr__ package and are reexported by __fgeo.abundance__ for your
-#' convenience (see `reexports`). For details see [dplyr::count()].
-#' * `count_duplicated` helps you count duplicated observations of a variable. It
-#' is a shortcut for `dplyr::filter(dplyr::count(x, ...) > 1)`).
+#' These functions help you to count rows in a dataframe:
+#' * `abundance()` is an identical copy of `dplyr::count()`, and
+#' `add_abundance()` is an identical copy of `dplyr::add_count()`.
+#' * `count_duplicated` helps you count duplicated observations of a variable.
+#' It is a shortcut for `dplyr::filter(dplyr::count(x, ...) > 1)`).
+#' * Also reexported from __dplyr__ are `tally()` and `add_tally()`. For details
+#' see [dplyr::count()].
 #' 
 #' The issue of calculating the abundance of individuals in a sample is a
 #' particular case of counting observations in general. By counting individuals
