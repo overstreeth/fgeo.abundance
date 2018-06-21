@@ -36,8 +36,8 @@
 #' 
 #' # Convert units and standardize by plot size in hectares
 #' years <- c("2000", "2001")
-#' in_he <- conv_unit_at(ba, .at = years, from = "mm2", to = "hectare")
-#' standardize_at(in_he, .at = years, total = 50)
+#' in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
+#' standardize_at(in_he, .at = years, denominator = 50)
 #' @name byyr
 NULL
 

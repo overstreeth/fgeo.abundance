@@ -2,7 +2,6 @@
 % Please edit documentation in R/abundance.R
 \name{abundance}
 \alias{abundance}
-\alias{abundance}
 \alias{add_abundance}
 \alias{count_duplicated}
 \title{Count individuals in total or by groups (abundance, richness, singletons).}
@@ -109,3 +108,4 @@ count_duplicated(census, stemID)
 \seealso{
 \code{\link[dplyr:count]{dplyr::count()}}.
 }
+\concept{grouped summaries}

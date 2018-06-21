@@ -87,3 +87,4 @@ add_basal_area(stem2, quadrat, sp)
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}.
 }
+\concept{functions that quote one or more arguments using tidy eval.}

@@ -4,15 +4,10 @@
 \name{reexports}
 \alias{reexports}
 \alias{tally}
-\alias{reexports}
 \alias{add_tally}
-\alias{reexports}
 \alias{count}
-\alias{reexports}
 \alias{add_count}
-\alias{reexports}
 \alias{group_by}
-\alias{reexports}
 \alias{ungroup}
 \title{Objects exported from other packages}
 \keyword{internal}
