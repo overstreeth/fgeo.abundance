@@ -38,10 +38,10 @@
 #' 
 #' drop_dead_trees_by_cns(vft)
 drop_dead_trees_by_cns <- function(vft, 
-                                  status_d = "dead",
-                                  .valid_status = c(
-                                  "dead", "alive", "broken below", "missing")
-                                  ) {
+                                   status_d = "dead",
+                                   .valid_status = c(
+                                   "dead", "alive", "broken below", "missing")
+                                   ) {
   filter_tree_status_by_census(
     vft = vft, .status = status_d, exclude = TRUE, .valid_status = .valid_status
   )
@@ -62,7 +62,7 @@ filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
     dplyr::ungroup()
   
   filtering <- ifelse(exclude, "Dropping", "Picking")
-  message(filtering, " rows where `Status = ", .status, "`.")
+  message(filtering, " trees which status is ", .status, ".")
   fgeo.tool::filter_status(
     with_status_tree, wood = "tree", .status = .status, exclude = exclude
   )
