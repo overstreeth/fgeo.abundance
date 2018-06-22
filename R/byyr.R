@@ -5,19 +5,24 @@
 #' @return A dataframe.
 #' 
 #' @examples
-#' library(fgeo.tool)
 #' library(fgeo.base)
+#' library(fgeo.tool)
 #' 
 #' vft <- data.frame(
-#'   Tag = c("0001", "0001", "0002", "0002"),
 #'   PlotName = "p",
-#'   Status = c("dead", "dead", "alive", "alive"),
-#'   DBH = c(NA, NA, 10, 100),
-#'   ExactDate = c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
-#'   PlotCensusNumber = c(1, 2, 1, 2),
-#'   CensusID = c(1, 2, 1, 2),
-#'   Genus = c("A", "A", "B", "B"),
-#'   SpeciesName = c("a", "a", "b", "b"),
+#'   PlotCensusNumber = c(1, 1, 2, 2, 1, 2),
+#'   CensusID = c(1, 1, 2, 2, 1, 2),
+#'   ExactDate = c(
+#'     "2001-01-01", "2001-01-01", "2002-01-01", "2002-01-01",
+#'     "2001-01-01", "2002-01-01"
+#'   ),
+#'   Tag = c("0001", "0001", "0001", "0001", "0002", "0002"),
+#'   TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
+#'   SteemID = c(  "1",    "2",    "1",    "2",    "1",    "1"),
+#'   Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
+#'   DBH = c(11, 15, 12, NA, 21, NA),
+#'   Genus = c("A", "A", "A", "A", "B", "B"),
+#'   SpeciesName = c("a", "a", "a", "a", "b", "b"),
 #'   Family = "f",
 #'   stringsAsFactors = FALSE
 #' )
@@ -27,7 +32,6 @@
 #' pick1 <- fgeo.base::pick_plotname(vft, "p")
 #' pick2 <- drop_dead_trees_by_cns(pick1)
 #' pick3 <- pick_dbh_min(pick2, 10)
-#' pick3
 #' 
 #' byyr_abundance(pick3)
 #' 
@@ -44,11 +48,18 @@ NULL
 #' @rdname byyr
 #' @export
 byyr_abundance <- function(vft) {
+  crucial <- c("PlotName", "Tag")
   check_byyr(vft) %>% 
+    fgeo.base::check_crucial_names(crucial) %>% 
     drop_if_missing_dates() %>% 
     mean_years() %>% 
     fgeo.base::drop_if_na("year") %>% 
-    dplyr::count(.data$species, .data$Family, .data$year) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::group_by(.data$PlotName, .data$year, .data$Family, .data$species) %>% 
+    dplyr::summarise(n = dplyr::n_distinct(.data$TreeID)) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::select(-.data$PlotName) %>% 
+    dplyr::select(.data$species, .data$Family, dplyr::everything()) %>% 
     tidyr::spread(.data$year, n, fill = 0) %>% 
     dplyr::arrange(.data$species, .data$Family)
 }

@@ -15,6 +15,7 @@ test_that("works with luquillo", {
 })
 
 vft <- tibble::tibble(
+  TreeID = rep(c("0001", "0002", "0003", "0004"), 2),
   Tag = rep(c("0001", "0002", "0003", "0004"), 2),
   PlotName = rep("pnm", 8),
   Status = rep(c("dead", "alive", "broken below", "missing"), 2),
@@ -40,6 +41,7 @@ test_that("fails with informative error", {
 
 tiny <- tibble::tibble(
   Tag = c("0001", "0001", "0002", "0002", "0003", "0003"),
+  TreeID = c("0001", "0001", "0002", "0002", "0003", "0003"),
   PlotName = c("p", "p", "p", "p", "p", "p"),
   Status = c("alive", "alive", "alive", "alive", "alive", "alive"),
   DBH = c(1L, 5L, 2L, 6L, 2L, 6L),
@@ -135,3 +137,71 @@ test_that("known output", {
   expect_equal(out2$`2000`, c(basal_area(1), basal_area(2)))
   expect_equal(out2$`2001`, c(basal_area(10), basal_area(20)))
 })
+
+test_that("counts multi-stem trees correctly", {
+  library(fgeo.tool)
+  library(fgeo.base)
+  
+  vft <- data.frame(
+    PlotName = "p",
+    PlotCensusNumber = c(1, 1, 2, 2, 1, 2),
+    CensusID = c(1, 1, 2, 2, 1, 2),
+    ExactDate = c(
+      "2001-01-01", "2001-01-01", "2002-01-01", "2002-01-01",
+      "2001-01-01", "2002-01-01"
+    ),
+    Tag = c("0001", "0001", "0001", "0001", "0002", "0002"),
+    TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
+    SteemID = c(  "1",    "2",    "1",    "2",    "1",    "1"),
+    Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
+    DBH = c(11, 15, 12, NA, 21, NA),
+    Genus = c("A", "A", "A", "A", "B", "B"),
+    SpeciesName = c("a", "a", "a", "a", "b", "b"),
+    Family = "f",
+    stringsAsFactors = FALSE
+  )
+  vft
+  
+  # First pick the data you want
+  pick1 <- fgeo.base::pick_plotname(vft, "p")
+  pick2 <- drop_dead_trees_by_cns(pick1)
+  pick3 <- pick_dbh_min(pick2, 10)
+  pick3 %>% arrange(PlotCensusNumber, TreeID)
+  
+  # Expected:
+  # year 2001: A a = 1
+  # year 2001: B b = 1
+  # year 2002: A a = 1
+  # year 2002: B b = 0
+  # FIXME: Don't count stems but distinct tres with summarize(n = n_distinct(TreeID))
+  out <- byyr_abundance(pick3)
+  expect_equal(out$`2001`, c(1, 1))
+  expect_equal(out$`2002`, c(1, 0))
+})
+
+test_that("check for TreeID hasn't been implemented yet", {
+  vft <- data.frame(
+    PlotName = "p",
+    PlotCensusNumber = c(1, 1, 2, 2, 1, 2),
+    CensusID = c(1, 1, 2, 2, 1, 2),
+    ExactDate = c(
+      "2001-01-01", "2001-01-01", "2002-01-01", "2002-01-01",
+      "2001-01-01", "2002-01-01"
+    ),
+    TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
+    SteemID = c(  "1",    "2",    "1",    "2",    "1",    "1"),
+    Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
+    DBH = c(11, 15, 12, NA, 21, NA),
+    Genus = c("A", "A", "A", "A", "B", "B"),
+    SpeciesName = c("a", "a", "a", "a", "b", "b"),
+    Family = "f",
+    stringsAsFactors = FALSE
+  )
+  vft
+  
+  # Once https://github.com/forestgeo/fgeo.tool/issues/37 is fixed this will
+  # trow an error and this test may be removed. Then devtools::run_examples()
+  # to check for datasets that may lack the variable TreeID.
+  expect_error(suppressMessages(drop_dead_trees_by_cns(vft)), "tag")
+})
+
