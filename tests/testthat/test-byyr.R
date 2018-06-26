@@ -178,30 +178,3 @@ test_that("counts multi-stem trees correctly", {
   expect_equal(out$`2001`, c(1, 1))
   expect_equal(out$`2002`, c(1, 0))
 })
-
-test_that("check for TreeID hasn't been implemented yet", {
-  vft <- data.frame(
-    PlotName = "p",
-    PlotCensusNumber = c(1, 1, 2, 2, 1, 2),
-    CensusID = c(1, 1, 2, 2, 1, 2),
-    ExactDate = c(
-      "2001-01-01", "2001-01-01", "2002-01-01", "2002-01-01",
-      "2001-01-01", "2002-01-01"
-    ),
-    TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
-    SteemID = c(  "1",    "2",    "1",    "2",    "1",    "1"),
-    Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
-    DBH = c(11, 15, 12, NA, 21, NA),
-    Genus = c("A", "A", "A", "A", "B", "B"),
-    SpeciesName = c("a", "a", "a", "a", "b", "b"),
-    Family = "f",
-    stringsAsFactors = FALSE
-  )
-  vft
-  
-  # Once https://github.com/forestgeo/fgeo.tool/issues/37 is fixed this will
-  # trow an error and this test may be removed. Then devtools::run_examples()
-  # to check for datasets that may lack the variable TreeID.
-  expect_error(suppressMessages(drop_dead_trees_by_cns(vft)), "tag")
-})
-

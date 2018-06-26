@@ -160,7 +160,7 @@ dead).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-  <span class='kw'>Tag</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0001"</span>, <span class='st'>"0001"</span>, <span class='st'>"0002"</span>, <span class='st'>"0002"</span>),
+  <span class='kw'>TreeID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0001"</span>, <span class='st'>"0001"</span>, <span class='st'>"0002"</span>, <span class='st'>"0002"</span>),
   <span class='kw'>PlotName</span> <span class='kw'>=</span> <span class='st'>"p"</span>,
   <span class='kw'>Status</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dead"</span>, <span class='st'>"dead"</span>, <span class='st'>"alive"</span>, <span class='st'>"alive"</span>),
   <span class='kw'>DBH</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>10</span>, <span class='fl'>100</span>),
@@ -172,21 +172,21 @@ dead).</p>
   <span class='kw'>Family</span> <span class='kw'>=</span> <span class='st'>"f"</span>,
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
-<span class='no'>vft</span></div><div class='output co'>#&gt;    Tag PlotName Status DBH  ExactDate PlotCensusNumber CensusID Genus
-#&gt; 1 0001        p   dead  NA 2000-01-01                1        1     A
-#&gt; 2 0001        p   dead  NA 2001-01-01                2        2     A
-#&gt; 3 0002        p  alive  10 2000-01-01                1        1     B
-#&gt; 4 0002        p  alive 100 2001-01-01                2        2     B
+<span class='no'>vft</span></div><div class='output co'>#&gt;   TreeID PlotName Status DBH  ExactDate PlotCensusNumber CensusID Genus
+#&gt; 1   0001        p   dead  NA 2000-01-01                1        1     A
+#&gt; 2   0001        p   dead  NA 2001-01-01                2        2     A
+#&gt; 3   0002        p  alive  10 2000-01-01                1        1     B
+#&gt; 4   0002        p  alive 100 2001-01-01                2        2     B
 #&gt;   SpeciesName Family
 #&gt; 1           a      f
 #&gt; 2           a      f
 #&gt; 3           b      f
 #&gt; 4           b      f</div><div class='input'>
 <span class='fu'>drop_dead_trees_by_cns</span>(<span class='no'>vft</span>)</div><div class='output co'>#&gt; <span class='message'>Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.</span></div><div class='output co'>#&gt; <span class='message'>Dropping trees which status is dead.</span></div><div class='output co'>#&gt; # A tibble: 2 x 11
-#&gt;   Tag   PlotName Status   DBH ExactDate  PlotCensusNumber CensusID Genus
-#&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
-#&gt; 1 0002  p        alive     10 2000-01-01                1        1 B    
-#&gt; 2 0002  p        alive    100 2001-01-01                2        2 B    
+#&gt;   TreeID PlotName Status   DBH ExactDate  PlotCensusNumber CensusID Genus
+#&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
+#&gt; 1 0002   p        alive     10 2000-01-01                1        1 B    
+#&gt; 2 0002   p        alive    100 2001-01-01                2        2 B    
 #&gt; # ... with 3 more variables: SpeciesName &lt;chr&gt;, Family &lt;chr&gt;, status_tree &lt;chr&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

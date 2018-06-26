@@ -185,7 +185,7 @@ implementation details.</p></li>
 <span class='fu'>vgn_diversity</span>(<span class='no'>ungrouped</span>, <span class='no'>n</span>)</div><div class='output co'>#&gt;        index    value
 #&gt; 1 specnumber 5.000000
 #&gt; 2    shannon 1.369169</div><div class='input'>
-<span class='no'>by_quadrat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
+<span class='no'>by_quadrat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/group_by'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
 <span class='fu'>vgn_diversity</span>(<span class='no'>by_quadrat</span>, <span class='no'>n</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
 #&gt;   quadrat index      value
 #&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
@@ -194,7 +194,7 @@ implementation details.</p></li>
 #&gt; 3 0001    specnumber 2    
 #&gt; 4 0001    shannon    0.451</div><div class='input'>
 <span class='co'># Similar alternative</span>
-<span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(
+<span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/summarise'>summarise</a></span>(
   <span class='no'>by_quadrat</span>,
   <span class='kw'>specnumber</span> <span class='kw'>=</span> <span class='kw pkg'>vegan</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/vegan/topics/diversity'>specnumber</a></span>(<span class='no'>n</span>),
   <span class='kw'>shannon</span> <span class='kw'>=</span> <span class='kw pkg'>vegan</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/vegan/topics/diversity'>diversity</a></span>(<span class='no'>n</span>)
@@ -206,7 +206,7 @@ implementation details.</p></li>
 <span class='co'># The output of `vgn_diversity` flows well into common pipelines:</span>
 
 <span class='no'>diversity</span> <span class='kw'>&lt;-</span> <span class='no'>census</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>quadrat</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/group_by'>group_by</a></span>(<span class='no'>quadrat</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>vgn_diversity</span>(<span class='no'>n</span>)
 <span class='no'>diversity</span></div><div class='output co'>#&gt; # A tibble: 4 x 3
 #&gt;   quadrat index      value
@@ -221,8 +221,8 @@ implementation details.</p></li>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar'>geom_col</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='no'>index</span>), <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"dodge"</span>)</div><div class='img'><img src='vgn_diversity-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># A summary</span>
 <span class='no'>diversity</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>index</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>value</span>))</div><div class='output co'>#&gt; # A tibble: 2 x 2
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/group_by'>group_by</a></span>(<span class='no'>index</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/summarise'>summarise</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>value</span>))</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   index       mean
 #&gt;   &lt;chr&gt;      &lt;dbl&gt;
 #&gt; 1 shannon    0.664

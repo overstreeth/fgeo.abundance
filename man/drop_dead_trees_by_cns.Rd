@@ -29,7 +29,7 @@ dead).
 }
 \examples{
 vft <- data.frame(
-  Tag = c("0001", "0001", "0002", "0002"),
+  TreeID = c("0001", "0001", "0002", "0002"),
   PlotName = "p",
   Status = c("dead", "dead", "alive", "alive"),
   DBH = c(NA, NA, 10, 100),

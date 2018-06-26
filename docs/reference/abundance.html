@@ -124,12 +124,12 @@ see dplyr::count().
     <div class="ref-description">
     
     <p>These functions help you to count rows in a dataframe:</p><ul>
-<li><p><code>abundance()</code> is an identical copy of <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count()</a></code>, and
-<code>add_abundance()</code> is an identical copy of <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::add_count()</a></code>.</p></li>
+<li><p><code>abundance()</code> is an identical copy of <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>dplyr::count()</a></code>, and
+<code>add_abundance()</code> is an identical copy of <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>dplyr::add_count()</a></code>.</p></li>
 <li><p><code>count_duplicated</code> helps you count duplicated observations of a variable.
 It is a shortcut for <code>dplyr::filter(dplyr::count(x, ...) &gt; 1)</code>).</p></li>
-<li><p>Also reexported from <strong>dplyr</strong> are <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>tally()</a></code> and <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_tally()</a></code>. For details
-see <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count()</a></code>.</p></li>
+<li><p>Also reexported from <strong>dplyr</strong> are <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>tally()</a></code> and <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>add_tally()</a></code>. For details
+see <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>dplyr::count()</a></code>.</p></li>
 </ul>
     
     </div>
@@ -157,8 +157,8 @@ see <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count
 data), will count the number of rows.
 If specified, will perform a "weighted" tally by summing the
 (non-missing) values of variable <code>wt</code>. A column named <code>n</code> (but not <code>nn</code> or
-<code>nnn</code>) will be used as weighting variable by default in <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>tally()</a></code>, but not
-in <code><a href='http://dplyr.tidyverse.org/reference/tally.html'>count()</a></code>. This argument is automatically <a href='http://www.rdocumentation.org/packages/rlang/topics/quotation'>quoted</a> and later
+<code>nnn</code>) will be used as weighting variable by default in <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>tally()</a></code>, but not
+in <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>count()</a></code>. This argument is automatically <a href='http://www.rdocumentation.org/packages/rlang/topics/quotation'>quoted</a> and later
 <a href='http://www.rdocumentation.org/packages/rlang/topics/eval_tidy'>evaluated</a> in the context of the data
 frame. It supports <a href='http://www.rdocumentation.org/packages/rlang/topics/quasiquotation'>unquoting</a>. See
 <code>vignette("programming")</code> for an introduction to these concepts.</p></td>
@@ -195,7 +195,7 @@ functions.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='http://dplyr.tidyverse.org/reference/tally.html'>dplyr::count()</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>dplyr::count()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -221,7 +221,7 @@ functions.</p>
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        3
 #&gt; 2 0002        3</div><div class='input'><span class='co'># Identical</span>
-<span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
+<span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat     n
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        3
@@ -250,7 +250,7 @@ functions.</p>
 <span class='co'># that have a single member</span>
 <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>add_abundance</span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
 <span class='co'># Identical</span>
-<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/tally.html'>add_count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/tally'>add_count</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
 <span class='fu'>subset</span>(<span class='no'>out</span>, <span class='no'>n</span> <span class='kw'>==</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 5
 #&gt;   stemID quadrat sp      dbh     n
 #&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
