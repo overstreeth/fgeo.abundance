@@ -21,7 +21,9 @@ knitr::opts_chunk$set(
 
 __fgeo.abundance__ calculates abundance, basal area and diversity.
 
-## Installation  
+## Installation
+
+[Install all __fgeo__ packages in one step](https://forestgeo.github.io/fgeo/index.html#installation)
 
 ```R
 # install.packages("remotes")
@@ -33,113 +35,27 @@ For details on how to install packages from GitHub, see [this article](https://g
 ## Example
 
 ```{r}
-library(dplyr)
-library(fgeo.base)
 library(fgeo.abundance)
 
-stem <- fgeo.data::luquillo_stem_random_tiny
-```
+# Example data
+census <- tibble::tibble(
+  treeID = c(1, 1, 2, 3, 3, 3),
+  stemID = c(1, 2, 3, 4, 5, 6),
+  quadrat = paste0("000", rep(1:2, each = 3)),
+  sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
+  dbh = abs(sample(rnorm(100), 6) * 10)
+)
+census
 
-```{r}
-pick <- pick_dbh_min(stem, 10)
-pick <- drop_status(pick, "G")
+count_distinct(census, treeID)
+
+by_quad <- group_by(census, quadrat)
+count_distinct(by_quad, treeID)
 # Same
-pick <- stem %>% 
-  pick_dbh_min(10) %>% 
-  drop_status("G")
-
-pick
+abundance_tree(by_quad)
 ```
 
-### Basal area
-
-```{r}
-# Add basal area to a dataframe
-ba <- basal_area(pick$dbh)
-pick$ba <- ba
-# Same in one step
-pick <- mutate(pick, ba = basal_area(dbh))
-# Reordering columns to show `ba` first
-select(pick, ba, everything())
-
-# Summarize basal area
-basal_area(pick)
-
-# Now by groups
-basal_area(group_by(pick, quadrat))
-```
-
-### Abundance
-
-```{r}
-# Summarize abundance (rows count) by quadrat by species
-abundance <- abundance(pick, quadrat, sp)
-abundance
-
-# add_abundance() is useful for groupwise filtering. E.g.: to pick all data from
-# species which abundance per quadrat is under some treshold
-with_abundance <- add_abundance(pick, quadrat, sp)
-under_treshold <- filter(with_abundance, n < 20)
-select(under_treshold, quadrat, sp, n, everything())
-```
-
-### Metrics of diversity
-
-```{r}
-vgn_diversity(abundance, n)
-
-# Same result, different format
-vegan::specnumber(abundance$n)
-vegan::diversity(abundance$n, "shannon")
-```
-
-### More ways to count things
-
-`janitor::tabyl()` and `base::table()` are useful tools for counting things.
-Their output is sometimes best suited for some analyses, for example with __vegan__.
-
-```{r}
-if (!requireNamespace("janitor", quietly = TRUE)) {
-  stop(
-    "This section uses janitor, install it with:\n",
-    "install.packages('janitor')"
-  )
-}
-library(janitor)
-
-# Compare
-abundance(pick, quadrat, sp)
-
-tabyl(pick, quadrat, sp)
-
-# Useful for vegan
-freq <- table(pick$quadrat, pick$sp)
-freq
-
-vegan::specaccum(freq)
-
-vegan::diversity(freq, "shannon")
-```
-
-`janitor::tabyl()` works well with data in 3 dimensions; it outputs a list of dataframes, which are often easier to work with than the output of `base::table()`.
-
-```{r}
-tabyl(pick, CensusID, quadrat, sp)
-
-tabyl(pick, CensusID, quadrat, sp, show_missing_levels = FALSE)
-```
-
-And makes it easy to format tables by using a declarative style, best suited for composing multiple operations with the pipe (`%>%`) and produces neat output with `knitr::kable()`.
-
-```{r}
-tab <- tabyl(pick, quadrat, sp)
-tab %>% 
-  adorn_totals("row") %>% 
-  adorn_percentages() %>% 
-  adorn_pct_formatting() %>% 
-  adorn_title("top") %>% 
-  knitr::kable()
-```
+[Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)
 
 ## Information
 

@@ -44,9 +44,6 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="news/index.html">Changelog</a>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -88,6 +85,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
+<p><a href="https://forestgeo.github.io/fgeo/index.html#installation">Install all <strong>fgeo</strong> packages in one step</a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/fgeo.abundance"</span>)</a></code></pre></div>
 <p>For details on how to install packages from GitHub, see <a href="https://goo.gl/dQKEeg">this article</a>.</p>
@@ -95,284 +93,48 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;     filter, lag</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">library</span>(fgeo.base)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">library</span>(fgeo.abundance)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">stem &lt;-<span class="st"> </span>fgeo.data<span class="op">::</span>luquillo_stem_random_tiny</a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pick &lt;-<span class="st"> </span><span class="kw">pick_dbh_min</span>(stem, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">pick &lt;-<span class="st"> </span><span class="kw">drop_status</span>(pick, <span class="st">"G"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># Same</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">pick &lt;-<span class="st"> </span>stem <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">pick_dbh_min</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">drop_status</span>(<span class="st">"G"</span>)</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">pick</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; # A tibble: 67 x 19</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;    treeID stemID tag   StemTag sp     quadrat    gx    gy MeasureID</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;     &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  1  10775  13496 1128  1128    PREMON 402      79.3  39.8     13496</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  2  10863  13603 1129  1129    PREMON 402      79.0  36.5     13603</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  3  23710  29640 14434 14434   PREMON 517      82.7 330.      29640</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;  4  25331  31937 16164 16164   SLOBER 402      70.8  21.0     31937</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt;  5  63997  77760 75062 75062   CASARB 517      86.0 340.      77760</span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt;  6  63997  77761 75062 75063   CASARB 517      86.0 340.      77761</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt;  7  63997  77762 75062 75064   CASARB 517      86.0 340.      77762</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;  8  63997  77763 75062 75065   CASARB 517      86.0 340.      77763</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;  9  63997  77764 75062 75066   CASARB 517      86.0 340.      77764</span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; 10  64070  77850 75147 75147   CASARB 517      99.8 325.      77850</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; # ... with 57 more rows, and 10 more variables: CensusID &lt;int&gt;, dbh &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; #   pom &lt;chr&gt;, hom &lt;dbl&gt;, ExactDate &lt;dbl&gt;, DFstatus &lt;chr&gt;, codes &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; #   countPOM &lt;dbl&gt;, status &lt;chr&gt;, date &lt;dbl&gt;</span></a></code></pre></div>
-<div id="basal-area" class="section level3">
-<h3 class="hasAnchor">
-<a href="#basal-area" class="anchor"></a>Basal area</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Add basal area to a dataframe</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">ba &lt;-<span class="st"> </span><span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(pick<span class="op">$</span>dbh)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">pick<span class="op">$</span>ba &lt;-<span class="st"> </span>ba</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># Same in one step</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">pick &lt;-<span class="st"> </span><span class="kw">mutate</span>(pick, <span class="dt">ba =</span> <span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(dbh))</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># Reordering columns to show `ba` first</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">select</span>(pick, ba, <span class="kw">everything</span>())</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; # A tibble: 67 x 20</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;        ba treeID stemID tag   StemTag sp     quadrat    gx    gy MeasureID</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;     &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  1 18869.  10775  13496 1128  1128    PREMON 402      79.3  39.8     13496</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  2 22167.  10863  13603 1129  1129    PREMON 402      79.0  36.5     13603</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  3 10936.  23710  29640 14434 14434   PREMON 517      82.7 330.      29640</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;  4  1995.  25331  31937 16164 16164   SLOBER 402      70.8  21.0     31937</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;  5  2043.  63997  77760 75062 75062   CASARB 517      86.0 340.      77760</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;  6   254.  63997  77761 75062 75063   CASARB 517      86.0 340.      77761</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;  7   314.  63997  77762 75062 75064   CASARB 517      86.0 340.      77762</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;  8   398.  63997  77763 75062 75065   CASARB 517      86.0 340.      77763</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;  9   594.  63997  77764 75062 75066   CASARB 517      86.0 340.      77764</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 10   113.  64070  77850 75147 75147   CASARB 517      99.8 325.      77850</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; # ... with 57 more rows, and 10 more variables: CensusID &lt;int&gt;, dbh &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; #   pom &lt;chr&gt;, hom &lt;dbl&gt;, ExactDate &lt;dbl&gt;, DFstatus &lt;chr&gt;, codes &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; #   countPOM &lt;dbl&gt;, status &lt;chr&gt;, date &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co"># Summarize basal area</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(pick)</a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;   basal_area</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt; 1    586336.</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co"># Now by groups</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="kw"><a href="reference/basal_area.html">basal_area</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(pick, quadrat))</a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co">#&gt;   quadrat basal_area</span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt; 1 402        340213.</span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="co">#&gt; 2 517        246123.</span></a></code></pre></div>
-</div>
-<div id="abundance" class="section level3">
-<h3 class="hasAnchor">
-<a href="#abundance" class="anchor"></a>Abundance</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Summarize abundance (rows count) by quadrat by species</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">abundance &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance.html">abundance</a></span>(pick, quadrat, sp)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">abundance</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;   quadrat sp         n</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 1 402     PREMON    16</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; 2 402     SLOBER    16</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; 3 517     CASARB    22</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; 4 517     PREMON    13</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># add_abundance() is useful for groupwise filtering. E.g.: to pick all data from</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># species which abundance per quadrat is under some treshold</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">with_abundance &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance.html">add_abundance</a></span>(pick, quadrat, sp)</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">under_treshold &lt;-<span class="st"> </span><span class="kw">filter</span>(with_abundance, n <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw">select</span>(under_treshold, quadrat, sp, n, <span class="kw">everything</span>())</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; # A tibble: 45 x 21</span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;    quadrat sp         n treeID stemID tag   StemTag    gx    gy MeasureID</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  1 402     PREMON    16  10775  13496 1128  1128     79.3  39.8     13496</span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt;  2 402     PREMON    16  10863  13603 1129  1129     79.0  36.5     13603</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt;  3 517     PREMON    13  23710  29640 14434 14434    82.7 330.      29640</span></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt;  4 402     SLOBER    16  25331  31937 16164 16164    70.8  21.0     31937</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt;  5 402     SLOBER    16  69235  84589 8166  8166     65.8  20.8     84589</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt;  6 402     PREMON    16  10775  13496 1128  1128     79.3  39.8    116871</span></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt;  7 402     PREMON    16  10863  13603 1129  1129     79.0  36.5    116978</span></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt;  8 517     PREMON    13  23710  29640 14434 14434    82.7 330.     133014</span></a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt;  9 402     SLOBER    16  25331  31937 16164 16164    70.8  21.0    135311</span></a>
-<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt; 10 402     SLOBER    16  69235  84589 8166  8166     65.8  20.8    187959</span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt; # ... with 35 more rows, and 11 more variables: CensusID &lt;int&gt;, dbh &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; #   pom &lt;chr&gt;, hom &lt;dbl&gt;, ExactDate &lt;dbl&gt;, DFstatus &lt;chr&gt;, codes &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; #   countPOM &lt;dbl&gt;, status &lt;chr&gt;, date &lt;dbl&gt;, ba &lt;dbl&gt;</span></a></code></pre></div>
-</div>
-<div id="metrics-of-diversity" class="section level3">
-<h3 class="hasAnchor">
-<a href="#metrics-of-diversity" class="anchor"></a>Metrics of diversity</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/vgn_diversity.html">vgn_diversity</a></span>(abundance, n)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   index      value</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 specnumber  4   </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2 shannon     1.37</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Same result, different format</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/diversity">specnumber</a></span>(abundance<span class="op">$</span>n)</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [1] 4</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/diversity">diversity</a></span>(abundance<span class="op">$</span>n, <span class="st">"shannon"</span>)</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; [1] 1.367825</span></a></code></pre></div>
-</div>
-<div id="more-ways-to-count-things" class="section level3">
-<h3 class="hasAnchor">
-<a href="#more-ways-to-count-things" class="anchor"></a>More ways to count things</h3>
-<p><code><a href="http://www.rdocumentation.org/packages/janitor/topics/tabyl">janitor::tabyl()</a></code> and <code><a href="http://www.rdocumentation.org/packages/base/topics/table">base::table()</a></code> are useful tools for counting things. Their output is sometimes best suited for some analyses, for example with <strong>vegan</strong>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">"janitor"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="kw">stop</span>(</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">    <span class="st">"This section uses janitor, install it with:</span><span class="ch">\n</span><span class="st">"</span>,</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="st">"install.packages('janitor')"</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">  )</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">library</span>(janitor)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co"># Compare</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(pick, quadrat, sp)</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;   quadrat sp         n</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 1 402     PREMON    16</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 2 402     SLOBER    16</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; 3 517     CASARB    22</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 4 517     PREMON    13</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="kw">tabyl</span>(pick, quadrat, sp)</a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  quadrat CASARB PREMON SLOBER</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;      402      0     16     16</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;      517     22     13      0</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co"># Useful for vegan</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25">freq &lt;-<span class="st"> </span><span class="kw">table</span>(pick<span class="op">$</span>quadrat, pick<span class="op">$</span>sp)</a>
-<a class="sourceLine" id="cb7-26" data-line-number="26">freq</a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;      </span></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt;       CASARB PREMON SLOBER</span></a>
-<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt;   402      0     16     16</span></a>
-<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt;   517     22     13      0</span></a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"></a>
-<a class="sourceLine" id="cb7-32" data-line-number="32">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/specaccum">specaccum</a></span>(freq)</a>
-<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; Warning in cor(x &gt; 0): the standard deviation is zero</span></a>
-<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; Species Accumulation Curve</span></a>
-<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="co">#&gt; Accumulation method: exact</span></a>
-<a class="sourceLine" id="cb7-36" data-line-number="36"><span class="co">#&gt; Call: vegan::specaccum(comm = freq) </span></a>
-<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-38" data-line-number="38"><span class="co">#&gt;             </span></a>
-<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="co">#&gt; Sites    1 2</span></a>
-<a class="sourceLine" id="cb7-40" data-line-number="40"><span class="co">#&gt; Richness 2 3</span></a>
-<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt; sd       0 0</span></a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb7-43" data-line-number="43">vegan<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/vegan/topics/diversity">diversity</a></span>(freq, <span class="st">"shannon"</span>)</a>
-<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt;       402       517 </span></a>
-<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; 0.6931472 0.6597116</span></a></code></pre></div>
-<p><code><a href="http://www.rdocumentation.org/packages/janitor/topics/tabyl">janitor::tabyl()</a></code> works well with data in 3 dimensions; it outputs a list of dataframes, which are often easier to work with than the output of <code><a href="http://www.rdocumentation.org/packages/base/topics/table">base::table()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">tabyl</span>(pick, CensusID, quadrat, sp)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; $CASARB</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  CensusID 402 517</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;         1   0   6</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;         2   0   3</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;         3   0   6</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;         4   0   4</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;         5   0   2</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;         6   0   1</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; $PREMON</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  CensusID 402 517</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;         1   2   1</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;         2   2   1</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;         3   3   2</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;         4   3   3</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;         5   3   3</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;         6   3   3</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; $SLOBER</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  CensusID 402 517</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;         1   2   0</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;         2   2   0</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;         3   5   0</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;         4   4   0</span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt;         5   3   0</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt;         6   0   0</span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="kw">tabyl</span>(pick, CensusID, quadrat, sp, <span class="dt">show_missing_levels =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; $CASARB</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt;  CensusID 517</span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt;         1   6</span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt;         2   3</span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt;         3   6</span></a>
-<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt;         4   4</span></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt;         5   2</span></a>
-<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt;         6   1</span></a>
-<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; $PREMON</span></a>
-<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt;  CensusID 402 517</span></a>
-<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt;         1   2   1</span></a>
-<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt;         2   2   1</span></a>
-<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt;         3   3   2</span></a>
-<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt;         4   3   3</span></a>
-<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt;         5   3   3</span></a>
-<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;         6   3   3</span></a>
-<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt; $SLOBER</span></a>
-<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt;  CensusID 402</span></a>
-<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt;         1   2</span></a>
-<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;         2   2</span></a>
-<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;         3   5</span></a>
-<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;         4   4</span></a>
-<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;         5   3</span></a></code></pre></div>
-<p>And makes it easy to format tables by using a declarative style, best suited for composing multiple operations with the pipe (<code>%&gt;%</code>) and produces neat output with <code><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">knitr::kable()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">tab &lt;-<span class="st"> </span><span class="kw">tabyl</span>(pick, quadrat, sp)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">tab <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">adorn_totals</span>(<span class="st">"row"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw">adorn_percentages</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw">adorn_pct_formatting</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw">adorn_title</span>(<span class="st">"top"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</a></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th></th>
-<th align="left">sp</th>
-<th></th>
-<th></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>quadrat</td>
-<td align="left">CASARB</td>
-<td>PREMON</td>
-<td>SLOBER</td>
-</tr>
-<tr class="even">
-<td>402</td>
-<td align="left">0.0%</td>
-<td>50.0%</td>
-<td>50.0%</td>
-</tr>
-<tr class="odd">
-<td>517</td>
-<td align="left">62.9%</td>
-<td>37.1%</td>
-<td>0.0%</td>
-</tr>
-<tr class="even">
-<td>Total</td>
-<td align="left">32.8%</td>
-<td>43.3%</td>
-<td>23.9%</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(fgeo.abundance)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># Example data</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">census &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tibble">tibble</a></span>(</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">treeID =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>),</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">stemID =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">quadrat =</span> <span class="kw">paste0</span>(<span class="st">"000"</span>, <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">each =</span> <span class="dv">3</span>)),</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="dt">sp =</span> <span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">"sp"</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)), <span class="kw">paste0</span>(<span class="st">"sp"</span>, <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>))),</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">  <span class="dt">dbh =</span> <span class="kw">abs</span>(<span class="kw">sample</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dv">6</span>) <span class="op">*</span><span class="st"> </span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">census</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;   treeID stemID quadrat sp      dbh</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; 1      1      1 0001    sp1    9.81</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; 2      1      2 0001    sp1    3.17</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; 3      2      3 0001    sp2    1.40</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; 4      3      4 0002    sp3    1.64</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; 5      3      5 0002    sp3    6.63</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; 6      3      6 0002    sp3   14.7</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw"><a href="reference/count_distinct.html">count_distinct</a></span>(census, treeID)</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;       n</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; 1     3</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">by_quad &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(census, quadrat)</a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="kw"><a href="reference/count_distinct.html">count_distinct</a></span>(by_quad, treeID)</a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt;   quadrat     n</span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="co">#&gt;   &lt;chr&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="co">#&gt; 1 0001        2</span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="co">#&gt; 2 0002        1</span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="co"># Same</span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="kw"><a href="reference/count_distinct.html">abundance_tree</a></span>(by_quad)</a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="co">#&gt;   quadrat     n</span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="co">#&gt;   &lt;chr&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co">#&gt; 1 0001        2</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"><span class="co">#&gt; 2 0002        1</span></a></code></pre></div>
+<p><a href="https://forestgeo.github.io/fgeo/articles/fgeo.html">Get started</a></p>
 </div>
 <div id="information" class="section level2">
 <h2 class="hasAnchor">

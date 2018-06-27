@@ -38,7 +38,7 @@ reference:
 
   - title: Summaries of abundance and diversity
     contents: 
-      - abundance
+      - -abundance
       - abundance_tree
       - abundance_stem
       - count_distinct
