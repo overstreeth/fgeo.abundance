@@ -49,8 +49,8 @@ reference:
     contents: 
       - starts_with("byyr_")
       
-  - title: Helpers (likely moving to fgeo.base)
+  - title: Helpers
     contents: 
       - drop_dead_trees_by_cns
-      - drop_if_na
-      - pick_plotname
+
+
