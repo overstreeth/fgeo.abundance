@@ -14,44 +14,6 @@
 #' @importFrom rlang UQ UQS .data := inform warn abort
 NULL
 
-
-
-#' Pipe operator
-#'
-#' See \code{magrittr::\link[magrittr]{\%>\%}} for details.
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
-#' @export
-#' @importFrom dplyr %>%
-#' @usage lhs \%>\% rhs
-NULL
-
-# dplyr -------------------------------------------------------------------
-
-#' @importFrom dplyr tally
-#' @export
-dplyr::tally
-#' @importFrom dplyr add_tally
-#' @export
-dplyr::add_tally
-
-#' @importFrom dplyr count
-#' @export
-dplyr::count
-#' @importFrom dplyr add_count
-#' @export
-dplyr::add_count
-
-#' @importFrom dplyr group_by
-#' @export
-dplyr::group_by
-#' @importFrom dplyr ungroup
-#' @export
-dplyr::ungroup
-
-
-
 # Avoid CMD check warnings
 utils::globalVariables(c(".data", "n", "gx", "gy"))
+

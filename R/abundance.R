@@ -10,7 +10,7 @@
 #' ForestGEO (both stem and tree tables).
 #' 
 #' @param .data A dataframe, commonly grouped with `group_by()`.
-#' @param .var A variable to count distinct occurances.
+#' @param .var A variable to count distinct occurrences.
 #' 
 #' @seealso [dplyr::group_by()], [dplyr::summarise()].
 #' 
@@ -66,98 +66,6 @@ abundance_tree <- function(.data) {
 
 
 
-
-
-
-
-
-#' Count individuals in total or by groups (abundance, richness, singletons).
-#' 
-#' These functions help you to count rows in a dataframe:
-#' * `abundance()` is an identical copy of `dplyr::count()`, and
-#' `add_abundance()` is an identical copy of `dplyr::add_count()`.
-#' * `count_duplicated` helps you count duplicated observations of a variable.
-#' It is a shortcut for `dplyr::filter(dplyr::count(x, ...) > 1)`).
-#' * Also reexported from __dplyr__ are `tally()` and `add_tally()`. For details
-#' see [dplyr::count()].
-#' 
-#' The issue of calculating the abundance of individuals in a sample is a
-#' particular case of counting observations in general. By counting individuals
-#' you can also calculate richness, find singletons, or duplicated observations
-#' of a variable. The examples below show how the most commonly used functions
-#' may be applied to ForestGEO data. To learn more about these functions, and to
-#' see more general examples see `?dplyr::count()`.
-#' 
-#' All of these functions quote some argument to make interactive use easier.
-#' This mean that you can refer to columns of the data directly by their bare
-#' name (not using "quotes"). If you want to use them inside your own functions
-#' you should learn about tidy eval (implemented via the __rlang__ package). A
-#' good place to start is at __dplyr__'s website.
-#' 
-#' @param x A dataframe.
-#' @inheritParams dplyr::count
-#'
-#' @return A dataframe.
-#' 
-#' @seealso [dplyr::count()].
-#' 
-#' @family grouped summaries
-#' 
-#' @section Acknowledgments:
-#' Thanks to David Kenfack for sharing ideas that helped improve these 
-#' functions.
-#' 
-#' @examples
-#' # Example data
-#' census <- tibble::tibble(
-#'   stemID = 1:6,
-#'   quadrat = paste0("000", rep(1:2, each = 3)),
-#'   sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
-#'   dbh = abs(sample(rnorm(100), 6) * 10)
-#' )
-#' census
-#' 
-#' # Abundance (rows count) by quadrat
-#' abundance(census, quadrat)
-#' # Identical
-#' count(census, quadrat)
-#' 
-#' # Abundance (rows count) by quadrat by species
-#' abundance(census, quadrat, sp)
-#' 
-#' # Richness by quadrat:
-#' # Count is designed so that you can call it repeatedly, each time rolling up
-#' # a level of detail.
-#' # Now, each row by quadrat is a unique species, so counting rows gives
-#' # richness
-#' n_quad_sp <- abundance(census, quadrat, sp)
-#' richness_quad <- abundance(n_quad_sp, quadrat)
-#' richness_quad
-#' 
-#' # Singleton:
-#' # add_abundance() is useful for groupwise filtering e.g.: show only species 
-#' # that have a single member
-#' out <- add_abundance(census, quadrat, sp)
-#' # Identical
-#' out <- add_count(census, quadrat, sp)
-#' subset(out, n == 1)
-#' # Or the complement
-#' subset(out, n > 1)
-#' 
-#' # A shortcut to find duplicates that drops irrelevant columns:
-#' count_duplicated(census, quadrat, sp)
-#' # Any duplicated stemID?
-#' count_duplicated(census, stemID)
-#' @name abundance
-NULL
-
-#' @rdname abundance
-#' @export
-abundance <- dplyr::count
-
-#' @rdname abundance
-#' @export
-add_abundance <- dplyr::add_count
 
 #' @rdname abundance
 #' @export

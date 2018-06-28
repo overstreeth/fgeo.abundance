@@ -144,11 +144,11 @@ ForestGEO (both stem and tree tables).</p></li>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>A dataframe, commonly grouped with <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>.</p></td>
+      <td><p>A dataframe, commonly grouped with <code>group_by()</code>.</p></td>
     </tr>
     <tr>
       <th>.var</th>
-      <td><p>A variable to count distinct occurances.</p></td>
+      <td><p>A variable to count distinct occurrences.</p></td>
     </tr>
     </table>
     
@@ -174,17 +174,17 @@ dropped.</p>
 <span class='no'>census</span></div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;   treeID stemID quadrat sp      dbh
 #&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1      1      1 0001    sp1    3.08
-#&gt; 2      1      2 0001    sp1    1.74
-#&gt; 3      2      3 0001    sp2   10.6 
-#&gt; 4      3      4 0002    sp3    5.59
-#&gt; 5      3      5 0002    sp3   21.1 
-#&gt; 6      3      6 0002    sp3    9.68</div><div class='input'>
+#&gt; 1      1      1 0001    sp1   18.8 
+#&gt; 2      1      2 0001    sp1    1.08
+#&gt; 3      2      3 0001    sp2    7.96
+#&gt; 4      3      4 0002    sp3    8.95
+#&gt; 5      3      5 0002    sp3    5.58
+#&gt; 6      3      6 0002    sp3   15.3 </div><div class='input'>
 <span class='fu'>count_distinct</span>(<span class='no'>census</span>, <span class='no'>stemID</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;       n
 #&gt;   &lt;int&gt;
 #&gt; 1     6</div><div class='input'>
-<span class='no'>by_quad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
+<span class='no'>by_quad</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
 <span class='fu'>count_distinct</span>(<span class='no'>by_quad</span>, <span class='no'>stemID</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat     n
 #&gt;   &lt;chr&gt;   &lt;int&gt;
@@ -203,7 +203,7 @@ dropped.</p>
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        2
 #&gt; 2 0002        1</div><div class='input'>
-<span class='no'>by_sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>sp</span>)
+<span class='no'>by_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>census</span>, <span class='no'>sp</span>)
 <span class='fu'>abundance_stem</span>(<span class='no'>by_sp</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 2
 #&gt;   sp        n
 #&gt;   &lt;chr&gt; &lt;int&gt;
@@ -215,7 +215,7 @@ dropped.</p>
 #&gt; 1 sp1       1
 #&gt; 2 sp2       1
 #&gt; 3 sp3       1</div><div class='input'>
-<span class='no'>by_quad_sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+<span class='no'>by_quad_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
 <span class='fu'>abundance_stem</span>(<span class='no'>by_quad_sp</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt; # Groups:   quadrat [?]
 #&gt;   quadrat sp        n

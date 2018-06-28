@@ -37,17 +37,18 @@ individual.
 }
 }
 \description{
-\code{basal_area()} is a generic function with methods for numeric vectors and
-dataframes. To calculate basal area within groups, feed
-\code{basal_area()} with a dataframe previously grouped with \code{group_by()} (see
-examples and section See also). \code{group_by()} comes from \strong{dplyr} but for
-convenience it is reexported by \strong{fgeo.abundance}. \code{add_basal_area()} adds
-a column \code{basal_area}
+\itemize{
+\item \code{basal_area()} is a generic function with methods for numeric vectors and
+dataframes. To calculate basal area within groups, feed \code{basal_area()} with a
+dataframe previously grouped with \code{\link[dplyr:group_by]{dplyr::group_by()}}.
+\item \code{add_basal_area()}
+adds a column \code{basal_area}.
+}
 }
 \examples{
 library(dplyr)
 
-stem <- tibble::tibble(
+stem <- tibble(
   stemID = 1:6,
   quadrat = paste0("000", rep(1:2, each = 3)),
   sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),

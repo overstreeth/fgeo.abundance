@@ -15,7 +15,7 @@ abundance_tree(.data)
 \arguments{
 \item{.data}{A dataframe, commonly grouped with \code{group_by()}.}
 
-\item{.var}{A variable to count distinct occurances.}
+\item{.var}{A variable to count distinct occurrences.}
 }
 \value{
 An object of the same class as .data. One grouping level will be

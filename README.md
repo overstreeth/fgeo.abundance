@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="https://i.imgur.com/m8FNhQR.png" align="right" height=88 /> Abundance, basal area and diversity
+# <img src="https://i.imgur.com/vTLlhbp.png" align="right" height=88 /> Abundance, basal area and diversity
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build
@@ -29,10 +29,19 @@ article](https://goo.gl/dQKEeg).
 ## Example
 
 ``` r
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(fgeo.abundance)
 
 # Example data
-census <- tibble::tibble(
+census <- tibble(
   treeID = c(1, 1, 2, 3, 3, 3),
   stemID = c(1, 2, 3, 4, 5, 6),
   quadrat = paste0("000", rep(1:2, each = 3)),
@@ -41,14 +50,14 @@ census <- tibble::tibble(
 )
 census
 #> # A tibble: 6 x 5
-#>   treeID stemID quadrat sp      dbh
-#>    <dbl>  <dbl> <chr>   <chr> <dbl>
-#> 1      1      1 0001    sp1   14.2 
-#> 2      1      2 0001    sp1   17.2 
-#> 3      2      3 0001    sp2   16.2 
-#> 4      3      4 0002    sp3   11.1 
-#> 5      3      5 0002    sp3    4.39
-#> 6      3      6 0002    sp3    9.45
+#>   treeID stemID quadrat sp       dbh
+#>    <dbl>  <dbl> <chr>   <chr>  <dbl>
+#> 1      1      1 0001    sp1    0.823
+#> 2      1      2 0001    sp1   23.5  
+#> 3      2      3 0001    sp2    0.425
+#> 4      3      4 0002    sp3    5.91 
+#> 5      3      5 0002    sp3   17.7  
+#> 6      3      6 0002    sp3    7.24
 
 count_distinct(census, treeID)
 #> # A tibble: 1 x 1

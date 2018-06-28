@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# <img src="https://i.imgur.com/m8FNhQR.png" align="right" height=88 /> Abundance, basal area and diversity
+# <img src="https://i.imgur.com/vTLlhbp.png" align="right" height=88 /> Abundance, basal area and diversity
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https://travis-ci.org/forestgeo/fgeo.abundance)
@@ -35,10 +35,11 @@ For details on how to install packages from GitHub, see [this article](https://g
 ## Example
 
 ```{r}
+library(dplyr)
 library(fgeo.abundance)
 
 # Example data
-census <- tibble::tibble(
+census <- tibble(
   treeID = c(1, 1, 2, 3, 3, 3),
   stemID = c(1, 2, 3, 4, 5, 6),
   quadrat = paste0("000", rep(1:2, each = 3)),

@@ -1,11 +1,10 @@
 #' Basal area of each individual.
 #' 
-#' `basal_area()` is a generic function with methods for numeric vectors and 
-#' dataframes. To calculate basal area within groups, feed
-#' `basal_area()` with a dataframe previously grouped with `group_by()` (see
-#'  examples and section See also). `group_by()` comes from __dplyr__ but for
-#'  convenience it is reexported by __fgeo.abundance__. `add_basal_area()` adds
-#'  a column `basal_area`
+#' * `basal_area()` is a generic function with methods for numeric vectors and
+#' dataframes. To calculate basal area within groups, feed `basal_area()` with a
+#' dataframe previously grouped with [dplyr::group_by()]. 
+#' * `add_basal_area()`
+#' adds a column `basal_area`.
 #'
 #' @param x Numeric vector or dataframe giving the individuals' diameter.
 #' @param dbh If `x` is a dataframe, `dbh` is the bare name of the column giving
@@ -29,7 +28,7 @@
 #' @examples
 #' library(dplyr)
 #' 
-#' stem <- tibble::tibble(
+#' stem <- tibble(
 #'   stemID = 1:6,
 #'   quadrat = paste0("000", rep(1:2, each = 3)),
 #'   sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),

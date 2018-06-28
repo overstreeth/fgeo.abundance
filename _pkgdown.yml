@@ -38,10 +38,10 @@ reference:
 
   - title: Summaries of abundance and diversity
     contents: 
-      - -abundance
       - abundance_tree
       - abundance_stem
       - count_distinct
+      - count_duplicated
       - basal_area
       - vgn_diversity
       
