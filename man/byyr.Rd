@@ -20,41 +20,36 @@ A dataframe.
 Create tables of abundance and basal area by (round mean) year.
 }
 \examples{
-library(fgeo.base)
+# Or load all fgeo packages in one step with library(fgeo)
 library(fgeo.tool)
-
-vft <- data.frame(
-  PlotName = "p",
-  PlotCensusNumber = c(1, 1, 2, 2, 1, 2),
-  CensusID = c(1, 1, 2, 2, 1, 2),
-  ExactDate = c(
-    "2001-01-01", "2001-01-01", "2002-01-01", "2002-01-01",
-    "2001-01-01", "2002-01-01"
-  ),
-  Tag = c("0001", "0001", "0001", "0001", "0002", "0002"),
-  TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
-  SteemID = c(  "1",    "2",    "1",    "2",    "1",    "1"),
-  Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
-  DBH = c(11, 15, 12, NA, 21, NA),
-  Genus = c("A", "A", "A", "A", "B", "B"),
-  SpeciesName = c("a", "a", "a", "a", "b", "b"),
-  Family = "f",
-  stringsAsFactors = FALSE
+library(fgeo.base)
+  
+# FIXME: ADD DEAD TREE FOR CENSUS 2
+# There are two trees of the same species in census 1 and one tree in census
+# 2, each tree has two stems.
+vft_toy <- tibble(
+  PlotName = c("luq", "luq", "luq", "luq", "luq", "luq"),
+  Status = c("alive", "dead", "alive", "gone", "alive", "dead"),
+  ExactDate = c("2001-01-01", "2001-01-01", "2001-01-01", "2001-01-01",
+    "2002-01-01", "2002-01-01"),
+  TreeID = c("1", "1", "2", "2", "1", "1"),
+  StemID = c("1.1", "1.2", "2.1", "2.2", "1.2", "1.1"),
+  Genus = c("A", "A", "A", "A", "A", "A"),
+  SpeciesName = c("a", "a", "a", "a", "a", "a"),
+  PlotCensusNumber = c("1", "1", "1", "1", "2", "2"),
+  CensusID = c("1", "1", "1", "1", "2", "2"),
+  DBH = c(1L, 6L, 2L, 3L, 5L, 4L),
+  Family = c("f", "f", "f", "f", "f", "f"),
+  Tag = c("1", "1", "2", "2", "1", "1")
 )
-vft
+vft_toy
 
-# First pick the data you want
-pick1 <- fgeo.base::pick_plotname(vft, "p")
-pick2 <- drop_dead_trees_by_cns(pick1)
-pick3 <- pick_dbh_min(pick2, 10)
+byyr_abundance(vft_toy)
 
-byyr_abundance(pick3)
-
-ba <- byyr_basal_area(pick3)
-ba
+ba <- byyr_basal_area(vft_toy)
 
 # Convert units and standardize by plot size in hectares
-years <- c("2000", "2001")
+years <- c("2001", "2002")
 in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
 }

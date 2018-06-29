@@ -34,6 +34,8 @@ ForestGEO (both stem and tree tables).
 }
 }
 \examples{
+library(dplyr)
+
 # Example data
 census <- tibble::tibble(
   treeID = c(1, 1, 2, 3, 3, 3),

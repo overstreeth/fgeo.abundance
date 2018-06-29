@@ -41,7 +41,6 @@ reference:
       - abundance_tree
       - abundance_stem
       - count_distinct
-      - count_duplicated
       - basal_area
       - vgn_diversity
       
