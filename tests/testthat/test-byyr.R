@@ -1,5 +1,27 @@
 context("byyr_abundance")
 
+# Or load all fgeo packages in one step with library(fgeo)
+library(fgeo.tool)
+library(fgeo.base)
+
+vft <- readr::read_csv(here::here("tests/testthat/byyr_toy_vft.csv")) %>% 
+  fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") %>%
+  fgeo.tool::drop_dead_tree(.status = "dead")
+
+test_that("outputs as expected", {
+  out <- byyr_abundance(vft)
+  # All trees are of the same species. There are two trees, each with two stems.
+  # In census 1, the count of alive trees should be 2 because both trees are alive,
+  #   but note that one stem is dead (StemID = 1.2).
+  # In census 2 the count of alive trees should be 1:
+  #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
+  #   * One tree is dead (TreeID = 2) because both its stems are dead.
+  expect_equal(out$`2001`, 2)
+  expect_equal(out$`2002`, 1)
+})
+
+
+
 test_that("works with luquillo", {
   skip_if_not_installed("luquillo")
   suppressMessages(

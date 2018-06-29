@@ -19,6 +19,8 @@
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' 
 #' # Example data
 #' census <- tibble::tibble(
 #'   treeID = c(1, 1, 2, 3, 3, 3),
@@ -53,31 +55,15 @@ count_distinct <- function(.data, .var) {
 #' @export
 #' @rdname count_distinct
 abundance_stem <- function(.data) {
-  count_distinct(.data, .data$stemID)
+  check_crucial_names(insensitive(.data), "stemid")
+  out <- count_distinct(insensitive(.data), .data$stemid)
+  nms_restore_matching(out, .data)
 }
 
 #' @export
 #' @rdname count_distinct
 abundance_tree <- function(.data) {
-  count_distinct(.data, .data$treeID)
+  check_crucial_names(insensitive(.data), "treeid")
+  out <- count_distinct(insensitive(.data), .data$treeid)
+  nms_restore_matching(out, .data)
 }
-
-
-
-
-
-
-#' @rdname abundance
-#' @export
-count_duplicated <- function(x, ..., wt = NULL, sort = FALSE) {
-  if (length(dplyr::group_vars(x)) != 0) {
-    warn("Can't handle grouped `x`. Ungrouping to continue.")
-    x <- dplyr::ungroup(x)
-  }
-  
-  group_vars <- enquos(...)
-  count_call <- quo(dplyr::count(x, !!!group_vars, wt = !!wt, sort = !!sort))
-  cnt <- rlang::eval_tidy(count_call, x)
-  dplyr::filter(cnt, dplyr::last(cnt) > 1)
-}
-
