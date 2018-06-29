@@ -53,7 +53,7 @@ filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
   # Other crucial names are checked downstream
   fgeo.base::check_crucial_names(vft, "PlotCensusNumber")
   
-  sane <- sanitize_Status(vft, .valid_status)
+  sane <- sanitize_status(vft, .valid_status)
   
   message("Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.")
   with_status_tree <- sane %>% 
@@ -66,4 +66,9 @@ filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
   fgeo.tool::filter_status(
     with_status_tree, wood = "tree", .status = .status, exclude = exclude
   )
+}
+
+sanitize_status <- function(vft, .valid_status) {
+  vft_warned <- inform_if_bad_status(vft, .valid_status)
+  fix_status_if_bad_or_err(vft_warned, .valid_status)
 }
