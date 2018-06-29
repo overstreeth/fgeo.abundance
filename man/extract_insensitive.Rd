@@ -2,9 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{extract_insensitive}
 \alias{extract_insensitive}
+\alias{detect_insensitive}
 \title{Detect and extract matching strings ignoring case.}
 \usage{
 extract_insensitive(x, y)
+
+detect_insensitive(x, y)
 }
 \arguments{
 \item{x, y}{A string.}
