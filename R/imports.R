@@ -14,6 +14,18 @@
 #' @importFrom rlang UQ UQS .data := inform warn abort
 NULL
 
+#' Pipe operator
+#'
+#' See \code{magrittr::\link[magrittr]{\%>\%}} for details.
+#'
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+NULL
+
 # Avoid CMD check warnings
 utils::globalVariables(c(".data", "n", "gx", "gy"))
 

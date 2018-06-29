@@ -19,14 +19,14 @@ Imports:
     rlang (>= 0.1.2),
     tibble,
     tidyr,
-    vegan
+    vegan,
+    magrittr
 Suggests: 
     covr,
     fgeo.data,
     ggplot2,
     janitor,
     knitr,
-    magrittr,
     readr,
     rmarkdown,
     testthat
