@@ -115,6 +115,9 @@ nms_restore_matching <- function(new, ref) {
 extract_insensitive <- function(x, y) {
   x[detect_insensitive(x, y)]
 }
+
+#' @export
+#' @rdname extract_insensitive
 detect_insensitive <- function(x, y) {
   matches <- lapply(fgeo.base::enline(x), grepl, y, ignore.case = TRUE)
   vapply(matches, any, logical(1))
