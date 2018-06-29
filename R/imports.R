@@ -1,3 +1,6 @@
+#' @importFrom fgeo.base check_crucial_names
+NULL
+
 #' Tidy eval helpers
 #'
 #' These functions provide tidy eval-compatible ways to capture
