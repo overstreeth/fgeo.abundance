@@ -56,14 +56,12 @@ count_distinct <- function(.data, .var) {
 #' @rdname count_distinct
 abundance_stem <- function(.data) {
   check_crucial_names(insensitive(.data), "stemid")
-  out <- count_distinct(insensitive(.data), .data$stemid)
-  nms_restore_matching(out, .data)
+  count_distinct(insensitive(.data), .data$stemid)
 }
 
 #' @export
 #' @rdname count_distinct
 abundance_tree <- function(.data) {
   check_crucial_names(insensitive(.data), "treeid")
-  out <- count_distinct(insensitive(.data), .data$treeid)
-  nms_restore_matching(out, .data)
+  count_distinct(insensitive(.data), .data$treeid)
 }

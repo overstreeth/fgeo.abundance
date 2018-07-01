@@ -4,6 +4,7 @@ test_that("outputs as expected", {
   skip_if_not_installed("fgeo.tool")
   skip_if_not_installed("readr")
   path <- "byyr_toy_vft.csv"
+  # path <- "tests/testthat/byyr_toy_vft.csv"
   vft <- readr::read_csv(path)
 
   # All trees are of the same species. There are two trees, each with two stems.

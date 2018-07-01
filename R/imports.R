@@ -1,4 +1,5 @@
-#' @importFrom fgeo.base check_crucial_names
+#' @importFrom fgeo.base check_crucial_names insensitive nms_restore_matching
+#' @export               check_crucial_names insensitive nms_restore_matching
 NULL
 
 #' Tidy eval helpers
