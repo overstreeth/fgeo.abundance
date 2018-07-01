@@ -14,6 +14,11 @@ census
 test_that("counts as expected", {
   expect_equal(pull(count_distinct(census, stemID), n), 6)
   
+  by_treeid <- group_by(census, treeID)
+  out <- count_distinct(by_treeid, stemID)
+  expect_named(out, c("treeID", "n"))
+  expect_equal(pull(out, n), c(2, 1, 3))
+  
   by_quad <- group_by(census, quadrat)
   expect_equal(pull(count_distinct(by_quad, stemID), n), c(3, 3))
   expect_equal(pull(abundance_stem(by_quad), n), c(3, 3))
@@ -29,3 +34,7 @@ test_that("counts as expected", {
   expect_equal(pull(abundance_tree(by_quad_sp), n), c(1, 1, 1))
 })
 
+test_that("fails with informative error", {
+  expect_error(count_distinct(1), "must be a dataframe")
+  expect_error(abundance_tree(1), "must be a dataframe")
+})

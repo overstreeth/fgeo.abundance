@@ -49,12 +49,14 @@
 #' abundance_tree(by_quad_sp)
 count_distinct <- function(.data, .var) {
   .var <- enquo(.var)
+  check_count_distinct(.data)
   dplyr::summarise(.data, n = dplyr::n_distinct(!! .var))
 }
 
 #' @export
 #' @rdname count_distinct
 abundance_stem <- function(.data) {
+  check_count_distinct(.data)
   check_crucial_names(insensitive(.data), "stemid")
   count_distinct(insensitive(.data), .data$stemid)
 }
@@ -62,6 +64,13 @@ abundance_stem <- function(.data) {
 #' @export
 #' @rdname count_distinct
 abundance_tree <- function(.data) {
+  check_count_distinct(.data)
   check_crucial_names(insensitive(.data), "treeid")
   count_distinct(insensitive(.data), .data$treeid)
+}
+
+check_count_distinct <- function(.data) {
+  if (!is.data.frame(.data)) {
+    stop("`.data` must be a dataframe.", call. = FALSE)
+  }
 }
