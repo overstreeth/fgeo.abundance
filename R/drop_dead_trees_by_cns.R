@@ -51,7 +51,7 @@ drop_dead_trees_by_cns <- function(vft,
 filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
   stopifnot(length(.status) == 1, .status %in% c("dead", "alive"))
   # Other crucial names are checked downstream
-  fgeo.base::check_crucial_names(vft, "PlotCensusNumber")
+  check_crucial_names(vft, "PlotCensusNumber")
   
   sane <- sanitize_status(vft, .valid_status)
   

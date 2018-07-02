@@ -59,7 +59,7 @@ byyr_abundance <- function(vft) {
   crucial <- c("PlotName", "Tag")
   vft %>% 
     check_byyr() %>% 
-    fgeo.base::check_crucial_names(crucial) %>% 
+    check_crucial_names(crucial) %>% 
     drop_if_missing_dates() %>% 
     mean_years() %>% 
     fgeo.base::drop_if_na("year") %>% 
@@ -92,7 +92,7 @@ check_byyr <- function(vft) {
     "Genus", "SpeciesName", "Family", "Status", "DBH", "ExactDate", 
     "PlotCensusNumber"
   )
-  fgeo.base::check_crucial_names(vft, crucial)
+  check_crucial_names(vft, crucial)
   invisible(vft)
 }
 
