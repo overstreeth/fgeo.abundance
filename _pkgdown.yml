@@ -45,9 +45,4 @@ reference:
       - basal_area_byyr
       - count_distinct
       - vgn_diversity
-      
-  - title: Helpers
-    contents: 
-      - drop_dead_trees_by_cns
-
 
