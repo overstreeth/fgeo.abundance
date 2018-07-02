@@ -18,6 +18,7 @@ test_that("outputs as expected", {
     fgeo.tool::drop_dead_tree(.status = "dead")
   
   out <- byyr_abundance(vft)
+  expect_named(insensitive(out), c("species", "family", "2001", "2002"))
   expect_equal(out$`2001`, 2)
   expect_equal(out$`2002`, 1)
 })

@@ -56,21 +56,26 @@ count_distinct <- function(.data, .var) {
 #' @export
 #' @rdname count_distinct
 abundance_stem <- function(.data) {
-  check_count_distinct(.data)
-  check_crucial_names(insensitive(.data), "stemid")
-  count_distinct(insensitive(.data), .data$stemid)
+  set_names(.data, tolower) %>% 
+    check_count_distinct() %>% 
+    check_crucial_names("stemid") %>% 
+    # Grouping vars preserve name-case
+    count_distinct(.data$stemid)
 }
 
 #' @export
 #' @rdname count_distinct
 abundance_tree <- function(.data) {
-  check_count_distinct(.data)
-  check_crucial_names(insensitive(.data), "treeid")
-  count_distinct(insensitive(.data), .data$treeid)
+  set_names(.data, tolower) %>% 
+    check_count_distinct() %>% 
+    # Grouping vars preserve name-case
+    check_crucial_names("treeid") %>% 
+    count_distinct(.data$treeid)
 }
 
 check_count_distinct <- function(.data) {
   if (!is.data.frame(.data)) {
     stop("`.data` must be a dataframe.", call. = FALSE)
   }
+  invisible(.data)
 }
