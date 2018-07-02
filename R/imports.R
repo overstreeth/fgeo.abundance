@@ -1,4 +1,4 @@
-#' @importFrom fgeo.base check_crucial_names
+#' @importFrom fgeo.base check_crucial_names insensitive rename_matches
 NULL
 
 #' Tidy eval helpers
