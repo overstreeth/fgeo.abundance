@@ -1,18 +1,25 @@
 #' Count distinct occurrences of a variable by groups (tree or stem abundance).
 #' 
-#' These functions are usually used on grouped data created by
-#' `dplyr::group_by()` (reexported by __fgeo__). The output will have one row
-#' for each group. 
+#' These functions count rows by groups (if you need to exclude some
+#' observations, to it first -- see warning). These functions are usually used
+#' on grouped data created by `dplyr::group_by()` (reexported by __fgeo__). The
+#' output will have one row for each group:
 #' * `count_distinct()` counts distinct occurrences of a variable.
 #' * `abundance_stem()` and `abundance_tree()` are simpler wrappers for the
 #' specifically counting distinct occurrences of the variables `stemID` and
 #' `treeID` which uniquely identify each stem and tree in census datasets of
 #' ForestGEO (both stem and tree tables).
 #' 
+#' @section Warning:
+#' These functions do not remove dead stems or trees. If you don't want dead
+#' trees to be included, remove them first (see [drop_dead_tree()],
+#' [drop_dead_stem()].
+#' 
 #' @param .data A dataframe, commonly grouped with `group_by()`.
 #' @param .var A variable to count distinct occurrences.
 #' 
-#' @seealso [dplyr::group_by()], [dplyr::summarise()].
+#' @seealso [dplyr::group_by()], [dplyr::summarise()], [drop_dead_tree()], 
+#' [drop_dead_stem()].
 #' 
 #' @return An object of the same class as .data. One grouping level will be
 #'   dropped.

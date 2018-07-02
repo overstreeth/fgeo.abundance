@@ -22,9 +22,10 @@ An object of the same class as .data. One grouping level will be
 dropped.
 }
 \description{
-These functions are usually used on grouped data created by
-\code{dplyr::group_by()} (reexported by \strong{fgeo}). The output will have one row
-for each group.
+These functions count rows by groups (if you need to exclude some
+observations, to it first -- see warning). These functions are usually used
+on grouped data created by \code{dplyr::group_by()} (reexported by \strong{fgeo}). The
+output will have one row for each group:
 \itemize{
 \item \code{count_distinct()} counts distinct occurrences of a variable.
 \item \code{abundance_stem()} and \code{abundance_tree()} are simpler wrappers for the
@@ -33,6 +34,13 @@ specifically counting distinct occurrences of the variables \code{stemID} and
 ForestGEO (both stem and tree tables).
 }
 }
+\section{Warning}{
+
+These functions do not remove dead stems or trees. If you don't want dead
+trees to be included, remove them first (see \code{\link[=drop_dead_tree]{drop_dead_tree()}},
+\code{\link[=drop_dead_stem]{drop_dead_stem()}}.
+}
+
 \examples{
 library(dplyr)
 
@@ -64,5 +72,6 @@ abundance_stem(by_quad_sp)
 abundance_tree(by_quad_sp)
 }
 \seealso{
-\code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}.
+\code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[=drop_dead_tree]{drop_dead_tree()}},
+\code{\link[=drop_dead_stem]{drop_dead_stem()}}.
 }
