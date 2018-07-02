@@ -47,8 +47,8 @@ pick3 <- pick_dbh_min(pick2, MINIMUM_DBH)
 Then you can create the tables with:
 
 ```R
-abundance <- byyr_abundance(pick3)
-basal_area <- byyr_basal_area(pick3)
+abundance <- abundance_byyr(pick3)
+basal_area <- basal_area_byyr(pick3)
 ```
 
 To standardize the table of basal area use something like this:
@@ -83,10 +83,10 @@ path_iss59 <- function(path) {
 write_tables <- function(vft, plot_nm, total) {
   pick <- pick_vft(vft = vft, plot_nm = plot_nm)
   
-  abun <- byyr_abundance(pick)
+  abun <- abundance_byyr(pick)
   readr::write_csv(abun, path_iss59(paste0("tbl/", plot_nm, "_abundance.csv")))
   
-  ba <- standardize_ba(byyr_basal_area(pick), total = total)
+  ba <- standardize_ba(basal_area_byyr(pick), total = total)
   readr::write_csv(ba, path_iss59(paste0("tbl/", plot_nm, "_basal_area.csv")))
 }
 ```

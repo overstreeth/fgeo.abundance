@@ -1,6 +1,7 @@
 #' Create tables of abundance and basal area by (round mean) year.
 #'
 #' @param vft A dataframe; particularly a ForestGEO ViewFullTable.
+#' @inheritParams fgeo.tool::add_status_tree
 #'
 #' @return A dataframe.
 #' 
@@ -29,21 +30,14 @@
 #' vft
 #' 
 #' # All trees are of the same species. There are two trees, each with two stems.
-#' # In census 1, the count of alive trees should be 2 because both trees are alive,
-#' #   but note that one stem is dead (StemID = 1.2).
+#' # In census 1, the count of alive trees should be 2 because both trees are 
+#' #   alive, but note that one stem is dead (StemID = 1.2).
 #' # In census 2 the count of alive trees should be 1:
 #' #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
 #' #   * One tree is dead (TreeID = 2) because both its stems are dead.
+#' abundance_byyr(vft)
 #' 
-#' vft <- vft %>% 
-#'   # Determine tree status based on stem status.
-#'   fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") %>%
-#'   # Remove dead trees.
-#'   fgeo.tool::drop_dead_tree(.status = "dead")
-#' 
-#' byyr_abundance(vft)
-#' 
-#' ba <- byyr_basal_area(vft)
+#' ba <- basal_area_byyr(vft)
 #' 
 #' # Convert units and standardize by plot size in hectares
 #' years <- c("2001", "2002")
@@ -54,17 +48,12 @@ NULL
 
 #' @rdname byyr
 #' @export
-byyr_abundance <- function(vft) {
-  # TODO: WARN IF DEAD TREES
+abundance_byyr <- function(vft, status_a = "alive", status_d = "dead") {
   crucial <- c("plotname", "tag")
   vft %>% 
     set_names(tolower) %>%
-    check_byyr() %>% 
-    check_crucial_names(crucial) %>% 
-    drop_if_missing_dates() %>% 
-    mean_years() %>% 
-    fgeo.base::drop_if_na("year") %>% 
-    ungroup() %>% 
+    check_crucial_names(crucial) %>%
+    prepare_byyr(status_a, status_d) %>% 
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>% 
     abundance_tree() %>% 
     ungroup() %>% 
@@ -77,12 +66,10 @@ byyr_abundance <- function(vft) {
 
 #' @rdname byyr
 #' @export
-byyr_basal_area <- function(vft) {
+basal_area_byyr <- function(vft, status_a = "alive", status_d = "dead") {
   vft %>% 
     set_names(tolower) %>%
-    check_byyr() %>% 
-    drop_if_missing_dates() %>% 
-    mean_years() %>% 
+    prepare_byyr(status_a, status_d) %>% 
     group_by(.data$species, .data$family, .data$year) %>%
     basal_area(dbh = .data$dbh) %>% 
     arrange(.data$species, .data$family, .data$year) %>% 
@@ -91,7 +78,18 @@ byyr_basal_area <- function(vft) {
     rename_matches(vft)
 }
 
-check_byyr <- function(vft) {
+prepare_byyr <- function(vft, status_a, status_d) {
+  vft %>% 
+    check_prepare_byyr() %>% 
+    fgeo.tool::add_status_tree(status_a, status_d) %>%
+    fgeo.tool::drop_dead_tree(status_d) %>% 
+    drop_if_missing_dates() %>% 
+    mean_years() %>% 
+    fgeo.base::drop_if_na("year") %>% 
+    ungroup()
+}
+
+check_prepare_byyr <- function(vft) {
   stopifnot(is.data.frame(vft))
   crucial <- c(
     "genus", "speciesname", "family", "status", "dbh", "exactdate", 

@@ -141,12 +141,12 @@ dead).</p>
     </tr>
     <tr>
       <th>status_d</th>
-      <td><p>String indicating dead stems in the column <code>Status</code> of <code>vft</code>
+      <td><p>String indicating dead stems in the status column of <code>vft</code>
 (commonly "dead" or "D").</p></td>
     </tr>
     <tr>
       <th>.valid_status</th>
-      <td><p>String giving possible values of <code>Status</code>.</p></td>
+      <td><p>String giving possible values of status.</p></td>
     </tr>
     </table>
     
@@ -179,7 +179,7 @@ dead).</p>
 #&gt; 2           a      f
 #&gt; 3           b      f
 #&gt; 4           b      f</div><div class='input'>
-<span class='fu'>drop_dead_trees_by_cns</span>(<span class='no'>vft</span>)</div><div class='output co'>#&gt; <span class='message'>Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.</span></div><div class='output co'>#&gt; <span class='message'>Dropping trees which status is dead.</span></div><div class='output co'>#&gt; # A tibble: 2 x 11
+<span class='fu'>drop_dead_trees_by_cns</span>(<span class='no'>vft</span>)</div><div class='output co'>#&gt; <span class='message'>Calculating tree-status (from stem status) by plotcensusnumber.</span></div><div class='output co'>#&gt; <span class='message'>Dropping trees which status is dead.</span></div><div class='output co'>#&gt; # A tibble: 2 x 11
 #&gt;   TreeID PlotName Status   DBH ExactDate  PlotCensusNumber CensusID Genus
 #&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
 #&gt; 1 0002   p        alive     10 2000-01-01                1        1 B    

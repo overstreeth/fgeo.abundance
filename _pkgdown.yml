@@ -40,13 +40,11 @@ reference:
     contents: 
       - abundance_tree
       - abundance_stem
-      - count_distinct
+      - abundance_byyr
       - basal_area
+      - basal_area_byyr
+      - count_distinct
       - vgn_diversity
-      
-  - title: Create tables of abundance and basal area
-    contents: 
-      - starts_with("byyr_")
       
   - title: Helpers
     contents: 

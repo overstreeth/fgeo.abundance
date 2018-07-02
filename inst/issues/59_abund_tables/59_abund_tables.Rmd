@@ -46,7 +46,7 @@ I developed these functions (based on notes in section __Task__ below):
 
 * `pick_dbh_min()` to make it clear and easy to pick trees of or over a specific DBH value.
 
-* `byyr_abundance()` and `byyr_basal_area()` to calculate abundance and basal area per (mean) year. In addition to their primary calculation, both of these functions do the following:
+* `abundance_byyr()` and `basal_area_byyr()` to calculate abundance and basal area per (mean) year. In addition to their primary calculation, both of these functions do the following:
 
     * Check for inconsistent statuses.
     * Fix wrong status automatically or die trying.
@@ -81,21 +81,21 @@ path_iss59 <- function(file) {
 # # WARNING: Takes a couple of minutes to run
 # bci_abundance_table <- vft_bci %>% 
 #   fgeo.base::pick_dbh_min(1) %>% 
-#   byyr_abundance()
+#   abundance_byyr()
 # write_csv(bci_abundance_table, path_iss59("bci_abundance_table.csv"))
 
 # # Cocoli
 # cocoli_abundance_table <- vft_sc %>%
 #   pick_plotname("cocoli") %>% 
 #   fgeo.base::pick_dbh_min(1) %>%
-#   byyr_abundance()
+#   abundance_byyr()
 # write_csv(cocoli_abundance_table, path_iss59("cocoli_abundance_table.csv"))
 
 # # Sherman
 # sherman_abundance_table <- vft_sc %>%
 #   pick_plotname("sherman") %>%
 #   fgeo.base::pick_dbh_min(1) %>%
-#   byyr_abundance()
+#   abundance_byyr()
 # write_csv(sherman_abundance_table, path_iss59("sherman_abundance_table.csv"))
 
 
@@ -106,19 +106,19 @@ path_iss59 <- function(file) {
 # # WARNING: Takes a couple of minutes to run
 # bci_basal_area_table <- vft_bci %>%
 #   fgeo.base::pick_dbh_min(1) %>%
-#   byyr_basal_area()
+#   basal_area_byyr()
 # write_csv(bci_basal_area_table, path_iss59("bci_basal_area_table.csv"))
 # # Cocoli
 # cocoli_basal_area_table <- vft_sc %>%
 #   pick_plotname("cocoli") %>%
 #   fgeo.base::pick_dbh_min(1) %>%
-#   byyr_basal_area()
+#   basal_area_byyr()
 # write_csv(cocoli_basal_area_table, path_iss59("cocoli_basal_area_table.csv"))
 # # Sherman
 # sherman_basal_area_table <- vft_sc %>%
 #   pick_plotname("sherman") %>%
 #   fgeo.base::pick_dbh_min(1) %>%
-#   byyr_basal_area()
+#   basal_area_byyr()
 # write_csv(sherman_basal_area_table, path_iss59("sherman_basal_area_table.csv"))
 ```
 

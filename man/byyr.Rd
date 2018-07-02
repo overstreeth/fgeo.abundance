@@ -2,16 +2,24 @@
 % Please edit documentation in R/byyr.R
 \name{byyr}
 \alias{byyr}
-\alias{byyr_abundance}
-\alias{byyr_basal_area}
+\alias{abundance_byyr}
+\alias{basal_area_byyr}
 \title{Create tables of abundance and basal area by (round mean) year.}
 \usage{
-byyr_abundance(vft)
+abundance_byyr(vft, status_a = "alive", status_d = "dead")
 
-byyr_basal_area(vft)
+basal_area_byyr(vft, status_a = "alive", status_d = "dead")
 }
 \arguments{
 \item{vft}{A dataframe; particularly a ForestGEO ViewFullTable.}
+
+\item{status_a}{Sting to match alive and dead stems; it corresponds
+to the values of the variable \code{status} (in census tables) or \code{Status} (with
+capital "S" in ViewFull tables).}
+
+\item{status_d}{Sting to match alive and dead stems; it corresponds
+to the values of the variable \code{status} (in census tables) or \code{Status} (with
+capital "S" in ViewFull tables).}
 }
 \value{
 A dataframe.
@@ -44,21 +52,14 @@ vft <- tibble(
 vft
 
 # All trees are of the same species. There are two trees, each with two stems.
-# In census 1, the count of alive trees should be 2 because both trees are alive,
-#   but note that one stem is dead (StemID = 1.2).
+# In census 1, the count of alive trees should be 2 because both trees are 
+#   alive, but note that one stem is dead (StemID = 1.2).
 # In census 2 the count of alive trees should be 1:
 #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
 #   * One tree is dead (TreeID = 2) because both its stems are dead.
+abundance_byyr(vft)
 
-vft <- vft \%>\% 
-  # Determine tree status based on stem status.
-  fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") \%>\%
-  # Remove dead trees.
-  fgeo.tool::drop_dead_tree(.status = "dead")
-
-byyr_abundance(vft)
-
-ba <- byyr_basal_area(vft)
+ba <- basal_area_byyr(vft)
 
 # Convert units and standardize by plot size in hectares
 years <- c("2001", "2002")
