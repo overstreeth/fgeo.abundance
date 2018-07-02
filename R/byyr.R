@@ -56,58 +56,65 @@ NULL
 #' @export
 byyr_abundance <- function(vft) {
   # TODO: WARN IF DEAD TREES
-  crucial <- c("PlotName", "Tag")
+  crucial <- c("plotname", "tag")
   vft %>% 
+    set_names(tolower) %>%
     check_byyr() %>% 
     check_crucial_names(crucial) %>% 
     drop_if_missing_dates() %>% 
     mean_years() %>% 
     fgeo.base::drop_if_na("year") %>% 
     dplyr::ungroup() %>% 
-    dplyr::group_by(.data$PlotName, .data$year, .data$Family, .data$species) %>% 
+    dplyr::group_by(.data$plotname, .data$year, .data$family, .data$species) %>% 
     abundance_tree() %>% 
     dplyr::ungroup() %>% 
-    dplyr::select(-.data$PlotName) %>% 
-    dplyr::select(.data$species, .data$Family, dplyr::everything()) %>% 
+    dplyr::select(-.data$plotname) %>% 
+    dplyr::select(.data$species, .data$family, dplyr::everything()) %>% 
     tidyr::spread(.data$year, n, fill = 0) %>% 
-    dplyr::arrange(.data$species, .data$Family)
+    dplyr::arrange(.data$species, .data$family) %>% 
+    fgeo.base::rename_matches(vft)
 }
 
 #' @rdname byyr
 #' @export
 byyr_basal_area <- function(vft) {
-  check_byyr(vft) %>% 
+  vft %>% 
+    set_names(tolower) %>%
+    check_byyr() %>% 
     drop_if_missing_dates() %>% 
     mean_years() %>% 
-    dplyr::group_by(.data$species, .data$Family, .data$year) %>%
-    basal_area(dbh = .data$DBH) %>% 
-    dplyr::arrange(.data$species, .data$Family, .data$year) %>% 
+    dplyr::group_by(.data$species, .data$family, .data$year) %>%
+    basal_area(dbh = .data$dbh) %>% 
+    dplyr::arrange(.data$species, .data$family, .data$year) %>% 
     dplyr::ungroup() %>% 
-    tidyr::spread(.data$year, basal_area, fill = 0)
+    tidyr::spread(.data$year, basal_area, fill = 0) %>% 
+    fgeo.base::rename_matches(vft)
 }
 
 check_byyr <- function(vft) {
   stopifnot(is.data.frame(vft))
   crucial <- c(
-    "Genus", "SpeciesName", "Family", "Status", "DBH", "ExactDate", 
-    "PlotCensusNumber"
+    "genus", "speciesname", "family", "status", "dbh", "exactdate", 
+    "plotcensusnumber"
   )
   check_crucial_names(vft, crucial)
   invisible(vft)
 }
 
 mean_years <- function(vft) {
-  years <-  vft %>% 
-    dplyr::group_by(.data$PlotCensusNumber) %>% 
+  years <- vft %>% 
+    set_names(tolower) %>% 
+    dplyr::group_by(.data$plotcensusnumber) %>% 
     dplyr::summarise(
-      year = round(mean(lubridate::year(.data$ExactDate), na.rm = TRUE))
+      year = round(mean(lubridate::year(.data$exactdate), na.rm = TRUE))
     ) %>% 
     unique() %>% 
-    dplyr::arrange(.data$PlotCensusNumber) %>% 
-    dplyr::ungroup()
+    dplyr::arrange(.data$plotcensusnumber) %>% 
+    dplyr::ungroup() %>% 
+    rename_matches(vft)
   
-  dplyr::left_join(vft, years, by = "PlotCensusNumber") %>% 
-    dplyr::mutate(species = paste(.data$Genus, .data$SpeciesName)) %>% 
+  dplyr::left_join(vft, years, by = "plotcensusnumber") %>% 
+    dplyr::mutate(species = paste(.data$genus, .data$speciesname)) %>% 
     dplyr::arrange(.data$year)
 }
 
@@ -125,15 +132,16 @@ inform_if_bad_status <- function(vft, .valid_status) {
 }
 
 fix_status_if_bad_or_err <- function(vft, .valid_status) {
-  status_ok <- all(sort(unique(vft$Status)) %in% .valid_status)
+  .vft <- set_names(vft, tolower)
+  status_ok <- all(sort(unique(.vft$status)) %in% .valid_status)
   if (!status_ok) {
     message("Fixing status automatically.")
-    vft <- fix_bad_status(
-      vft, status_col = vft$Status, status_arg = .valid_status
+    .vft <- fix_bad_status(
+      .vft, status_col = vft$status, status_arg = .valid_status
     )
     
     tryCatch(
-      testthat::expect_silent(inform_if_bad_status(vft, .valid_status)),
+      testthat::expect_silent(inform_if_bad_status(.vft, .valid_status)),
       error = function(cond) {
         stop(
           "Tried but failed to fix status automatically.\n",
@@ -144,17 +152,18 @@ fix_status_if_bad_or_err <- function(vft, .valid_status) {
       warning = function(cond) "Failed to fix status automatically."
     )
   }
+  vft <- rename_matches(.vft, vft)
   invisible(vft)
 }
 
 fix_bad_status <- function(vft, status_col, status_arg) {
-  vft$Status <- sub("^.*dead.*$", "dead", vft$Status)
-  vft$Status <- sub("^.*alive.*$", "alive", vft$Status)
+  vft$status <- sub("^.*dead.*$", "dead", vft$status)
+  vft$status <- sub("^.*alive.*$", "alive", vft$status)
   vft
 }
 
 drop_if_missing_dates <- function(x) {
-  missing_dates <- is.na(x$ExactDate)
+  missing_dates <- is.na(insensitive(x)$exactdate)
   if (any(missing_dates)) {
     warning("Detected and ignoring missing dates.")
   }
