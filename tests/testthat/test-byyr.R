@@ -203,3 +203,16 @@ test_that("counts multi-stem trees correctly", {
   expect_equal(out$`2001`, c(1, 1))
   expect_equal(out$`2002`, c(1, 0))
 })
+
+
+
+context("inform_if_bad_status")
+
+test_that("informs if bad status", {
+  expect_silent(out <- inform_if_bad_status(data.frame(Status = "OK"), "OK"))
+  expect_named(out, "Status")
+  expect_message(
+    inform_if_bad_status(data.frame(Status = "bad"), "OK"), "should match"
+  )
+})
+

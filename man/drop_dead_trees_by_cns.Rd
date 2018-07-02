@@ -10,10 +10,10 @@ drop_dead_trees_by_cns(vft, status_d = "dead", .valid_status = c("dead",
 \arguments{
 \item{vft}{A dataframe; particularly a ForestGEO ViewFullTable.}
 
-\item{status_d}{String indicating dead stems in the column \code{Status} of \code{vft}
+\item{status_d}{String indicating dead stems in the status column of \code{vft}
 (commonly "dead" or "D").}
 
-\item{.valid_status}{String giving possible values of \code{Status}.}
+\item{.valid_status}{String giving possible values of status.}
 }
 \value{
 A dataframe.

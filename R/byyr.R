@@ -119,16 +119,17 @@ mean_years <- function(vft) {
 }
 
 inform_if_bad_status <- function(vft, .valid_status) {
-  status_ok <- all(sort(unique(vft$Status)) %in% .valid_status)
+  .vft <- set_names(vft, tolower)
+  status_ok <- all(sort(unique(.vft$status)) %in% .valid_status)
   if (!status_ok) {
     message(
-      "Unique values of column `Status` and argument `valid_status` ", 
+      "Unique values of status and argument `valid_status` ", 
       "should match:\n",
       "* Status col: ", commas(sort(unique(.valid_status))), ".\n",
-      "* valid_status arg: ", commas(sort(unique(vft$Status))), "."
+      "* valid_status arg: ", commas(sort(unique(.vft$status))), "."
     )
   }
-  invisible(vft)
+  invisible(rename_matches(.vft, vft))
 }
 
 fix_status_if_bad_or_err <- function(vft, .valid_status) {
@@ -137,7 +138,7 @@ fix_status_if_bad_or_err <- function(vft, .valid_status) {
   if (!status_ok) {
     message("Fixing status automatically.")
     .vft <- fix_bad_status(
-      .vft, status_col = vft$status, status_arg = .valid_status
+      .vft, status_col = .vft$status, status_arg = .valid_status
     )
     
     tryCatch(
@@ -145,15 +146,14 @@ fix_status_if_bad_or_err <- function(vft, .valid_status) {
       error = function(cond) {
         stop(
           "Tried but failed to fix status automatically.\n",
-          "* Fix `Status` manually and retry.", 
+          "* Fix status manually and retry.", 
           call. = FALSE
         )
       },
       warning = function(cond) "Failed to fix status automatically."
     )
   }
-  vft <- rename_matches(.vft, vft)
-  invisible(vft)
+  invisible(rename_matches(.vft, vft))
 }
 
 fix_bad_status <- function(vft, status_col, status_arg) {

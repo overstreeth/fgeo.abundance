@@ -9,10 +9,10 @@
 #' dead).
 #'  
 #' @param vft A dataframe; particularly a ForestGEO ViewFullTable.
-#' @param status_d String indicating dead stems in the column `Status` of `vft`
+#' @param status_d String indicating dead stems in the status column of `vft`
 #'   (commonly "dead" or "D").
 #' @inheritParams fgeo.tool::filter_status
-#' @param .valid_status String giving possible values of `Status`.
+#' @param .valid_status String giving possible values of status.
 #'
 #' @family functions for fgeo vft.
 #' @family functions by census.
@@ -50,22 +50,25 @@ drop_dead_trees_by_cns <- function(vft,
 # Add `status_tree` by census and pick or drop alive or dead trees.
 filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
   stopifnot(length(.status) == 1, .status %in% c("dead", "alive"))
+  
+  .vft <- set_names(vft, tolower)
   # Other crucial names are checked downstream
-  check_crucial_names(vft, "PlotCensusNumber")
+  check_crucial_names(.vft, "plotcensusnumber")
   
-  sane <- sanitize_status(vft, .valid_status)
+  sane <- sanitize_status(.vft, .valid_status)
   
-  message("Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.")
+  message("Calculating tree-status (from stem status) by plotcensusnumber.")
   with_status_tree <- sane %>% 
-    dplyr::group_by(.data$PlotCensusNumber) %>% 
+    dplyr::group_by(.data$plotcensusnumber) %>% 
     fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") %>% 
     dplyr::ungroup()
   
   filtering <- ifelse(exclude, "Dropping", "Picking")
   message(filtering, " trees which status is ", .status, ".")
-  fgeo.tool::filter_status(
+  out <- fgeo.tool::filter_status(
     with_status_tree, wood = "tree", .status = .status, exclude = exclude
   )
+  rename_matches(out, vft)
 }
 
 sanitize_status <- function(vft, .valid_status) {
