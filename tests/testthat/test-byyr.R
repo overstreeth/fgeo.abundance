@@ -3,13 +3,7 @@ context("abundance_byyr")
 test_that("outputs as expected", {
   skip_if_not_installed("fgeo.tool")
   skip_if_not_installed("readr")
-  
-  path_test_environ <- "byyr_toy_vft.csv"
-  path_interactive <- "tests/testthat/byyr_toy_vft.csv"
-  vft <- tryCatch(
-    readr::read_csv(path_test_environ),
-    error = function(e) readr::read_csv(path_interactive)
-  )
+  vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
   
   # All trees are of the same species. There are two trees, each with two stems.
   # In census 1, the count of alive trees should be 2 because both trees are alive,
