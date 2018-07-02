@@ -59,9 +59,8 @@ filter_tree_status_by_census <- function(vft, .status, exclude, .valid_status) {
   
   message("Calculating tree-status (from stem status) by plotcensusnumber.")
   with_status_tree <- sane %>% 
-    dplyr::group_by(.data$plotcensusnumber) %>% 
     fgeo.tool::add_status_tree(status_a = "alive", status_d = "dead") %>% 
-    dplyr::ungroup()
+    ungroup()
   
   filtering <- ifelse(exclude, "Dropping", "Picking")
   message(filtering, " trees which status is ", .status, ".")

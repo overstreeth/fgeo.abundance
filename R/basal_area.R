@@ -78,7 +78,7 @@ basal_area.default <- function(x, ...) {
 #' @export
 basal_area.data.frame <- function(x, dbh = dbh, ...) {
   dbh <- enquo(dbh)
-  dplyr::summarise(x, basal_area = sum(basal_area.numeric(!!dbh), na.rm = TRUE))
+  summarize(x, basal_area = sum(basal_area.numeric(!!dbh), na.rm = TRUE))
 }
 
 #' @rdname basal_area
@@ -93,7 +93,7 @@ basal_area.numeric <- function(x, ...) {
 add_basal_area <- function(x, ..., dbh = dbh) {
   dbh <- enquo(dbh)
   g <- dplyr::group_vars(x)
-  grouped <- dplyr::group_by(x, ..., add = TRUE)
+  grouped <- group_by(x, ..., add = TRUE)
   out <- add_basal_area_tally(grouped, !!dbh)
   dplyr::grouped_df(out, g)
 }
@@ -102,7 +102,7 @@ add_basal_area_tally <- function(x, dbh = dbh) {
   dbh <- enquo(dbh)
   
   check_basal_area_tally(x)
-  dplyr::mutate(x, basal_area = sum(basal_area.numeric(!!dbh), na.rm = TRUE))
+  mutate(x, basal_area = sum(basal_area.numeric(!!dbh), na.rm = TRUE))
 }
 
 check_basal_area_tally <- function(x) {

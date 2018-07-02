@@ -50,7 +50,7 @@
 count_distinct <- function(.data, .var) {
   .var <- enquo(.var)
   check_count_distinct(.data)
-  dplyr::summarise(.data, n = dplyr::n_distinct(!! .var))
+  summarize(.data, n = dplyr::n_distinct(!! .var))
 }
 
 #' @export

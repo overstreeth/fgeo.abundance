@@ -1,4 +1,5 @@
 #' @importFrom fgeo.base check_crucial_names insensitive rename_matches
+#' @importFrom dplyr group_by ungroup filter select mutate summarize arrange
 NULL
 
 #' Tidy eval helpers

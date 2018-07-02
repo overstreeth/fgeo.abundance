@@ -52,7 +52,7 @@ by_quadrat <- group_by(census, quadrat)
 vgn_diversity(by_quadrat, n)
 
 # Similar alternative
-summarise(
+summarize(
   by_quadrat,
   specnumber = vegan::specnumber(n),
   shannon = vegan::diversity(n)
@@ -73,7 +73,7 @@ diversity \%>\%
 # A summary
 diversity \%>\%
   group_by(index) \%>\%
-  summarise(mean = mean(value))
+  summarize(mean = mean(value))
 }
 \seealso{
 \code{\link[vegan:diversity]{vegan::diversity()}}.

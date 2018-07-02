@@ -41,7 +41,7 @@
 #' vgn_diversity(by_quadrat, n)
 #'
 #' # Similar alternative
-#' summarise(
+#' summarize(
 #'   by_quadrat,
 #'   specnumber = vegan::specnumber(n),
 #'   shannon = vegan::diversity(n)
@@ -62,7 +62,7 @@
 #' # A summary
 #' diversity %>%
 #'   group_by(index) %>%
-#'   summarise(mean = mean(value))
+#'   summarize(mean = mean(value))
 vgn_diversity <- function(x, abundance, index = c("specnumber", "shannon")) {
   stopifnot(is.data.frame(x))
   abundance <- rlang::enquo(abundance)
@@ -71,7 +71,7 @@ vgn_diversity <- function(x, abundance, index = c("specnumber", "shannon")) {
     abort("Argument `abundance` is missing. Must provide `abundance`.")
   }
 
-  div <- dplyr::summarise(
+  div <- summarize(
     x,
     diversity = enframe_diversity(x = !!abundance, index = index)
   )

@@ -25,7 +25,7 @@ test_that("returns the expected data structure", {
 
 test_that("returns the same as basal_area.numeric if data has only one row.", {
   df1 <- df[1, ] %>%
-    dplyr::group_by(status)
+    group_by(status)
   expected <- basal_area(df1$dbh)
   actual <-   basal_area(df1)$basal_area
   expect_equal(actual, expected)
@@ -66,7 +66,7 @@ test_that("tricky objects in global environment cause no scoping issues", {
 test_that("never returns grouped df", {
   # basal_area.data.frame() calls dplyr::summarize() which removes grouping
   expect_false(
-    is_grouped_df(basal_area(dplyr::group_by(df, quadrat)))
+    is_grouped_df(basal_area(group_by(df, quadrat)))
   )
 })
 

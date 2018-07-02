@@ -64,15 +64,15 @@ byyr_abundance <- function(vft) {
     drop_if_missing_dates() %>% 
     mean_years() %>% 
     fgeo.base::drop_if_na("year") %>% 
-    dplyr::ungroup() %>% 
-    dplyr::group_by(.data$plotname, .data$year, .data$family, .data$species) %>% 
+    ungroup() %>% 
+    group_by(.data$plotname, .data$year, .data$family, .data$species) %>% 
     abundance_tree() %>% 
-    dplyr::ungroup() %>% 
-    dplyr::select(-.data$plotname) %>% 
-    dplyr::select(.data$species, .data$family, dplyr::everything()) %>% 
+    ungroup() %>% 
+    select(-.data$plotname) %>% 
+    select(.data$species, .data$family, dplyr::everything()) %>% 
     tidyr::spread(.data$year, n, fill = 0) %>% 
-    dplyr::arrange(.data$species, .data$family) %>% 
-    fgeo.base::rename_matches(vft)
+    arrange(.data$species, .data$family) %>% 
+    rename_matches(vft)
 }
 
 #' @rdname byyr
@@ -83,12 +83,12 @@ byyr_basal_area <- function(vft) {
     check_byyr() %>% 
     drop_if_missing_dates() %>% 
     mean_years() %>% 
-    dplyr::group_by(.data$species, .data$family, .data$year) %>%
+    group_by(.data$species, .data$family, .data$year) %>%
     basal_area(dbh = .data$dbh) %>% 
-    dplyr::arrange(.data$species, .data$family, .data$year) %>% 
-    dplyr::ungroup() %>% 
+    arrange(.data$species, .data$family, .data$year) %>% 
+    ungroup() %>% 
     tidyr::spread(.data$year, basal_area, fill = 0) %>% 
-    fgeo.base::rename_matches(vft)
+    rename_matches(vft)
 }
 
 check_byyr <- function(vft) {
@@ -104,18 +104,18 @@ check_byyr <- function(vft) {
 mean_years <- function(vft) {
   years <- vft %>% 
     set_names(tolower) %>% 
-    dplyr::group_by(.data$plotcensusnumber) %>% 
-    dplyr::summarise(
+    group_by(.data$plotcensusnumber) %>% 
+    summarize(
       year = round(mean(lubridate::year(.data$exactdate), na.rm = TRUE))
     ) %>% 
     unique() %>% 
-    dplyr::arrange(.data$plotcensusnumber) %>% 
-    dplyr::ungroup() %>% 
+    arrange(.data$plotcensusnumber) %>% 
+    ungroup() %>% 
     rename_matches(vft)
   
   dplyr::left_join(vft, years, by = "plotcensusnumber") %>% 
-    dplyr::mutate(species = paste(.data$genus, .data$speciesname)) %>% 
-    dplyr::arrange(.data$year)
+    mutate(species = paste(.data$genus, .data$speciesname)) %>% 
+    arrange(.data$year)
 }
 
 inform_if_bad_status <- function(vft, .valid_status) {

@@ -198,7 +198,6 @@ test_that("counts multi-stem trees correctly", {
   # year 2001: B b = 1
   # year 2002: A a = 1
   # year 2002: B b = 0
-  # FIXME: Don't count stems but distinct tres with summarize(n = n_distinct(TreeID))
   out <- byyr_abundance(pick3)
   expect_equal(out$`2001`, c(1, 1))
   expect_equal(out$`2002`, c(1, 0))
