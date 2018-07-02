@@ -16,6 +16,7 @@ output:
 set.seed(1014)
 knitr::opts_chunk$set(
   echo = TRUE,
+  eval = FALSE,
   comment = "#>",
   collapse = TRUE,
   cache = FALSE,
@@ -112,8 +113,9 @@ write_tables(vft_bci, "bci", denominator = 50)
 
 Les't visualize the output.
 
-```{r, message=FALSE}
-fgeo.tool::csv_to_df_lst(here::here("inst/issues/59_abund_tables/tbl"))
+```{r, message=FALSE, eval=TRUE}
+dfs <- fgeo.tool::csv_to_dfs(here::here("inst/issues/59_abund_tables/tbl"))
+dfs
 ```
 
 

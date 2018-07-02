@@ -2,7 +2,7 @@
 title: "Tables of abundance and basal area"
 subtitle: BCI, Sherman and Cocoli
 author: "Mauro Lepore"
-date: "2018-06-18"
+date: "2018-07-02"
 output:
   html_document:
     toc: yes
@@ -17,32 +17,30 @@ Setup.
 
 
 ```r
-library(fgeo.tool)
-library(fgeo.base)
-library(fgeo.abundance)
+library(tidyverse)
+library(fgeo)
 ```
 
 To create tables of abundance and basal area first pick the data you want. Your code should look something like this:
 
 ```R
 pick1 <- pick_plotname(VIEWFULLTABLE, "PLOTNAME")
-pick2 <- drop_dead_trees_by_cns(pick1)
-pick3 <- pick_dbh_min(pick2, MINIMUM_DBH)
+pick2 <- pick_dbh_min(pick1, MINIMUM_DBH)
 ```
 
 Then you can create the tables with:
 
 ```R
-abundance <- byyr_abundance(pick3)
-basal_area <- byyr_basal_area(pick3)
+abundance <- abundance_byyr(pick2)
+basal_area <- basal_area_byyr(pick2)
 ```
 
 To standardize the table of basal area use something like this:
 
 ```R
 years <- setdiff(names(basal_area), c("species", "Family"))
-in_sq_m <- conv_unit_at(basal_area, .at = years, from = "mm2", to = "m2")
-basal_area_in_he <- standardize_at(in_sq_m, .at = years, total = TOTAL_HECTARES)
+in_sq_m <- convert_unit_at(basal_area, .at = years, from = "mm2", to = "m2")
+basal_area_in_he <- standardize_at(in_sq_m, .at = years, denominator = denominator_HECTARES)
 ```
 
 Next, I do this for three plots: Sherman, Cocoli and BCI. To avoid duplication I first write some disposable utility-funcitons.
@@ -51,29 +49,28 @@ Next, I do this for three plots: Sherman, Cocoli and BCI. To avoid duplication I
 ```r
 # Pick specific data from a ViewFullTable.
 pick_vft <- function(vft, plot_nm) {
-  pick1 <- fgeo.base::pick_plotname(vft = vft, plot_nm = plot_nm)
-  pick2 <- drop_dead_trees_by_cns(pick1)
-  pick_dbh_min(pick2, 10)
+  pick <- pick_plotname(vft, plot_nm)
+  pick_dbh_min(pick, 10)
 }
 
 # Standardize basal area by total plot-hectares.
-standardize_ba <- function(ba, total) {
+standardize_ba <- function(ba, denominator) {
   years <- setdiff(names(ba), c("species", "Family"))
-  in_he <- conv_unit_at(ba, .at = years, from = "mm2", to = "m2")
-  standardize_at(in_he, .at = years, total = total)
+  in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "m2")
+  standardize_at(in_he, years, denominator)
 }
 
 path_iss59 <- function(path) {
   here::here("inst/issues/59_abund_tables", path)
 }
 
-write_tables <- function(vft, plot_nm, total) {
-  pick <- pick_vft(vft = vft, plot_nm = plot_nm)
+write_tables <- function(vft, plot_nm, denominator) {
+  pick <- pick_vft(vft, plot_nm)
   
-  abun <- byyr_abundance(pick)
+  abun <- abundance_byyr(pick)
   readr::write_csv(abun, path_iss59(paste0("tbl/", plot_nm, "_abundance.csv")))
   
-  ba <- standardize_ba(byyr_basal_area(pick), total = total)
+  ba <- standardize_ba(basal_area_byyr(pick), denominator)
   readr::write_csv(ba, path_iss59(paste0("tbl/", plot_nm, "_basal_area.csv")))
 }
 ```
@@ -87,111 +84,41 @@ Now I'm ready to read the data and crete the tables -- which I save locally:
 # BCI
 path_bci <- here::here("inst/issues/59_abund_tables/vft_bci.csv")
 vft_bci <- readr::read_csv(path_bci)
-#> Parsed with column specification:
-#> cols(
-#>   .default = col_character(),
-#>   DBHID = col_integer(),
-#>   PlotID = col_integer(),
-#>   SpeciesID = col_integer(),
-#>   SubspeciesID = col_integer(),
-#>   QuadratID = col_integer(),
-#>   PX = col_double(),
-#>   PY = col_double(),
-#>   QX = col_double(),
-#>   QY = col_double(),
-#>   TreeID = col_integer(),
-#>   StemID = col_integer(),
-#>   StemNumber = col_integer(),
-#>   CensusID = col_integer(),
-#>   PlotCensusNumber = col_integer(),
-#>   DBH = col_double(),
-#>   HOM = col_double(),
-#>   ExactDate = col_date(format = ""),
-#>   Date = col_integer(),
-#>   HighHOM = col_integer()
-#> )
-#> See spec(...) for full column specifications.
 
 # Sherman and Cocoli
 path_sc <- here::here("inst/issues/59_abund_tables/vft_sc.csv")
 vft_sc <- readr::read_csv(path_sc)
-#> Parsed with column specification:
-#> cols(
-#>   .default = col_integer(),
-#>   PlotName = col_character(),
-#>   Family = col_character(),
-#>   Genus = col_character(),
-#>   SpeciesName = col_character(),
-#>   Mnemonic = col_character(),
-#>   Subspecies = col_character(),
-#>   QuadratName = col_character(),
-#>   PX = col_double(),
-#>   PY = col_double(),
-#>   QX = col_double(),
-#>   QY = col_double(),
-#>   Tag = col_character(),
-#>   PrimaryStem = col_character(),
-#>   HOM = col_double(),
-#>   ExactDate = col_date(format = ""),
-#>   ListOfTSM = col_character(),
-#>   LargeStem = col_character(),
-#>   Status = col_character()
-#> )
-#> See spec(...) for full column specifications.
 ```
 
 * Write tables of abundance and basal area.
 
 
 ```r
-write_tables(vft_sc, plot_nm = "sherman", total = 5.96)
-#> Using: sherman.
-#> Unique values of column `Status` and argument `valid_status` should match:
-#> * Status col: alive, broken below, dead, missing.
-#> * valid_status arg: alive, broken below, dead, missing, stem dead.
-#> Fixing status automatically.
-#> Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.
-#> Dropping rows where `Status = dead`.
-write_tables(vft_sc, plot_nm = "cocoli", total = 4)
-#> Using: cocoli.
-#> Unique values of column `Status` and argument `valid_status` should match:
-#> * Status col: alive, broken below, dead, missing.
-#> * valid_status arg: alive, broken below, dead, missing, stem dead.
-#> Fixing status automatically.
-#> Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.
-#> Dropping rows where `Status = dead`.
-write_tables(vft_bci, plot_nm = "bci", total = 50)
-#> Using: bci.
-#> Unique values of column `Status` and argument `valid_status` should match:
-#> * Status col: alive, broken below, dead, missing.
-#> * valid_status arg: alive, broken below, dead, missing, stem dead.
-#> Fixing status automatically.
-#> Calculating tree-status (from stem `Status`) by `PlotCensusNumber`.
-#> Dropping rows where `Status = dead`.
-#> Warning in drop_if_missing_dates(.): Detected and ignoring missing dates.
-
-#> Warning in drop_if_missing_dates(.): Detected and ignoring missing dates.
+write_tables(vft_sc, "sherman", denominator = 5.96)
+write_tables(vft_sc, "cocoli", denominator = 4)
+write_tables(vft_bci, "bci", denominator = 50)
 ```
 
 Les't visualize the output.
 
 
 ```r
-fgeo.tool::csv_to_df_lst(here::here("inst/issues/59_abund_tables/tbl"))
+dfs <- fgeo.tool::csv_to_dfs(here::here("inst/issues/59_abund_tables/tbl"))
+dfs
 #> $bci_abundance.csv
 #> # A tibble: 325 x 10
 #>    species  Family `1982` `1985` `1990` `1995` `2000` `2005` `2010` `2015`
-#>    <chr>    <chr>   <int>  <dbl>  <int>  <int>  <int>  <int>  <int>  <int>
-#>  1 Abarema~ Fabac~     10     10     11     12     12     16     33     47
-#>  2 Acacia ~ Fabac~      6      8     14     14     11     24     55     55
-#>  3 Acalyph~ Eupho~   1894   1603   1413    906    850   1243   1738   2809
-#>  4 Acalyph~ Eupho~    115     98     81     64     71    107     92    113
-#>  5 Adelia ~ Eupho~    490    430    736    581    569    519    532    594
-#>  6 Aegiphi~ Lamia~    142    131    101     83     63     47     40     26
-#>  7 Alchorn~ Eupho~    411    352    411    347    318    326    428    447
-#>  8 Alchorn~ Eupho~      3      3      5      3      2      2      1      0
-#>  9 Alibert~ Rubia~    363    420    506    509    481    497    576    637
-#> 10 Allophy~ Sapin~    204    208    268    216    179    167    192    216
+#>    <chr>    <chr>   <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>
+#>  1 Abarema~ Fabac~     10     10     11     12     12     16     32     44
+#>  2 Acacia ~ Fabac~      5      7     11     12     10     21     48     44
+#>  3 Acalyph~ Eupho~   1562   1273   1072    685    576    850   1142   1605
+#>  4 Acalyph~ Eupho~     79     68     48     42     43     52     53     72
+#>  5 Adelia ~ Eupho~    346    321    290    227    167    145    146    133
+#>  6 Aegiphi~ Lamia~    136    129     99     80     62     46     40     26
+#>  7 Alchorn~ Eupho~    385    315    271    230    231    230    320    274
+#>  8 Alchorn~ Eupho~      2      2      3      2      2      2      1      0
+#>  9 Alibert~ Rubia~    304    345    393    399    378    394    450    479
+#> 10 Allophy~ Sapin~    175    176    164    131    114    105    116    104
 #> # ... with 315 more rows
 #> 
 #> $bci_basal_area.csv
@@ -202,7 +129,7 @@ fgeo.tool::csv_to_df_lst(here::here("inst/issues/59_abund_tables/tbl"))
 #>  2 Acacia ~ Fabac~ 9.22e-4 6.41e-4 8.20e-4 1.22e-3 6.10e-4 8.67e-4 1.88e-3
 #>  3 Acalyph~ Eupho~ 2.06e-2 2.15e-2 1.83e-2 1.18e-2 1.04e-2 1.23e-2 1.78e-2
 #>  4 Acalyph~ Eupho~ 3.93e-3 2.89e-3 2.67e-3 1.75e-3 1.91e-3 2.38e-3 2.50e-3
-#>  5 Adelia ~ Eupho~ 6.92e-2 6.94e-2 6.99e-2 6.16e-2 5.88e-2 5.03e-2 5.04e-2
+#>  5 Adelia ~ Eupho~ 6.92e-2 6.94e-2 7.01e-2 6.16e-2 5.88e-2 5.03e-2 5.04e-2
 #>  6 Aegiphi~ Lamia~ 1.08e-2 1.04e-2 1.04e-2 1.01e-2 9.41e-3 7.58e-3 6.11e-3
 #>  7 Alchorn~ Eupho~ 2.63e-1 2.75e-1 3.48e-1 2.73e-1 2.32e-1 2.47e-1 2.36e-1
 #>  8 Alchorn~ Eupho~ 8.81e-4 9.39e-4 9.95e-4 4.71e-4 6.73e-4 8.02e-4 9.66e-4
@@ -215,14 +142,14 @@ fgeo.tool::csv_to_df_lst(here::here("inst/issues/59_abund_tables/tbl"))
 #>    species                 Family               `1994` `1997` `1998`
 #>    <chr>                   <chr>                 <int>  <int>  <int>
 #>  1 Acacia melanoceras      Fabaceae-mimosoideae     23     31     31
-#>  2 Acalypha diversifolia   Euphorbiaceae            24     32     31
-#>  3 Acalypha macrostachya   Euphorbiaceae             1      2      3
-#>  4 Adelia triloba          Euphorbiaceae             5      7      7
+#>  2 Acalypha diversifolia   Euphorbiaceae            14     18     23
+#>  3 Acalypha macrostachya   Euphorbiaceae             1      2      2
+#>  4 Adelia triloba          Euphorbiaceae             5      6      6
 #>  5 Aegiphila panamensis    Lamiaceae                 2      1      1
-#>  6 Albizia adinocephala    Fabaceae-mimosoideae     56     55     61
-#>  7 Albizia procera         Fabaceae-mimosoideae      2      3      3
+#>  6 Albizia adinocephala    Fabaceae-mimosoideae     55     57     61
+#>  7 Albizia procera         Fabaceae-mimosoideae      2      2      2
 #>  8 Alchornea costaricensis Euphorbiaceae             2      1      1
-#>  9 Alibertia edulis        Rubiaceae               340    311    312
+#>  9 Alibertia edulis        Rubiaceae               253    236    230
 #> 10 Alseis blackiana        Rubiaceae                 4      4      4
 #> # ... with 165 more rows
 #> 
@@ -248,14 +175,14 @@ fgeo.tool::csv_to_df_lst(here::here("inst/issues/59_abund_tables/tbl"))
 #>    <chr>                   <chr>         <int>  <int>  <int>  <int>  <int>
 #>  1 Abarema barbouriana     Fabaceae-mi~     10     12     12     10     10
 #>  2 Acacia melanoceras      Fabaceae-mi~      1      1      1      1      0
-#>  3 Acalypha diversifolia   Euphorbiace~     12     10     12     34     41
+#>  3 Acalypha diversifolia   Euphorbiace~      9      7      7     20     15
 #>  4 Aegiphila panamensis    Lamiaceae         1      0      0      0      0
 #>  5 Alchornea costaricensis Euphorbiace~      1      1      1      1      1
-#>  6 Alchornea latifolia     Euphorbiace~    140    122    124    122    108
+#>  6 Alchornea latifolia     Euphorbiace~     92     91     94     98     84
 #>  7 Alibertia edulis        Rubiaceae         2      2      2      2      1
-#>  8 Amaioua corymbosa       Rubiaceae        93     90     92     89     96
-#>  9 Andira inermis          Fabaceae-pa~     41     39     40     40     37
-#> 10 Annona spraguei         Annonaceae       15      9      7     13     13
+#>  8 Amaioua corymbosa       Rubiaceae        89     88     89     85     90
+#>  9 Andira inermis          Fabaceae-pa~     41     39     39     38     33
+#> 10 Annona spraguei         Annonaceae       15      9      7     12     13
 #> # ... with 264 more rows
 #> 
 #> $sherman_basal_area.csv
