@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 
 Setup.
 
-```{r packages} 
+```{r packages, eval=TRUE, message=FALSE, warning=FALSE} 
 library(tidyverse)
 library(fgeo)
 ```
@@ -114,8 +114,25 @@ write_tables(vft_bci, "bci", denominator = 50)
 Les't visualize the output.
 
 ```{r, message=FALSE, eval=TRUE}
-dfs <- fgeo.tool::csv_to_dfs(here::here("inst/issues/59_abund_tables/tbl"))
+folder <- here::here("inst/issues/59_abund_tables/tbl")
+dfs <- csv_to_dfs(folder)
 dfs
 ```
 
+For comparison see: 
+
+Compare with:
+
+* Saplings and trees: https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-saplings-and-trees
+
+* Trees: https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-trees
+
+Also:
+
+```{r, message=FALSE, eval=TRUE}
+folder <- here::here("inst/issues/59_abund_tables/condit_et_al")
+paths <- fs::path(folder, dir(folder))
+dfs <- map(paths, read_delim, delim = "\t")
+set_names(dfs, basename(paths))
+```
 

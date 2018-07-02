@@ -103,7 +103,8 @@ Les't visualize the output.
 
 
 ```r
-dfs <- fgeo.tool::csv_to_dfs(here::here("inst/issues/59_abund_tables/tbl"))
+folder <- here::here("inst/issues/59_abund_tables/tbl")
+dfs <- csv_to_dfs(folder)
 dfs
 #> $bci_abundance.csv
 #> # A tibble: 325 x 10
@@ -202,4 +203,68 @@ dfs
 #> # ... with 264 more rows
 ```
 
+For comparison see: 
+
+Compare with:
+
+* Saplings and trees: https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-saplings-and-trees
+
+* Trees: https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-trees
+
+Also:
+
+
+```r
+folder <- here::here("inst/issues/59_abund_tables/condit_et_al")
+paths <- fs::path(folder, dir(folder))
+dfs <- map(paths, read_delim, delim = "\t")
+set_names(dfs, basename(paths))
+#> $bciAbundTable.tsv
+#> # A tibble: 328 x 11
+#>    Latin Family Authority `1982` `1985` `1990` `1995` `2000` `2005` `2010`
+#>    <chr> <chr>  <chr>      <int>  <int>  <int>  <int>  <int>  <int>  <int>
+#>  1 Vach~ Fabac~ (Beurl.)~      5      6     11     12     10     21     47
+#>  2 Acal~ Eupho~ Jacq.       1562   1200    817    523    488    741   1019
+#>  3 Acal~ Eupho~ Jacq.         79     66     44     42     43     52     52
+#>  4 Adel~ Eupho~ (Müll.Ar~    346    315    280    219    163    143    143
+#>  5 Aegi~ Lamia~ Moldenke     136    126     92     77     62     44     40
+#>  6 Alch~ Eupho~ Pax & K.~    385    314    266    228    229    229    319
+#>  7 Alch~ Eupho~ Sw.            2      2      3      2      1      1      1
+#>  8 Alib~ Rubia~ (Rich.) ~    304    342    378    379    357    372    417
+#>  9 Allo~ Sapin~ Radlk.       175    171    153    123    112    103    112
+#> 10 Alse~ Rubia~ Hemsl.      7598   8050   8412   8175   7869   7752   7928
+#> # ... with 318 more rows, and 1 more variable: `2015` <int>
+#> 
+#> $cocoliAbundTable.tsv
+#> # A tibble: 176 x 6
+#>    Latin                   Family        Authority    `1994` `1997` `1998`
+#>    <chr>                   <chr>         <chr>         <int>  <int>  <int>
+#>  1 Acacia melanoceras      Fabaceae      Beurl.           23     19     19
+#>  2 Acalypha diversifolia   Euphorbiaceae Jacq.            14     18     22
+#>  3 Acalypha macrostachya   Euphorbiaceae Jacq.             1      2      2
+#>  4 Adelia triloba          Euphorbiaceae (Müll.Arg.)~      5      6      6
+#>  5 Aegiphila panamensis    Lamiaceae     Moldenke          2      1      1
+#>  6 Albizia adinocephala    Fabaceae      (Donn. Sm.)~     55     53     57
+#>  7 Albizia procera         Fabaceae      (Roxb.) Ben~      2      2      2
+#>  8 Alchornea costaricensis Euphorbiaceae Pax & K. Ho~      2      1      1
+#>  9 Alibertia edulis        Rubiaceae     (Rich.) A. ~    253    228    224
+#> 10 Alseis blackiana        Rubiaceae     Hemsl.            4      4      4
+#> # ... with 166 more rows
+#> 
+#> $shermanAbundTable.tsv
+#> # A tibble: 270 x 7
+#>    Latin                 Family    Authority   `1996` `1997` `1999` `2009`
+#>    <chr>                 <chr>     <chr>        <int>  <int>  <int>  <int>
+#>  1 Acacia sp.1           Fabaceae  <NA>             0      0      0      4
+#>  2 Acacia melanoceras    Fabaceae  Beurl.           1      1      0      0
+#>  3 Acalypha diversifolia Euphorbi~ Jacq.            9      7      5     20
+#>  4 Aegiphila panamensis  Lamiaceae Moldenke         1      0      0      0
+#>  5 Alchornea sp.3        Euphorbi~ <NA>            33     24     22     12
+#>  6 Alchornea latifolia   Euphorbi~ Sw.             93     90     94     96
+#>  7 Alibertia edulis      Rubiaceae (Rich.) A.~      2      2      2      0
+#>  8 Amaioua corymbosa     Rubiaceae Kunth           89     88     89     83
+#>  9 Andira inermis        Fabaceae  (W. Wright~     41     38     38     37
+#> 10 Annona spraguei       Annonace~ Saff.           15      9      7     12
+#> # ... with 260 more rows
+```
 

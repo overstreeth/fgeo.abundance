@@ -379,7 +379,8 @@ vft_sc &lt;- readr::read_csv(path_sc)</code></pre>
 write_tables(vft_sc, &quot;cocoli&quot;, denominator = 4)
 write_tables(vft_bci, &quot;bci&quot;, denominator = 50)</code></pre>
 <p>Les’t visualize the output.</p>
-<pre class="r"><code>dfs &lt;- fgeo.tool::csv_to_dfs(here::here(&quot;inst/issues/59_abund_tables/tbl&quot;))
+<pre class="r"><code>folder &lt;- here::here(&quot;inst/issues/59_abund_tables/tbl&quot;)
+dfs &lt;- csv_to_dfs(folder)
 dfs
 #&gt; $bci_abundance.csv
 #&gt; # A tibble: 325 x 10
@@ -476,6 +477,64 @@ dfs
 #&gt;  9 Andira inermis          Fabace~ 6.05e-2 6.26e-2 6.39e-2 0.0530  0.0327 
 #&gt; 10 Annona spraguei         Annona~ 1.78e-2 1.61e-2 4.59e-3 0.00171 0.00195
 #&gt; # ... with 264 more rows</code></pre>
+<p>For comparison see:</p>
+<p>Compare with:</p>
+<ul>
+<li><p>Saplings and trees: <a href="https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-saplings-and-trees" class="uri">https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-saplings-and-trees</a></p></li>
+<li><p>Trees: <a href="https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-trees" class="uri">https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-trees</a></p></li>
+</ul>
+<p>Also:</p>
+<pre class="r"><code>folder &lt;- here::here(&quot;inst/issues/59_abund_tables/condit_et_al&quot;)
+paths &lt;- fs::path(folder, dir(folder))
+dfs &lt;- map(paths, read_delim, delim = &quot;\t&quot;)
+set_names(dfs, basename(paths))
+#&gt; $bciAbundTable.tsv
+#&gt; # A tibble: 328 x 11
+#&gt;    Latin Family Authority `1982` `1985` `1990` `1995` `2000` `2005` `2010`
+#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+#&gt;  1 Vach~ Fabac~ (Beurl.)~      5      6     11     12     10     21     47
+#&gt;  2 Acal~ Eupho~ Jacq.       1562   1200    817    523    488    741   1019
+#&gt;  3 Acal~ Eupho~ Jacq.         79     66     44     42     43     52     52
+#&gt;  4 Adel~ Eupho~ (Müll.Ar~    346    315    280    219    163    143    143
+#&gt;  5 Aegi~ Lamia~ Moldenke     136    126     92     77     62     44     40
+#&gt;  6 Alch~ Eupho~ Pax &amp; K.~    385    314    266    228    229    229    319
+#&gt;  7 Alch~ Eupho~ Sw.            2      2      3      2      1      1      1
+#&gt;  8 Alib~ Rubia~ (Rich.) ~    304    342    378    379    357    372    417
+#&gt;  9 Allo~ Sapin~ Radlk.       175    171    153    123    112    103    112
+#&gt; 10 Alse~ Rubia~ Hemsl.      7598   8050   8412   8175   7869   7752   7928
+#&gt; # ... with 318 more rows, and 1 more variable: `2015` &lt;int&gt;
+#&gt; 
+#&gt; $cocoliAbundTable.tsv
+#&gt; # A tibble: 176 x 6
+#&gt;    Latin                   Family        Authority    `1994` `1997` `1998`
+#&gt;    &lt;chr&gt;                   &lt;chr&gt;         &lt;chr&gt;         &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+#&gt;  1 Acacia melanoceras      Fabaceae      Beurl.           23     19     19
+#&gt;  2 Acalypha diversifolia   Euphorbiaceae Jacq.            14     18     22
+#&gt;  3 Acalypha macrostachya   Euphorbiaceae Jacq.             1      2      2
+#&gt;  4 Adelia triloba          Euphorbiaceae (Müll.Arg.)~      5      6      6
+#&gt;  5 Aegiphila panamensis    Lamiaceae     Moldenke          2      1      1
+#&gt;  6 Albizia adinocephala    Fabaceae      (Donn. Sm.)~     55     53     57
+#&gt;  7 Albizia procera         Fabaceae      (Roxb.) Ben~      2      2      2
+#&gt;  8 Alchornea costaricensis Euphorbiaceae Pax &amp; K. Ho~      2      1      1
+#&gt;  9 Alibertia edulis        Rubiaceae     (Rich.) A. ~    253    228    224
+#&gt; 10 Alseis blackiana        Rubiaceae     Hemsl.            4      4      4
+#&gt; # ... with 166 more rows
+#&gt; 
+#&gt; $shermanAbundTable.tsv
+#&gt; # A tibble: 270 x 7
+#&gt;    Latin                 Family    Authority   `1996` `1997` `1999` `2009`
+#&gt;    &lt;chr&gt;                 &lt;chr&gt;     &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+#&gt;  1 Acacia sp.1           Fabaceae  &lt;NA&gt;             0      0      0      4
+#&gt;  2 Acacia melanoceras    Fabaceae  Beurl.           1      1      0      0
+#&gt;  3 Acalypha diversifolia Euphorbi~ Jacq.            9      7      5     20
+#&gt;  4 Aegiphila panamensis  Lamiaceae Moldenke         1      0      0      0
+#&gt;  5 Alchornea sp.3        Euphorbi~ &lt;NA&gt;            33     24     22     12
+#&gt;  6 Alchornea latifolia   Euphorbi~ Sw.             93     90     94     96
+#&gt;  7 Alibertia edulis      Rubiaceae (Rich.) A.~      2      2      2      0
+#&gt;  8 Amaioua corymbosa     Rubiaceae Kunth           89     88     89     83
+#&gt;  9 Andira inermis        Fabaceae  (W. Wright~     41     38     38     37
+#&gt; 10 Annona spraguei       Annonace~ Saff.           15      9      7     12
+#&gt; # ... with 260 more rows</code></pre>
 
 
 
