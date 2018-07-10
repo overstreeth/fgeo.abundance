@@ -31,7 +31,7 @@ ViewFullTable <- read_vft(path, delim = ",")
 
 ```{r}
 result <- ViewFullTable %>% 
-  filter(DBH > 10 & PlotID == 1) %>% 
+  filter(DBH >= 10 & PlotID == 1) %>% 
   select(Mnemonic, PlotCensusNumber, TreeID) %>% 
   group_by(Mnemonic, PlotCensusNumber) %>% 
   summarize(cnt = n_distinct(TreeID))
