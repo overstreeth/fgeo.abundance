@@ -1,0 +1,40 @@
+---
+title: "Translating SQL to R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```sql
+SELECT mnemonic,plotcensusnumber,COUNT(distinct treeid) AS cnt from ViewFullTable WHERE dbh>=10  and plotid=1 GROUP BY mnemonic, plotcensusnumber;
+```
+
+```{r}
+library(tidyverse)
+library(fgeo)
+
+path <- here::here("inst/issues/59_abund_tables/vft_bci.csv")
+ViewFullTable <- read_vft(path, delim = ",")
+
+result <- ViewFullTable %>% 
+  filter(DBH > 10 & PlotID == 1) %>% 
+  select(Mnemonic, PlotCensusNumber, TreeID) %>% 
+  group_by(Mnemonic, PlotCensusNumber) %>% 
+  summarize(cnt = n_distinct(TreeID))
+result
+```
+
+For a layout similar to Rick's ([example](https://forestgeo.si.edu/bci-abundance-all-tree-species-50-ha-plot-1982-2005-trees)).
+
+```{r}
+result_wide <- spread(result, PlotCensusNumber, value = "cnt") %>% 
+  arrange(Mnemonic)
+result_wide
+```
+
+```{r}
+write_csv(result_wide, "bci_sql_to_r.csv")
+```
+
