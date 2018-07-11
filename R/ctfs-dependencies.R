@@ -2,28 +2,29 @@
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
-NeighborDensities <- function(censdata,
-                              censdata2 = NULL,
-                              r = 20,
-                              plotdim = c(1000, 500),
-                              mindbh = 10,
-                              type = "count",
-                              include = c("A")) {
+#' @noRd
+neighbor_densities <- function(.data,
+                               .subset,
+                               r, 
+                               plotdim,
+                               mindbh = 0,
+                               type,
+                               include = unique(.data$status)) {
   ptm <- proc.time()
-  if (is.null(censdata2)) {
-    censdata2 <- censdata
+  if (is.null(.subset)) {
+    .subset <- .data
   }
-  n <- nrow(censdata2)
+  n <- nrow(.subset)
   output <- matrix(NA, ncol = 2, nrow = n)
   dimnames(output)[[2]] <- c("con.sp", "het.sp")
   if (type == "count") {
-    cond_1 <- !is.na(censdata$gx) & !is.na(censdata$gy) &
-      !duplicated(censdata$tag) & censdata$dbh >= mindbh &
-      censdata$status %in% include
-    spd <- censdata[cond_1, , drop = FALSE]
+    cond_1 <- !is.na(.data$gx) & !is.na(.data$gy) &
+      !duplicated(.data$tag) & .data$dbh >= mindbh &
+      .data$status %in% include
+    spd <- .data[cond_1, , drop = FALSE]
     spd <- rm_na_row(spd)
     for (i in 1:n) {
-      focal <- censdata2[i, ]
+      focal <- .subset[i, ]
       if (is.na(focal$gx) | is.na(focal$gy) | duplicated(focal$tag)) {
         output[i, 1:2] <- NA
       } else {
@@ -63,13 +64,13 @@ NeighborDensities <- function(censdata,
     }
   }
   if (type == "basal") {
-    cond_2 <- !is.na(censdata$gx) & !is.na(censdata$gy) &
-      !is.na(censdata$dbh) & censdata$dbh >= mindbh & censdata$status %in%
+    cond_2 <- !is.na(.data$gx) & !is.na(.data$gy) &
+      !is.na(.data$dbh) & .data$dbh >= mindbh & .data$status %in%
       include
-    spd <- censdata[cond_2, , drop = FALSE]
+    spd <- .data[cond_2, , drop = FALSE]
     spd <- rm_na_row(spd)
     for (i in 1:n) {
-      focal <- censdata2[i, ]
+      focal <- .subset[i, ]
       if (is.na(focal$gx) | is.na(focal$gy)) {
         output[i, 1:2] <- NA
       } else {
@@ -122,6 +123,7 @@ NeighborDensities <- function(censdata,
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 CalcRingArea <- function(data, radius, plotdim) {
     nopts <- dim(data)[1]
     internalArea <- numeric()
@@ -142,6 +144,7 @@ CalcRingArea <- function(data, radius, plotdim) {
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 partialcirclearea <- function(r, c2, cy1, cy2) {
     if (cy1 <= cy2) {
       c1 <- cy1
@@ -203,6 +206,7 @@ partialcirclearea <- function(r, c2, cy1, cy2) {
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 rm_na_row <- function(.data) {
     stopifnot(length(.data) > 0)
     stopifnot(any(is.matrix(.data) || is.data.frame(.data)))
@@ -215,6 +219,7 @@ rm_na_row <- function(.data) {
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 circlearea <- function(r) {
     return(pi * r^2)
   }
@@ -223,6 +228,7 @@ circlearea <- function(r) {
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
+#' @noRd
 is_na_row <- function(.data) {
     stopifnot(length(.data) > 0)
     stopifnot(any(is.matrix(.data) || is.data.frame(.data)))
