@@ -5,3 +5,7 @@ has_class_df <- function(x) {
 commas <- function(...) {
   paste0(..., collapse = ", ")
 }
+
+space_dots <- function(...) {
+  paste(unlist(list(...)), collapse = " ")
+}

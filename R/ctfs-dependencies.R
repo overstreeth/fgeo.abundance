@@ -16,7 +16,7 @@ neighbor_densities <- function(.data,
   }
   n <- nrow(.subset)
   output <- matrix(NA, ncol = 2, nrow = n)
-  dimnames(output)[[2]] <- c("con.sp", "het.sp")
+  dimnames(output)[[2]] <-  c("conspecific", "heterospecific")
   if (type == "count") {
     cond_1 <- !is.na(.data$gx) & !is.na(.data$gy) &
       !duplicated(.data$tag) & .data$dbh >= mindbh &
@@ -28,6 +28,7 @@ neighbor_densities <- function(.data,
       if (is.na(focal$gx) | is.na(focal$gy) | duplicated(focal$tag)) {
         output[i, 1:2] <- NA
       } else {
+        # FIXME: DON'T USE WITH
         poly <- with(focal, splancs::spoints(c(
           gx - r,
           gy - r, gx - r, gy + r, gx + r, gy + r, gx +
@@ -58,8 +59,9 @@ neighbor_densities <- function(.data,
         }
       }
       if (i %in% seq(5000, n + 5000, 5000)) {
-        cat(i, "of", n, " elapsed time = ", (proc.time() -
-          ptm)[3], "seconds", "\n")
+        message(space_dots(
+          i, "of", n, " elapsed time = ", (proc.time() - ptm)[3], "seconds", "\n"
+        ))
       }
     }
   }
@@ -107,16 +109,17 @@ neighbor_densities <- function(.data,
         }
       }
       if (i %in% seq(5000, n + 5000, 5000)) {
-        cat(i, "of", n, " elapsed time = ", (proc.time() -
-          ptm)[3], "seconds", "\n")
+        message(space_dots(
+          i, "of", n, " elapsed time = ", (proc.time() - ptm)[3], "seconds", "\n"
+        ))
       }
     }
   }
-  cat(
-    "Total elapsed time = ", (proc.time() - ptm)[3], "seconds",
-    "\n"
-  )
-  return(output)
+  message(space_dots(
+    "Total elapsed time = ", (proc.time() - ptm)[3], "seconds", "\n"
+  ))
+  
+  tibble::as.tibble(output)
 }
 
 #' Internal.

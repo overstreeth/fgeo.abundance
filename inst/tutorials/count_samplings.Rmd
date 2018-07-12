@@ -129,3 +129,10 @@ trees %>%
 ```
 
 Is this the expected result?
+
+
+TODO: 
+
+* fix warnings
+* wrap into `count_trees()` and `count_saplings()`, by ... or `count_between(.data, ..., lower = 0, upper = Inf)`.
+* move this article out of tutorial into issues.
