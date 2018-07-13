@@ -63,11 +63,11 @@ basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
 # Notice how the number of rows of the output varies with the input -------
 
 tree <- tibble::tribble(
-  ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-  5,   5, "01", "sp1",     5,     "A",
-  5,   5, "02", "sp1",     5,     "A",
-  5,   5, "03", "sp2",     5,     "A",
-  5,   5, "04", "sp2",     5,     "A"
+  ~treeID, ~stemID, ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+     "01",    "01",   5,   5, "01", "sp1",     5,     "A",
+     "02",    "01",   5,   5, "02", "sp1",     5,     "A",
+     "03",    "01",   5,   5, "03", "sp2",     5,     "A",
+     "04",    "01",   5,   5, "04", "sp2",     5,     "A"
 )
 
 # `.subset = NULL`, ungrouped `.data`

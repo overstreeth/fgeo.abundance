@@ -32,12 +32,9 @@ describe("neighbor_*() inputs", {
     )
   })
   
-  # TODO
   it("warns if detects a stem (not tree) table", {
-    expect_warning(
-      count_neighbor(stem, r = 20), 
-      "Detected duplicated `treeID`.\n* All `treeID` should be unique."
-    )
+    stem <- fgeo.data::luquillo_stem5_random
+    expect_warning(count_neighbor(stem, r = 20), "Detected duplicated `treeID`")
   })
 })
 
@@ -69,8 +66,8 @@ describe("neighbor_*() outputs", {
     
     # With the simplest input possible
     tree <- tibble::tribble(
-      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-        5,   5,  "a", "sp1",     5,     "A"
+      ~treeID, ~stemID, ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+         "01",    "01",   5,   5,  "a", "sp1",     5,     "A"
     )
     ctfs_n <- ctfs::NeighborDensities(
       tree, r = 20, plotdim = c(320, 500), mindbh = min(tree$dbh, na.rm = TRUE)
@@ -87,9 +84,9 @@ describe("neighbor_*() outputs", {
   
   it("outputs as many rows as .data or .subset, if .data is ungrouped", {
     .data <- tibble::tribble(
-      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-        5,   5,  "a", "sp1",     5,     "A",
-        5,   5,  "a", "sp1",     5,     "A"
+      ~treeID, ~stemID, ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+         "01",    "01",   5,   5,  "a", "sp1",     5,     "A",
+         "02",    "01",   5,   5,  "b", "sp1",     5,     "A"
     )
     data_n <- count_neighbor(.data, r = 20, plotdim = c(320, 500))
     expect_is(data_n, "tbl")
@@ -114,11 +111,11 @@ describe("neighbor_*() outputs", {
       
   it("if .data is grouped, outputs n rows of .data/.subset times n groups", {
     .data <- tibble::tribble(
-      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-        5,   5,  "a", "sp1",     5,     "A",
-        5,   5,  "b", "sp1",     5,     "A",
-        5,   5,  "c", "sp2",     5,     "A",
-        5,   5,  "d", "sp2",     5,     "A"
+      ~treeID, ~stemID, ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+         "01",    "01",   5,   5,  "a", "sp1",     5,     "A",
+         "02",    "01",   5,   5,  "b", "sp1",     5,     "A",
+         "03",    "01",   5,   5,  "c", "sp2",     5,     "A",
+         "04",    "01",   5,   5,  "d", "sp2",     5,     "A"
     )
     
     by_sp <- dplyr::group_by(.data, sp)
