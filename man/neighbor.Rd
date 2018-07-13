@@ -27,6 +27,18 @@ are not part of census \code{.data}. \code{.subset} must have columns \code{gx},
 }
 \value{
 A dataframe.
+
+A dataframe with two columns \code{conspecific} and \code{heterospecific}, and
+optionally one extra column for each variable used to group by. The number
+of rows is as follows:
+\itemize{
+\item If \code{.subset} is \code{NULL}, the output and \code{.data} have equal number of rows,
+both for grouped and ungrouped \code{.data}.
+\item If \code{.subset} is not \code{NULL}, and \code{.data} is ungrouped, the output and
+\code{.subset} have equal number of rows.
+\item If \code{.subset} is not \code{NULL}, and \code{.data} is grouped, the output has a number
+of rows that equals that of \code{.subset} multiplied by the number of groups.
+}
 }
 \description{
 Includes all values of \code{status} and \code{dbh}. You should pick the values you
@@ -48,12 +60,33 @@ count_neighbor(tree, r = 20, plotdim = c(320, 500))
 
 basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
 
-by_quad <- dplyr::group_by(tree, quadrat)
-suppressMessages(count_neighbor(by_quad, r = 20))
+# Notice how the number of rows of the output varies with the input -------
 
-# Grouping by each tree; expect `heterospecific = 0`
-by_treeid <- dplyr::group_by(tree, treeID)
-suppressMessages(
-  basal_area_neighbor(by_treeid, r = 20, plotdim = c(320, 500))
+tree <- tibble::tribble(
+  ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+  5,   5, "01", "sp1",     5,     "A",
+  5,   5, "02", "sp1",     5,     "A",
+  5,   5, "03", "sp2",     5,     "A",
+  5,   5, "04", "sp2",     5,     "A"
 )
+
+# `.subset = NULL`, ungrouped `.data`
+count_neighbor(.data = tree, .subset = NULL, r = 20, plotdim = c(320, 500))
+
+# `.subset = NULL`, grouped `.data`
+count_neighbor(tree, .subset = NULL, r = 20, plotdim = c(320, 500))
+by_sp <- dplyr::group_by(tree, sp)
+count_neighbor(.data = by_sp, .subset = NULL, r = 20, plotdim = c(320, 500))
+
+subset <- tibble::tribble(
+  ~gx, ~gy, ~tag,   ~sp, 
+  3,   3, "99", "sp1"
+)
+
+# `.subset` not `NULL`, ungrouped `.data`
+count_neighbor(.data = tree, .subset = subset, r = 20, plotdim = c(320, 500))
+
+# `.subset` not `NULL`, ungrouped `.data`
+by_sp <- dplyr::group_by(tree, sp)
+count_neighbor(.data = by_sp, .subset = subset, r = 20, plotdim = c(320, 500))
 }

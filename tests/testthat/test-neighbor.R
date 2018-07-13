@@ -70,7 +70,7 @@ describe("neighbor_*() outputs", {
         5,   5,  "a", "sp1",     5,     "A"
     )
     ctfs_n <- ctfs::NeighborDensities(
-      tree, r = 20, plotdim = c(320, 500), mindbh = 0
+      tree, r = 20, plotdim = c(320, 500), mindbh = min(tree$dbh, na.rm = TRUE)
     )
     fgeo_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
     ngdn_n <- neighbor_densities(
@@ -80,6 +80,66 @@ describe("neighbor_*() outputs", {
     expect_equal(fgeo_n[[2]], ctfs_n[[2]])
     expect_equal(ngdn_n[[1]], ctfs_n[[1]])
     expect_equal(ngdn_n[[2]], ctfs_n[[2]])
+  })
+  
+  it("outputs as many rows as .data or .subset, if .data is ungrouped", {
+    .data <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+        5,   5,  "a", "sp1",     5,     "A",
+        5,   5,  "a", "sp1",     5,     "A"
+    )
+    data_n <- count_neighbor(.data, r = 20, plotdim = c(320, 500))
+    expect_is(data_n, "tbl")
+    expect_equal(nrow(data_n), 2)
+    expect_named(data_n, c("conspecific", "heterospecific"))
+    
+    .subset <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp, 
+      3,   3,  "a", "sp1"
+    )
+    subset_n <- count_neighbor(.data, .subset, r = 20, plotdim = c(320, 500))
+    expect_equal(nrow(subset_n), 1)
+    
+    .subset_far <- tibble::tribble(
+      ~gx,   ~gy, ~tag,   ~sp, 
+      100,   100,  "a", "sp1"
+    )
+    subset_n <- count_neighbor(.data, .subset_far, r = 20, plotdim = c(320, 500))
+    expect_equal(subset_n[[1]], 0)
+    expect_equal(subset_n[[2]], 0)
+  })
+      
+  it("if .data is grouped, outputs n rows of .data/.subset times n groups", {
+    .data <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+        5,   5,  "a", "sp1",     5,     "A",
+        5,   5,  "b", "sp1",     5,     "A",
+        5,   5,  "c", "sp2",     5,     "A",
+        5,   5,  "d", "sp2",     5,     "A"
+    )
+    
+    by_sp <- dplyr::group_by(.data, sp)
+    out <- count_neighbor(by_sp, r = 20, plotdim = c(320, 500))
+    expect_equal(nrow(out), nrow(.data))
+    
+    .subset <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp, 
+        3,   3,  "e",  "sp1"
+    )
+    by_sp <- dplyr::group_by(.data, sp)
+    out <- count_neighbor(by_sp, .subset, r = 20, plotdim = c(320, 500))
+    expect_equal(nrow(out), nrow(.subset) * length(unique(.data$sp)))
+
+    .subset <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp, 
+        3,   3,  "e",  "sp1",
+        3,   3,  "e",  "sp1",
+        3,   3,  "e",  "sp2",
+        3,   3,  "e",  "sp2"
+    )
+    by_sp <- dplyr::group_by(.data, sp)
+    out <- count_neighbor(by_sp, .subset, r = 20, plotdim = c(320, 500))
+    expect_equal(nrow(out), nrow(.subset) * length(unique(.data$sp)))
   })
   
   it("FIXME: outputs zero consp and zero heterosp if data has one row (#68)", {

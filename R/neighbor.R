@@ -21,7 +21,16 @@
 #' @aliases abundance_neighbor
 #'
 #' @return A dataframe.
-#'
+#' 
+#' A dataframe with two columns `conspecific` and `heterospecific`, and
+#' optionally one extra column for each variable used to group by. The number
+#' of rows is as follows:
+#' * If `.subset` is `NULL`, the output and `.data` have equal number of rows,
+#' both for grouped and ungrouped `.data`.
+#' * If `.subset` is not `NULL`, and `.data` is ungrouped, the output and
+#' `.subset` have equal number of rows.
+#' * If `.subset` is not `NULL`, and `.data` is grouped, the output has a number
+#' of rows that equals that of `.subset` multiplied by the number of groups.
 #'
 #' @examples
 #' tree <- fgeo.data::luquillo_tree5_random
@@ -32,14 +41,35 @@
 #' 
 #' basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
 #' 
-#' by_quad <- dplyr::group_by(tree, quadrat)
-#' suppressMessages(count_neighbor(by_quad, r = 20))
+#' # Notice how the number of rows of the output varies with the input -------
 #' 
-#' # Grouping by each tree; expect `heterospecific = 0`
-#' by_treeid <- dplyr::group_by(tree, treeID)
-#' suppressMessages(
-#'   basal_area_neighbor(by_treeid, r = 20, plotdim = c(320, 500))
+#' tree <- tibble::tribble(
+#'   ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+#'   5,   5, "01", "sp1",     5,     "A",
+#'   5,   5, "02", "sp1",     5,     "A",
+#'   5,   5, "03", "sp2",     5,     "A",
+#'   5,   5, "04", "sp2",     5,     "A"
 #' )
+#' 
+#' # `.subset = NULL`, ungrouped `.data`
+#' count_neighbor(.data = tree, .subset = NULL, r = 20, plotdim = c(320, 500))
+#' 
+#' # `.subset = NULL`, grouped `.data`
+#' count_neighbor(tree, .subset = NULL, r = 20, plotdim = c(320, 500))
+#' by_sp <- dplyr::group_by(tree, sp)
+#' count_neighbor(.data = by_sp, .subset = NULL, r = 20, plotdim = c(320, 500))
+#' 
+#' subset <- tibble::tribble(
+#'   ~gx, ~gy, ~tag,   ~sp, 
+#'   3,   3, "99", "sp1"
+#' )
+#' 
+#' # `.subset` not `NULL`, ungrouped `.data`
+#' count_neighbor(.data = tree, .subset = subset, r = 20, plotdim = c(320, 500))
+#' 
+#' # `.subset` not `NULL`, ungrouped `.data`
+#' by_sp <- dplyr::group_by(tree, sp)
+#' count_neighbor(.data = by_sp, .subset = subset, r = 20, plotdim = c(320, 500))
 #' @name neighbor
 NULL
 
