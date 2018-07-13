@@ -19,7 +19,7 @@
 #' tree <- fgeo.data::luquillo_tree5_random
 #' neighbor_count(tree, r = 20, plotdim = c(1000, 500))
 #' neighbor_basal_area(tree, r = 20, plotdim = c(1000, 500))
-#' @rdname neighbor
+#' @name neighbor
 NULL
 
 neighbor <- function(type) {
@@ -38,20 +38,6 @@ neighbor <- function(type) {
     tidyr::unnest(out)
   }
 }
-# neighbor <- function(type) {
-#   force(type)
-#   function(.data,
-#            .subset = NULL,
-#            r,
-#            plotdim = NULL) {
-#     check_neighbor(.data, .subset)
-#     
-#     plotdim <- plotdim %||% fgeo.base::guess_plotdim(.data)
-#     out <- neighbor_densities(.data, .subset, r, plotdim, type = type)
-#     out <- tibble::as.tibble(out)
-#     set_names(out, c("conspecific", "heterospecific"))
-#   }
-# }
 
 #' @rdname neighbor
 #' @export

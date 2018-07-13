@@ -20,7 +20,8 @@ Imports:
     tibble,
     tidyr,
     vegan,
-    magrittr
+    magrittr,
+    splancs
 Suggests: 
     covr,
     fgeo.data,

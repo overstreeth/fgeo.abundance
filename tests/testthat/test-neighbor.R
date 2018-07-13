@@ -57,12 +57,6 @@ describe("neighbor_*() outputs", {
     expect_is(fgeo_b, "tbl")
     expect_identical(unname(fgeo_b), unname(tibble::as.tibble(ctfs_b)))
   })
-
-  it("outputs expected names", {
-    nms <- c("conspecific", "heterospecific")
-    expect_named(fgeo_n, nms)
-    expect_named(fgeo_b, nms)
-  })
 })
 
 describe("neighbor_*() side effects", {
@@ -98,11 +92,6 @@ describe("neighbor_*() features", {
       # * Expect zero hererospecific neighbors.
       expect_equal(unique(qs$heterospecific), 0)
     })
-    
-    # TODO
-    # it("uniquely identifies each tree_stem", {
-    #   stop("not yet implemented. Sould be rowid or treeID_stemID")
-    # })
   })
 })
 

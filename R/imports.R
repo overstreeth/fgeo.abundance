@@ -32,5 +32,5 @@ NULL
 NULL
 
 # Avoid CMD check warnings
-utils::globalVariables(c(".data", "n", "gx", "gy"))
+utils::globalVariables(c(".data", ".", "n", "gx", "gy"))
 

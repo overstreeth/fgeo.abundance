@@ -1,4 +1,4 @@
-#' Internal.
+#' Internal. Adapted from its original version.
 #'
 #' @family functions from http://ctfs.si.edu/Public/CTFSRPackage/
 #' @keywords internal
