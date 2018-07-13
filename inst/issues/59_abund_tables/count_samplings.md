@@ -2,6 +2,15 @@ Count saplings
 ================
 
 ``` r
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(fgeo)
 #> -- Attaching packages ----------------------------------------------- fgeo 0.0.0.9000 --
 #> v fgeo.abundance  0.0.0.9004     v fgeo.demography 0.0.0.9000
@@ -9,7 +18,12 @@ library(fgeo)
 #> v fgeo.data       0.0.0.9002     v fgeo.map        0.0.0.9204
 #> v fgeo.abundance  0.0.0.9004     v fgeo.tool       0.0.0.9003
 #> -- Conflicts ------------------------------------------------------- fgeo_conflicts() --
-#> x fgeo.tool::filter() masks stats::filter()
+#> x fgeo.tool::filter() masks dplyr::filter(), stats::filter()
+#> x dplyr::intersect()  masks base::intersect()
+#> x dplyr::lag()        masks stats::lag()
+#> x dplyr::setdiff()    masks base::setdiff()
+#> x dplyr::setequal()   masks base::setequal()
+#> x dplyr::union()      masks base::union()
 ```
 
 > For example, if I want to see how many saplings there are per species,
@@ -95,13 +109,6 @@ saplings_good <- census %>%
   collapse_treeid() %>% 
   filter(dbh >= 10) %>% 
   filter(dbh < 100)
-#> Warning in filter_impl(.data, quo): hybrid evaluation forced for
-#> `row_number`. Please use dplyr::row_number() or library(dplyr) to remove
-#> this warning.
-
-#> Warning in filter_impl(.data, quo): hybrid evaluation forced for
-#> `row_number`. Please use dplyr::row_number() or library(dplyr) to remove
-#> this warning.
 saplings_good
 #> # A tibble: 1 x 4
 #>     dbh sp    treeID stemID
@@ -144,13 +151,6 @@ trees_good <- census %>%
   collapse_treeid() %>% 
   pick_dbh_min(100) %>% 
   group_by(sp)
-#> Warning in filter_impl(.data, quo): hybrid evaluation forced for
-#> `row_number`. Please use dplyr::row_number() or library(dplyr) to remove
-#> this warning.
-
-#> Warning in filter_impl(.data, quo): hybrid evaluation forced for
-#> `row_number`. Please use dplyr::row_number() or library(dplyr) to remove
-#> this warning.
 trees_good
 #> # A tibble: 1 x 4
 #> # Groups:   sp [1]

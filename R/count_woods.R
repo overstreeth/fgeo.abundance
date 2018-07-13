@@ -44,6 +44,7 @@ collapse_treeid_imp <- function(.data) {
   .data <- .data %>%  
     dplyr::group_by(.data$treeid) %>% 
     dplyr::arrange(desc(.data$dbh)) %>% 
+    # TODO: Consider using min_rank(); see r4ds
     dplyr::filter(dplyr::row_number() == 1) %>% 
     dplyr::ungroup()
 }
