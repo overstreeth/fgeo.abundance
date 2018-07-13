@@ -6,7 +6,7 @@
 #' @section Warning:
 #' This function has a pending issue by which a dataset with a single row does
 #' not result in zero conspecific neighbors
-#' ([https://github.com/forestgeo/fgeo.abundance/issues/68]).
+#' (<https://github.com/forestgeo/fgeo.abundance/issues/68>).
 #'
 #' @param .data A Dataframe; particularly  a ForestGEO census table (tree or
 #'   stem).

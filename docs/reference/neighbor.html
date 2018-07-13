@@ -32,8 +32,8 @@
 
 <meta property="og:title" content="Count and basal area of neighboring stems. — neighbor" />
 
-<meta property="og:description" content="Includes all values of status. You should pick the values you want before
-using these functions (e.g. to drop dead stems)." />
+<meta property="og:description" content="Includes all values of status and dbh. You should pick the values you
+want before using these functions (e.g. to drop dead stems)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,8 +114,8 @@ using these functions (e.g. to drop dead stems)." />
 
     <div class="ref-description">
     
-    <p>Includes all values of status. You should pick the values you want before
-using these functions (e.g. to drop dead stems).</p>
+    <p>Includes all values of <code>status</code> and <code>dbh</code>. You should pick the values you
+want before using these functions (e.g. to drop dead stems).</p>
     
     </div>
 
@@ -153,11 +153,18 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
 
     <p>A dataframe.</p>
     
+    <h2 class="hasAnchor" id="warning"><a class="anchor" href="#warning"></a>Warning</h2>
+
+    
+    <p>This function has a pending issue by which a dataset with a single row does
+not result in zero conspecific neighbors
+(<a href='https://github.com/forestgeo/fgeo.abundance/issues/68'>https://github.com/forestgeo/fgeo.abundance/issues/68</a>).</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'>luquillo_tree5_random</span>
 <span class='co'># Guess `plotdim`</span>
-<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='message'>Gessing: plotdim = c(320, 500)</span></div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.59 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='message'>Gessing: plotdim = c(320, 500)</span></div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.81 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1        1.23           6.15
@@ -171,7 +178,7 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
 #&gt;  9        1              3   
 #&gt; 10        2              7   
 #&gt; # ... with 994 more rows</div><div class='input'>
-<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.5 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.72 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1        1.23           6.15
@@ -185,23 +192,7 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
 #&gt;  9        1              3   
 #&gt; 10        2              7   
 #&gt; # ... with 994 more rows</div><div class='input'>
-
-<span class='no'>by_quad</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>tree</span>)
-<span class='fu'>suppressMessages</span>(<span class='fu'>count_neighbor</span>(<span class='no'>by_quad</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>))</div><div class='output co'>#&gt; # A tibble: 1,004 x 2
-#&gt;    conspecific heterospecific
-#&gt;          &lt;dbl&gt;          &lt;dbl&gt;
-#&gt;  1        1.23           6.15
-#&gt;  2        2              6   
-#&gt;  3        2              7   
-#&gt;  4        1              9   
-#&gt;  5        1              1   
-#&gt;  6        1             11   
-#&gt;  7        1              5   
-#&gt;  8        2              6   
-#&gt;  9        1              3   
-#&gt; 10        2              7   
-#&gt; # ... with 994 more rows</div><div class='input'>
-<span class='fu'>basal_area_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.5 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+<span class='fu'>basal_area_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.52 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1      360.             614.
@@ -215,19 +206,38 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
 #&gt;  9     2865.             412.
 #&gt; 10       68.5            386.
 #&gt; # ... with 994 more rows</div><div class='input'>
-<span class='fu'>basal_area_neighbor</span>(<span class='no'>by_quad</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.5 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
-#&gt;    conspecific heterospecific
-#&gt;          &lt;dbl&gt;          &lt;dbl&gt;
-#&gt;  1      360.             614.
-#&gt;  2       14.3            602.
-#&gt;  3       17.8            485.
-#&gt;  4        8.55          1258.
-#&gt;  5      154.             172.
-#&gt;  6      475.             726.
-#&gt;  7      243.            3180.
-#&gt;  8      455.             200.
-#&gt;  9     2865.             412.
-#&gt; 10       68.5            386.
+<span class='no'>by_quad</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>tree</span>, <span class='no'>quadrat</span>)
+<span class='fu'>suppressMessages</span>(<span class='fu'>count_neighbor</span>(<span class='no'>by_quad</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; # A tibble: 1,004 x 3
+#&gt;    quadrat conspecific heterospecific
+#&gt;    &lt;chr&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+#&gt;  1 1001           1.13              0
+#&gt;  2 1002           1                 0
+#&gt;  3 1005           1                 1
+#&gt;  4 1005           1                 1
+#&gt;  5 1006           1                 0
+#&gt;  6 1007           1                 5
+#&gt;  7 1007           1                 5
+#&gt;  8 1007           1                 5
+#&gt;  9 1007           1                 5
+#&gt; 10 1007           1                 5
+#&gt; # ... with 994 more rows</div><div class='input'>
+<span class='co'># Grouping by each tree; expect `heterospecific = 0`</span>
+<span class='no'>by_treeid</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>tree</span>, <span class='no'>treeID</span>)
+<span class='fu'>suppressMessages</span>(
+  <span class='fu'>basal_area_neighbor</span>(<span class='no'>by_treeid</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))
+)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; # A tibble: 1,004 x 3
+#&gt;    treeID conspecific heterospecific
+#&gt;     &lt;int&gt;       &lt;dbl&gt;          &lt;dbl&gt;
+#&gt;  1    104      360.                0
+#&gt;  2    119       12.8               0
+#&gt;  3    180       15.9               0
+#&gt;  4    602        8.55              0
+#&gt;  5    631      154.                0
+#&gt;  6    647      475.                0
+#&gt;  7   1086      243.                0
+#&gt;  8   1144       43.0               0
+#&gt;  9   1168     2865.                0
+#&gt; 10   1380        0                 0
 #&gt; # ... with 994 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -236,6 +246,8 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#warning">Warning</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -36,7 +36,7 @@ want before using these functions (e.g. to drop dead stems).
 
 This function has a pending issue by which a dataset with a single row does
 not result in zero conspecific neighbors
-(\link{https://github.com/forestgeo/fgeo.abundance/issues/68}).
+(\url{https://github.com/forestgeo/fgeo.abundance/issues/68}).
 }
 
 \examples{
