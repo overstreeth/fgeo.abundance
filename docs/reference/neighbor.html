@@ -119,9 +119,9 @@ using these functions (e.g. to drop dead stems).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>neighbor_count</span>(<span class='no'>.data</span>, <span class='kw'>.subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>r</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>count_neighbor</span>(<span class='no'>.data</span>, <span class='kw'>.subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>r</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>neighbor_basal_area</span>(<span class='no'>.data</span>, <span class='kw'>.subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>r</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>basal_area_neighbor</span>(<span class='no'>.data</span>, <span class='kw'>.subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>r</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,7 +156,8 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'>luquillo_tree5_random</span>
-<span class='fu'>neighbor_count</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1000</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time =  0.98 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+<span class='co'># Guess `plotdim`</span>
+<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='message'>Gessing: plotdim = c(320, 500)</span></div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.58 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1        1.23           6.15
@@ -169,7 +170,21 @@ are not part of census <code>.data</code>. <code>.subset</code> must have column
 #&gt;  8        2              6   
 #&gt;  9        1              3   
 #&gt; 10        2              7   
-#&gt; # ... with 994 more rows</div><div class='input'><span class='fu'>neighbor_basal_area</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1000</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time =  0.9 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+#&gt; # ... with 994 more rows</div><div class='input'>
+<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.53 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+#&gt;    conspecific heterospecific
+#&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+#&gt;  1        1.23           6.15
+#&gt;  2        2              6   
+#&gt;  3        2              7   
+#&gt;  4        1              9   
+#&gt;  5        1              1   
+#&gt;  6        1             11   
+#&gt;  7        1              5   
+#&gt;  8        2              6   
+#&gt;  9        1              3   
+#&gt; 10        2              7   
+#&gt; # ... with 994 more rows</div><div class='input'><span class='fu'>basal_area_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; <span class='message'>Total elapsed time ~ 0.49 seconds </span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1      360.             614.

@@ -13,22 +13,22 @@ census
 
 test_that("counts as expected", {
   expect_equal(pull(count_distinct(census, stemID), n), 6)
-  
+
   by_treeid <- group_by(census, treeID)
   out <- count_distinct(by_treeid, stemID)
   expect_named(out, c("treeID", "n"))
   expect_equal(pull(out, n), c(2, 1, 3))
-  
+
   by_quad <- group_by(census, quadrat)
   expect_equal(pull(count_distinct(by_quad, stemID), n), c(3, 3))
   expect_equal(pull(abundance_stem(by_quad), n), c(3, 3))
   expect_equal(pull(count_distinct(by_quad, treeID), n), c(2, 1))
   expect_equal(pull(abundance_tree(by_quad), n), c(2, 1))
-  
+
   by_sp <- group_by(census, sp)
   expect_equal(pull(abundance_stem(by_sp), n), c(2, 1, 3))
   expect_equal(pull(abundance_tree(by_sp), n), c(1, 1, 1))
-  
+
   by_quad_sp <- group_by(census, quadrat, sp)
   expect_equal(pull(abundance_stem(by_quad_sp), n), c(2, 1, 3))
   expect_equal(pull(abundance_tree(by_quad_sp), n), c(1, 1, 1))

@@ -5,7 +5,7 @@
 #' @noRd
 neighbor_densities <- function(.data,
                                .subset,
-                               r, 
+                               r,
                                plotdim,
                                mindbh = 0,
                                type,
@@ -16,7 +16,7 @@ neighbor_densities <- function(.data,
   }
   n <- nrow(.subset)
   output <- matrix(NA, ncol = 2, nrow = n)
-  dimnames(output)[[2]] <-  c("conspecific", "heterospecific")
+  dimnames(output)[[2]] <- c("conspecific", "heterospecific")
   if (type == "count") {
     cond_1 <- !is.na(.data$gx) & !is.na(.data$gy) &
       !duplicated(.data$tag) & .data$dbh >= mindbh &
@@ -59,8 +59,8 @@ neighbor_densities <- function(.data,
         }
       }
       if (i %in% seq(5000, n + 5000, 5000)) {
-        message(space_dots(
-          i, "of", n, " elapsed time = ", (proc.time() - ptm)[3], "seconds", "\n"
+        message(space(
+          i, "of", n, " elapsed time ~", (round((proc.time() - ptm), 3))[3], "seconds", "\n"
         ))
       }
     }
@@ -109,16 +109,16 @@ neighbor_densities <- function(.data,
         }
       }
       if (i %in% seq(5000, n + 5000, 5000)) {
-        message(space_dots(
-          i, "of", n, " elapsed time = ", (proc.time() - ptm)[3], "seconds", "\n"
+        message(space(
+          i, "of", n, " elapsed time ~", (round((proc.time() - ptm), 3))[3], "seconds", "\n"
         ))
       }
     }
   }
-  message(space_dots(
-    "Total elapsed time = ", (proc.time() - ptm)[3], "seconds", "\n"
+  message(space(
+    "Total elapsed time ~", (round((proc.time() - ptm), 3))[3], "seconds", "\n"
   ))
-  
+
   tibble::as.tibble(output)
 }
 
@@ -128,20 +128,20 @@ neighbor_densities <- function(.data,
 #' @keywords internal
 #' @noRd
 CalcRingArea <- function(data, radius, plotdim) {
-    nopts <- dim(data)[1]
-    internalArea <- numeric()
-    for (i in 1:nopts) {
-      xdist <- data$gx[i]
-      if (plotdim[1] - data$gx[i] < xdist) {
-        xdist <- plotdim[1] - data$gx[i]
-      }
-      internalArea[i] <- partialcirclearea(
-        radius, xdist, data$gy[i],
-        plotdim[2] - data$gy[i]
-      )
+  nopts <- dim(data)[1]
+  internalArea <- numeric()
+  for (i in 1:nopts) {
+    xdist <- data$gx[i]
+    if (plotdim[1] - data$gx[i] < xdist) {
+      xdist <- plotdim[1] - data$gx[i]
     }
-    return(list(total = sum(internalArea), each = internalArea))
+    internalArea[i] <- partialcirclearea(
+      radius, xdist, data$gy[i],
+      plotdim[2] - data$gy[i]
+    )
   }
+  return(list(total = sum(internalArea), each = internalArea))
+}
 
 #' Internal.
 #'
@@ -149,61 +149,61 @@ CalcRingArea <- function(data, radius, plotdim) {
 #' @keywords internal
 #' @noRd
 partialcirclearea <- function(r, c2, cy1, cy2) {
-    if (cy1 <= cy2) {
-      c1 <- cy1
-      c3 <- cy2
-    }
-    else {
-      c1 <- cy2
-      c3 <- cy1
-    }
-    if (r > c1) {
-      alpha1 <- acos(c1 / r)
-      y1 <- sqrt(r * r - c1 * c1)
-    }
-    if (r > c2) {
-      alpha2 <- acos(c2 / r)
-      y2 <- sqrt(r * r - c2 * c2)
-    }
-    if (r > c3) {
-      alpha3 <- acos(c3 / r)
-      y3 <- sqrt(r * r - c3 * c3)
-    }
-    cornerdist1 <- sqrt(c1 * c1 + c2 * c2)
-    cornerdist3 <- sqrt(c2 * c2 + c3 * c3)
-    if (r <= c1 && r <= c2) {
-      area <- circlearea(r)
-    } else if (r > c1 && r <= c2 && r <= c3) {
-      area <- r * r * (pi - alpha1) + c1 * y1
-    } else if (r <= c1 && r > c2 && r <= c3) {
-      area <- r * r * (pi - alpha2) + c2 * y2
-    } else if (r > c1 && r > c2 && r <= c3) {
-      if (r > cornerdist1) {
-        area <- r * r * (3 * pi / 4 - alpha1 / 2 - alpha2 / 2) +
-          c1 * c2 + (c1 * y1 + c2 * y2) / 2
-      } else {
-        area <- r * r * (pi - alpha1 - alpha2) + c1 * y1 +
-          c2 * y2
-      }
-    }
-    else if (r <= c2 && r > c1 && r > c3) {
-      area <- r * r * (pi - alpha1 - alpha3) + c1 * y1 + c3 *
-        y3
-    } else if (r > c2 && r > c1 && r > c3) {
-      if (r > cornerdist3) {
-        area <- r * r * (pi - alpha1 - alpha3) / 2 + c1 * c2 +
-          c2 * c3 + (c1 * y1 + c3 * y3) / 2
-      } else if (r > cornerdist1 && r <= cornerdist3) {
-        area <- r * r * (3 * pi / 4 - alpha1 / 2 - alpha2 / 2 -
-          alpha3) + (c1 * y1 + c2 * y2) / 2 + c3 * y3 + c1 *
-          c2
-      } else if (r <= cornerdist1 && r <= cornerdist3) {
-        area <- r * r * (pi - alpha1 - alpha2 - alpha3) +
-          c1 * y1 + c2 * y2 + c3 * y3
-      }
-    }
-    return(area)
+  if (cy1 <= cy2) {
+    c1 <- cy1
+    c3 <- cy2
   }
+  else {
+    c1 <- cy2
+    c3 <- cy1
+  }
+  if (r > c1) {
+    alpha1 <- acos(c1 / r)
+    y1 <- sqrt(r * r - c1 * c1)
+  }
+  if (r > c2) {
+    alpha2 <- acos(c2 / r)
+    y2 <- sqrt(r * r - c2 * c2)
+  }
+  if (r > c3) {
+    alpha3 <- acos(c3 / r)
+    y3 <- sqrt(r * r - c3 * c3)
+  }
+  cornerdist1 <- sqrt(c1 * c1 + c2 * c2)
+  cornerdist3 <- sqrt(c2 * c2 + c3 * c3)
+  if (r <= c1 && r <= c2) {
+    area <- circlearea(r)
+  } else if (r > c1 && r <= c2 && r <= c3) {
+    area <- r * r * (pi - alpha1) + c1 * y1
+  } else if (r <= c1 && r > c2 && r <= c3) {
+    area <- r * r * (pi - alpha2) + c2 * y2
+  } else if (r > c1 && r > c2 && r <= c3) {
+    if (r > cornerdist1) {
+      area <- r * r * (3 * pi / 4 - alpha1 / 2 - alpha2 / 2) +
+        c1 * c2 + (c1 * y1 + c2 * y2) / 2
+    } else {
+      area <- r * r * (pi - alpha1 - alpha2) + c1 * y1 +
+        c2 * y2
+    }
+  }
+  else if (r <= c2 && r > c1 && r > c3) {
+    area <- r * r * (pi - alpha1 - alpha3) + c1 * y1 + c3 *
+      y3
+  } else if (r > c2 && r > c1 && r > c3) {
+    if (r > cornerdist3) {
+      area <- r * r * (pi - alpha1 - alpha3) / 2 + c1 * c2 +
+        c2 * c3 + (c1 * y1 + c3 * y3) / 2
+    } else if (r > cornerdist1 && r <= cornerdist3) {
+      area <- r * r * (3 * pi / 4 - alpha1 / 2 - alpha2 / 2 -
+        alpha3) + (c1 * y1 + c2 * y2) / 2 + c3 * y3 + c1 *
+        c2
+    } else if (r <= cornerdist1 && r <= cornerdist3) {
+      area <- r * r * (pi - alpha1 - alpha2 - alpha3) +
+        c1 * y1 + c2 * y2 + c3 * y3
+    }
+  }
+  return(area)
+}
 
 #' Internal.
 #'
@@ -211,10 +211,10 @@ partialcirclearea <- function(r, c2, cy1, cy2) {
 #' @keywords internal
 #' @noRd
 rm_na_row <- function(.data) {
-    stopifnot(length(.data) > 0)
-    stopifnot(any(is.matrix(.data) || is.data.frame(.data)))
-    .data[!is_na_row(.data), ]
-  }
+  stopifnot(length(.data) > 0)
+  stopifnot(any(is.matrix(.data) || is.data.frame(.data)))
+  .data[!is_na_row(.data), ]
+}
 
 
 
@@ -224,8 +224,8 @@ rm_na_row <- function(.data) {
 #' @keywords internal
 #' @noRd
 circlearea <- function(r) {
-    return(pi * r^2)
-  }
+  return(pi * r^2)
+}
 
 #' Internal.
 #'
@@ -233,9 +233,8 @@ circlearea <- function(r) {
 #' @keywords internal
 #' @noRd
 is_na_row <- function(.data) {
-    stopifnot(length(.data) > 0)
-    stopifnot(any(is.matrix(.data) || is.data.frame(.data)))
-    is_na_vector <- function(x) all(is.na(x))
-    apply(.data, 1, is_na_vector)
-  }
-
+  stopifnot(length(.data) > 0)
+  stopifnot(any(is.matrix(.data) || is.data.frame(.data)))
+  is_na_vector <- function(x) all(is.na(x))
+  apply(.data, 1, is_na_vector)
+}

@@ -31,7 +31,7 @@ Create tables of abundance and basal area by (round mean) year.
 # Or load all fgeo packages in one step with library(fgeo)
 library(fgeo.tool)
 library(fgeo.base)
-  
+
 vft <- tibble(
   PlotName = c("luq", "luq", "luq", "luq", "luq", "luq", "luq", "luq"),
   CensusID = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
@@ -52,7 +52,7 @@ vft <- tibble(
 vft
 
 # All trees are of the same species. There are two trees, each with two stems.
-# In census 1, the count of alive trees should be 2 because both trees are 
+# In census 1, the count of alive trees should be 2 because both trees are
 #   alive, but note that one stem is dead (StemID = 1.2).
 # In census 2 the count of alive trees should be 1:
 #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);

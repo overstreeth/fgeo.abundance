@@ -19,7 +19,7 @@ test_that("returns the expected data structure", {
   result <- basal_area(df)
   expect_type(result, "list")
   expect_true(is.data.frame(basal_area(df)))
-  
+
   expect_type(basal_area(df$dbh), "double")
 })
 
@@ -27,7 +27,7 @@ test_that("returns the same as basal_area.numeric if data has only one row.", {
   df1 <- df[1, ] %>%
     group_by(status)
   expected <- basal_area(df1$dbh)
-  actual <-   basal_area(df1)$basal_area
+  actual <- basal_area(df1)$basal_area
   expect_equal(actual, expected)
 })
 
@@ -39,11 +39,11 @@ test_that("returns the correct sum", {
     dbh = rnorm(6)
   )
   df$ba <- basal_area(df$dbh)
-  
-  actual <- df %>% 
-    group_by(quadrat) %>% 
-    basal_area() %>% 
-    pull(basal_area) %>% 
+
+  actual <- df %>%
+    group_by(quadrat) %>%
+    basal_area() %>%
+    pull(basal_area) %>%
     sum()
 
   expected <- sum(df$ba)
@@ -77,14 +77,14 @@ context("add_basal_area")
 stem <- tibble::tibble(
   stemID = 1:4,
   quadrat = paste0("000", rep(1:2, each = 2)),
-  
+
   sp = c("sp1", "sp2", "sp1", "sp1"),
   dbh = c(1, 1, 2, 2)
 )
 
 test_that("returns similar to basal_area(group_by()) but all rows", {
   expect_equal(
-    unique(basal_area(group_by(stem, quadrat))$basal_area), 
+    unique(basal_area(group_by(stem, quadrat))$basal_area),
     unique(add_basal_area(stem, quadrat)$basal_area)
   )
   expect_equal(nrow(basal_area(group_by(stem, quadrat))), 2)
@@ -102,6 +102,4 @@ test_that("deals with grouping", {
   expect_false(is_grouped_df(add_basal_area(stem)))
   # grouped -> grouped
   expect_true(is_grouped_df(add_basal_area(group_by(stem, quadrat))))
-  
 })
-

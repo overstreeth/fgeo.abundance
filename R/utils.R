@@ -6,8 +6,6 @@ commas <- function(...) {
   paste0(..., collapse = ", ")
 }
 
-space_dots <- function(...) {
+space <- function(...) {
   paste(unlist(list(...)), collapse = " ")
 }
-
-

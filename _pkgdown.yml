@@ -38,10 +38,6 @@ reference:
 
   - title: Summaries of abundance and diversity
     contents: 
-      - abundance_tree
-      - abundance_stem
-      - abundance_byyr
-      - basal_area
-      - basal_area_byyr
-      - count_distinct
+      - matches("count")
+      - matches("basal_area")
 

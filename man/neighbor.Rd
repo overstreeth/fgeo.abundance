@@ -2,13 +2,14 @@
 % Please edit documentation in R/neighbor.R
 \name{neighbor}
 \alias{neighbor}
-\alias{neighbor_count}
-\alias{neighbor_basal_area}
+\alias{abundance_neighbor}
+\alias{count_neighbor}
+\alias{basal_area_neighbor}
 \title{Count and basal area of neighbouring stems.}
 \usage{
-neighbor_count(.data, .subset = NULL, r, plotdim = NULL)
+count_neighbor(.data, .subset = NULL, r, plotdim = NULL)
 
-neighbor_basal_area(.data, .subset = NULL, r, plotdim = NULL)
+basal_area_neighbor(.data, .subset = NULL, r, plotdim = NULL)
 }
 \arguments{
 \item{.data}{A Dataframe; particularly  a ForestGEO census table (tree or
@@ -33,6 +34,9 @@ using these functions (e.g. to drop dead stems).
 }
 \examples{
 tree <- fgeo.data::luquillo_tree5_random
-neighbor_count(tree, r = 20, plotdim = c(1000, 500))
-neighbor_basal_area(tree, r = 20, plotdim = c(1000, 500))
+# Guess `plotdim`
+count_neighbor(tree, r = 20)
+
+count_neighbor(tree, r = 20, plotdim = c(320, 500))
+basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
 }

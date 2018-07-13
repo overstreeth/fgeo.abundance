@@ -4,7 +4,7 @@ test_that("outputs as expected", {
   skip_if_not_installed("fgeo.tool")
   skip_if_not_installed("readr")
   vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-  
+
   # All trees are of the same species. There are two trees, each with two stems.
   # In census 1, the count of alive trees should be 2 because both trees are alive,
   #   but note that one stem is dead (StemID = 1.2).
@@ -21,9 +21,9 @@ test_that("works with luquillo", {
   skip_if_not_installed("luquillo")
   suppressMessages(
     suppressWarnings({
-      luq <- luquillo::ViewFullTable_luquillo %>% 
-        dplyr::sample_n(10) %>% 
-        fgeo.base::pick_plotname("luquillo") %>% 
+      luq <- luquillo::ViewFullTable_luquillo %>%
+        dplyr::sample_n(10) %>%
+        fgeo.base::pick_plotname("luquillo") %>%
         fgeo.base::pick_dbh_min(2)
       out <- abundance_byyr(luq)
     })
@@ -62,8 +62,8 @@ tiny <- tibble::tibble(
   PlotName = c("p", "p", "p", "p", "p", "p"),
   Status = c("alive", "alive", "alive", "alive", "alive", "alive"),
   DBH = c(1L, 5L, 2L, 6L, 2L, 6L),
-  ExactDate =  c(
-    "2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01", "2000-01-01", 
+  ExactDate = c(
+    "2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01", "2000-01-01",
     "2001-01-01"
   ),
   PlotCensusNumber = c(1L, 2L, 1L, 2L, 1L, 2L),
@@ -77,7 +77,7 @@ test_that("known output", {
   out1 <- suppressWarnings(suppressMessages(abundance_byyr(tiny)))
   expect_equal(out1$`2000`, c(1, 2))
   expect_equal(out1$`2001`, c(1, 2))
-  
+
   tiny2 <- tiny[1:4, ]
   out2 <- suppressWarnings(suppressMessages(abundance_byyr(tiny2)))
   expect_equal(out2$`2000`, c(1, 1))
@@ -96,9 +96,9 @@ context("basal_area_byyr")
 test_that("works with data from site Luquillo", {
   suppressMessages(
     suppressWarnings({
-      luq <- fgeo.data::luquillo_vft_4quad %>% 
-        dplyr::sample_n(10) %>% 
-        fgeo.base::pick_plotname("luquillo") %>% 
+      luq <- fgeo.data::luquillo_vft_4quad %>%
+        dplyr::sample_n(10) %>%
+        fgeo.base::pick_plotname("luquillo") %>%
         fgeo.base::pick_dbh_min(2)
       out <- basal_area_byyr(luq)
     })
@@ -136,8 +136,8 @@ tiny <- tibble::tibble(
   TreeID = c("0001", "0001", "0002", "0002"),
   PlotName = c("p", "p", "p", "p"),
   Status = c("alive", "alive", "alive", "alive"),
-  DBH =   c(1L, 1L, 1L, 1L),
-  ExactDate =   c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
+  DBH = c(1L, 1L, 1L, 1L),
+  ExactDate = c("2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01"),
   PlotCensusNumber = c(1L, 2L, 1L, 2L),
   CensusID = c(1L, 2L, 1L, 2L),
   Genus = c("A", "A", "B", "B"),
@@ -149,7 +149,7 @@ test_that("known output", {
   out1 <- suppressWarnings(suppressMessages(basal_area_byyr(tiny)))
   expect_equal(out1$`2000`, c(basal_area(1), basal_area(1)))
   expect_equal(out1$`2001`, c(basal_area(1), basal_area(1)))
-  
+
   tiny2 <- tiny
   tiny2$DBH <- c(1, 10, 2, 20)
   out2 <- suppressWarnings(suppressMessages(basal_area_byyr(tiny2)))
@@ -160,7 +160,7 @@ test_that("known output", {
 test_that("counts multi-stem trees correctly", {
   library(fgeo.tool)
   library(fgeo.base)
-  
+
   vft <- data.frame(
     PlotName = "p",
     PlotCensusNumber = c(1, 1, 2, 2, 1, 2),
@@ -171,7 +171,7 @@ test_that("counts multi-stem trees correctly", {
     ),
     Tag = c("0001", "0001", "0001", "0001", "0002", "0002"),
     TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
-    SteemID = c(  "1",    "2",    "1",    "2",    "1",    "1"),
+    SteemID = c("1", "2", "1", "2", "1", "1"),
     Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
     DBH = c(11, 15, 12, NA, 21, NA),
     Genus = c("A", "A", "A", "A", "B", "B"),
@@ -202,4 +202,3 @@ test_that("informs if bad status", {
     inform_if_bad_status(data.frame(Status = "bad"), "OK"), "should match"
   )
 })
-

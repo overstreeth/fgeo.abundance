@@ -1,5 +1,5 @@
 #' Count and basal area of neighbouring stems.
-#' 
+#'
 #' Includes all values of status. You shouild pick the values you want before
 #' using these functions (e.g. to drop dead stems).
 #'
@@ -13,26 +13,32 @@
 #' @param r Radius.
 #' @param plotdim The x and y dimensions of the plot.
 #'
+#' @aliases abundance_neighbor
+#'
 #' @return A dataframe.
+#'
 #'
 #' @examples
 #' tree <- fgeo.data::luquillo_tree5_random
-#' neighbor_count(tree, r = 20, plotdim = c(1000, 500))
-#' neighbor_basal_area(tree, r = 20, plotdim = c(1000, 500))
+#' # Guess `plotdim`
+#' count_neighbor(tree, r = 20)
+#'
+#' count_neighbor(tree, r = 20, plotdim = c(320, 500))
+#' basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
 #' @name neighbor
 NULL
 
 neighbor <- function(type) {
   force(type)
   function(.data,
-           .subset = NULL,
-           r,
-           plotdim = NULL) {
+             .subset = NULL,
+             r,
+             plotdim = NULL) {
     check_neighbor(.data, .subset)
-    
+
     plotdim <- plotdim %||% fgeo.base::guess_plotdim(.data)
     out <- dplyr::do(
-      .data, 
+      .data,
       neighbours = neighbor_densities(., .subset, r, plotdim, type = type)
     )
     tidyr::unnest(out)
@@ -41,16 +47,16 @@ neighbor <- function(type) {
 
 #' @rdname neighbor
 #' @export
-neighbor_count <- neighbor(type = "count")
+count_neighbor <- neighbor(type = "count")
 
 #' @rdname neighbor
 #' @export
-neighbor_basal_area <- neighbor(type = "basal")
+basal_area_neighbor <- neighbor(type = "basal")
 
 check_neighbor <- function(.data, .subset) {
   stopifnot(is.data.frame(.data))
   if (!is.null(.subset)) stopifnot(is.data.frame(.subset))
-  
+
   crucial_sub <- c("gx", "gy", "tag", "sp")
   crucial_data <- c(crucial_sub, "dbh", "status")
   prepend_crucial_nm_msg(.data, crucial_data, "Invalid `.data`. ")
