@@ -36,7 +36,7 @@ navbar:
 
 reference:
 
-  - title: Summaries of abundance and diversity
+  - title: Summaries of abundance and basal area
     contents: 
       - matches("count")
       - matches("abundance")
