@@ -36,12 +36,9 @@ navbar:
 
 reference:
 
-  - title: Summaries of abundance and diversity
+  - title: Summaries of abundance and basal area
     contents: 
-      - abundance_tree
-      - abundance_stem
-      - abundance_byyr
-      - basal_area
-      - basal_area_byyr
-      - count_distinct
+      - matches("count")
+      - matches("abundance")
+      - matches("basal_area")
 
