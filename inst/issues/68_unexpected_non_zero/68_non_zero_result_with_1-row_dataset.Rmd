@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 Load CTFSRPackage and confirm that `NeighborDensities()` is loaded.
 
 ```{r}
-load(here::here("inst/issues/67_neighbors/CTFSRPackage.rdata"))
+load(here::here("inst/issues/68_unexpected_non_zero/CTFSRPackage.rdata"))
 ls(pattern = "Neighbor")
 ```
 

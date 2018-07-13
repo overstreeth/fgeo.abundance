@@ -3,10 +3,11 @@ neighbor
 
 # Setup
 
-Load CTFSRPackage and confirm that `NeighborDensities()` is loaded.
+Load CTFSRPackage and confirm that `NeighborDensities()` is
+loaded.
 
 ``` r
-load(here::here("inst/issues/67_neighbors/CTFSRPackage.rdata"))
+load(here::here("inst/issues/68_unexpected_non_zero/CTFSRPackage.rdata"))
 ls(pattern = "Neighbor")
 #> [1] "NeighborDensities"
 ```
@@ -46,7 +47,7 @@ Run `NeighborDensities()`, expecting result of `con.sp = 0`, `het.sp
 
 ``` r
 NeighborDensities(censdata)
-#> Total elapsed time =  0.06 seconds
+#> Total elapsed time =  0.08 seconds
 #>        con.sp het.sp
 #> [1,] 2.339862      0
 ```
@@ -139,5 +140,5 @@ get(ls(pattern = "Neighbor"))
 #>         "\n")
 #>     return(output)
 #> }
-#> <bytecode: 0x000000000f670268>
+#> <bytecode: 0x000000000f66efd8>
 ```
