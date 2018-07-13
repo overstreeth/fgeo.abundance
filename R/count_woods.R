@@ -9,39 +9,41 @@
 #'
 #' @examples
 count_woods <- function(.data, ...) {
+  # TODO: GROUP BY CENSUS ID?
+  # TODO: ERR IF MULTIPLE PLOTS?
   dots <- rlang::enquos(...)
-  
-  flat <- collapse_treeid(.data)
-  pick <- dplyr::filter(flat, !!!dots)
-  abundance_tree(pick)
+  impl <- function(.x) {
+    flat <- collapse_treeid(.x)
+    pick <- dplyr::filter(flat, !!!dots)
+    abundance_tree(pick)
+  }
+  do(.data, impl(.))
 }
 
+#' @rdname count_woods
+#' @export
 count_trees <- function(.data) {
   count_woods(.data, dbh >= 100)
 }
 
+#' @rdname count_woods
+#' @export
 count_saplings <- function(.data) {
   count_woods(.data, dbh >= 10, dbh < 100)
 }
 
 collapse_treeid <- function(.x) {
-  # TODO: GROUP BY CENSUS ID?
-  # TODO: ERR IF MULTIPLE PLOTS?
   
   stopifnot(is.data.frame(.x))
   # Lowercase names to enable using census and ViewFullTable
   .data <- rlang::set_names(.x, tolower)
   fgeo.base::check_crucial_names(.data, c("treeid", "dbh"))
-  
-  
-  
-  # FIXME: Implement do or map_df
   .data <- collapse_treeid_imp(.data)
   fgeo.base::rename_matches(.data , .x)
 }
 
 collapse_treeid_imp <- function(.data) {
-  .data <- .data %>%  
+  .data %>%  
     dplyr::group_by(.data$treeid) %>% 
     dplyr::arrange(desc(.data$dbh)) %>% 
     # TODO: Consider using min_rank(); see r4ds

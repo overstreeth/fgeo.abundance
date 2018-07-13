@@ -37,9 +37,13 @@ describe("count_woods()", {
     out <- count_woods(bysp, dbh >= 0)
     expect_is(out, "data.frame")
     expect_named(out, c("sp", "n"))
-    # expect_length(out, 2)
-    # expect_length(nrow(out), 2)
-    # expect_equal(out$n, c(1, 1))
+    expect_length(out, 2)
+    expect_equal(nrow(out), 2)
+    expect_equal(out$n, c(1, 1))
+    
+    # TODO: 
+    # * count_trees()
+    # * count_saplings()
   })
 })
 
