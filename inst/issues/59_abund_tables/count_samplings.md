@@ -3,12 +3,12 @@ Count saplings
 
 ``` r
 library(fgeo)
-#> -- Attaching packages ---------------------------------------------------------- fgeo 0.0.0.9000 --
+#> -- Attaching packages ------------------------------------------- fgeo 0.0.0.9000 --
 #> v fgeo.abundance  0.0.0.9004     v fgeo.demography 0.0.0.9000
 #> v fgeo.base       0.0.0.9001     v fgeo.habitat    0.0.0.9006
 #> v fgeo.data       0.0.0.9002     v fgeo.map        0.0.0.9204
 #> v fgeo.abundance  0.0.0.9004     v fgeo.tool       0.0.0.9003
-#> -- Conflicts ------------------------------------------------------------------ fgeo_conflicts() --
+#> -- Conflicts --------------------------------------------------- fgeo_conflicts() --
 #> x fgeo.tool::filter() masks stats::filter()
 ```
 
@@ -205,3 +205,10 @@ trees %>%
 ```
 
 Is this the expected result?
+
+TODO:
+
+  - fix warnings
+  - wrap into `count_trees()` and `count_saplings()`, by … or
+    `count_between(.data, ..., lower = 0, upper = Inf)`.
+  - move this article out of tutorial into issues.
