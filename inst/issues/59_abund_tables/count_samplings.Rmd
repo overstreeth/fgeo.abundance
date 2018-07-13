@@ -10,11 +10,15 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ```{r}
 library(fgeo)
 ```
 
-Data.
+> For example, if I want to see how many saplings there are per species, the
+dbh range would be >=10mm and <100mm. A tree with multiple stems 120 and 20 will be counted, is this correct?
+
+Data: Creating a dataset with one sapling (dbh >= 10 mm & dbh < 100 mm) and one tree (dbh >= 100 mm). The tree has two stems, of 20 mm and 120 mm; the sapling also has two stems, of 22 mm and 99 mm. 
 
 ```{r}
 census <- data.frame(
@@ -27,112 +31,73 @@ census <- data.frame(
 census
 ```
 
-> For example, if I want to see how many saplings there are per species, the
-dbh range would be >=10mm and <100mm. A tree with multiple stems 120 and 20 will be counted, is this correct?
-
-Counting saplings by species.
+If we count distinct `treeID`s directly we get a wrong output. The problem is that the larger stem of the tree is dropped and the smaller one inluded -- making the tree appear like a sappling. We expect a total of only one saplig but we get two.
 
 ```{r}
 # This preserves missing `dbh` (unless `na.rm = FALSE`)
-saplings <- census %>% 
+saplings_bad <- census %>% 
   pick_dbh_min(10) %>% 
   pick_dbh_under(100)
-saplings
+saplings_bad
 
+abundance_tree(saplings_bad)
+```
+
+The problem is clearer if we group by species. Note that sp1 should show zero saplings instead of 1.
+
+```{r}
 # Count unique instances of treeID by species
-saplings %>% 
+saplings_bad %>% 
   group_by(sp) %>% 
   abundance_tree()
 ```
 
-Bonus:
-
-* Other ways of filtering desired dbh.
+The solution is to collapse the table to a single row per tree -- choosing the one of the stem with the greaterst `dbh`. For that we write a helper function.
 
 ```{r}
-saplings <- filter(census, dbh >= 10, dbh < 100)
-# Same
-saplings <- census %>% 
-  filter(dbh >= 10, dbh < 100)
-# Same
-saplings <- census %>% 
-  filter(dbh >= 10) %>% 
-  filter(dbh < 100)
-saplings
-```
-
-* Other counts.
-
-```{r}
-# Count unique instances of treeID
-abundance_tree(saplings)
-
-# Count unique instances of stemID by species
-saplings %>% 
-  group_by(sp) %>% 
-  abundance_stem()
-```
-
-> Then I want to count trees per species, i.e. >=100mm, this tree would also be counted by your current function, is this correct?
-
-Counting trees by species.
-
-```{r}
-# This preserves missing `dbh` (unless `na.rm = FALSE`)
-trees <- census %>% 
-  pick_dbh_min(100)
-trees
-
-# Count unique instances of treeID by species
-trees %>% 
-  group_by(sp) %>% 
-  abundance_tree()
-```
-
-> If so, this will be wrong, since it will be counted twice. A tree with stems 120 and 20 is a tree, not a sapling, and should only be counted as a tree.
-
-You are right. Thanks for your example and expectation. Now I see the problem. The good solution seems to be a specialized function that collapses a table of potentially multi-stem trees to a table of one stem per tree, where the stem that remains is that of maximum `dbh`. The function may look someting like this:
-
-```{r}
-collapse_dbh_max <- function(x) {
-  x %>% 
-    group_by(treeID) %>% 
-    arrange(desc(dbh)) %>% 
+collapse_treeid <- function(.data) {
+  .data %>% 
+    group_by(.data$treeID) %>% 
+    arrange(desc(.data$dbh)) %>% 
     filter(row_number() == 1) %>% 
     ungroup()
 }
 ```
 
-Now, we start by collapsing to maximun dbh and then we repeat the process/
+Now the output is as expected.
 
 ```{r}
-saplings <- census %>% 
-  collapse_dbh_max() %>% 
+saplings_good <- census %>% 
+  collapse_treeid() %>% 
   filter(dbh >= 10) %>% 
   filter(dbh < 100)
-saplings
+saplings_good
 
-saplings %>% 
-  group_by(sp) %>% 
-  abundance_tree()
+abundance_tree(saplings_good)
 ```
+
+---
+
+> Then I want to count trees per species, i.e. >=100mm, this tree would also be counted by your current function, is this correct?
+
+> If so, this will be wrong, since it will be counted twice. A tree with stems 120 and 20 is a tree, not a sapling, and should only be counted as a tree.
+
+Again, we only get the correct result if we first collapse the dataset by choosing the largest stem of each tree.
 
 ```{r}
-trees <- census %>% 
-  collapse_dbh_max() %>% 
-  filter(dbh >= 100)
-trees
-
-trees %>% 
+# This preserves missing `dbh` (unless `na.rm = FALSE`)
+trees_bad <- census %>% 
+  pick_dbh_min(100) %>% 
   group_by(sp) %>% 
   abundance_tree()
+trees_bad
+
+trees_good <- census %>% 
+  collapse_treeid() %>% 
+  pick_dbh_min(100) %>% 
+  group_by(sp)
+trees_good
+abundance_tree(trees_good)
 ```
 
-Is this the expected result?
-
-
-TODO: 
-
-* fix warnings
-* wrap into `count_trees()` and `count_saplings()`, by ... or `count_between(.data, ..., lower = 0, upper = Inf)`.
-* move this article out of tutorial into issues.
+Now I can wrap this solution into a user-friendly funtions. 
