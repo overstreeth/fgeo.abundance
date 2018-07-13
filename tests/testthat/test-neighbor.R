@@ -33,9 +33,12 @@ describe("neighbor_*() inputs", {
   })
   
   # TODO
-  # it("warns if detects a stem -- not a tree -- table", {
-  #   stop("not yet implemented.")
-  # })
+  it("warns if detects a stem (not tree) table", {
+    expect_warning(
+      count_neighbor(stem, r = 20), 
+      "Detected duplicated `treeID`.\n* All `treeID` should be unique."
+    )
+  })
 })
 
 describe("neighbor_*() outputs", {
