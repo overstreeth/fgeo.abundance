@@ -2,6 +2,11 @@
 #'
 #' Includes all values of `status` and `dbh`. You should pick the values you
 #' want before using these functions (e.g. to drop dead stems).
+#' 
+#' @section Warning:
+#' This function has a pending issue by which a dataset with a single row does
+#' not result in zero conspecific neighbors
+#' ([https://github.com/forestgeo/fgeo.abundance/issues/68]).
 #'
 #' @param .data A Dataframe; particularly  a ForestGEO census table (tree or
 #'   stem).

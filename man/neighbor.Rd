@@ -32,6 +32,13 @@ A dataframe.
 Includes all values of \code{status} and \code{dbh}. You should pick the values you
 want before using these functions (e.g. to drop dead stems).
 }
+\section{Warning}{
+
+This function has a pending issue by which a dataset with a single row does
+not result in zero conspecific neighbors
+(\link{https://github.com/forestgeo/fgeo.abundance/issues/68}).
+}
+
 \examples{
 tree <- fgeo.data::luquillo_tree5_random
 # Guess `plotdim`
