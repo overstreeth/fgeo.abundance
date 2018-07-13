@@ -169,10 +169,10 @@ describe("neighbor_*() features", {
   })
   
   # TODO
-  # it("outputs not message about time if `quiet = TRUE", {
-  #   stop("not yet implemented")
-  # })
-  # 
+  it("outputs no message about time", {
+    expect_silent(count_neighbor(tree, r = 20, plotdim = c(320, 500)))
+  })
+  # TODO
   # it("identifies each tree uniquely", {
   #   stop("not yet implemented. Is this possible?")
   # })

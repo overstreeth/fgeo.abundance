@@ -84,7 +84,10 @@ neighbor <- function(type) {
     plotdim <- plotdim %||% fgeo.base::guess_plotdim(.data)
     out <- dplyr::do(
       .data,
-      neighbours = neighbor_densities(., .subset, r, plotdim, type = type)
+      # Cancel message "elapsed time ...". Argument `quiet` isn't justifyed.
+      neighbours = suppressMessages(
+        neighbor_densities(., .subset, r, plotdim, type = type)
+      )
     )
     tidyr::unnest(out)
   }
