@@ -1,6 +1,6 @@
-#' Count and basal area of neighbouring stems.
+#' Count and basal area of neighboring stems.
 #'
-#' Includes all values of status. You shouild pick the values you want before
+#' Includes all values of status. You should pick the values you want before
 #' using these functions (e.g. to drop dead stems).
 #'
 #' @param .data A Dataframe; particularly  a ForestGEO census table (tree or

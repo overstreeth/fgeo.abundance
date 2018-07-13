@@ -39,5 +39,6 @@ reference:
   - title: Summaries of abundance and diversity
     contents: 
       - matches("count")
+      - matches("abundance")
       - matches("basal_area")
 

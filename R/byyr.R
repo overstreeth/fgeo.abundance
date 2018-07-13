@@ -55,7 +55,7 @@ abundance_byyr <- function(vft, status_a = "alive", status_d = "dead") {
     check_crucial_names(crucial) %>%
     prepare_byyr(status_a, status_d) %>%
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>%
-    abundance_tree() %>%
+    count_distinct_treeid() %>%
     ungroup() %>%
     select(-.data$plotname) %>%
     select(.data$species, .data$family, dplyr::everything()) %>%

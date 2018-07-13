@@ -21,20 +21,20 @@ test_that("counts as expected", {
 
   by_quad <- group_by(census, quadrat)
   expect_equal(pull(count_distinct(by_quad, stemID), n), c(3, 3))
-  expect_equal(pull(abundance_stem(by_quad), n), c(3, 3))
+  expect_equal(pull(count_distinct_stemid(by_quad), n), c(3, 3))
   expect_equal(pull(count_distinct(by_quad, treeID), n), c(2, 1))
-  expect_equal(pull(abundance_tree(by_quad), n), c(2, 1))
+  expect_equal(pull(count_distinct_treeid(by_quad), n), c(2, 1))
 
   by_sp <- group_by(census, sp)
-  expect_equal(pull(abundance_stem(by_sp), n), c(2, 1, 3))
-  expect_equal(pull(abundance_tree(by_sp), n), c(1, 1, 1))
+  expect_equal(pull(count_distinct_stemid(by_sp), n), c(2, 1, 3))
+  expect_equal(pull(count_distinct_treeid(by_sp), n), c(1, 1, 1))
 
   by_quad_sp <- group_by(census, quadrat, sp)
-  expect_equal(pull(abundance_stem(by_quad_sp), n), c(2, 1, 3))
-  expect_equal(pull(abundance_tree(by_quad_sp), n), c(1, 1, 1))
+  expect_equal(pull(count_distinct_stemid(by_quad_sp), n), c(2, 1, 3))
+  expect_equal(pull(count_distinct_treeid(by_quad_sp), n), c(1, 1, 1))
 })
 
 test_that("fails with informative error", {
   expect_error(count_distinct(1), "must be a dataframe")
-  expect_error(abundance_tree(1), "must be a dataframe")
+  expect_error(count_distinct_treeid(1), "must be a dataframe")
 })

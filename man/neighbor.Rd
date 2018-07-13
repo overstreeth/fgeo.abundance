@@ -5,7 +5,7 @@
 \alias{abundance_neighbor}
 \alias{count_neighbor}
 \alias{basal_area_neighbor}
-\title{Count and basal area of neighbouring stems.}
+\title{Count and basal area of neighboring stems.}
 \usage{
 count_neighbor(.data, .subset = NULL, r, plotdim = NULL)
 
@@ -29,7 +29,7 @@ are not part of census \code{.data}. \code{.subset} must have columns \code{gx},
 A dataframe.
 }
 \description{
-Includes all values of status. You shouild pick the values you want before
+Includes all values of status. You should pick the values you want before
 using these functions (e.g. to drop dead stems).
 }
 \examples{
