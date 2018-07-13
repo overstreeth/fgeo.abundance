@@ -1,7 +1,7 @@
 #' Count and basal area of neighboring stems.
 #'
-#' Includes all values of status. You should pick the values you want before
-#' using these functions (e.g. to drop dead stems).
+#' Includes all values of `status` and `dbh`. You should pick the values you
+#' want before using these functions (e.g. to drop dead stems).
 #'
 #' @param .data A Dataframe; particularly  a ForestGEO census table (tree or
 #'   stem).
@@ -24,7 +24,17 @@
 #' count_neighbor(tree, r = 20)
 #'
 #' count_neighbor(tree, r = 20, plotdim = c(320, 500))
+#' 
 #' basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
+#' 
+#' by_quad <- dplyr::group_by(tree, quadrat)
+#' suppressMessages(count_neighbor(by_quad, r = 20))
+#' 
+#' # Grouping by each tree; expect `heterospecific = 0`
+#' by_treeid <- dplyr::group_by(tree, treeID)
+#' suppressMessages(
+#'   basal_area_neighbor(by_treeid, r = 20, plotdim = c(320, 500))
+#' )
 #' @name neighbor
 NULL
 

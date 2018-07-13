@@ -7,7 +7,7 @@ neighbor_densities <- function(.data,
                                .subset,
                                r,
                                plotdim,
-                               mindbh = 0,
+                               mindbh = min(.data$dbh, na.rm = TRUE),
                                type,
                                include = unique(.data$status)) {
   ptm <- proc.time()
@@ -25,6 +25,7 @@ neighbor_densities <- function(.data,
     spd <- rm_na_row(spd)
     for (i in 1:n) {
       focal <- .subset[i, ]
+      
       if (is.na(focal$gx) | is.na(focal$gy) | duplicated(focal$tag)) {
         output[i, 1:2] <- NA
       } else {
@@ -34,10 +35,7 @@ neighbor_densities <- function(.data,
           gy - r, gx - r, gy + r, gx + r, gy + r, gx +
             r, gy - r
         )))
-        use <- splancs::inpip(splancs::spoints(rbind(
-          spd$gx,
-          spd$gy
-        )), poly)
+        use <- splancs::inpip(splancs::spoints(rbind(spd$gx, spd$gy)), poly)
         if (length(use) == 0) {
           output[i, 1:2] <- 0
         } else {
@@ -54,6 +52,7 @@ neighbor_densities <- function(.data,
             gx = focal$gx,
             gy = focal$gy
           ), r, plotdim)$each
+          
           output[i, 1] <- length(nn[consp]) * (pi * r^2 / area)
           output[i, 2] <- length(nn[!consp]) * (pi * r^2 / area)
         }

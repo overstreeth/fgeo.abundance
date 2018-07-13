@@ -31,6 +31,11 @@ describe("neighbor_*() inputs", {
       "argument.*is missing"
     )
   })
+  
+  # TODO
+  # it("warns if detects a stem -- not a tree -- table", {
+  #   stop("not yet implemented.")
+  # })
 })
 
 describe("neighbor_*() outputs", {
@@ -58,7 +63,40 @@ describe("neighbor_*() outputs", {
     expect_identical(unname(fgeo_n), unname(tibble::as.tibble(ctfs_n)))
     expect_is(fgeo_b, "tbl")
     expect_identical(unname(fgeo_b), unname(tibble::as.tibble(ctfs_b)))
+    
+    # With the simplest input possible
+    tree <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+        5,   5,  "a", "sp1",     5,     "A"
+    )
+    ctfs_n <- ctfs::NeighborDensities(
+      tree, r = 20, plotdim = c(320, 500), mindbh = 0
+    )
+    fgeo_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
+    ngdn_n <- neighbor_densities(
+      tree, .subset = NULL, r = 20, plotdim = c(320, 500), type = "count"
+    )
+    expect_equal(fgeo_n[[1]], ctfs_n[[1]])
+    expect_equal(fgeo_n[[2]], ctfs_n[[2]])
+    expect_equal(ngdn_n[[1]], ctfs_n[[1]])
+    expect_equal(ngdn_n[[2]], ctfs_n[[2]])
   })
+  
+  it("outputs zero conspecific and zero heterospecific if data has one row", {
+    tree <- tibble::tribble(
+      ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+        5,   5,  "a", "sp1",    20,     "A"
+    )
+    
+    one_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
+    expect_equal(one_n$conspecific, 0)
+    expect_equal(one_n$heterospecific, 0)
+    one_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
+    expect_equal(one_b$conspecific, 0)
+    expect_equal(one_b$heterospecific, 0)
+  })
+  
+  
 })
 
 describe("neighbor_*() side effects", {
@@ -71,6 +109,15 @@ describe("neighbor_*() features", {
   it("guesses `plotdim` if it's not provided", {
     expect_message(count_neighbor(tree, r = 20), "Gessing: plotdim")
   })
+  
+  # TODO
+  # it("outputs not message about time if `quiet = TRUE", {
+  #   stop("not yet implemented")
+  # })
+  # 
+  # it("identifies each tree uniquely", {
+  #   stop("not yet implemented. Is this possible?")
+  # })
 
   it("works with grouped dataframe", {
     it("ouputs one row per row in the input", {
@@ -123,3 +170,4 @@ describe("neighbor_*()", {
     expect_equal(out_neigh, out_split)
   })
 })
+
