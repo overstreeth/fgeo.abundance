@@ -11,6 +11,14 @@ cns <- tibble::tribble(
     NA, "sp2",     "2",   "2.3"
 )
 
+describe("count_woods() works with ViewFullTable", {
+  it("doesn't err with vft names", {
+    vft <- rename(cns, DBH = dbh, TreeID = treeID, StemID = stemID)
+    out1 <- expect_silent(count_woods(vft, dbh > 0))
+    out2 <- expect_silent(count_woods(cns, dbh > 0))
+  })
+})
+
 describe("count_woods() outputs", {
   it("outputs the expected data structure", {
     # Ungrouped, count all woods
@@ -43,17 +51,29 @@ describe("count_woods() outputs", {
     
     bysp <- group_by(cns, sp)
     out <- count_trees(bysp)
-    expect_equal(out$n, c(1, 0))
+    expect_equal(out, tibble::tibble(sp = "sp1", n = 1L))
 
     out <- count_saplings(bysp)
-    expect_equal(out$n, c(0, 1))
+    expect_equal(out, tibble::tibble(sp = "sp2", n = 1L))
   })
 })
 
 describe("count_woods() inputs", {
   it("fails with informative message", {
-    not_df <- 1
-    expect_error(count_woods(not_df), "is not TRUE")
+    expect_error(count_woods("bad"), "data.frame.*is not TRUE")
   })
 })
   
+describe("collapse_treeid()", {
+  it("outputs the same groups as input", {
+    # Ungrouped
+    collapsed <- collapse_treeid(cns)
+    expect_equal(group_vars(collapsed), group_vars(cns))
+    
+    # Grouped
+    bysp <- group_by(cns, sp)
+    collapsed <- collapse_treeid(bysp)
+    expect_equal(group_vars(collapsed), group_vars(bysp))
+  })
+})
+
