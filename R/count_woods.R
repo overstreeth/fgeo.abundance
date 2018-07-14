@@ -48,7 +48,6 @@ collapse_treeid <- function(.x) {
 }
 
 collapse_treeid_imp <- function(x) {
-  # TODO: GROUP BY CENSUS ID?
   # TODO: ERR IF MULTIPLE PLOTS?
   # TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
   
@@ -56,7 +55,7 @@ collapse_treeid_imp <- function(x) {
   
   if ("censusid" %in% names(.x)) {
     # FIXME ADD THIS LINE
-    # .x <- fgeo.base::drop_if_na(.x, "censusid")
+    .x <- fgeo.base::drop_if_na(.x, "censusid")
     .x <- dplyr::group_by(.x, .data$censusid)
   }
     

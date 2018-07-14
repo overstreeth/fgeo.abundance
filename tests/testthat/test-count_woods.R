@@ -102,7 +102,11 @@ describe("collapse_treeid()", {
   
   it("drops missing values of censusid has missing values", {
     cns$CensusID <- c(1, 1, 1, 1, NA)
-    out <- collapse_treeid(cns)
+    expect_warning(
+      out <- collapse_treeid(cns), 
+      "Dropping.*rows with missing.*values"
+    )
+      
     expect_false(any(is.na(out$CensusID)))
   })
   
