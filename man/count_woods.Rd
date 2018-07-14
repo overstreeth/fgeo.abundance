@@ -23,5 +23,9 @@ This functions help you to count unique treeid in each census:
 \itemize{
 \item \code{count_woods()} is general and allows you to filter the data using any
 expressions passed via the argument \code{...} to \code{dplyr::filter()}.
+\item \code{count_trees()} is an opinionated shortcut that defines tress as stems of
+dbh of 100 mm and above.
+\item \code{count_samplings()} is an opinionated shortcut that defines saplings as
+stems of dbh of between 10 mm inlcusive and 100 mm exclusive.
 }
 }

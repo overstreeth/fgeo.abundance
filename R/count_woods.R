@@ -3,8 +3,10 @@
 #' This functions help you to count unique treeid in each census:
 #' * `count_woods()` is general and allows you to filter the data using any 
 #'   expressions passed via the argument `...` to `dplyr::filter()`.
-#'
-#'
+#' * `count_trees()` is an opinionated shortcut that defines tress as stems of
+#'   dbh of 100 mm and above.
+#' * `count_samplings()` is an opinionated shortcut that defines saplings as 
+#'   stems of dbh of between 10 mm inlcusive and 100 mm exclusive.
 #'   
 #' @param .data A dataframe; particularly a ForestGEO census or ViewFullTable.
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
@@ -18,7 +20,10 @@ count_woods <- function(.data, ..., .collapse = collapse_treeid_max) {
   stopifnot(is.data.frame(.data))
   
   .x <- set_names(.data, tolower)
+  # FIXME repeat this approach in collapse_treeid
+  .x <- dplyr::grouped_df(.x, tolower(dplyr::group_vars(.x)))
   
+    
   if (multiple_plotname(.x)) {
     stop("`.x` must have a single plotname.", call. = FALSE)
   }
@@ -29,15 +34,19 @@ count_woods <- function(.data, ..., .collapse = collapse_treeid_max) {
   }
   
   dots <- rlang::enquos(...)
-  out <- by_group(
-    .x, 
-    count_woods_impl, !!!dots, .collapse = .collapse
-  )
   
-  # Restore original groups
-  out <- dplyr::grouped_df(dplyr::ungroup(out), dplyr::group_vars(.data))
+  # # FIXME REMOVE
+  # out <- by_group(
+  #   .x,
+  #   count_woods_impl, !!!dots, .collapse = .collapse
+  # )
+  
+  # # FIXME repeat this approach in collapse_treeid
+  out <- dplyr::do(.x, count_woods_impl(., !!! dots, .collapse = .collapse))
   # Restore original names
-  rename_matches(out, .data)
+  out <- rename_matches(out, .data)
+  # Restore original groups
+  dplyr::grouped_df(dplyr::ungroup(out), dplyr::group_vars(.data))
 }
 
 count_woods_impl <- function(.data, ..., .collapse) {

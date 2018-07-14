@@ -41,20 +41,20 @@ describe("count_woods() outputs", {
   })
   
   it("works with grouped data", {
-    bysp <- group_by(cns, sp)
-    out <- count_woods(bysp, dbh >= 0)
+    by_sp <- group_by(cns, sp)
+    out <- count_woods(by_sp, dbh >= 0)
     expect_is(out, "data.frame")
     expect_named(out, c("sp", "n"))
     expect_length(out, 2)
     expect_equal(nrow(out), 2)
     expect_equal(out$n, c(1, 1))
     
-    bysp <- group_by(cns, sp)
-    out <- count_trees(bysp)
-    expect_equal(out, tibble::tibble(sp = "sp1", n = 1L))
+    by_sp <- group_by(cns, sp)
+    out <- count_trees(by_sp)
+    expect_equal(out, tibble::tibble(sp = c("sp1", "sp2"), n = c(1L, 0L)))
 
-    out <- count_saplings(bysp)
-    expect_equal(out, tibble::tibble(sp = "sp2", n = 1L))
+    out <- count_saplings(by_sp)
+    expect_equal(out, tibble::tibble(sp = c("sp1", "sp2"), n = c(0L, 1L)))
   })
 })
 
@@ -64,7 +64,7 @@ describe("count_woods() inputs", {
   })
 })
 
-describe("count_woods() features  ", {
+describe("count_woods() features", {
   cns <- tibble::tribble(
     ~dbh,   ~sp, ~treeID, ~stemID, ~CensusID,
       10, "sp1",     "1",   "1.1",        1,
@@ -81,6 +81,31 @@ describe("count_woods() features  ", {
   )
   
   it("allows filtering via ... using variables other than `dbh`", {
-    expect_equal(count_woods(cns, sp == "sp1")$n, c(1, 1))
+    out <- count_woods(cns, sp == "sp1")
+    expect_equal(out$n, c(1, 1))
   })
+  
+  it("works automatically groups by censusid if census id exists", {
+    # All woods inlcuded
+    out <- count_woods(cns)
+    expect_named(out, c("CensusID", "n"))
+    expect_equal(out$n, c(2, 2))
+    
+    out <- count_trees(cns)
+    expect_equal(out$n, c(1, 1))
+    
+    out <- count_saplings(cns)
+    expect_equal(out$n, c(1, 1))
+  })
+  
+  it("outputs the original groups", {
+    by_sp <- group_by(cns, sp)
+    out <- count_woods(by_sp)
+    expect_equal(group_vars(out), group_vars(by_sp))
+    
+    by_sp_treeid <- group_by(cns, sp, treeID)
+    out <- count_woods(by_sp_treeid)
+    expect_equal(group_vars(out), group_vars(by_sp_treeid))
+  })
+  
 })
