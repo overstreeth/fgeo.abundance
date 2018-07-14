@@ -11,6 +11,7 @@
 count_woods <- function(.data, ...) {
   # TODO: GROUP BY CENSUS ID?
   # TODO: ERR IF MULTIPLE PLOTS?
+  # TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
   dots <- rlang::enquos(...)
   impl <- function(.x) {
     flat <- collapse_treeid(.x)
@@ -32,6 +33,9 @@ count_saplings <- function(.data) {
   count_woods(.data, dbh >= 10, dbh < 100)
 }
 
+# TODO: 
+# * Add argument to define how to collapse? (e.g. max min, etc.)
+# * Export
 collapse_treeid <- function(.x) {
   
   stopifnot(is.data.frame(.x))

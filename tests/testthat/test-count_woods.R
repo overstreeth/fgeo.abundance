@@ -11,7 +11,7 @@ cns <- tibble::tribble(
     NA, "sp2",     "2",   "2.3"
 )
 
-describe("count_woods()", {
+describe("count_woods() outputs", {
   it("outputs the expected data structure", {
     # Ungrouped, count all woods
     out <- count_woods(cns, dbh >= 0)
@@ -41,9 +41,19 @@ describe("count_woods()", {
     expect_equal(nrow(out), 2)
     expect_equal(out$n, c(1, 1))
     
-    # TODO: 
-    # * count_trees()
-    # * count_saplings()
+    bysp <- group_by(cns, sp)
+    out <- count_trees(bysp)
+    expect_equal(out$n, c(1, 0))
+
+    out <- count_saplings(bysp)
+    expect_equal(out$n, c(0, 1))
   })
 })
 
+describe("count_woods() inputs", {
+  it("fails with informative message", {
+    not_df <- 1
+    expect_error(count_woods(not_df), "is not TRUE")
+  })
+})
+  
