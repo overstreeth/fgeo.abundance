@@ -10,25 +10,18 @@
 #' @examples
 count_woods <- function(.data, ...) {
   stopifnot(is.data.frame(.data))
-  
   .x <- set_names(.data, tolower)
   
-  # TODO: GROUP BY CENSUS ID?
-  # TODO: ERR IF MULTIPLE PLOTS?
-  # TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
   dots <- rlang::enquos(...)
-  
-  count_woods_impl <- function(.x, ...) {
-    .dots <- rlang::enquos(...)
-    flat <- collapse_treeid(.x)
-    pick <- dplyr::filter(flat, !!! .dots)
-    abundance_tree(pick)
-  }
-  
-  
   out <- by_group(.x, count_woods_impl, !!!dots)
   rename_matches(out, .data)
-  # do(.data, count_woods_impl(.))
+}
+
+count_woods_impl <- function(.x, ...) {
+  .dots <- rlang::enquos(...)
+  flat <- collapse_treeid(.x)
+  pick <- dplyr::filter(flat, !!! .dots)
+  abundance_tree(pick)
 }
 
 #' @rdname count_woods
@@ -48,20 +41,31 @@ count_saplings <- function(.data) {
 # * Export
 collapse_treeid <- function(.x) {
   stopifnot(is.data.frame(.x))
-  # TODO: Test vft
-  # Lowercase names to enable using census and ViewFullTable
   .data <- rlang::set_names(.x, tolower)
   fgeo.base::check_crucial_names(.data, c("treeid", "dbh"))
   .data <- collapse_treeid_imp(.data)
   fgeo.base::rename_matches(.data , .x)
 }
 
-collapse_treeid_imp <- function(.data) {
-  .data %>%
-    dplyr::group_by(.data$treeid) %>% 
+collapse_treeid_imp <- function(x) {
+  # TODO: GROUP BY CENSUS ID?
+  # TODO: ERR IF MULTIPLE PLOTS?
+  # TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
+  
+  .x <- dplyr::ungroup(x)
+  
+  if ("censusid" %in% names(.x)) {
+    # FIXME ADD THIS LINE
+    # .x <- fgeo.base::drop_if_na(.x, "censusid")
+    .x <- dplyr::group_by(.x, .data$censusid)
+  }
+    
+  .x %>%
+    dplyr::group_by(.data$treeid, add = TRUE) %>% 
     dplyr::arrange(desc(.data$dbh)) %>% 
     # TODO: Consider using min_rank(); see r4ds
     dplyr::filter(dplyr::row_number() == 1) %>% 
     dplyr::ungroup() %>% 
-    dplyr::grouped_df(dplyr::group_vars(.data))
+    dplyr::grouped_df(dplyr::group_vars(x))
 }
+
