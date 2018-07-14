@@ -9,3 +9,17 @@ commas <- function(...) {
 space <- function(...) {
   paste(unlist(list(...)), collapse = " ")
 }
+
+multiple_var <- function(var) {
+  force(var)
+  var <- tolower(var)
+  function(.data) {
+    .data <- stats::setNames(.data, tolower(names(.data)))
+    .var <- .data[[var]]
+    var %in% names(.data) && length(unique(na.omit(.var))) > 1
+  }
+}
+
+multiple_censusid <- multiple_var("censusid")
+
+multiple_plotname <- multiple_var("plotname")

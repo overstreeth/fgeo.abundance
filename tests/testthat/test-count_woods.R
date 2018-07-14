@@ -100,19 +100,27 @@ describe("collapse_treeid()", {
     expect_equal(picked$dbh, 200)
   })
   
-  it("drops missing values of censusid has missing values", {
+  it("drops missing values of censusid if there are multiple unique censusid", {
+    # Doesn't drop missing censusid if they are unambiguous (only one censusid)
     cns$CensusID <- c(1, 1, 1, 1, NA)
+    expect_silent(out <- collapse_treeid(cns))
+    
+    # Drops missing censusid if they are unambiguous (multiple censusid)
+    cns$CensusID <- c(1, 1, 2, 2, NA)
     expect_warning(
-      out <- collapse_treeid(cns), 
+      out <- collapse_treeid(cns),
       "Dropping.*rows with missing.*values"
     )
-      
+    
     expect_false(any(is.na(out$CensusID)))
   })
   
-  # TODO
-  # it("rejects input with multiple plots", {
-  #   stop("TODO")
-  # })
+  it("rejects data with multiple values of `plotname`", {
+    cns$PlotName <- c(1, 1, 2, 2, NA)
+    expect_error(
+      out <- collapse_treeid(cns),
+      "must have a single plotname"
+    )
+  })
 })
 

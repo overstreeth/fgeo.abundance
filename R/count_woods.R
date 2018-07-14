@@ -39,22 +39,23 @@ count_saplings <- function(.data) {
 # TODO: 
 # * Add argument to define how to collapse? (e.g. max min, etc.)
 # * Export
+# TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
 collapse_treeid <- function(.x) {
   stopifnot(is.data.frame(.x))
   .data <- rlang::set_names(.x, tolower)
   fgeo.base::check_crucial_names(.data, c("treeid", "dbh"))
-  .data <- collapse_treeid_imp(.data)
+  .data <- collapse_treeid_impl(.data)
   fgeo.base::rename_matches(.data , .x)
 }
 
-collapse_treeid_imp <- function(x) {
-  # TODO: ERR IF MULTIPLE PLOTS?
-  # TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
-  
+collapse_treeid_impl <- function(x) {
   .x <- dplyr::ungroup(x)
   
-  if ("censusid" %in% names(.x)) {
-    # FIXME ADD THIS LINE
+  if (multiple_plotname(.x)) {
+    stop("`.x` must have a single plotname.", call. = FALSE)
+  }
+  
+  if (multiple_censusid(.x)) {
     .x <- fgeo.base::drop_if_na(.x, "censusid")
     .x <- dplyr::group_by(.x, .data$censusid)
   }
