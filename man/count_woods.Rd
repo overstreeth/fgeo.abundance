@@ -6,11 +6,11 @@
 \alias{count_saplings}
 \title{Count unique trees based on the dbh of their largest stem.}
 \usage{
-count_woods(.data, ...)
+count_woods(.data, ..., .collapse = collapse_treeid_max)
 
-count_trees(.data)
+count_trees(.data, .collapse = collapse_treeid_max)
 
-count_saplings(.data)
+count_saplings(.data, .collapse = collapse_treeid_max)
 }
 \arguments{
 \item{.data}{A dataframe; particularly a ForestGEO census or ViewFullTable.}
@@ -19,5 +19,9 @@ count_saplings(.data)
 refers to the largest stem of each tree.}
 }
 \description{
-Count unique trees based on the dbh of their largest stem.
+This functions help you to count unique treeid in each census:
+\itemize{
+\item \code{count_woods()} is general and allows you to filter the data using any
+expressions passed via the argument \code{...} to \code{dplyr::filter()}.
+}
 }

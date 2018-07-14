@@ -63,3 +63,24 @@ describe("count_woods() inputs", {
     expect_error(count_woods("bad"), "data.frame.*is not TRUE")
   })
 })
+
+describe("count_woods() features  ", {
+  cns <- tibble::tribble(
+    ~dbh,   ~sp, ~treeID, ~stemID, ~CensusID,
+      10, "sp1",     "1",   "1.1",        1,
+     100, "sp1",     "1",   "1.2",        1,
+      22, "sp2",     "2",   "2.1",        1,
+      99, "sp2",     "2",   "2.2",        1,
+      NA, "sp2",     "2",   "2.3",        1,
+
+      10, "sp1",     "1",   "1.1",        2,
+     100, "sp1",     "1",   "1.2",        2,
+      22, "sp2",     "2",   "2.1",        2,
+      99, "sp2",     "2",   "2.2",        2,
+      NA, "sp2",     "2",   "2.3",        2
+  )
+  
+  it("allows filtering via ... using variables other than `dbh`", {
+    expect_equal(count_woods(cns, sp == "sp1")$n, c(1, 1))
+  })
+})
