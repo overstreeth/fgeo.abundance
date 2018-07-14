@@ -1,27 +1,52 @@
-# TODO: 
-# * Add argument to define how to collapse? (e.g. max min, etc.)
-# * Export
-# TODO: rename count_flat_trees count_flat_saplings pick_flat_treeid
+# TODO: Move to fgeo.tool.
 
-
-
-#' Collapse treeid, picking only one stem (per census) per treeid.
+#' Collapse treeid, picking only the one stem (per censusid) per treeid.
+#' 
+#' `collapse_treeid_max()` and `collapse_treeid_min()` pick the stem with the 
+#' maximum and minimum dbh per treeid per censusid.
 #'
 #' @param .x A dataframe; particularly a ForestGEO census or ViewFullTable.
 #'
-#' @return A dataframe with one row per censusid per treeid.
-#' @export
+#' @return A dataframe with one row per per treeid per censusid.
 #'
 #' @examples
-collapse_treeid <- function(.x) {
-  stopifnot(is.data.frame(.x))
-  .data <- rlang::set_names(.x, tolower)
-  fgeo.base::check_crucial_names(.data, c("treeid", "dbh"))
-  .data <- collapse_treeid_impl(.data)
-  fgeo.base::rename_matches(.data , .x)
+#' library(tidyverse)
+#' 
+#' census <- tibble::tribble(
+#'   ~dbh,   ~sp, ~treeID, ~stemID,
+#'     10, "sp1",     "1",   "1.1",
+#'    100, "sp1",     "1",   "1.2",
+#'     22, "sp2",     "2",   "2.1",
+#'     99, "sp2",     "2",   "2.2",
+#'     99, "sp2",     "2",   "2.3",
+#'     NA, "sp2",     "2",   "2.4"
+#' )
+#' 
+#' collapse_treeid_max(census)
+#' collapse_treeid_min(census)
+#' @name collapse_treeid
+NULL
+
+collapse_treeid <- function(.arrange) {
+  force(.arrange)
+  function(.x) {
+    stopifnot(is.data.frame(.x))
+    .data <- rlang::set_names(.x, tolower)
+    fgeo.base::check_crucial_names(.data, c("treeid", "dbh"))
+    .data <- collapse_treeid_impl(.data, .arrange)
+    fgeo.base::rename_matches(.data , .x)
+  }
 }
 
-collapse_treeid_impl <- function(x) {
+#' @rdname collapse_treeid
+#' @export
+collapse_treeid_min <- collapse_treeid(.arrange = identity)
+
+#' @rdname collapse_treeid
+#' @export
+collapse_treeid_max <- collapse_treeid(.arrange = dplyr::desc)
+
+collapse_treeid_impl <- function(x, .arrange) {
   .x <- dplyr::ungroup(x)
   
   if (multiple_plotname(.x)) {
@@ -35,9 +60,9 @@ collapse_treeid_impl <- function(x) {
   
   .x %>%
     dplyr::group_by(.data$treeid, add = TRUE) %>% 
-    dplyr::arrange(desc(.data$dbh)) %>% 
-    # TODO: Consider using min_rank(); see r4ds
+    dplyr::arrange(.arrange(.data$dbh)) %>%
     dplyr::filter(dplyr::row_number() == 1) %>% 
     dplyr::ungroup() %>% 
     dplyr::grouped_df(dplyr::group_vars(x))
 }
+

@@ -19,7 +19,7 @@ count_woods <- function(.data, ...) {
 
 count_woods_impl <- function(.x, ...) {
   .dots <- rlang::enquos(...)
-  flat <- collapse_treeid(.x)
+  flat <- collapse_treeid_max(.x)
   pick <- dplyr::filter(flat, !!! .dots)
   abundance_tree(pick)
 }
