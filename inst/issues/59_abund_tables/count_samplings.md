@@ -12,12 +12,12 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(fgeo)
-#> -- Attaching packages ----------------------------------------------- fgeo 0.0.0.9000 --
+#> -- Attaching packages ------------------------------------------------ fgeo 0.0.0.9000 --
 #> v fgeo.abundance  0.0.0.9004     v fgeo.demography 0.0.0.9000
 #> v fgeo.base       0.0.0.9001     v fgeo.habitat    0.0.0.9006
 #> v fgeo.data       0.0.0.9002     v fgeo.map        0.0.0.9204
 #> v fgeo.abundance  0.0.0.9004     v fgeo.tool       0.0.0.9003
-#> -- Conflicts ------------------------------------------------------- fgeo_conflicts() --
+#> -- Conflicts -------------------------------------------------------- fgeo_conflicts() --
 #> x fgeo.tool::filter() masks dplyr::filter(), stats::filter()
 #> x dplyr::intersect()  masks base::intersect()
 #> x dplyr::lag()        masks stats::lag()
@@ -68,7 +68,7 @@ saplings_bad
 #> 4  99 sp2      2    2.2
 #> 5  NA sp2      2    2.3
 
-abundance_tree(saplings_bad)
+count_distinct_treeid(saplings_bad)
 #>   n
 #> 1 2
 ```
@@ -80,7 +80,7 @@ zero saplings instead of 1.
 # Count unique instances of treeID by species
 saplings_bad %>% 
   group_by(sp) %>% 
-  abundance_tree()
+  count_distinct_treeid()
 #> # A tibble: 2 x 2
 #>   sp        n
 #>   <chr> <int>
@@ -115,7 +115,7 @@ saplings_good
 #>   <dbl> <chr> <chr>  <chr> 
 #> 1    99 sp2   2      2.2
 
-abundance_tree(saplings_good)
+count_distinct_treeid(saplings_good)
 #> # A tibble: 1 x 1
 #>       n
 #>   <int>
@@ -139,7 +139,7 @@ by choosing the largest stem of each tree.
 trees_bad <- census %>% 
   pick_dbh_min(100) %>% 
   group_by(sp) %>% 
-  abundance_tree()
+  count_distinct_treeid()
 trees_bad
 #> # A tibble: 2 x 2
 #>   sp        n
@@ -157,7 +157,7 @@ trees_good
 #>     dbh sp    treeID stemID
 #>   <dbl> <chr> <chr>  <chr> 
 #> 1   120 sp1   1      1.2
-abundance_tree(trees_good)
+count_distinct_treeid(trees_good)
 #> # A tibble: 1 x 2
 #>   sp        n
 #>   <chr> <int>

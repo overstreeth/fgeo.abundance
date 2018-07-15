@@ -50,14 +50,14 @@ census <- tibble(
 )
 census
 #> # A tibble: 6 x 5
-#>   treeID stemID quadrat sp       dbh
-#>    <dbl>  <dbl> <chr>   <chr>  <dbl>
-#> 1      1      1 0001    sp1    0.823
-#> 2      1      2 0001    sp1   23.5  
-#> 3      2      3 0001    sp2    0.425
-#> 4      3      4 0002    sp3    5.91 
-#> 5      3      5 0002    sp3   17.7  
-#> 6      3      6 0002    sp3    7.24
+#>   treeID stemID quadrat sp      dbh
+#>    <dbl>  <dbl> <chr>   <chr> <dbl>
+#> 1      1      1 0001    sp1   5.20 
+#> 2      1      2 0001    sp1   9.69 
+#> 3      2      3 0001    sp2   7.34 
+#> 4      3      4 0002    sp3   3.54 
+#> 5      3      5 0002    sp3   5.60 
+#> 6      3      6 0002    sp3   0.576
 
 count_distinct(census, treeID)
 #> # A tibble: 1 x 1
@@ -73,7 +73,7 @@ count_distinct(by_quad, treeID)
 #> 1 0001        2
 #> 2 0002        1
 # Same
-abundance_tree(by_quad)
+count_distinct_treeid(by_quad)
 #> # A tibble: 2 x 2
 #>   quadrat     n
 #>   <chr>   <int>

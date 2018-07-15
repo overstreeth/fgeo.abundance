@@ -53,7 +53,7 @@ count_distinct(census, treeID)
 by_quad <- group_by(census, quadrat)
 count_distinct(by_quad, treeID)
 # Same
-abundance_tree(by_quad)
+count_distinct_treeid(by_quad)
 ```
 
 [Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)

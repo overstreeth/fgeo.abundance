@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abundance of trees, stems, and count distinct values of a variable by groups. — count_distinct • fgeo.abundance</title>
+<title>Count distinct values of treeid, stemid, or any variable by groups. — count_distinct • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,18 +30,25 @@
 
 
 
-<meta property="og:title" content="Abundance of trees, stems, and count distinct values of a variable by groups. — count_distinct" />
+<meta property="og:title" content="Count distinct values of treeid, stemid, or any variable by groups. — count_distinct" />
 
-<meta property="og:description" content="These functions count rows by groups (if you need to exclude some
-observations, to it first -- see warning). These functions are usually used
-on grouped data created by dplyr::group_by() (reexported by fgeo). The
-output will have one row for each group:
-count_distinct() counts distinct occurrences of a variable.
-count_distinct_stemid() and count_distinct_treeid() are simpler
-wrappers for the specifically counting distinct occurrences of the variables
-stemID and treeID, which uniquely identify each stem and tree in census
-datasets of ForestGEO (both stem and tree tables) -- these functions are
-synonyms of abundance_stem() and abundance_tree().
+<meta property="og:description" content="Opinions vary on what abundance means. For example, to calculate the
+abundance of woods with ForestGEO data, you may need to define the status
+and dbh range of the stems you are interested. But that's not the job of
+this functions. These functions only count distinct occurrences of variables.
+Thus, to calculate abundance in the exact way you want you need to compose
+these functions (e.g. collapse_treeid_max(), pick_dbh_min(),
+pick_status(), drop_dead_tree()). To avoid creating false expectations, the
+name of these functions intentionally avoid the word abundance.
+These functions are usually used with grouped data (via
+dplyr::group_by()). The output will have one row for each group.
+count_distinct() counts distinct occurrences of any variable of any
+dataset (not specifically a ForestGEO dataset).
+count_distinct_stemid() and count_distinct_treeid() are simpler and
+specialized versions count_distinct(), for specifically counting distinct
+occurrences of the variables TreeID and StemID, or stemID and treeID,
+which uniquely identify each stem and tree in ViewFullTables and census
+datasets of ForestGEO.
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -116,23 +123,30 @@ synonyms of abundance_stem() and abundance_tree().
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abundance of trees, stems, and count distinct values of a variable by groups.</h1>
+    <h1>Count distinct values of treeid, stemid, or any variable by groups.</h1>
     <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/count_distinct.R'><code>R/count_distinct.R</code></a></small>
     <div class="hidden name"><code>count_distinct.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These functions count rows by groups (if you need to exclude some
-observations, to it first -- see warning). These functions are usually used
-on grouped data created by <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code> (reexported by <strong>fgeo</strong>). The
-output will have one row for each group:</p><ul>
-<li><p><code>count_distinct()</code> counts distinct occurrences of a variable.</p></li>
-<li><p><code>count_distinct_stemid()</code> and <code>count_distinct_treeid()</code> are simpler
-wrappers for the specifically counting distinct occurrences of the variables
-<code>stemID</code> and <code>treeID</code>, which uniquely identify each stem and tree in census
-datasets of ForestGEO (both stem and tree tables) -- these functions are
-synonyms of <code>abundance_stem()</code> and <code>abundance_tree()</code>.</p></li>
+    <p>Opinions vary on what <em>abundance</em> means. For example, to calculate the
+abundance of woods with ForestGEO data, you may need to define the <code>status</code>
+and <code>dbh</code> range of the stems you are interested. But that's not the job of
+this functions. These functions only count distinct occurrences of variables.
+Thus, to calculate abundance in the exact way you want you need to compose
+these functions (e.g. <code>collapse_treeid_max()</code>, <code>pick_dbh_min()</code>,
+<code>pick_status()</code>, <code>drop_dead_tree()</code>). To avoid creating false expectations, the
+name of these functions intentionally avoid the word <em>abundance</em>.</p>
+<p>These functions are usually used with grouped data (via
+<code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code>). The output will have one row for each group.</p><ul>
+<li><p><code>count_distinct()</code> counts distinct occurrences of any variable of any
+dataset (not specifically a ForestGEO dataset).</p></li>
+<li><p><code>count_distinct_stemid()</code> and <code>count_distinct_treeid()</code> are simpler and
+specialized versions <code>count_distinct()</code>, for specifically counting distinct
+occurrences of the variables <code>TreeID</code> and <code>StemID</code>, or <code>stemID</code> and <code>treeID</code>,
+which uniquely identify each stem and tree in <code>ViewFullTable</code>s and census
+datasets of ForestGEO.</p></li>
 </ul>
     
     </div>
@@ -141,11 +155,7 @@ synonyms of <code>abundance_stem()</code> and <code>abundance_tree()</code>.</p>
 
 <span class='fu'>count_distinct_stemid</span>(<span class='no'>.data</span>)
 
-<span class='fu'>abundance_stem</span>(<span class='no'>.data</span>)
-
-<span class='fu'>count_distinct_treeid</span>(<span class='no'>.data</span>)
-
-<span class='fu'>abundance_tree</span>(<span class='no'>.data</span>)</pre>
+<span class='fu'>count_distinct_treeid</span>(<span class='no'>.data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,15 +189,12 @@ trees to be included, remove them first (see <code>drop_dead_tree()</code>,
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
-
-<span class='co'># Example data</span>
-<span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
+    <pre class="examples"><div class='input'><span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
   <span class='kw'>treeID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>),
   <span class='kw'>stemID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
   <span class='kw'>quadrat</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"000"</span>, <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>)),
   <span class='kw'>sp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>)), <span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>))),
-  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
+  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'>sample</span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
 )
 <span class='no'>census</span></div><div class='output co'>#&gt; # A tibble: 6 x 5
 #&gt;   treeID stemID quadrat sp      dbh
@@ -202,7 +209,7 @@ trees to be included, remove them first (see <code>drop_dead_tree()</code>,
 #&gt;       n
 #&gt;   &lt;int&gt;
 #&gt; 1     6</div><div class='input'>
-<span class='no'>by_quad</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
+<span class='no'>by_quad</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>census</span>, <span class='no'>quadrat</span>)
 <span class='fu'>count_distinct</span>(<span class='no'>by_quad</span>, <span class='no'>stemID</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat     n
 #&gt;   &lt;chr&gt;   &lt;int&gt;
@@ -216,23 +223,13 @@ trees to be included, remove them first (see <code>drop_dead_tree()</code>,
 #&gt;   quadrat     n
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        3
-#&gt; 2 0002        3</div><div class='input'><span class='co'># Same</span>
-<span class='fu'>abundance_stem</span>(<span class='no'>by_quad</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   quadrat     n
-#&gt;   &lt;chr&gt;   &lt;int&gt;
-#&gt; 1 0001        3
 #&gt; 2 0002        3</div><div class='input'>
 <span class='fu'>count_distinct_treeid</span>(<span class='no'>by_quad</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
 #&gt;   quadrat     n
 #&gt;   &lt;chr&gt;   &lt;int&gt;
 #&gt; 1 0001        2
-#&gt; 2 0002        1</div><div class='input'><span class='co'># Same</span>
-<span class='fu'>abundance_tree</span>(<span class='no'>by_quad</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
-#&gt;   quadrat     n
-#&gt;   &lt;chr&gt;   &lt;int&gt;
-#&gt; 1 0001        2
 #&gt; 2 0002        1</div><div class='input'>
-<span class='no'>by_sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>sp</span>)
+<span class='no'>by_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>census</span>, <span class='no'>sp</span>)
 <span class='fu'>count_distinct_stemid</span>(<span class='no'>by_sp</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 2
 #&gt;   sp        n
 #&gt;   &lt;chr&gt; &lt;int&gt;
@@ -244,7 +241,7 @@ trees to be included, remove them first (see <code>drop_dead_tree()</code>,
 #&gt; 1 sp1       1
 #&gt; 2 sp2       1
 #&gt; 3 sp3       1</div><div class='input'>
-<span class='no'>by_quad_sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
+<span class='no'>by_quad_sp</span> <span class='kw'>&lt;-</span> <span class='fu'>group_by</span>(<span class='no'>census</span>, <span class='no'>quadrat</span>, <span class='no'>sp</span>)
 <span class='fu'>count_distinct_stemid</span>(<span class='no'>by_quad_sp</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 3
 #&gt; # Groups:   quadrat [?]
 #&gt;   quadrat sp        n
@@ -257,7 +254,37 @@ trees to be included, remove them first (see <code>drop_dead_tree()</code>,
 #&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;
 #&gt; 1 0001    sp1       1
 #&gt; 2 0001    sp2       1
-#&gt; 3 0002    sp3       1</div></pre>
+#&gt; 3 0002    sp3       1</div><div class='input'>
+<span class='co'># Compare to dplyr::summarize() and dplyr::n_distinct()</span>
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
+
+<span class='no'>by_cyl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)
+<span class='fu'>count_distinct</span>(<span class='no'>by_cyl</span>, <span class='no'>mpg</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 2
+#&gt;     cyl     n
+#&gt;   &lt;dbl&gt; &lt;int&gt;
+#&gt; 1     4     9
+#&gt; 2     6     6
+#&gt; 3     8    12</div><div class='input'><span class='co'># Same</span>
+<span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>(<span class='no'>by_cyl</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/n_distinct.html'>n_distinct</a></span>(<span class='no'>mpg</span>))</div><div class='output co'>#&gt; # A tibble: 3 x 2
+#&gt;     cyl     n
+#&gt;   &lt;dbl&gt; &lt;int&gt;
+#&gt; 1     4     9
+#&gt; 2     6     6
+#&gt; 3     8    12</div><div class='input'>
+<span class='fu'><a href='http://dplyr.tidyverse.org/reference/n_distinct.html'>n_distinct</a></span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; [1] 32</div><div class='input'><span class='co'># Same</span>
+<span class='fu'>nrow</span>(<span class='no'>mtcars</span>)</div><div class='output co'>#&gt; [1] 32</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Fails; you must supply `.var` to count distinct values if that variable</span>
+<span class='fu'>count_distinct</span>(<span class='no'>mtcars</span>)
+<span class='co'># }</span><div class='input'>
+<span class='fu'>count_distinct</span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)</div><div class='output co'>#&gt;   n
+#&gt; 1 3</div><div class='input'><span class='co'># Same</span>
+<span class='fu'><a href='http://dplyr.tidyverse.org/reference/n_distinct.html'>n_distinct</a></span>(<span class='no'>mtcars</span>$<span class='no'>cyl</span>)</div><div class='output co'>#&gt; [1] 3</div><div class='input'><span class='co'># Same</span>
+<span class='fu'>length</span>(<span class='fu'>unique</span>(<span class='no'>mtcars</span>$<span class='no'>cyl</span>))</div><div class='output co'>#&gt; [1] 3</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Fails because it expect not column names but additional vectors (via `...`)</span>
+<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/n_distinct.html'>n_distinct</a></span>(<span class='no'>mtcars</span>, <span class='no'>cyl</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

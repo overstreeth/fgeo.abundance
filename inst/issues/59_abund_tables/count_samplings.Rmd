@@ -41,7 +41,7 @@ saplings_bad <- census %>%
   pick_dbh_under(100)
 saplings_bad
 
-abundance_tree(saplings_bad)
+count_distinct_treeid(saplings_bad)
 ```
 
 The problem is clearer if we group by species. Note that sp1 should show zero saplings instead of 1.
@@ -50,7 +50,7 @@ The problem is clearer if we group by species. Note that sp1 should show zero sa
 # Count unique instances of treeID by species
 saplings_bad %>% 
   group_by(sp) %>% 
-  abundance_tree()
+  count_distinct_treeid()
 ```
 
 The solution is to collapse the table to a single row per tree -- choosing the one of the stem with the greaterst `dbh`. For that we write a helper function.
@@ -74,7 +74,7 @@ saplings_good <- census %>%
   filter(dbh < 100)
 saplings_good
 
-abundance_tree(saplings_good)
+count_distinct_treeid(saplings_good)
 ```
 
 ---
@@ -90,7 +90,7 @@ Again, we only get the correct result if we first collapse the dataset by choosi
 trees_bad <- census %>% 
   pick_dbh_min(100) %>% 
   group_by(sp) %>% 
-  abundance_tree()
+  count_distinct_treeid()
 trees_bad
 
 trees_good <- census %>% 
@@ -98,7 +98,7 @@ trees_good <- census %>%
   pick_dbh_min(100) %>% 
   group_by(sp)
 trees_good
-abundance_tree(trees_good)
+count_distinct_treeid(trees_good)
 ```
 
 Now I can wrap this solution into a user-friendly funtions. 
