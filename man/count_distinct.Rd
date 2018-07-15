@@ -4,7 +4,7 @@
 \alias{count_distinct}
 \alias{count_distinct_stemid}
 \alias{count_distinct_treeid}
-\title{Abundance of trees, stems, and count distinct values of a variable by groups.}
+\title{Count distinct values of treeid, stemid, or any variable by groups.}
 \usage{
 count_distinct(.data, .var)
 
@@ -22,10 +22,17 @@ An object of the same class as .data. One grouping level will be
 dropped.
 }
 \description{
-These functions count rows by groups (if you need to exclude some
-observations, to it first -- see warning). These functions are usually used
-on grouped data created by \code{dplyr::group_by()} (reexported by \strong{fgeo}). The
-output will have one row for each group:
+Opinions vary on what \emph{abundance} means. For example, to calculate the
+abundance of woods with ForestGEO data, you may need to define the \code{status}
+and \code{dbh} range of the stems you are interested. But that's not the job of
+this functions. These functions only count distinct occurrences of variables.
+Thus, to calculate abundance in the exact way you want you need to compose
+these functions (e.g. \code{collapse_treeid_max()}, \code{pick_dbh_min()},
+\code{pick_status()}, \code{drop_dead_tree()}). To avoid creating false expectations, the
+name of these functions intentionally avoid the word \emph{abundance}.
+
+These functions are usually used with grouped data (via
+\code{dplyr::group_by()}). The output will have one row for each group.
 \itemize{
 \item \code{count_distinct()} counts distinct occurrences of any variable of any
 dataset (not specifically a ForestGEO dataset).
@@ -103,3 +110,4 @@ dplyr::n_distinct(mtcars, cyl)
 \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[=drop_dead_tree]{drop_dead_tree()}},
 \code{\link[=drop_dead_stem]{drop_dead_stem()}}.
 }
+\concept{abundance}

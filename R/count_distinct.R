@@ -1,9 +1,18 @@
-#' Abundance of trees, stems, and count distinct values of a variable by groups.
+#' Count distinct values of treeid, stemid, or any variable by groups.
 #'
-#' These functions count rows by groups (if you need to exclude some
-#' observations, to it first -- see warning). These functions are usually used
-#' on grouped data created by `dplyr::group_by()` (reexported by __fgeo__). The
-#' output will have one row for each group:
+#' @description
+#' Opinions vary on what _abundance_ means. For example, to calculate the
+#' abundance of woods with ForestGEO data, you may need to define the `status`
+#' and `dbh` range of the stems you are interested. But that's not the job of
+#' this functions. These functions only count distinct occurrences of variables.
+#' Thus, to calculate abundance in the exact way you want you need to compose
+#' these functions (e.g. `collapse_treeid_max()`, `pick_dbh_min()`,
+#' `pick_status()`, `drop_dead_tree()`). To avoid creating false expectations, the
+#' name of these functions intentionally avoid the word _abundance_.
+#' 
+#' @description
+#' These functions are usually used with grouped data (via
+#' `dplyr::group_by()`). The output will have one row for each group.
 #' * `count_distinct()` counts distinct occurrences of any variable of any
 #' dataset (not specifically a ForestGEO dataset).
 #' * `count_distinct_stemid()` and `count_distinct_treeid()` are simpler and
@@ -19,6 +28,8 @@
 #'
 #' @param .data A dataframe, commonly grouped with `group_by()`.
 #' @param .var A variable to count distinct occurrences.
+#' 
+#' @concept abundance
 #' 
 #' @seealso [dplyr::group_by()], [dplyr::summarise()], [drop_dead_tree()],
 #' [drop_dead_stem()].
