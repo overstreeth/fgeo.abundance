@@ -28,25 +28,6 @@
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#' 
-#' count_distinct(mtcars)
-#' count_distinct(mtcars, cyl)
-#' dplyr::n_distinct(mtcars)
-#' 
-#' \dontrun{
-#' # Fails because `...` to `n_distinct()` are vectors, not dataframe-variables
-#' dplyr::n_distinct(mtcars, cyl)
-#' }
-#' 
-#' 
-#' length(unique(mtcars$mpg))
-#' 
-#' 
-#' 
-#' count_distinct(group_by(mtcars, cyl), mpg)
-#'
-#' # Example data
 #' census <- tibble::tibble(
 #'   treeID = c(1, 1, 2, 3, 3, 3),
 #'   stemID = c(1, 2, 3, 4, 5, 6),
@@ -73,10 +54,59 @@
 #' by_quad_sp <- group_by(census, quadrat, sp)
 #' count_distinct_stemid(by_quad_sp)
 #' count_distinct_treeid(by_quad_sp)
+#' 
+#' # Compare to dplyr::summarize() and dplyr::n_distinct()
+#' library(dplyr)
+#' 
+#' by_cyl <- group_by(mtcars, cyl)
+#' count_distinct(by_cyl, mpg)
+#' # Same
+#' summarize(by_cyl, n = n_distinct(mpg))
+#' 
+#' n_distinct(mtcars)
+#' # Same
+#' nrow(mtcars)
+#' 
+#' \dontrun{
+#' # Fails; you must supply `.var` to count distinct values if that variable
+#' count_distinct(mtcars)
+#' }
+#' 
+#' count_distinct(mtcars, cyl)
+#' # Same
+#' n_distinct(mtcars$cyl)
+#' # Same
+#' length(unique(mtcars$cyl))
+#' 
+#' \dontrun{
+#' # Fails because it expect not column names but additional vectors (via `...`)
+#' dplyr::n_distinct(mtcars, cyl)
+#' }
 count_distinct <- function(.data, .var) {
   .var <- enquo(.var)
+  count_distinct_impl(.data, .var)
+}
+
+#' @export
+#' @rdname count_distinct
+count_distinct_stemid <- function(.data) {
+  set_names(.data, tolower) %>%
+    check_count_distinct() %>%
+    check_crucial_names("stemid") %>%
+    count_distinct(.data$stemid)
+}
+
+#' @export
+#' @rdname count_distinct
+count_distinct_treeid <- function(.data) {
+  set_names(.data, tolower) %>%
+    check_count_distinct() %>%
+    check_crucial_names("treeid") %>%
+    count_distinct(.data$treeid)
+}
+
+count_distinct_impl <- function(.data, .var) {
   check_count_distinct(.data)
-  
   tryCatch(
     result <- summarize(.data, n = dplyr::n_distinct(!!.var)), 
     error = function(e) {
@@ -88,32 +118,11 @@ count_distinct <- function(.data, .var) {
     }
   )
   
-  .var <- pull_name(rlang::expr_name(rlang::get_expr(.var)))
-  if (!.var %in% names(.data)) {
+  if (invalid_var(.data, .var)) {
     stop("`.var` must be a variable of `.data` but it's not.", call. = TRUE)
   }
   
   result
-}
-
-#' @export
-#' @rdname count_distinct
-count_distinct_stemid <- function(.data) {
-  set_names(.data, tolower) %>%
-    check_count_distinct() %>%
-    check_crucial_names("stemid") %>%
-    # Grouping vars preserve name-case
-    count_distinct(.data$stemid)
-}
-
-#' @export
-#' @rdname count_distinct
-count_distinct_treeid <- function(.data) {
-  set_names(.data, tolower) %>%
-    check_count_distinct() %>%
-    # Grouping vars preserve name-case
-    check_crucial_names("treeid") %>%
-    count_distinct(.data$treeid)
 }
 
 check_count_distinct <- function(.data) {
@@ -124,3 +133,7 @@ check_count_distinct <- function(.data) {
   invisible(.data)
 }
 
+invalid_var <- function(.data, .var) {
+  .var <- pull_name(rlang::expr_name(rlang::get_expr(.var)))
+  !.var %in% names(.data)
+}

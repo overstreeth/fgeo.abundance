@@ -44,25 +44,6 @@ trees to be included, remove them first (see \code{\link[=drop_dead_tree]{drop_d
 }
 
 \examples{
-library(dplyr)
-
-count_distinct(mtcars)
-count_distinct(mtcars, cyl)
-dplyr::n_distinct(mtcars)
-
-\dontrun{
-# Fails because `...` to `n_distinct()` are vectors, not dataframe-variables
-dplyr::n_distinct(mtcars, cyl)
-}
-
-
-length(unique(mtcars$mpg))
-
-
-
-count_distinct(group_by(mtcars, cyl), mpg)
-
-# Example data
 census <- tibble::tibble(
   treeID = c(1, 1, 2, 3, 3, 3),
   stemID = c(1, 2, 3, 4, 5, 6),
@@ -89,6 +70,34 @@ count_distinct_treeid(by_sp)
 by_quad_sp <- group_by(census, quadrat, sp)
 count_distinct_stemid(by_quad_sp)
 count_distinct_treeid(by_quad_sp)
+
+# Compare to dplyr::summarize() and dplyr::n_distinct()
+library(dplyr)
+
+by_cyl <- group_by(mtcars, cyl)
+count_distinct(by_cyl, mpg)
+# Same
+summarize(by_cyl, n = n_distinct(mpg))
+
+n_distinct(mtcars)
+# Same
+nrow(mtcars)
+
+\dontrun{
+# Fails; you must supply `.var` to count distinct values if that variable
+count_distinct(mtcars)
+}
+
+count_distinct(mtcars, cyl)
+# Same
+n_distinct(mtcars$cyl)
+# Same
+length(unique(mtcars$cyl))
+
+\dontrun{
+# Fails because it expect not column names but additional vectors (via `...`)
+dplyr::n_distinct(mtcars, cyl)
+}
 }
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[=drop_dead_tree]{drop_dead_tree()}},
