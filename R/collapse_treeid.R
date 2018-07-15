@@ -10,8 +10,6 @@
 #' @return A dataframe with one row per per treeid per censusid.
 #'
 #' @examples
-#' library(tidyverse)
-#' 
 #' census <- tibble::tribble(
 #'   ~dbh,   ~sp, ~treeID, ~stemID,
 #'     10, "sp1",     "1",   "1.1",
@@ -31,10 +29,16 @@ collapse_treeid <- function(.arrange) {
   force(.arrange)
   function(.x) {
     stopifnot(is.data.frame(.x))
+    # Lowercase names and groups for work with both census and ViewFullTable
     .data <- rlang::set_names(.x, tolower)
+    .data <- dplyr::grouped_df(.data, tolower(dplyr::group_vars(.data)))
+    
     fgeo.base::check_crucial_names(.data, c("treeid", "dbh"))
     .data <- collapse_treeid_impl(.data, .arrange)
-    fgeo.base::rename_matches(.data , .x)
+    
+    # Restore original names; then original groups
+    out <- fgeo.base::rename_matches(.data , .x)
+    dplyr::grouped_df(out, dplyr::group_vars(.x))
   }
 }
 
@@ -62,7 +66,6 @@ collapse_treeid_impl <- function(x, .arrange) {
     dplyr::group_by(.data$treeid, add = TRUE) %>% 
     dplyr::arrange(.arrange(.data$dbh)) %>%
     dplyr::filter(dplyr::row_number() == 1) %>% 
-    dplyr::ungroup() %>% 
-    dplyr::grouped_df(dplyr::group_vars(x))
+    dplyr::ungroup()
 }
 

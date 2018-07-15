@@ -107,5 +107,4 @@ describe("count_woods() features", {
     out <- count_woods(by_sp_treeid)
     expect_equal(group_vars(out), group_vars(by_sp_treeid))
   })
-  
 })

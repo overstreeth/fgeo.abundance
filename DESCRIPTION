@@ -16,12 +16,12 @@ Imports:
     fgeo.base,
     fgeo.tool,
     lubridate,
-    rlang (>= 0.1.2),
-    tibble,
-    tidyr,
-    vegan,
     magrittr,
-    splancs
+    rlang (>= 0.1.2),
+    splancs,
+    stats,
+    tibble,
+    tidyr
 Suggests: 
     covr,
     fgeo.data,

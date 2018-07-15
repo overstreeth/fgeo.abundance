@@ -16,7 +16,7 @@ multiple_var <- function(var) {
   function(.data) {
     .data <- stats::setNames(.data, tolower(names(.data)))
     .var <- .data[[var]]
-    var %in% names(.data) && length(unique(na.omit(.var))) > 1
+    var %in% names(.data) && length(unique(stats::na.omit(.var))) > 1
   }
 }
 

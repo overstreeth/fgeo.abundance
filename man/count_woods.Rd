@@ -17,15 +17,55 @@ count_saplings(.data, .collapse = collapse_treeid_max)
 
 \item{...}{Expressions to pick stems of specific \code{dbh} -- where \emph{stems}
 refers to the largest stem of each tree.}
+
+\item{.collapse}{\code{collapse_treeid_max} and \code{collapse_treeid_min}(bare name
+of the corresponding functions) collapse the data picking the stem (of each
+treeid) with the maximum and minimum dbh, respectively.}
+}
+\value{
+A dataframe with preserved groups (if any).
 }
 \description{
-This functions help you to count unique treeid in each census:
+This functions count unique treeid by censusid (automatically) and any number
+of additional grouping variables (via \code{dplyr::group_by()}. Data with
+multi-stem trees is first collapsed. The collapse defaults to picking the
+stem (of each treeid) with maximum dbh (pick minimum dbh with the argument
+\code{.collapse}).
 \itemize{
-\item \code{count_woods()} is general and allows you to filter the data using any
+\item \code{count_woods()} is general and allows filtering data using any number of
 expressions passed via the argument \code{...} to \code{dplyr::filter()}.
 \item \code{count_trees()} is an opinionated shortcut that defines tress as stems of
 dbh of 100 mm and above.
 \item \code{count_samplings()} is an opinionated shortcut that defines saplings as
-stems of dbh of between 10 mm inlcusive and 100 mm exclusive.
+stems of dbh of between 10 mm inclusive and 100 mm exclusive.
 }
+}
+\examples{
+library(dplyr)
+
+census <- tibble::tribble(
+  ~dbh,   ~sp, ~treeID, ~stemID,
+    10, "sp1",     "1",   "1.1",
+   100, "sp1",     "1",   "1.2",
+    22, "sp2",     "2",   "2.1",
+    99, "sp2",     "2",   "2.2",
+    NA, "sp2",     "2",   "2.3"
+)
+
+# Count all woods
+count_woods(census)
+
+by_sp_treeid <- group_by(census, sp, treeID)
+count_trees(by_sp_treeid)
+
+by_sp <- group_by(census, sp)
+count_woods(by_sp)
+
+count_woods(by_sp, dbh >= 100)
+# Same
+count_trees(by_sp)
+
+count_woods(by_sp, dbh > 10, dbh < 100)
+# Same
+count_saplings(by_sp)
 }

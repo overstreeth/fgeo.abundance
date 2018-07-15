@@ -21,8 +21,6 @@ A dataframe with one row per per treeid per censusid.
 maximum and minimum dbh per treeid per censusid.
 }
 \examples{
-library(tidyverse)
-
 census <- tibble::tribble(
   ~dbh,   ~sp, ~treeID, ~stemID,
     10, "sp1",     "1",   "1.1",
