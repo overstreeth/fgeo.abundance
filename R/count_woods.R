@@ -77,7 +77,7 @@ count_woods <- function(.data, ..., .collapse = collapse_treeid_max) {
 count_woods_impl <- function(.data, ..., .collapse) {
   .dots <- rlang::enquos(...)
   pick <- dplyr::filter( .collapse(.data), !!! .dots)
-  abundance_tree(pick)
+  count_distinct_treeid(pick)
 }
 
 #' @rdname count_woods

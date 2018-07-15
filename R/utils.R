@@ -23,3 +23,6 @@ multiple_var <- function(var) {
 multiple_censusid <- multiple_var("censusid")
 
 multiple_plotname <- multiple_var("plotname")
+
+pull_name <- function(x) gsub(".*\\$", "", x)
+

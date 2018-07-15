@@ -3,20 +3,14 @@
 \name{count_distinct}
 \alias{count_distinct}
 \alias{count_distinct_stemid}
-\alias{abundance_stem}
 \alias{count_distinct_treeid}
-\alias{abundance_tree}
 \title{Abundance of trees, stems, and count distinct values of a variable by groups.}
 \usage{
 count_distinct(.data, .var)
 
 count_distinct_stemid(.data)
 
-abundance_stem(.data)
-
 count_distinct_treeid(.data)
-
-abundance_tree(.data)
 }
 \arguments{
 \item{.data}{A dataframe, commonly grouped with \code{group_by()}.}
@@ -33,12 +27,13 @@ observations, to it first -- see warning). These functions are usually used
 on grouped data created by \code{dplyr::group_by()} (reexported by \strong{fgeo}). The
 output will have one row for each group:
 \itemize{
-\item \code{count_distinct()} counts distinct occurrences of a variable.
-\item \code{count_distinct_stemid()} and \code{count_distinct_treeid()} are simpler
-wrappers for the specifically counting distinct occurrences of the variables
-\code{stemID} and \code{treeID}, which uniquely identify each stem and tree in census
-datasets of ForestGEO (both stem and tree tables) -- these functions are
-synonyms of \code{abundance_stem()} and \code{abundance_tree()}.
+\item \code{count_distinct()} counts distinct occurrences of any variable of any
+dataset (not specifically a ForestGEO dataset).
+\item \code{count_distinct_stemid()} and \code{count_distinct_treeid()} are simpler and
+specialized versions \code{count_distinct()}, for specifically counting distinct
+occurrences of the variables \code{TreeID} and \code{StemID}, or \code{stemID} and \code{treeID},
+which uniquely identify each stem and tree in \code{ViewFullTable}s and census
+datasets of ForestGEO.
 }
 }
 \section{Warning}{
@@ -50,6 +45,22 @@ trees to be included, remove them first (see \code{\link[=drop_dead_tree]{drop_d
 
 \examples{
 library(dplyr)
+
+count_distinct(mtcars)
+count_distinct(mtcars, cyl)
+dplyr::n_distinct(mtcars)
+
+\dontrun{
+# Fails because `...` to `n_distinct()` are vectors, not dataframe-variables
+dplyr::n_distinct(mtcars, cyl)
+}
+
+
+length(unique(mtcars$mpg))
+
+
+
+count_distinct(group_by(mtcars, cyl), mpg)
 
 # Example data
 census <- tibble::tibble(
@@ -68,12 +79,8 @@ count_distinct(by_quad, stemID)
 count_distinct(by_quad, treeID)
 
 count_distinct_stemid(by_quad)
-# Same
-abundance_stem(by_quad)
 
 count_distinct_treeid(by_quad)
-# Same
-abundance_tree(by_quad)
 
 by_sp <- group_by(census, sp)
 count_distinct_stemid(by_sp)

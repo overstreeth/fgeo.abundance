@@ -36,5 +36,13 @@ test_that("counts as expected", {
 
 test_that("fails with informative error", {
   expect_error(count_distinct(1), "must be a dataframe")
+  expect_error(
+    count_distinct(mtcars), 
+    ".var` must be supplied but it's missing."
+  )
+  expect_error(
+    count_distinct(mtcars, "bad .var"), 
+    "`.var` must be a variable of `.data` but it's not."
+  )
   expect_error(count_distinct_treeid(1), "must be a dataframe")
 })
