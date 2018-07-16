@@ -40,6 +40,8 @@
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' 
 #' census <- tibble::tibble(
 #'   treeID = c(1, 1, 2, 3, 3, 3),
 #'   stemID = c(1, 2, 3, 4, 5, 6),

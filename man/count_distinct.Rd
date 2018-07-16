@@ -51,6 +51,8 @@ trees to be included, remove them first (see \code{\link[=drop_dead_tree]{drop_d
 }
 
 \examples{
+library(dplyr)
+
 census <- tibble::tibble(
   treeID = c(1, 1, 2, 3, 3, 3),
   stemID = c(1, 2, 3, 4, 5, 6),
