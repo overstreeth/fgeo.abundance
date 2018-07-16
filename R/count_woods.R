@@ -15,9 +15,10 @@
 #' @param .data A dataframe; particularly a ForestGEO census or ViewFullTable.
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
 #'   refers to the largest stem of each tree.
-#' @param .collapse `collapse_treeid_max` and `collapse_treeid_min`(bare name 
-#'   of the corresponding functions) collapse the data picking the stem (of each
-#'   treeid) with the maximum and minimum dbh, respectively.
+#' @param .collapse `fgeo.tool::collapse_treeid_max` and
+#'   `fgeo.tool::collapse_treeid_min`(bare name of the corresponding functions)
+#'   collapse the data picking the stem (of each treeid) with the maximum and
+#'   minimum dbh, respectively.
 #'
 #' @family functions for fgeo census and vft.
 #'
@@ -52,7 +53,9 @@
 #' count_woods(by_sp, dbh > 10, dbh < 100)
 #' # Same
 #' count_saplings(by_sp)
-count_woods <- function(.data, ..., .collapse = collapse_treeid_max) {
+count_woods <- function(.data, 
+                        ..., 
+                        .collapse = fgeo.tool::collapse_treeid_max) {
   stopifnot(is.data.frame(.data))
   # Lowercase names and groups for work with both census and ViewFullTable
   .x <- set_names(.data, tolower)
@@ -88,12 +91,12 @@ count_woods_impl <- function(.data, ..., .collapse) {
 
 #' @rdname count_woods
 #' @export
-count_trees <- function(.data, .collapse = collapse_treeid_max) {
+count_trees <- function(.data, .collapse = fgeo.tool::collapse_treeid_max) {
   count_woods(.data, .data$dbh >= 100, .collapse = .collapse)
 }
 
 #' @rdname count_woods
 #' @export
-count_saplings <- function(.data, .collapse = collapse_treeid_max) {
+count_saplings <- function(.data, .collapse = fgeo.tool::collapse_treeid_max) {
   count_woods(.data, .data$dbh >= 10, .data$dbh < 100,.collapse = .collapse)
 }
