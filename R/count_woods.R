@@ -19,6 +19,8 @@
 #'   of the corresponding functions) collapse the data picking the stem (of each
 #'   treeid) with the maximum and minimum dbh, respectively.
 #'
+#' @family functions for fgeo census and vft.
+#'
 #' @return A dataframe with preserved groups (if any).
 #' @export
 #'

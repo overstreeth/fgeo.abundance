@@ -30,6 +30,7 @@
 #' @param .var A variable to count distinct occurrences.
 #' 
 #' @family abundance functions.
+#' @family functions for fgeo census and vft.
 #' 
 #' @seealso [dplyr::group_by()], [dplyr::summarise()], [drop_dead_tree()],
 #' [drop_dead_stem()].

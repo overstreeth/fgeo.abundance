@@ -69,3 +69,7 @@ count_woods(by_sp, dbh > 10, dbh < 100)
 # Same
 count_saplings(by_sp)
 }
+\seealso{
+Other functions for fgeo census and vft.: \code{\link{count_distinct}}
+}
+\concept{functions for fgeo census and vft.}

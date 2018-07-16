@@ -109,5 +109,8 @@ dplyr::n_distinct(mtcars, cyl)
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[=drop_dead_tree]{drop_dead_tree()}},
 \code{\link[=drop_dead_stem]{drop_dead_stem()}}.
+
+Other functions for fgeo census and vft.: \code{\link{count_woods}}
 }
-\concept{abundance}
+\concept{abundance functions.}
+\concept{functions for fgeo census and vft.}
