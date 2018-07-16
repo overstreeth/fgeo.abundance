@@ -29,7 +29,7 @@
 #' @param .data A dataframe, commonly grouped with `group_by()`.
 #' @param .var A variable to count distinct occurrences.
 #' 
-#' @concept abundance
+#' @family abundance functions.
 #' 
 #' @seealso [dplyr::group_by()], [dplyr::summarise()], [drop_dead_tree()],
 #' [drop_dead_stem()].
