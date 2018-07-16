@@ -1,3 +1,4 @@
+^inst/tutorials$
 ^inst$
 ^.*\.Rproj$
 ^\.Rproj\.user$

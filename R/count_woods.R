@@ -74,11 +74,15 @@ count_woods <- function(.data, ..., .collapse = collapse_treeid_max) {
   dplyr::grouped_df(dplyr::ungroup(out), dplyr::group_vars(.data))
 }
 
+multiple_censusid <- fgeo.base::multiple_var("censusid")
+multiple_plotname <- fgeo.base::multiple_var("plotname")
+
 count_woods_impl <- function(.data, ..., .collapse) {
   .dots <- rlang::enquos(...)
   pick <- dplyr::filter( .collapse(.data), !!! .dots)
   count_distinct_treeid(pick)
 }
+
 
 #' @rdname count_woods
 #' @export
