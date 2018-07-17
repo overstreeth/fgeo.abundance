@@ -1,23 +1,3 @@
-count_distinct_impl <- function(.data, .var) {
-  check_count_distinct(.data)
-  tryCatch(
-    result <- summarize(.data, n = dplyr::n_distinct(!!.var)), 
-    error = function(e) {
-      if (rlang::quo_is_missing(.var)) {
-        stop("`.var` must be supplied but it's missing.", call. = FALSE)
-      }
-      
-      conditionMessage(e)
-    }
-  )
-  
-  if (invalid_var(.data, .var)) {
-    stop("`.var` must be a variable of `.data` but it's not.", call. = TRUE)
-  }
-  
-  result
-}
-
 #' Count distinct values of any variable (optionally by groups).
 #'
 #' This function works with grouped data (via
@@ -33,7 +13,8 @@ count_distinct_impl <- function(.data, .var) {
 #' [drop_dead_stem()].
 #'
 #' @return An object of the same class as .data. One grouping level will be
-#'   dropped.
+#'   dropped (because of `dplyr::summarize()`).
+#'
 #' @export
 #'
 #' @examples
@@ -71,25 +52,44 @@ count_distinct <- function(.data, .var) {
   count_distinct_impl(.data, .var)
 }
 
+count_distinct_impl <- function(.data, .var) {
+  check_count_distinct(.data)
+  tryCatch(
+    result <- summarize(.data, n = dplyr::n_distinct(!!.var)), 
+    error = function(e) {
+      if (rlang::quo_is_missing(.var)) {
+        stop("`.var` must be supplied but it's missing.", call. = FALSE)
+      }
+      
+      conditionMessage(e)
+    }
+  )
+  
+  if (invalid_var(.data, .var)) {
+    stop("`.var` must be a variable of `.data` but it's not.", call. = TRUE)
+  }
+  
+  result
+}
+
 #' Count distinct values of treeid, stemid (optionally by groups).
 #' 
-#' @description
-#' Opinions vary on what _abundance_ means. For example, to calculate the
-#' abundance of woods with ForestGEO data, you may need to define the `status`
-#' and `dbh` range of the stems you are interested. But that's not the job of
-#' this functions. These functions only count distinct occurrences of variables.
-#' 
-#' @description
 #' These functions are simpler, specialized versions of `count_distinct()`,
 #' specifically for counting distinct occurrences of the variables `stemID` and
 #' `treeID` (or `TreeID` and `StemID`) which uniquely identify each stem and
-#' tree in ForestGEO-like datasets.
+#' tree in ForestGEO-like datasets. They work with data grouped with
+#' `dplyr::group_by()`.
 #' 
 #' `count_unique_treeid()` throws an error if each data-group contains more
 #' than one value of treeid (i.e. if it contains multiple stems). You should
 #' first collapse treeid by picking a single stem per treeid per group. Both
 #' `count_unique_treeid()` and `count_unique_stemid()` warn if the dataset
 #' contains multiple censusid.
+#' 
+#' Opinions vary on what _abundance_ means. For example, to calculate the
+#' abundance of woods with ForestGEO data, you may need to define the `status`
+#' and `dbh` range of the stems you are interested. But that's not the job of
+#' this functions. These functions only count distinct occurrences of variables.
 #' 
 #' @section Warning:
 #' These functions do not remove dead stems or trees. If you don't want dead
@@ -99,6 +99,9 @@ count_distinct <- function(.data, .var) {
 #' @param .data A ForestGEO-like dataframe, commonly grouped with `group_by()`.
 #'
 #' @family functions for fgeo census and vft.
+#'
+#' @return An object of the same class as .data. One grouping level will be
+#'   dropped (because of `dplyr::summarize()`).
 #'
 #' @export
 #' 
@@ -133,13 +136,14 @@ count_distinct_treeid <- function(.data) {
     groups_lower() %>% 
     check_crucial_names("treeid")
     
-    fgeo.tool::flag_duplicated_var(abort, treeid)(.x)
-    
-    if ("censusid" %in% names(.x)) {
-      warn_duplicated_censusid_by_group(.x)
-    }
-    
-    count_distinct(.x, .data$treeid)
+  fgeo.tool::flag_duplicated_var(abort, treeid)(.x)
+  
+  if ("censusid" %in% names(.x)) {
+    warn_duplicated_censusid_by_group(.x)
+  }
+  
+  out <- count_distinct(.x, .data$treeid)
+  restore_input_names_output_groups(out, .data)
 }
 
 #' @rdname count_distinct_treeid
@@ -155,10 +159,12 @@ count_distinct_stemid <- function(.data) {
 
   check_crucial_names(.x, "stemid")
   
-  out <- .x %>% 
-    count_distinct(.data$stemid) %>% 
-    rename_matches(.data)
-  
+  out <- .x %>% count_distinct(.data$stemid)
+  restore_input_names_output_groups(out, .data)
+}
+
+restore_input_names_output_groups <- function(out, .data) {
+  out <- rename_matches(out, .data)
   g <- group_vars_restore(out, .data)
   dplyr::grouped_df(ungroup(out), g)
 }

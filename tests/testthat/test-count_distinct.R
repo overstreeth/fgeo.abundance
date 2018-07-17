@@ -54,7 +54,6 @@ describe("count_distinct_stemid()", {
   })
 })
 
-
 test_that("count_distinct() and friends fail with informative error", {
   expect_error(count_distinct(1), "must be a dataframe")
   expect_error(count_distinct(mtcars), ".var` must be supplied")
@@ -90,5 +89,10 @@ describe("count_distinct_treeid()", {
     expect_silent(count_distinct_treeid(by_censusid))
   })
   
-  
+  it("outputs expected names and groups", {
+    by_stemid_sp <- group_by(census, stemID, sp)
+    out <- count_distinct_treeid(by_stemid_sp)
+    expect_named(out, c("stemID", "sp", "n"))
+    expect_equal(group_vars(out), "stemID")
+  })
 })
