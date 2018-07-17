@@ -1,7 +1,7 @@
 #' @importFrom fgeo.tool by_group
 #' @importFrom fgeo.base check_crucial_names insensitive rename_matches
 #' @importFrom dplyr group_by ungroup filter select mutate summarize arrange
-#' @importFrom rlang set_names %||%
+#' @importFrom rlang set_names %||% abort warn inform
 NULL
 
 #' Tidy eval helpers

@@ -28,8 +28,8 @@ describe("count_distinct()", {
   
   it("count_distinct_stemid() counts as expected", {
     by_sp <- group_by(census, sp)
-    expect_equal(pull(count_distinct_stemid(by_quad), n), c(3, 3))
     expect_equal(pull(count_distinct_stemid(by_sp), n), c(2, 1, 3))
+    expect_equal(pull(count_distinct_stemid(by_quad), n), c(3, 3))
   
     by_quad_sp <- group_by(census, quadrat, sp)
     expect_equal(pull(count_distinct_stemid(by_quad_sp), n), c(2, 1, 3))

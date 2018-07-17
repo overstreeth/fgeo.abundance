@@ -133,11 +133,11 @@ count_distinct_treeid <- function(.data) {
     check_crucial_names("treeid")
     
     # TODO: Replace with simpler function from fgeo.base
-    # fgeo.base::check_unique(.x, "treeid", "stop")
+    # fgeo.base::flag_multiple(.x, "treeid", "stop")
     fgeo.tool::flag_duplicated_var(stop, treeid)(.x)
     
     if ("censusid" %in% names(.x)) {
-      fgeo.base::check_unique(.x, "censusid", "warning")
+      fgeo.base::flag_multiple(.x, "censusid", rlang::warn)
     }
     
     .x %>% 
@@ -147,10 +147,14 @@ count_distinct_treeid <- function(.data) {
 #' @rdname count_distinct_treeid
 #' @export
 count_distinct_stemid <- function(.data) {
-  set_names(.data, tolower) %>%
-    check_count_distinct() %>%
-    # TODO: IMPLEMENT SIMILAR TO *_TREEID
+  .x <- set_names(.data, tolower) %>%
+    check_count_distinct()
+
+    if ("censusid" %in% names(.x)) {
+      fgeo.base::flag_multiple(.x, "censusid", rlang::warn)
+    }
     
+  .x %>% 
     check_crucial_names("stemid") %>%
     count_distinct(.data$stemid)
 }
