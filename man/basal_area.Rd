@@ -37,12 +37,12 @@ individual.
 }
 }
 \description{
+Basal area of each individual:
 \itemize{
 \item \code{basal_area()} is a generic function with methods for numeric vectors and
 dataframes. To calculate basal area within groups, feed \code{basal_area()} with a
 dataframe previously grouped with \code{\link[dplyr:group_by]{dplyr::group_by()}}.
-\item \code{add_basal_area()}
-adds a column \code{basal_area}.
+\item \code{add_basal_area()} adds a column \code{basal_area}.
 }
 }
 \examples{

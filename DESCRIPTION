@@ -21,7 +21,8 @@ Imports:
     splancs,
     stats,
     tibble,
-    tidyr
+    tidyr,
+    glue
 Suggests: 
     covr,
     fgeo.data,

@@ -17,15 +17,17 @@ Opinions vary on what \emph{abundance} means. For example, to calculate the
 abundance of woods with ForestGEO data, you may need to define the \code{status}
 and \code{dbh} range of the stems you are interested. But that's not the job of
 this functions. These functions only count distinct occurrences of variables.
-Thus, to calculate abundance in the exact way you want you need to compose
-these functions (e.g. \code{by_treeid_pick_dbh_max()}, \code{drop_dead_tree()}). To
-avoid creating false expectations, the name of these functions intentionally
-avoid the word \emph{abundance}.
 
-These functions are simpler and specialized versions \code{count_distinct()}, for
-specifically counting distinct occurrences of the variables \code{TreeID} and
-\code{StemID}, or \code{stemID} and \code{treeID}, which uniquely identify each stem and
-tree in \code{ViewFullTable}s and census datasets of ForestGEO.
+These functions are simpler, specialized versions of \code{count_distinct()},
+specifically for counting distinct occurrences of the variables \code{stemID} and
+\code{treeID} (or \code{TreeID} and \code{StemID}) which uniquely identify each stem and
+tree in ForestGEO-like datasets.
+
+\code{count_unique_treeid()} throws an error if each data-group contains more
+than one value of treeid (i.e. if it contains multiple stems). You should
+first collapse treeid by picking a single stem per treeid per group. Both
+\code{count_unique_treeid()} and \code{count_unique_stemid()} warn if the dataset
+contains multiple censusid.
 }
 \section{Warning}{
 

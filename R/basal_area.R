@@ -1,10 +1,10 @@
 #' Basal area of each individual.
 #'
+#' Basal area of each individual:
 #' * `basal_area()` is a generic function with methods for numeric vectors and
 #' dataframes. To calculate basal area within groups, feed `basal_area()` with a
 #' dataframe previously grouped with [dplyr::group_by()].
-#' * `add_basal_area()`
-#' adds a column `basal_area`.
+#' * `add_basal_area()` adds a column `basal_area`.
 #'
 #' @param x Numeric vector or dataframe giving the individuals' diameter.
 #' @param dbh If `x` is a dataframe, `dbh` is the bare name of the column giving

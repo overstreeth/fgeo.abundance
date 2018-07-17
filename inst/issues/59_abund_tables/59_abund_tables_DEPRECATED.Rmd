@@ -208,7 +208,7 @@ The values here are orders of magnitude greater that those reported in [Condit e
 
 -- [Condit et al.](https://dash.ucdavis.edu/stash/dataset/doi:10.15146/R3MM4V)
 
-But I don't still understand what precise standardization I should do (TODO: Discuss with Suzanne).
+But I don't still understand what precise standardization I should do (Discuss with Suzanne).
 
 ```{r}
 names(output[2])

@@ -6,9 +6,9 @@ test_that("outputs as expected", {
   vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
 
   # All trees are of the same species. There are two trees, each with two stems.
-  # In census 1, the count of alive trees should be 2 because both trees are alive,
-  #   but note that one stem is dead (StemID = 1.2).
-  # In census 2 the count of alive trees should be 1:
+  # In census 1, the count of alive trees should be 2 because both trees are
+  # alive, but note that one stem is dead (StemID = 1.2). In census 2 the count
+  # of alive trees should be 1: 
   #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
   #   * One tree is dead (TreeID = 2) because both its stems are dead.
   out <- abundance_byyr(vft)

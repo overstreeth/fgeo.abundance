@@ -85,12 +85,12 @@ count_distinct <- function(.data, .var) {
 #' `treeID` (or `TreeID` and `StemID`) which uniquely identify each stem and
 #' tree in ForestGEO-like datasets.
 #' 
-#' 
-#' # FIXME: IMPLEMENT
-#' * `count_unique_treeid()` throws an error if each data-group contains more
+#' `count_unique_treeid()` throws an error if each data-group contains more
 #' than one value of treeid (i.e. if it contains multiple stems). You should
-#' first collapse treeid by picking a single stem per treeid per group.
-#'   
+#' first collapse treeid by picking a single stem per treeid per group. Both
+#' `count_unique_treeid()` and `count_unique_stemid()` warn if the dataset
+#' contains multiple censusid.
+#' 
 #' @section Warning:
 #' These functions do not remove dead stems or trees. If you don't want dead
 #' trees to be included, remove them first (see [drop_dead_tree()],
@@ -130,25 +130,32 @@ count_distinct <- function(.data, .var) {
 count_distinct_treeid <- function(.data) {
   .x <- set_names(.data, tolower) %>%
     check_count_distinct() %>% 
+    groups_lower() %>% 
     check_crucial_names("treeid")
     
-    # TODO: Replace with simpler function from fgeo.base
-    # fgeo.base::flag_multiple(.x, "treeid", "stop")
-    fgeo.tool::flag_duplicated_var(stop, treeid)(.x)
+    fgeo.tool::flag_duplicated_var(abort, treeid)(.x)
     
     if ("censusid" %in% names(.x)) {
-      fgeo.base::flag_multiple(.x, "censusid", rlang::warn)
+      n_censusid <- dplyr::summarize(.x, n = dplyr::n_distinct(.data$censusid))
+      multiple_censusid <- any(n_censusid$n > 1)
+      if (multiple_censusid) {
+        id <- glue_collapse(
+          unique(.x$censusid), sep = ", ", width = 30, last = " and "
+        )
+        warn(glue("Detected multiple values of censusid: {id}."))
+      }
     }
     
-    .x %>% 
-      count_distinct(.data$treeid)
+    count_distinct(.x, .data$treeid)
 }
 
 #' @rdname count_distinct_treeid
 #' @export
 count_distinct_stemid <- function(.data) {
   .x <- set_names(.data, tolower) %>%
-    check_count_distinct()
+    check_count_distinct() %>% 
+    groups_lower() %>% 
+    check_crucial_names("stemid")
 
     if ("censusid" %in% names(.x)) {
       fgeo.base::flag_multiple(.x, "censusid", rlang::warn)
