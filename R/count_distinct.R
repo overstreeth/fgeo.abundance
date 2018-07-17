@@ -136,14 +136,7 @@ count_distinct_treeid <- function(.data) {
     fgeo.tool::flag_duplicated_var(abort, treeid)(.x)
     
     if ("censusid" %in% names(.x)) {
-      n_censusid <- dplyr::summarize(.x, n = dplyr::n_distinct(.data$censusid))
-      multiple_censusid <- any(n_censusid$n > 1)
-      if (multiple_censusid) {
-        id <- glue_collapse(
-          unique(.x$censusid), sep = ", ", width = 30, last = " and "
-        )
-        warn(glue("Detected multiple values of censusid: {id}."))
-      }
+      warn_duplicated_censusid_by_group(.x)
     }
     
     count_distinct(.x, .data$treeid)
@@ -154,16 +147,20 @@ count_distinct_treeid <- function(.data) {
 count_distinct_stemid <- function(.data) {
   .x <- set_names(.data, tolower) %>%
     check_count_distinct() %>% 
-    groups_lower() %>% 
-    check_crucial_names("stemid")
+    groups_lower()
+  
+  if ("censusid" %in% names(.x)) {
+    warn_duplicated_censusid_by_group(.x)
+  }
 
-    if ("censusid" %in% names(.x)) {
-      fgeo.base::flag_multiple(.x, "censusid", rlang::warn)
-    }
-    
-  .x %>% 
-    check_crucial_names("stemid") %>%
-    count_distinct(.data$stemid)
+  check_crucial_names(.x, "stemid")
+  
+  out <- .x %>% 
+    count_distinct(.data$stemid) %>% 
+    rename_matches(.data)
+  
+  g <- group_vars_restore(out, .data)
+  dplyr::grouped_df(ungroup(out), g)
 }
 
 check_count_distinct <- function(.data) {
@@ -177,4 +174,17 @@ check_count_distinct <- function(.data) {
 invalid_var <- function(.data, .var) {
   .var <- pull_name(rlang::expr_name(rlang::get_expr(.var)))
   !.var %in% names(.data)
+}
+
+warn_duplicated_censusid_by_group <- function(.x) {
+  n_censusid <- dplyr::summarize(.x, n = dplyr::n_distinct(.data$censusid))
+  multiple_censusid <- any(n_censusid$n > 1)
+  if (multiple_censusid) {
+    id <- glue_collapse(
+      unique(.x$censusid), sep = ", ", width = 30, last = " and "
+    )
+    warn(glue("Detected multiple values of censusid: {id}."))
+  }
+  
+  invisible(.x)
 }

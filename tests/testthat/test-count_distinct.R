@@ -13,28 +13,47 @@ census <- tibble(
 census
 
 describe("count_distinct()", {
-  by_treeid <- group_by(census, treeID)
-  by_quad <- group_by(census, quadrat)
 
-  it("count_distinct() counts as expected", {
+  it("counts as expected and outputs the expected names and groups", {
     expect_equal(pull(count_distinct(census, stemID), n), 6)
   
+    by_treeid <- group_by(census, treeID)
     out <- count_distinct(by_treeid, stemID)
     expect_named(out, c("treeID", "n"))
     expect_equal(pull(out, n), c(2, 1, 3))
+    expect_equal(group_vars(out), character(0))
+    
+    by_quad <- group_by(census, quadrat)
     expect_equal(pull(count_distinct(by_quad, stemID), n), c(3, 3))
     expect_equal(pull(count_distinct(by_quad, treeID), n), c(2, 1))
+
+    by_treeid_sp <- group_by(census, treeID, sp)
+    out <- count_distinct(by_treeid_sp, stemID)
+    expect_equal(group_vars(out), "treeID")
   })
-  
-  it("count_distinct_stemid() counts as expected", {
+})
+
+describe("count_distinct_stemid()", {
+  it("counts as expected", {
     by_sp <- group_by(census, sp)
-    expect_equal(pull(count_distinct_stemid(by_sp), n), c(2, 1, 3))
+    out <- count_distinct_stemid(by_sp)
+    expect_equal(pull(out, n), c(2, 1, 3))
+    
+    by_quad <- group_by(census, quadrat)
     expect_equal(pull(count_distinct_stemid(by_quad), n), c(3, 3))
-  
+    
     by_quad_sp <- group_by(census, quadrat, sp)
     expect_equal(pull(count_distinct_stemid(by_quad_sp), n), c(2, 1, 3))
   })
+  
+  it("outputs expected names and groups", {
+    by_treeid_sp <- group_by(census, treeID, sp)
+    out <- count_distinct_stemid(by_treeid_sp)
+    expect_named(out, c("treeID", "sp", "n"))
+    expect_equal(group_vars(out), "treeID")
+  })
 })
+
 
 test_that("count_distinct() and friends fail with informative error", {
   expect_error(count_distinct(1), "must be a dataframe")
@@ -70,4 +89,6 @@ describe("count_distinct_treeid()", {
     by_censusid <- group_by(census, CensusID)
     expect_silent(count_distinct_treeid(by_censusid))
   })
+  
+  
 })
