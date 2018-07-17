@@ -43,11 +43,8 @@
 #' years <- c("2001", "2002")
 #' in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
 #' standardize_at(in_he, .at = years, denominator = 50)
-#' @name byyr
-NULL
-
-#' @rdname byyr
-#' @export
+#' @keywords internal
+#' @noRd
 abundance_byyr <- function(vft, status_a = "alive", status_d = "dead") {
   crucial <- c("plotname", "tag")
   vft %>%
@@ -64,8 +61,7 @@ abundance_byyr <- function(vft, status_a = "alive", status_d = "dead") {
     rename_matches(vft)
 }
 
-#' @rdname byyr
-#' @export
+#' @rdname abundance_byyr
 basal_area_byyr <- function(vft, status_a = "alive", status_d = "dead") {
   vft %>%
     set_names(tolower) %>%

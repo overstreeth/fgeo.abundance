@@ -12,22 +12,28 @@ count_distinct_stemid(.data)
 \arguments{
 \item{.data}{A ForestGEO-like dataframe, commonly grouped with \code{group_by()}.}
 }
+\value{
+An object of the same class as .data. One grouping level will be
+dropped (because of \code{dplyr::summarize()}).
+}
 \description{
-Opinions vary on what \emph{abundance} means. For example, to calculate the
-abundance of woods with ForestGEO data, you may need to define the \code{status}
-and \code{dbh} range of the stems you are interested. But that's not the job of
-this functions. These functions only count distinct occurrences of variables.
-
 These functions are simpler, specialized versions of \code{count_distinct()},
 specifically for counting distinct occurrences of the variables \code{stemID} and
 \code{treeID} (or \code{TreeID} and \code{StemID}) which uniquely identify each stem and
-tree in ForestGEO-like datasets.
-
+tree in ForestGEO-like datasets. They work with data grouped with
+\code{dplyr::group_by()}.
+}
+\details{
 \code{count_unique_treeid()} throws an error if each data-group contains more
 than one value of treeid (i.e. if it contains multiple stems). You should
 first collapse treeid by picking a single stem per treeid per group. Both
 \code{count_unique_treeid()} and \code{count_unique_stemid()} warn if the dataset
 contains multiple censusid.
+
+Opinions vary on what \emph{abundance} means. For example, to calculate the
+abundance of woods with ForestGEO data, you may need to define the \code{status}
+and \code{dbh} range of the stems you are interested. But that's not the job of
+this functions. These functions only count distinct occurrences of variables.
 }
 \section{Warning}{
 

@@ -13,7 +13,7 @@ count_distinct(.data, .var)
 }
 \value{
 An object of the same class as .data. One grouping level will be
-dropped.
+dropped (because of \code{dplyr::summarize()}).
 }
 \description{
 This function works with grouped data (via
