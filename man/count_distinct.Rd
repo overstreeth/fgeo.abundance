@@ -2,15 +2,9 @@
 % Please edit documentation in R/count_distinct.R
 \name{count_distinct}
 \alias{count_distinct}
-\alias{count_distinct_stemid}
-\alias{count_distinct_treeid}
-\title{Count distinct values of treeid, stemid, or any variable by groups.}
+\title{Count distinct values of any variable (optionally by groups).}
 \usage{
 count_distinct(.data, .var)
-
-count_distinct_stemid(.data)
-
-count_distinct_treeid(.data)
 }
 \arguments{
 \item{.data}{A dataframe, commonly grouped with \code{group_by()}.}
@@ -22,63 +16,11 @@ An object of the same class as .data. One grouping level will be
 dropped.
 }
 \description{
-Opinions vary on what \emph{abundance} means. For example, to calculate the
-abundance of woods with ForestGEO data, you may need to define the \code{status}
-and \code{dbh} range of the stems you are interested. But that's not the job of
-this functions. These functions only count distinct occurrences of variables.
-Thus, to calculate abundance in the exact way you want you need to compose
-these functions (e.g. \code{collapse_treeid_max()}, \code{pick_dbh_min()},
-\code{pick_status()}, \code{drop_dead_tree()}). To avoid creating false expectations, the
-name of these functions intentionally avoid the word \emph{abundance}.
-
-These functions are usually used with grouped data (via
+This function works with grouped data (via
 \code{dplyr::group_by()}). The output will have one row for each group.
-\itemize{
-\item \code{count_distinct()} counts distinct occurrences of any variable of any
-dataset (not specifically a ForestGEO dataset).
-\item \code{count_distinct_stemid()} and \code{count_distinct_treeid()} are simpler and
-specialized versions \code{count_distinct()}, for specifically counting distinct
-occurrences of the variables \code{TreeID} and \code{StemID}, or \code{stemID} and \code{treeID},
-which uniquely identify each stem and tree in \code{ViewFullTable}s and census
-datasets of ForestGEO.
 }
-}
-\section{Warning}{
-
-These functions do not remove dead stems or trees. If you don't want dead
-trees to be included, remove them first (see \code{\link[=drop_dead_tree]{drop_dead_tree()}},
-\code{\link[=drop_dead_stem]{drop_dead_stem()}}.
-}
-
 \examples{
 library(dplyr)
-
-census <- tibble::tibble(
-  treeID = c(1, 1, 2, 3, 3, 3),
-  stemID = c(1, 2, 3, 4, 5, 6),
-  quadrat = paste0("000", rep(1:2, each = 3)),
-  sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
-  dbh = abs(sample(rnorm(100), 6) * 10)
-)
-census
-
-count_distinct(census, stemID)
-
-by_quad <- group_by(census, quadrat)
-count_distinct(by_quad, stemID)
-count_distinct(by_quad, treeID)
-
-count_distinct_stemid(by_quad)
-
-count_distinct_treeid(by_quad)
-
-by_sp <- group_by(census, sp)
-count_distinct_stemid(by_sp)
-count_distinct_treeid(by_sp)
-
-by_quad_sp <- group_by(census, quadrat, sp)
-count_distinct_stemid(by_quad_sp)
-count_distinct_treeid(by_quad_sp)
 
 # Compare to dplyr::summarize() and dplyr::n_distinct()
 library(dplyr)
@@ -111,8 +53,6 @@ dplyr::n_distinct(mtcars, cyl)
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[=drop_dead_tree]{drop_dead_tree()}},
 \code{\link[=drop_dead_stem]{drop_dead_stem()}}.
-
-Other functions for fgeo census and vft.: \code{\link{count_woods}}
 }
 \concept{abundance functions.}
-\concept{functions for fgeo census and vft.}
+\concept{functions not specific to ForestGEO}

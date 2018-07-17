@@ -6,11 +6,11 @@
 \alias{count_saplings}
 \title{Count unique trees based on the dbh of their largest stem.}
 \usage{
-count_woods(.data, ..., .collapse = fgeo.tool::collapse_treeid_max)
+count_woods(.data, ..., .collapse = fgeo.tool::by_treeid_pick_dbh_max)
 
-count_trees(.data, .collapse = fgeo.tool::collapse_treeid_max)
+count_trees(.data, .collapse = fgeo.tool::by_treeid_pick_dbh_max)
 
-count_saplings(.data, .collapse = fgeo.tool::collapse_treeid_max)
+count_saplings(.data, .collapse = fgeo.tool::by_treeid_pick_dbh_max)
 }
 \arguments{
 \item{.data}{A dataframe; particularly a ForestGEO census or ViewFullTable.}
@@ -18,8 +18,8 @@ count_saplings(.data, .collapse = fgeo.tool::collapse_treeid_max)
 \item{...}{Expressions to pick stems of specific \code{dbh} -- where \emph{stems}
 refers to the largest stem of each tree.}
 
-\item{.collapse}{\code{fgeo.tool::collapse_treeid_max} and
-\code{fgeo.tool::collapse_treeid_min}(bare name of the corresponding functions)
+\item{.collapse}{\code{fgeo.tool::by_treeid_pick_dbh_max} and
+\code{fgeo.tool::by_treeid_pick_dbh_min}(bare name of the corresponding functions)
 collapse the data picking the stem (of each treeid) with the maximum and
 minimum dbh, respectively.}
 }
@@ -71,6 +71,6 @@ count_woods(by_sp, dbh > 10, dbh < 100)
 count_saplings(by_sp)
 }
 \seealso{
-Other functions for fgeo census and vft.: \code{\link{count_distinct}}
+Other functions for fgeo census and vft.: \code{\link{count_distinct_treeid}}
 }
 \concept{functions for fgeo census and vft.}

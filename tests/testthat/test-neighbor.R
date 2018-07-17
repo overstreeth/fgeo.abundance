@@ -34,7 +34,7 @@ describe("neighbor_*() inputs", {
   
   it("warns if detects a stem (not tree) table", {
     stem <- fgeo.data::luquillo_stem5_random
-    expect_warning(count_neighbor(stem, r = 20), "Detected duplicated `treeID`")
+    expect_warning(count_neighbor(stem, r = 20), "Detected duplicated")
   })
 })
 

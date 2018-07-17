@@ -12,12 +12,14 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(fgeo)
-#> -- Attaching packages ------------------------------------------------ fgeo 0.0.0.9000 --
+#> -- Attaching packages -------------------------------------- fgeo 0.0.0.9000 --
 #> v fgeo.abundance  0.0.0.9004     v fgeo.demography 0.0.0.9000
 #> v fgeo.base       0.0.0.9001     v fgeo.habitat    0.0.0.9006
 #> v fgeo.data       0.0.0.9002     v fgeo.map        0.0.0.9204
 #> v fgeo.abundance  0.0.0.9004     v fgeo.tool       0.0.0.9003
-#> -- Conflicts -------------------------------------------------------- fgeo_conflicts() --
+#> Warning: 'DESCRIPTION' file has an 'Encoding' field and re-encoding is not
+#> possible
+#> -- Conflicts ---------------------------------------------- fgeo_conflicts() --
 #> x fgeo.tool::filter() masks dplyr::filter(), stats::filter()
 #> x dplyr::intersect()  masks base::intersect()
 #> x dplyr::lag()        masks stats::lag()
@@ -93,7 +95,7 @@ choosing the one of the stem with the greaterst `dbh`. For that we write
 a helper function.
 
 ``` r
-collapse_treeid <- function(.data) {
+by_treeid_pick_dbh_max <- function(.data) {
   .data %>% 
     group_by(.data$treeID) %>% 
     arrange(desc(.data$dbh)) %>% 
@@ -106,7 +108,7 @@ Now the output is as expected.
 
 ``` r
 saplings_good <- census %>% 
-  collapse_treeid() %>% 
+  by_treeid_pick_dbh_max() %>% 
   filter(dbh >= 10) %>% 
   filter(dbh < 100)
 saplings_good
@@ -148,7 +150,7 @@ trees_bad
 #> 2 sp2       1
 
 trees_good <- census %>% 
-  collapse_treeid() %>% 
+  by_treeid_pick_dbh_max() %>% 
   pick_dbh_min(100) %>% 
   group_by(sp)
 trees_good

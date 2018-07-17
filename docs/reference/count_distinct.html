@@ -37,9 +37,9 @@ abundance of woods with ForestGEO data, you may need to define the status
 and dbh range of the stems you are interested. But that's not the job of
 this functions. These functions only count distinct occurrences of variables.
 Thus, to calculate abundance in the exact way you want you need to compose
-these functions (e.g. collapse_treeid_max(), pick_dbh_min(),
-pick_status(), drop_dead_tree()). To avoid creating false expectations, the
-name of these functions intentionally avoid the word abundance.
+these functions (e.g. by_treeid_pick_dbh_max(), drop_dead_tree()). To
+avoid creating false expectations, the name of these functions intentionally
+avoid the word abundance.
 These functions are usually used with grouped data (via
 dplyr::group_by()). The output will have one row for each group.
 count_distinct() counts distinct occurrences of any variable of any
@@ -135,9 +135,9 @@ abundance of woods with ForestGEO data, you may need to define the <code>status<
 and <code>dbh</code> range of the stems you are interested. But that's not the job of
 this functions. These functions only count distinct occurrences of variables.
 Thus, to calculate abundance in the exact way you want you need to compose
-these functions (e.g. <code>collapse_treeid_max()</code>, <code>pick_dbh_min()</code>,
-<code>pick_status()</code>, <code>drop_dead_tree()</code>). To avoid creating false expectations, the
-name of these functions intentionally avoid the word <em>abundance</em>.</p>
+these functions (e.g. <code>by_treeid_pick_dbh_max()</code>, <code>drop_dead_tree()</code>). To
+avoid creating false expectations, the name of these functions intentionally
+avoid the word <em>abundance</em>.</p>
 <p>These functions are usually used with grouped data (via
 <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code>). The output will have one row for each group.</p><ul>
 <li><p><code>count_distinct()</code> counts distinct occurrences of any variable of any

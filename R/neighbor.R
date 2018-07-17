@@ -76,9 +76,9 @@ NULL
 neighbor <- function(type) {
   force(type)
   function(.data,
-             .subset = NULL,
-             r,
-             plotdim = NULL) {
+           .subset = NULL,
+           r,
+           plotdim = NULL) {
     check_neighbor(.data, .subset)
 
     plotdim <- plotdim %||% fgeo.base::guess_plotdim(.data)
@@ -112,7 +112,7 @@ check_neighbor <- function(.data, .subset) {
     prepend_crucial_nm_msg(.subset, crucial_sub, "Invalid `.subset`. ")
   }
   
-  fgeo.tool::warn_duplicated_treeid(.data)
+  warn_duplicated_treeid(.data)
   
   invisible(.data)
 }
