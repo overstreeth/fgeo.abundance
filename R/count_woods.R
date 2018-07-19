@@ -54,7 +54,8 @@
 #' count_saplings(by_sp)
 count_woods <- function(.data, 
                         ..., 
-                        .collapse = fgeo.tool::pick_dbh_largest) {
+                        .collapse = fgeo.tool::pick_dbh_largest,
+                        .f = count_distinct_treeid) {
   stopifnot(is.data.frame(.data))
   # Lowercase names and groups for work with both census and ViewFullTable
   .x <- set_names(.data, tolower)
@@ -71,7 +72,9 @@ count_woods <- function(.data,
   
   # do() prefferred to by_group() to not drop empty groups (they result in 0L)
   dots <- rlang::enquos(...)
-  out <- dplyr::do(.x, count_woods_impl(., !!! dots, .collapse = .collapse))
+  out <- dplyr::do(
+    .x, f_picked_woods(., !!! dots, .collapse = .collapse, .f = .f)
+  )
   
   # Restore original names; then original groups
   out <- rename_matches(out, .data)
@@ -82,11 +85,23 @@ multiple_plotname <- fgeo.base::multiple_var("plotname")
 
 multiple_censusid <- fgeo.base::multiple_var("censusid")
 
-count_woods_impl <- function(.data, ..., .collapse) {
+f_picked_woods <- function(.data, ..., .collapse, .f) {
   .dots <- rlang::enquos(...)
   pick <- dplyr::filter( .collapse(.data), !!! .dots)
-  count_distinct_treeid(pick)
+  .f(pick)
 }
+
+xxx <- function(.data,
+                        ...,
+                        .collapse = fgeo.tool::pick_dbh_largest) {
+  count_woods(
+    .data, ..., .collapse = fgeo.tool::pick_dbh_largest, 
+    .f = count_distinct_treeid
+  )
+}
+
+
+
 
 
 
