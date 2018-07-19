@@ -1,5 +1,5 @@
 ---
-title: "Count saplings"
+title: "Counting trees and saplings"
 output: github_document
 ---
 
@@ -10,29 +10,27 @@ knitr::opts_chunk$set(
 )
 ```
 
+This document reports the progress on functions to count trees (stems of dbh 100 mm and above) and saplings (stems of dbh between 10 mm inclusive and 100 mm exclusive). It follows up a discussion with Suzanne Lao, in which she identified a bug in an earlier version of the code. Now, as far as I know, the issue is fixed. The solution was to develop a feature that Suzanne had requested: To pick the stem of largest dbh of each tree before doing any other filtering on dbh. Here I show the issue and the fix.
 
 ```{r}
 library(dplyr)
 library(fgeo)
 ```
 
-> For example, if I want to see how many saplings there are per species, the
-dbh range would be >=10mm and <100mm. A tree with multiple stems 120 and 20 will be counted, is this correct?
-
 Data: Creating a dataset with one sapling (dbh >= 10 mm & dbh < 100 mm) and one tree (dbh >= 100 mm). The tree has two stems, of 20 mm and 120 mm; the sapling also has two stems, of 22 mm and 99 mm. 
 
 ```{r}
-census <- data.frame(
+census <- tibble(
     stringsAsFactors = FALSE,
-    dbh = c(20, 120, 22, 99, NA),
     sp = c("sp1", "sp1", "sp2", "sp2", "sp2"),
     treeID = c("1", "1", "2", "2", "2"),
-    stemID = c("1.1", "1.2", "2.1", "2.2", "2.3")
+    stemID = c("1.1", "1.2", "2.1", "2.2", "2.3"),
+    dbh = c(20, 120, 22, 99, NA)
 )
 census
 ```
 
-If we count distinct `treeID`s directly we get a wrong output. The problem is that the larger stem of the tree is dropped and the smaller one inluded -- making the tree appear like a sappling. We expect a total of only one saplig but we get two.
+If we count distinct `treeID`s directly we get a wrong output. The problem is that the larger stem of the tree is dropped and the smaller one included -- making the tree appear like a sapling. We expect a total of only one sapling but we get two.
 
 ```{r}
 # This preserves missing `dbh` (unless `na.rm = FALSE`)
@@ -41,7 +39,7 @@ saplings_bad <- census %>%
   pick_dbh_under(100)
 saplings_bad
 
-count_distinct_treeid(saplings_bad)
+count_distinct(saplings_bad, treeID)
 ```
 
 The problem is clearer if we group by species. Note that sp1 should show zero saplings instead of 1.
@@ -50,55 +48,73 @@ The problem is clearer if we group by species. Note that sp1 should show zero sa
 # Count unique instances of treeID by species
 saplings_bad %>% 
   group_by(sp) %>% 
-  count_distinct_treeid()
+  count_distinct(treeID)
 ```
 
-The solution is to collapse the table to a single row per tree -- choosing the one of the stem with the greaterst `dbh`. For that we write a helper function.
+The solution is to collapse the table to a single row per tree -- choosing the one of the stem with the largest `dbh`.
 
 ```{r}
-by_treeid_pick_dbh_max <- function(.data) {
-  .data %>% 
-    group_by(.data$treeID) %>% 
-    arrange(desc(.data$dbh)) %>% 
-    filter(row_number() == 1) %>% 
-    ungroup()
-}
+largest <- census %>% pick_dbh_largest()
+largest
+
+saplings_good <- largest %>% 
+  filter(dbh >= 10) %>% 
+  filter(dbh < 100)
+saplings_good
 ```
 
 Now the output is as expected.
 
 ```{r}
-saplings_good <- census %>% 
-  by_treeid_pick_dbh_max() %>% 
-  filter(dbh >= 10) %>% 
-  filter(dbh < 100)
-saplings_good
-
 count_distinct_treeid(saplings_good)
-```
 
----
-
-> Then I want to count trees per species, i.e. >=100mm, this tree would also be counted by your current function, is this correct?
-
-> If so, this will be wrong, since it will be counted twice. A tree with stems 120 and 20 is a tree, not a sapling, and should only be counted as a tree.
-
-Again, we only get the correct result if we first collapse the dataset by choosing the largest stem of each tree.
-
-```{r}
-# This preserves missing `dbh` (unless `na.rm = FALSE`)
-trees_bad <- census %>% 
-  pick_dbh_min(100) %>% 
+saplings_good %>% 
   group_by(sp) %>% 
   count_distinct_treeid()
-trees_bad
-
-trees_good <- census %>% 
-  by_treeid_pick_dbh_max() %>% 
-  pick_dbh_min(100) %>% 
-  group_by(sp)
-trees_good
-count_distinct_treeid(trees_good)
 ```
 
-Now I can wrap this solution into a user-friendly funtions. 
+Above we picked saplings with the new function `pick_dbh_largest()` and `dplyr::filter()`. That is quite simple but, considering this may be a very common task, we can make it even simpler with the new specialized functions `count_woods()`, and its friends `count_saplings()` and `count_trees()`.
+
+The new workflow to count saplings is this; first across the entire dataset and then by species:
+
+```{r}
+census %>% count_saplings()
+
+census %>% 
+  group_by(sp) %>% 
+  count_saplings()
+```
+
+And this is the workflow for counting trees:
+
+```{r}
+census %>% count_trees()
+
+census %>% 
+  group_by(sp) %>% 
+  count_trees()
+```
+
+Finally, this is the most general approach:
+
+* Saplings
+
+```{r}
+# Saplings
+census %>% count_woods(dbh >= 10, dbh < 100)
+
+census %>%
+  group_by(sp) %>%
+  count_woods(dbh >= 100)
+```
+
+* Trees
+
+```{r}
+census %>% count_woods(dbh >= 100)
+
+census %>% 
+  group_by(sp) %>%
+  count_woods(dbh >= 100)
+```
+
