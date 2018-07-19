@@ -100,7 +100,6 @@ Finally, this is the most general approach:
 * Saplings
 
 ```{r}
-# Saplings
 census %>% count_woods(dbh >= 10, dbh < 100)
 
 census %>%

@@ -187,7 +187,6 @@ Finally, this is the most general approach:
 <!-- end list -->
 
 ``` r
-# Saplings
 census %>% count_woods(dbh >= 10, dbh < 100)
 #> # A tibble: 1 x 1
 #>       n
