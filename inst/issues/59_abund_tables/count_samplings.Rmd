@@ -117,3 +117,22 @@ census %>%
   count_woods(dbh >= 100)
 ```
 
+## Creating tables of abundance
+
+```{r}
+vft <- fgeo.data::luquillo_vft_4quad
+
+largest <- vft %>% pick_dbh_largest()
+
+# Saplings
+largest %>% 
+  pick_dbh_min(10) %>% 
+  pick_dbh_under(100) %>% 
+  abundance_byyr()
+
+# Trees
+largest %>% 
+  pick_dbh_min(100) %>% 
+  abundance_byyr()
+```
+

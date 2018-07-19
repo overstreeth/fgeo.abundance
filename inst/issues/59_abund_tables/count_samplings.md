@@ -225,3 +225,50 @@ census %>%
 #> 1 sp1       1
 #> 2 sp2       0
 ```
+
+## Creating tables of abundance
+
+``` r
+vft <- fgeo.data::luquillo_vft_4quad
+
+largest <- vft %>% pick_dbh_largest()
+
+# Saplings
+largest %>% 
+  pick_dbh_min(10) %>% 
+  pick_dbh_under(100) %>% 
+  abundance_byyr()
+#> # A tibble: 42 x 5
+#>    species                  Family        `2006` `2012` `2016`
+#>    <chr>                    <chr>          <dbl>  <dbl>  <dbl>
+#>  1 Alchornea latifolia      Euphorbiaceae      5      1      1
+#>  2 Alchorneopsis floribunda Euphorbiaceae      4      0      0
+#>  3 Buchenavia tetraphylla   Combretaceae       2      1      1
+#>  4 Byrsonima spicata        Malpighiaceae      4      3      2
+#>  5 Casearia arborea         Salicaceae        96     95     93
+#>  6 Casearia sylvestris      Salicaceae        14     10      8
+#>  7 Cecropia schreberiana    Urticaceae         7      0      0
+#>  8 Chionanthus domingensis  Oleaceae           0      0      1
+#>  9 Cordia borinquensis      Boraginaceae       8      6      7
+#> 10 Dacryodes excelsa        Burseraceae        1      1      1
+#> # ... with 32 more rows
+
+# Trees
+largest %>% 
+  pick_dbh_min(100) %>% 
+  abundance_byyr()
+#> # A tibble: 34 x 5
+#>    species                  Family         `2006` `2012` `2016`
+#>    <chr>                    <chr>           <dbl>  <dbl>  <dbl>
+#>  1 Alchornea latifolia      Euphorbiaceae       4      1      2
+#>  2 Alchorneopsis floribunda Euphorbiaceae       2      4      4
+#>  3 Buchenavia tetraphylla   Combretaceae        0      1      1
+#>  4 Byrsonima spicata        Malpighiaceae       1      0      0
+#>  5 Casearia arborea         Salicaceae         16     24     24
+#>  6 Casearia sylvestris      Salicaceae          1      2      2
+#>  7 Cecropia schreberiana    Urticaceae         62     45     19
+#>  8 Cordia sulcata           Boraginaceae        2      2      2
+#>  9 Dacryodes excelsa        Burseraceae         1      1      1
+#> 10 Drypetes glauca          Putranjivaceae      1      1      1
+#> # ... with 24 more rows
+```
