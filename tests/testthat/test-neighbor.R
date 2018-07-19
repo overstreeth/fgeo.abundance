@@ -3,6 +3,7 @@ context("neighbor")
 library(dplyr)
 library(purrr)
 library(tidyr)
+library(fgeo.tool)
 
 tree <- fgeo.data::luquillo_tree5_random[1:10, ]
 

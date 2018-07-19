@@ -74,12 +74,14 @@ count_distinct_impl <- function(.data, .var) {
 
 #' Count distinct values of treeid, stemid (optionally by groups).
 #' 
+#' @description 
 #' These functions are simpler, specialized versions of `count_distinct()`,
 #' specifically for counting distinct occurrences of the variables `stemID` and
 #' `treeID` (or `TreeID` and `StemID`) which uniquely identify each stem and
 #' tree in ForestGEO-like datasets. They work with data grouped with
 #' `dplyr::group_by()`.
-#' 
+#'  
+#' @description 
 #' `count_unique_treeid()` throws an error if each data-group contains more
 #' than one value of treeid (i.e. if it contains multiple stems). You should
 #' first collapse treeid by picking a single stem per treeid per group. Both
@@ -107,6 +109,7 @@ count_distinct_impl <- function(.data, .var) {
 #' 
 #' @examples
 #' library(dplyr)
+#' library(fgeo.tool)
 #' 
 #' census <- tibble::tibble(
 #'   treeID = c(1, 1, 2, 3, 3, 3),
@@ -116,19 +119,23 @@ count_distinct_impl <- function(.data, .var) {
 #'   dbh = abs(sample(rnorm(100), 6) * 10)
 #' )
 #' census
-#'
-#' by_quad <- group_by(census, quadrat)
-#' count_distinct_stemid(by_quad)
 #' 
+#' count_distinct_stemid(census)
+#' 
+#' # To count distinct treeIDs you first need to pick one stem per tree
+#' \dontrun{
+#' # Error
+#' count_distinct_treeid(census)
+#' }
+#' largest_stem <- by_treeid_pick_dbh_max(census)
+#' largest_stem
+#' count_distinct_treeid(largest_stem)
+#' 
+#' by_quad <- group_by(largest_stem, quadrat)
 #' count_distinct_treeid(by_quad)
-#'
-#' by_sp <- group_by(census, sp)
-#' count_distinct_stemid(by_sp)
 #' 
-#' count_distinct_treeid(by_sp)
-#'
-#' by_quad_sp <- group_by(census, quadrat, sp)
-#' count_distinct_stemid(by_quad_sp)
+#' # You can count within groups by multiple variables
+#' by_quad_sp <- group_by(largest_stem, quadrat, sp)
 #' count_distinct_treeid(by_quad_sp)
 count_distinct_treeid <- function(.data) {
   .x <- set_names(.data, tolower) %>%

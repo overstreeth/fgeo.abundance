@@ -1,48 +1,50 @@
+# # FIXME: Broken exmaples
+# # Or load all fgeo packages in one step with library(fgeo)
+# library(fgeo.tool)
+# library(fgeo.base)
+# 
+# vft <- tibble(
+#   PlotName = c("luq", "luq", "luq", "luq", "luq", "luq", "luq", "luq"),
+#   CensusID = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
+#   TreeID = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L),
+#   StemID = c(1.1, 1.2, 2.1, 2.2, 1.1, 1.2, 2.1, 2.2),
+#   Status = c("alive", "dead", "alive", "alive", "alive", "gone",
+#     "dead", "dead"),
+#   DBH = c(1L, NA, 2L, 3L, 2L, NA, 3L, 4L),
+#   Genus = c("Gn", "Gn", "Gn", "Gn", "Gn", "Gn", "Gn", "Gn"),
+#   SpeciesName = c("spp", "spp", "spp", "spp", "spp", "spp", "spp", "spp"),
+#   ExactDate = c("2001-01-01", "2001-01-01", "2001-01-01", "2001-01-01",
+#     "2002-01-01", "2002-01-01", "2002-01-01",
+#     "2002-01-01"),
+#   PlotCensusNumber = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
+#   Family = c("f", "f", "f", "f", "f", "f", "f", "f"),
+#   Tag = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L)
+# )
+# vft
+# 
+# # All trees are of the same species. There are two trees, each with two stems.
+# # In census 1, the count of alive trees should be 2 because both trees are
+# #   alive, but note that one stem is dead (StemID = 1.2).
+# # In census 2 the count of alive trees should be 1:
+# #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
+# #   * One tree is dead (TreeID = 2) because both its stems are dead.
+# abundance_byyr(vft)
+# 
+# ba <- basal_area_byyr(vft)
+# 
+# # Convert units and standardize by plot size in hectares
+# years <- c("2001", "2002")
+# in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
+# standardize_at(in_he, .at = years, denominator = 50)
+
+
+
 #' Create tables of abundance and basal area by (round mean) year.
 #'
 #' @param vft A dataframe; particularly a ForestGEO ViewFullTable.
 #' @inheritParams fgeo.tool::add_status_tree
 #'
 #' @return A dataframe.
-#'
-#' @examples
-#' # Or load all fgeo packages in one step with library(fgeo)
-#' library(fgeo.tool)
-#' library(fgeo.base)
-#'
-#' vft <- tibble(
-#'   PlotName = c("luq", "luq", "luq", "luq", "luq", "luq", "luq", "luq"),
-#'   CensusID = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
-#'   TreeID = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L),
-#'   StemID = c(1.1, 1.2, 2.1, 2.2, 1.1, 1.2, 2.1, 2.2),
-#'   Status = c("alive", "dead", "alive", "alive", "alive", "gone",
-#'     "dead", "dead"),
-#'   DBH = c(1L, NA, 2L, 3L, 2L, NA, 3L, 4L),
-#'   Genus = c("Gn", "Gn", "Gn", "Gn", "Gn", "Gn", "Gn", "Gn"),
-#'   SpeciesName = c("spp", "spp", "spp", "spp", "spp", "spp", "spp", "spp"),
-#'   ExactDate = c("2001-01-01", "2001-01-01", "2001-01-01", "2001-01-01",
-#'     "2002-01-01", "2002-01-01", "2002-01-01",
-#'     "2002-01-01"),
-#'   PlotCensusNumber = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
-#'   Family = c("f", "f", "f", "f", "f", "f", "f", "f"),
-#'   Tag = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L)
-#' )
-#' vft
-#'
-#' # All trees are of the same species. There are two trees, each with two stems.
-#' # In census 1, the count of alive trees should be 2 because both trees are
-#' #   alive, but note that one stem is dead (StemID = 1.2).
-#' # In census 2 the count of alive trees should be 1:
-#' #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
-#' #   * One tree is dead (TreeID = 2) because both its stems are dead.
-#' abundance_byyr(vft)
-#'
-#' ba <- basal_area_byyr(vft)
-#'
-#' # Convert units and standardize by plot size in hectares
-#' years <- c("2001", "2002")
-#' in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
-#' standardize_at(in_he, .at = years, denominator = 50)
 #' @keywords internal
 #' @noRd
 abundance_byyr <- function(vft, status_a = "alive", status_d = "dead") {

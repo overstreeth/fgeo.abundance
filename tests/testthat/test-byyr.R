@@ -1,5 +1,10 @@
 context("abundance_byyr")
 
+library(dplyr)
+library(rlang)
+library(fgeo.tool)
+library(fgeo.base)
+
 test_that("outputs as expected", {
   skip_if_not_installed("fgeo.tool")
   skip_if_not_installed("readr")
@@ -8,9 +13,12 @@ test_that("outputs as expected", {
   # All trees are of the same species. There are two trees, each with two stems.
   # In census 1, the count of alive trees should be 2 because both trees are
   # alive, but note that one stem is dead (StemID = 1.2). In census 2 the count
-  # of alive trees should be 1: 
+  # of alive trees should be 1:
   #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
   #   * One tree is dead (TreeID = 2) because both its stems are dead.
+  
+  # Collapse treeid
+  vft <- by_treeid_pick_dbh_max(vft)
   out <- abundance_byyr(vft)
   expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
   expect_equal(out$`2001`, 2)
@@ -22,9 +30,10 @@ test_that("works with luquillo", {
   suppressMessages(
     suppressWarnings({
       luq <- luquillo::ViewFullTable_luquillo %>%
-        dplyr::sample_n(10) %>%
-        fgeo.base::pick_plotname("luquillo") %>%
-        fgeo.base::pick_dbh_min(2)
+        sample_n(10) %>%
+        pick_plotname("luquillo") %>%
+        by_treeid_pick_dbh_max() %>%
+        pick_dbh_min(2)
       out <- abundance_byyr(luq)
     })
   )
@@ -97,9 +106,9 @@ test_that("works with data from site Luquillo", {
   suppressMessages(
     suppressWarnings({
       luq <- fgeo.data::luquillo_vft_4quad %>%
-        dplyr::sample_n(10) %>%
-        fgeo.base::pick_plotname("luquillo") %>%
-        fgeo.base::pick_dbh_min(2)
+        sample_n(10) %>%
+        pick_plotname("luquillo") %>%
+        pick_dbh_min(2)
       out <- basal_area_byyr(luq)
     })
   )
@@ -186,7 +195,10 @@ test_that("counts multi-stem trees correctly", {
   # year 2001: B b = 1
   # year 2002: A a = 1
   # year 2002: B b = 0
-  out <- vft %>% pick_dbh_min(10) %>% abundance_byyr()
+  out <- vft %>% 
+    pick_dbh_min(10) %>% 
+    by_treeid_pick_dbh_max() %>% 
+    abundance_byyr()
   expect_equal(out$`2001`, c(1, 1))
   expect_equal(out$`2002`, c(1, 0))
 })
