@@ -1,9 +1,3 @@
-count_woods_impl <- function(.data, ..., .collapse) {
-  .dots <- rlang::enquos(...)
-  pick <- dplyr::filter( .collapse(.data), !!! .dots)
-  count_distinct_treeid(pick)
-}
-
 #' Count unique trees based on the dbh of their largest stem.
 #' 
 #' This functions count unique treeid by censusid (automatically) and any number
@@ -84,9 +78,17 @@ count_woods <- function(.data,
   groups_restore(out, .data)
 }
 
+multiple_plotname <- fgeo.base::multiple_var("plotname")
+
 multiple_censusid <- fgeo.base::multiple_var("censusid")
 
-multiple_plotname <- fgeo.base::multiple_var("plotname")
+count_woods_impl <- function(.data, ..., .collapse) {
+  .dots <- rlang::enquos(...)
+  pick <- dplyr::filter( .collapse(.data), !!! .dots)
+  count_distinct_treeid(pick)
+}
+
+
 
 #' @rdname count_woods
 #' @export
