@@ -143,7 +143,7 @@ count_distinct_treeid <- function(.data) {
     groups_lower() %>% 
     check_crucial_names("treeid")
     
-  fgeo.tool::flag_duplicated_var(abort, treeid)(.x)
+  fgeo.tool::flag_duplicated_var(abort, .data$treeid)(.x)
   
   if ("censusid" %in% names(.x)) {
     warn_duplicated_censusid_by_group(.x)
