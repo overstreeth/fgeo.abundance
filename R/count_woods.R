@@ -1,3 +1,65 @@
+# fgeo.tool ---------------------------------------------------------------
+
+#' Factory of functions to pick woods and then apply a function.
+#'
+#' @param .f A function to apply after picking woods. For example, `.f =
+#'   identity` returns the picked woods unchanged.
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+#' 
+#' @noRd
+pick_woods_f <- function(.f, .collapse = fgeo.tool::pick_dbh_largest) {
+  force(.f)
+  
+  function(.data, ...) {
+    stopifnot(is.data.frame(.data))
+    # Lowercase names and groups for work with both census and ViewFullTable
+    .x <- set_names(.data, tolower)
+    .x <- groups_lower(.x)
+    
+    if (multiple_plotname(.x)) {
+      stop("`.x` must have a single plotname.", call. = FALSE)
+    }
+    
+    if (multiple_censusid(.x)) {
+      .x <- fgeo.base::drop_if_na(.x, "censusid")
+      .x <- dplyr::group_by(.x, .data$censusid, add = TRUE)
+    }
+    
+    # do() prefferred to by_group() to not drop empty groups (they result in 0L)
+    dots <- rlang::enquos(...)
+    out <- dplyr::do(
+      .x, picked_woods_f_impl(., !!! dots, .collapse = .collapse, .f = .f)
+    )
+    
+    # Restore original names; then original groups
+    out <- rename_matches(out, .data)
+    groups_restore(out, .data)
+  }
+}
+
+#' @export
+#' @rdname pick_woods
+pick_woods <- pick_woods_f(identity)
+
+multiple_plotname <- fgeo.base::multiple_var("plotname")
+
+multiple_censusid <- fgeo.base::multiple_var("censusid")
+
+picked_woods_f_impl <- function(.data, ..., .collapse, .f) {
+  .dots <- rlang::enquos(...)
+  pick <- dplyr::filter( .collapse(.data), !!! .dots)
+  .f(pick)
+}
+
+
+
+# fgeo.abundance ----------------------------------------------------------
+
 #' Count unique trees based on the dbh of their largest stem.
 #' 
 #' This functions count unique treeid by censusid (automatically) and any number
@@ -15,8 +77,6 @@
 #' @param .data A dataframe; particularly a ForestGEO census or ViewFullTable.
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
 #'   refers to the largest stem of each tree.
-#' @param .collapse `fgeo.tool::pick_dbh_largest` (bare name of the function)
-#'   collapses the data picking the stem of maximum dbh per treeid per censusid.
 #'
 #' @family functions for fgeo census and vft.
 #'
@@ -50,79 +110,16 @@
 #' count_woods(by_sp, dbh > 10, dbh < 100)
 #' # Same
 #' count_saplings(by_sp)
-#' @name pick_woods
-NULL
-
-
-
-#' Factory of functions to pick woods and then apply a function.
-#'
-#' @param .f A function to apply after picking woods. For example, `.f =
-#'   identity` returns the picked woods unchanged.
-#'
-#' @return
-#' @keywords internal
-#' @export
-#'
-#' @examples
-#' 
-#' @noRd
-pick_woods_f <- function(.f) {
-  force(.f)
-  
-  function(.data, ..., .collapse = fgeo.tool::pick_dbh_largest) {
-    stopifnot(is.data.frame(.data))
-    # Lowercase names and groups for work with both census and ViewFullTable
-    .x <- set_names(.data, tolower)
-    .x <- groups_lower(.x)
-    
-    if (multiple_plotname(.x)) {
-      stop("`.x` must have a single plotname.", call. = FALSE)
-    }
-    
-    if (multiple_censusid(.x)) {
-      .x <- fgeo.base::drop_if_na(.x, "censusid")
-      .x <- dplyr::group_by(.x, .data$censusid, add = TRUE)
-    }
-    
-    # do() prefferred to by_group() to not drop empty groups (they result in 0L)
-    dots <- rlang::enquos(...)
-    out <- dplyr::do(
-      .x, f_picked_woods(., !!! dots, .collapse = .collapse, .f = .f)
-    )
-    
-    # Restore original names; then original groups
-    out <- rename_matches(out, .data)
-    groups_restore(out, .data)
-  }
-}
-
-multiple_plotname <- fgeo.base::multiple_var("plotname")
-
-multiple_censusid <- fgeo.base::multiple_var("censusid")
-
-f_picked_woods <- function(.data, ..., .collapse, .f) {
-  .dots <- rlang::enquos(...)
-  pick <- dplyr::filter( .collapse(.data), !!! .dots)
-  .f(pick)
-}
-
-#' @export
-#' @rdname pick_woods
-pick_woods <- pick_woods_f(identity)
-
-#' @export
-#' @rdname pick_woods
 count_woods <- pick_woods_f(count_distinct_treeid)
 
 #' @rdname count_woods
 #' @export
-count_trees <- function(.data, .collapse = fgeo.tool::pick_dbh_largest) {
-  count_woods(.data, .data$dbh >= 100, .collapse = .collapse)
+count_trees <- function(.data) {
+  count_woods(.data, .data$dbh >= 100)
 }
 
 #' @rdname count_woods
 #' @export
-count_saplings <- function(.data, .collapse = fgeo.tool::pick_dbh_largest) {
-  count_woods(.data, .data$dbh >= 10, .data$dbh < 100,.collapse = .collapse)
+count_saplings <- function(.data) {
+  count_woods(.data, .data$dbh >= 10, .data$dbh < 100)
 }
