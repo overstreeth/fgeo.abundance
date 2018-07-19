@@ -73,6 +73,6 @@ by_quad_sp <- group_by(largest_stem, quadrat, sp)
 count_distinct_treeid(by_quad_sp)
 }
 \seealso{
-Other functions for fgeo census and vft.: \code{\link{count_woods}}
+Other functions for fgeo census and vft.: \code{\link{pick_woods}}
 }
 \concept{functions for fgeo census and vft.}

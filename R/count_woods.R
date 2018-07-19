@@ -22,8 +22,6 @@
 #'
 #' @return A dataframe with preserved groups (if any).
 #' 
-#' @export
-#'
 #' @examples
 #' library(dplyr)
 #' 
@@ -52,33 +50,51 @@
 #' count_woods(by_sp, dbh > 10, dbh < 100)
 #' # Same
 #' count_saplings(by_sp)
-count_woods <- function(.data, 
-                        ..., 
-                        .collapse = fgeo.tool::pick_dbh_largest,
-                        .f = count_distinct_treeid) {
-  stopifnot(is.data.frame(.data))
-  # Lowercase names and groups for work with both census and ViewFullTable
-  .x <- set_names(.data, tolower)
-  .x <- groups_lower(.x)
+#' @name pick_woods
+NULL
+
+
+
+#' Factory of functions to pick woods and then apply a function.
+#'
+#' @param .f A function to apply after picking woods. For example, `.f =
+#'   identity` returns the picked woods unchanged.
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+#' 
+#' @noRd
+pick_woods_f <- function(.f) {
+  force(.f)
   
-  if (multiple_plotname(.x)) {
-    stop("`.x` must have a single plotname.", call. = FALSE)
+  function(.data, ..., .collapse = fgeo.tool::pick_dbh_largest) {
+    stopifnot(is.data.frame(.data))
+    # Lowercase names and groups for work with both census and ViewFullTable
+    .x <- set_names(.data, tolower)
+    .x <- groups_lower(.x)
+    
+    if (multiple_plotname(.x)) {
+      stop("`.x` must have a single plotname.", call. = FALSE)
+    }
+    
+    if (multiple_censusid(.x)) {
+      .x <- fgeo.base::drop_if_na(.x, "censusid")
+      .x <- dplyr::group_by(.x, .data$censusid, add = TRUE)
+    }
+    
+    # do() prefferred to by_group() to not drop empty groups (they result in 0L)
+    dots <- rlang::enquos(...)
+    out <- dplyr::do(
+      .x, f_picked_woods(., !!! dots, .collapse = .collapse, .f = .f)
+    )
+    
+    # Restore original names; then original groups
+    out <- rename_matches(out, .data)
+    groups_restore(out, .data)
   }
-  
-  if (multiple_censusid(.x)) {
-    .x <- fgeo.base::drop_if_na(.x, "censusid")
-    .x <- dplyr::group_by(.x, .data$censusid, add = TRUE)
-  }
-  
-  # do() prefferred to by_group() to not drop empty groups (they result in 0L)
-  dots <- rlang::enquos(...)
-  out <- dplyr::do(
-    .x, f_picked_woods(., !!! dots, .collapse = .collapse, .f = .f)
-  )
-  
-  # Restore original names; then original groups
-  out <- rename_matches(out, .data)
-  groups_restore(out, .data)
 }
 
 multiple_plotname <- fgeo.base::multiple_var("plotname")
@@ -91,19 +107,13 @@ f_picked_woods <- function(.data, ..., .collapse, .f) {
   .f(pick)
 }
 
-xxx <- function(.data,
-                        ...,
-                        .collapse = fgeo.tool::pick_dbh_largest) {
-  count_woods(
-    .data, ..., .collapse = fgeo.tool::pick_dbh_largest, 
-    .f = count_distinct_treeid
-  )
-}
+#' @export
+#' @rdname pick_woods
+pick_woods <- pick_woods_f(identity)
 
-
-
-
-
+#' @export
+#' @rdname pick_woods
+count_woods <- pick_woods_f(count_distinct_treeid)
 
 #' @rdname count_woods
 #' @export
