@@ -18,7 +18,7 @@ test_that("outputs as expected", {
   #   * One tree is dead (TreeID = 2) because both its stems are dead.
   
   # Collapse treeid
-  vft <- by_treeid_pick_dbh_max(vft)
+  vft <- pick_dbh_largest(vft)
   out <- abundance_byyr(vft)
   expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
   expect_equal(out$`2001`, 2)
@@ -32,7 +32,7 @@ test_that("works with luquillo", {
       luq <- luquillo::ViewFullTable_luquillo %>%
         sample_n(10) %>%
         pick_plotname("luquillo") %>%
-        by_treeid_pick_dbh_max() %>%
+        pick_dbh_largest() %>%
         pick_dbh_min(2)
       out <- abundance_byyr(luq)
     })
@@ -197,7 +197,7 @@ test_that("counts multi-stem trees correctly", {
   # year 2002: B b = 0
   out <- vft %>% 
     pick_dbh_min(10) %>% 
-    by_treeid_pick_dbh_max() %>% 
+    pick_dbh_largest() %>% 
     abundance_byyr()
   expect_equal(out$`2001`, c(1, 1))
   expect_equal(out$`2002`, c(1, 0))

@@ -175,10 +175,8 @@ trees to be included, remove them first (see <code><a href='http://www.rdocument
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
-<span class='fu'>library</span>(<span class='no'>fgeo.tool</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'fgeo.tool'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:stats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter</span></div><div class='input'>
+<span class='fu'>library</span>(<span class='no'>fgeo.tool</span>)
+
 <span class='no'>census</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></span>(
   <span class='kw'>treeID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>),
   <span class='kw'>stemID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
@@ -203,7 +201,7 @@ trees to be included, remove them first (see <code><a href='http://www.rdocument
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Error</span>
 <span class='fu'>count_distinct_treeid</span>(<span class='no'>census</span>)
-<span class='co'># }</span><div class='input'><span class='no'>largest_stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/by_treeid_pick_dbh'>by_treeid_pick_dbh_max</a></span>(<span class='no'>census</span>)
+<span class='co'># }</span><div class='input'><span class='no'>largest_stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_dbh_largest'>pick_dbh_largest</a></span>(<span class='no'>census</span>)
 <span class='no'>largest_stem</span></div><div class='output co'>#&gt; # A tibble: 3 x 5
 #&gt;   treeID stemID quadrat sp      dbh
 #&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;

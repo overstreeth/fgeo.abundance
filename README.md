@@ -52,12 +52,12 @@ census
 #> # A tibble: 6 x 5
 #>   treeID stemID quadrat sp      dbh
 #>    <dbl>  <dbl> <chr>   <chr> <dbl>
-#> 1      1      1 0001    sp1   20.3 
-#> 2      1      2 0001    sp1    3.40
-#> 3      2      3 0001    sp2    8.32
-#> 4      3      4 0002    sp3   14.4 
-#> 5      3      5 0002    sp3    4.02
-#> 6      3      6 0002    sp3    2.37
+#> 1      1      1 0001    sp1    1.59
+#> 2      1      2 0001    sp1    3.00
+#> 3      2      3 0001    sp2    5.04
+#> 4      3      4 0002    sp3    1.09
+#> 5      3      5 0002    sp3    9.79
+#> 6      3      6 0002    sp3    1.40
 
 # `count_distinct() ` is general: works with any data and has few restrictions.
 count_distinct(census, treeID)
@@ -88,18 +88,18 @@ count_distinct_treeid(by_quad)
 #> Error:   Detected duplicated values of treeid.
 #>     Expected unique values of treeid within each data-group (if any)
 
-# First, collapse treeID by picking one stem, e.g. of maximum dbh.
-largest_stem <- fgeo.tool::by_treeid_pick_dbh_max(census)
-largest_stem
+# First, pick the stem of maximum dbh per treeID
+largest_stems <- fgeo.tool::pick_dbh_largest(census)
+largest_stems
 #> # A tibble: 3 x 5
 #>   treeID stemID quadrat sp      dbh
 #>    <dbl>  <dbl> <chr>   <chr> <dbl>
-#> 1      1      1 0001    sp1   20.3 
-#> 2      3      4 0002    sp3   14.4 
-#> 3      2      3 0001    sp2    8.32
+#> 1      3      5 0002    sp3    9.79
+#> 2      2      3 0001    sp2    5.04
+#> 3      1      2 0001    sp1    3.00
 
 # Then count treeIDs
-count_distinct_treeid(largest_stem)
+count_distinct_treeid(largest_stems)
 #> # A tibble: 1 x 1
 #>       n
 #>   <int>

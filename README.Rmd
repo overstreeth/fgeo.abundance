@@ -61,12 +61,12 @@ count_distinct_stemid(by_quad)
 # If treeID is duplicated, counting distinct treeid is an (intentional) error.
 count_distinct_treeid(by_quad)
 
-# First, collapse treeID by picking one stem, e.g. of maximum dbh.
-largest_stem <- fgeo.tool::by_treeid_pick_dbh_max(census)
-largest_stem
+# First, pick the stem of maximum dbh per treeID
+largest_stems <- fgeo.tool::pick_dbh_largest(census)
+largest_stems
 
 # Then count treeIDs
-count_distinct_treeid(largest_stem)
+count_distinct_treeid(largest_stems)
 
 # It's not an error if duplicated treeIDs belong to different groups of data.
 vft <- tibble::tibble(CensusID = c(1, 1, 2, 2), TreeID = c(1, 2, 1, 2))

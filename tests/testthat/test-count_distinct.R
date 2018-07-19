@@ -13,7 +13,6 @@ census <- tibble(
 census
 
 describe("count_distinct()", {
-
   it("counts as expected and outputs the expected names and groups", {
     expect_equal(pull(count_distinct(census, stemID), n), 6)
   

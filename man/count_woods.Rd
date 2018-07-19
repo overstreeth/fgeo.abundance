@@ -6,11 +6,11 @@
 \alias{count_saplings}
 \title{Count unique trees based on the dbh of their largest stem.}
 \usage{
-count_woods(.data, ..., .collapse = fgeo.tool::by_treeid_pick_dbh_max)
+count_woods(.data, ..., .collapse = fgeo.tool::pick_dbh_largest)
 
-count_trees(.data, .collapse = fgeo.tool::by_treeid_pick_dbh_max)
+count_trees(.data, .collapse = fgeo.tool::pick_dbh_largest)
 
-count_saplings(.data, .collapse = fgeo.tool::by_treeid_pick_dbh_max)
+count_saplings(.data, .collapse = fgeo.tool::pick_dbh_largest)
 }
 \arguments{
 \item{.data}{A dataframe; particularly a ForestGEO census or ViewFullTable.}
@@ -18,10 +18,8 @@ count_saplings(.data, .collapse = fgeo.tool::by_treeid_pick_dbh_max)
 \item{...}{Expressions to pick stems of specific \code{dbh} -- where \emph{stems}
 refers to the largest stem of each tree.}
 
-\item{.collapse}{\code{fgeo.tool::by_treeid_pick_dbh_max} and
-\code{fgeo.tool::by_treeid_pick_dbh_min}(bare name of the corresponding functions)
-collapse the data picking the stem (of each treeid) with the maximum and
-minimum dbh, respectively.}
+\item{.collapse}{\code{fgeo.tool::pick_dbh_largest} (bare name of the function)
+collapses the data picking the stem of maximum dbh per treeid per censusid.}
 }
 \value{
 A dataframe with preserved groups (if any).

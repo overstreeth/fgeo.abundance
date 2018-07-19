@@ -127,7 +127,7 @@ count_distinct_impl <- function(.data, .var) {
 #' # Error
 #' count_distinct_treeid(census)
 #' }
-#' largest_stem <- by_treeid_pick_dbh_max(census)
+#' largest_stem <- pick_dbh_largest(census)
 #' largest_stem
 #' count_distinct_treeid(largest_stem)
 #' 
