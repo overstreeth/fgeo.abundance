@@ -180,15 +180,16 @@ test_that("counts multi-stem trees correctly", {
     ),
     Tag = c("0001", "0001", "0001", "0001", "0002", "0002"),
     TreeID = c("0001", "0001", "0001", "0001", "0002", "0002"),
-    SteemID = c("1", "2", "1", "2", "1", "1"),
+    StemID = c("1", "2", "1", "2", "1", "1"),
     Status = c("alive", "alive", "alive", "dead", "alive", "dead"),
     DBH = c(11, 15, 12, NA, 21, NA),
     Genus = c("A", "A", "A", "A", "B", "B"),
     SpeciesName = c("a", "a", "a", "a", "b", "b"),
     Family = "f",
+    HOM = rep(130, 6),
     stringsAsFactors = FALSE
   )
-  vft
+  vft <- tibble::as.tibble(vft)
 
   # Expected:
   # year 2001: A a = 1
