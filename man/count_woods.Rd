@@ -24,16 +24,15 @@ A dataframe with preserved groups (if any).
 \description{
 This functions count unique treeid by censusid (automatically) and any number
 of additional grouping variables (via \code{dplyr::group_by()}. Data with
-multi-stem trees is first collapsed. The collapse defaults to picking the
-stem (of each treeid) with maximum dbh (pick minimum dbh with the argument
-\code{.collapse}).
+multi-stem trees is first collapsed by picking the stem (of each treeid) with
+maximum dbh.
 \itemize{
 \item \code{count_woods()} is general and allows filtering data using any number of
 expressions passed via the argument \code{...} to \code{dplyr::filter()}.
-\item \code{count_trees()} is an opinionated shortcut that defines tress as stems of
-dbh of 100 mm and above.
-\item \code{count_samplings()} is an opinionated shortcut that defines saplings as
-stems of dbh of between 10 mm inclusive and 100 mm exclusive.
+\item \code{count_trees()} is a shortcut that defines tress as stems of dbh of 100 mm
+and above.
+\item \code{count_samplings()} is a shortcut that defines saplings as stems of dbh of
+between 10 mm inclusive and 100 mm exclusive.
 }
 }
 \examples{
