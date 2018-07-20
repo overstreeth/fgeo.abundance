@@ -167,9 +167,10 @@ capital "S" in ViewFull tables).</p></td>
     <span class='st'>"2002-01-01"</span>),
   <span class='kw'>PlotCensusNumber</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
   <span class='kw'>Family</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>),
-  <span class='kw'>Tag</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>)
+  <span class='kw'>Tag</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
+  <span class='kw'>HOM</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>130</span>, <span class='fl'>8</span>)
 )
-<span class='no'>vft</span></div><div class='output co'>#&gt; # A tibble: 8 x 12
+<span class='no'>vft</span></div><div class='output co'>#&gt; # A tibble: 8 x 13
 #&gt;   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate
 #&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;    
 #&gt; 1 luq             1      1    1.1 alive      1 Gn    spp         2001-01-~
@@ -180,14 +181,15 @@ capital "S" in ViewFull tables).</p></td>
 #&gt; 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-~
 #&gt; 7 luq             2      2    2.1 dead       3 Gn    spp         2002-01-~
 #&gt; 8 luq             2      2    2.2 dead       4 Gn    spp         2002-01-~
-#&gt; # ... with 3 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;, Tag &lt;int&gt;</div><div class='input'>
+#&gt; # ... with 4 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;, Tag &lt;int&gt;,
+#&gt; #   HOM &lt;dbl&gt;</div><div class='input'>
 <span class='co'># All trees are of the same species. There are two trees, each with two stems.</span>
 <span class='co'># In census 1, the count of alive trees should be 2 because both trees are</span>
 <span class='co'>#   alive, but note that one stem is dead (StemID = 1.2).</span>
 <span class='co'># In census 2 the count of alive trees should be 1:</span>
 <span class='co'>#   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);</span>
 <span class='co'>#   * One tree is dead (TreeID = 2) because both its stems are dead.</span>
-<span class='no'>largest_stems</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_dbh_largest'>pick_dbh_largest</a></span>(<span class='no'>vft</span>)
+<span class='no'>largest_stems</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>pick_largest_hom_dbh</a></span>(<span class='no'>vft</span>)
 <span class='fu'>abundance_byyr</span>(<span class='no'>largest_stems</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
 #&gt;   species Family `2001` `2002`
 #&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;

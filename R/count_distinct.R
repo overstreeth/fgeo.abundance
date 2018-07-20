@@ -116,7 +116,8 @@ count_distinct_impl <- function(.data, .var) {
 #'   stemID = c(1, 2, 3, 4, 5, 6),
 #'   quadrat = paste0("000", rep(1:2, each = 3)),
 #'   sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
-#'   dbh = abs(sample(rnorm(100), 6) * 10)
+#'   dbh = abs(sample(rnorm(100), 6) * 10),
+#'   hom = rep(130, 6)
 #' )
 #' census
 #' 
@@ -127,7 +128,7 @@ count_distinct_impl <- function(.data, .var) {
 #' # Error
 #' count_distinct_treeid(census)
 #' }
-#' largest_stem <- pick_dbh_largest(census)
+#' largest_stem <- pick_largest_hom_dbh(census)
 #' largest_stem
 #' count_distinct_treeid(largest_stem)
 #' 

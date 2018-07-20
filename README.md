@@ -50,14 +50,14 @@ census <- tibble(
 )
 census
 #> # A tibble: 6 x 5
-#>   treeID stemID quadrat sp      dbh
-#>    <dbl>  <dbl> <chr>   <chr> <dbl>
-#> 1      1      1 0001    sp1    1.59
-#> 2      1      2 0001    sp1    3.00
-#> 3      2      3 0001    sp2    5.04
-#> 4      3      4 0002    sp3    1.09
-#> 5      3      5 0002    sp3    9.79
-#> 6      3      6 0002    sp3    1.40
+#>   treeID stemID quadrat sp        dbh
+#>    <dbl>  <dbl> <chr>   <chr>   <dbl>
+#> 1      1      1 0001    sp1    7.24  
+#> 2      1      2 0001    sp1   10.6   
+#> 3      2      3 0001    sp2    4.93  
+#> 4      3      4 0002    sp3    0.0697
+#> 5      3      5 0002    sp3    4.99  
+#> 6      3      6 0002    sp3    8.04
 
 # `count_distinct() ` is general: works with any data and has few restrictions.
 count_distinct(census, treeID)
@@ -85,25 +85,19 @@ count_distinct_stemid(by_quad)
 # `count_distinct_treeid()` is also specialized and has some safety features.
 # If treeID is duplicated, counting distinct treeid is an (intentional) error.
 count_distinct_treeid(by_quad)
-#> Error:   Detected duplicated values of treeid.
-#>     Expected unique values of treeid within each data-group (if any)
+#> Error:   Detected duplicated values of .data$treeid.
+#>     Expected unique values of .data$treeid within each data-group (if any)
 
 # First, pick the stem of maximum dbh per treeID
-largest_stems <- fgeo.tool::pick_dbh_largest(census)
+largest_stems <- fgeo.tool::pick_largest_hom_dbh(census)
+#> Error: Ensure your data set has these variables:
+#> stemid, hom
 largest_stems
-#> # A tibble: 3 x 5
-#>   treeID stemID quadrat sp      dbh
-#>    <dbl>  <dbl> <chr>   <chr> <dbl>
-#> 1      3      5 0002    sp3    9.79
-#> 2      2      3 0001    sp2    5.04
-#> 3      1      2 0001    sp1    3.00
+#> Error in eval(expr, envir, enclos): object 'largest_stems' not found
 
 # Then count treeIDs
 count_distinct_treeid(largest_stems)
-#> # A tibble: 1 x 1
-#>       n
-#>   <int>
-#> 1     3
+#> Error in typeof(x) %in% atomic_types: object 'largest_stems' not found
 
 # It's not an error if duplicated treeIDs belong to different groups of data.
 vft <- tibble::tibble(CensusID = c(1, 1, 2, 2), TreeID = c(1, 2, 1, 2))

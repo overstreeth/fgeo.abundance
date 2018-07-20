@@ -62,7 +62,7 @@ count_distinct_stemid(by_quad)
 count_distinct_treeid(by_quad)
 
 # First, pick the stem of maximum dbh per treeID
-largest_stems <- fgeo.tool::pick_dbh_largest(census)
+largest_stems <- fgeo.tool::pick_largest_hom_dbh(census)
 largest_stems
 
 # Then count treeIDs

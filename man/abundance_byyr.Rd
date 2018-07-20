@@ -44,7 +44,8 @@ vft <- tibble(
     "2002-01-01"),
   PlotCensusNumber = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
   Family = c("f", "f", "f", "f", "f", "f", "f", "f"),
-  Tag = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L)
+  Tag = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L),
+  HOM = rep(130, 8)
 )
 vft
 
@@ -54,7 +55,7 @@ vft
 # In census 2 the count of alive trees should be 1:
 #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
 #   * One tree is dead (TreeID = 2) because both its stems are dead.
-largest_stems <- pick_dbh_largest(vft)
+largest_stems <- pick_largest_hom_dbh(vft)
 abundance_byyr(largest_stems)
 
 ba <- basal_area_byyr(largest_stems)

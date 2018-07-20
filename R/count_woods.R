@@ -21,16 +21,18 @@
 #'
 #' @return A dataframe with preserved groups (if any).
 #' 
+#' @export
+#' 
 #' @examples
 #' library(dplyr)
 #' 
 #' census <- tibble::tribble(
-#'   ~dbh,   ~sp, ~treeID, ~stemID,
-#'     10, "sp1",     "1",   "1.1",
-#'    100, "sp1",     "1",   "1.2",
-#'     22, "sp2",     "2",   "2.1",
-#'     99, "sp2",     "2",   "2.2",
-#'     NA, "sp2",     "2",   "2.3"
+#'     ~sp, ~treeID, ~stemID, ~hom, ~dbh,
+#'   "sp1",     "1",   "1.1",  130,   10,
+#'   "sp1",     "1",   "1.2",  130,  100,
+#'   "sp2",     "2",   "2.1",  130,   22,
+#'   "sp2",     "2",   "2.2",  130,   99,
+#'   "sp2",     "2",   "2.3",  130,   NA
 #' )
 #' 
 #' # Count all woods

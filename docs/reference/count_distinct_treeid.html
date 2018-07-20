@@ -182,17 +182,18 @@ trees to be included, remove them first (see <code><a href='http://www.rdocument
   <span class='kw'>stemID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>),
   <span class='kw'>quadrat</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"000"</span>, <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>3</span>)),
   <span class='kw'>sp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>)), <span class='fu'>paste0</span>(<span class='st'>"sp"</span>, <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>3</span>))),
-  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>)
+  <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='fu'>abs</span>(<span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample</a></span>(<span class='fu'>rnorm</span>(<span class='fl'>100</span>), <span class='fl'>6</span>) * <span class='fl'>10</span>),
+  <span class='kw'>hom</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>130</span>, <span class='fl'>6</span>)
 )
-<span class='no'>census</span></div><div class='output co'>#&gt; # A tibble: 6 x 5
-#&gt;   treeID stemID quadrat sp      dbh
-#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1      1      1 0001    sp1   18.8 
-#&gt; 2      1      2 0001    sp1    1.08
-#&gt; 3      2      3 0001    sp2    7.96
-#&gt; 4      3      4 0002    sp3    8.95
-#&gt; 5      3      5 0002    sp3    5.58
-#&gt; 6      3      6 0002    sp3   15.3 </div><div class='input'>
+<span class='no'>census</span></div><div class='output co'>#&gt; # A tibble: 6 x 6
+#&gt;   treeID stemID quadrat sp      dbh   hom
+#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1      1      1 0001    sp1   18.8    130
+#&gt; 2      1      2 0001    sp1    1.08   130
+#&gt; 3      2      3 0001    sp2    7.96   130
+#&gt; 4      3      4 0002    sp3    8.95   130
+#&gt; 5      3      5 0002    sp3    5.58   130
+#&gt; 6      3      6 0002    sp3   15.3    130</div><div class='input'>
 <span class='fu'>count_distinct_stemid</span>(<span class='no'>census</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;       n
 #&gt;   &lt;int&gt;
@@ -201,13 +202,13 @@ trees to be included, remove them first (see <code><a href='http://www.rdocument
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Error</span>
 <span class='fu'>count_distinct_treeid</span>(<span class='no'>census</span>)
-<span class='co'># }</span><div class='input'><span class='no'>largest_stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_dbh_largest'>pick_dbh_largest</a></span>(<span class='no'>census</span>)
-<span class='no'>largest_stem</span></div><div class='output co'>#&gt; # A tibble: 3 x 5
-#&gt;   treeID stemID quadrat sp      dbh
-#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-#&gt; 1      1      1 0001    sp1   18.8 
-#&gt; 2      3      6 0002    sp3   15.3 
-#&gt; 3      2      3 0001    sp2    7.96</div><div class='input'><span class='fu'>count_distinct_treeid</span>(<span class='no'>largest_stem</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
+<span class='co'># }</span><div class='input'><span class='no'>largest_stem</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>pick_largest_hom_dbh</a></span>(<span class='no'>census</span>)
+<span class='no'>largest_stem</span></div><div class='output co'>#&gt; # A tibble: 3 x 6
+#&gt;   treeID stemID quadrat sp      dbh   hom
+#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1      1      1 0001    sp1   18.8    130
+#&gt; 2      3      6 0002    sp3   15.3    130
+#&gt; 3      2      3 0001    sp2    7.96   130</div><div class='input'><span class='fu'>count_distinct_treeid</span>(<span class='no'>largest_stem</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;       n
 #&gt;   &lt;int&gt;
 #&gt; 1     3</div><div class='input'>
