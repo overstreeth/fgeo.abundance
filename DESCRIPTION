@@ -17,7 +17,7 @@ Imports:
     fgeo.tool,
     lubridate,
     magrittr,
-    rlang,
+    rlang (>= 0.1.2),
     splancs,
     stats,
     tibble,

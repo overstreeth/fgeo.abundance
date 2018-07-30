@@ -18,7 +18,7 @@ NULL
 #' @keywords internal
 #' @aliases          quo quos enquo sym syms ensym expr exprs enexpr quo_name enquos
 #' @importFrom rlang quo quos enquo sym syms ensym expr exprs enexpr quo_name enquos
-#' @export           quo quos enquo sym syms ensym expr exprs enexpr quo_name
+#' @export           quo quos enquo sym syms ensym expr exprs enexpr quo_name enquos
 #' @importFrom rlang UQ UQS .data := inform warn abort set_names
 NULL
 
