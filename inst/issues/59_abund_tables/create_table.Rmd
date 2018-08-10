@@ -16,7 +16,7 @@ output:
 set.seed(1014)
 knitr::opts_chunk$set(
   echo = TRUE,
-  eval = FALSE,
+  eval = TRUE,
   comment = "#>",
   collapse = TRUE,
   cache = FALSE,
@@ -36,35 +36,15 @@ library(tidyverse)
 library(fgeo)
 ```
 
-To create tables of abundance and basal area first pick the data you want. Your code should look something like this:
+[Notes on code development](https://github.com/forestgeo/fgeo.abundance/blob/master/inst/issues/59_abund_tables/count_samplings.md#creating-tables-of-abundance-and-basal-area).
 
-```R
-pick1 <- pick_plotname(VIEWFULLTABLE, "PLOTNAME")
-pick2 <- pick_dbh_min(pick1, MINIMUM_DBH)
-```
 
-Then you can create the tables with:
-
-```R
-abundance <- abundance_byyr(pick2)
-basal_area <- basal_area_byyr(pick2)
-```
-
-To standardize the table of basal area use something like this:
-
-```R
-years <- setdiff(names(basal_area), c("species", "Family"))
-in_sq_m <- convert_unit_at(basal_area, .at = years, from = "mm2", to = "m2")
-basal_area_in_he <- standardize_at(in_sq_m, .at = years, denominator = denominator_HECTARES)
-```
-
-Next, I do this for three plots: Sherman, Cocoli and BCI. To avoid duplication I first write some disposable utility-funcitons.
-
-```{r utils} 
-# Pick specific data from a ViewFullTable.
-pick_vft <- function(vft, plot_nm) {
-  pick <- pick_plotname(vft, plot_nm)
-  pick_dbh_min(pick, 10)
+```{r}
+create_table <- function(vft, plotname, pick_stem_size, table_byyr) {
+  vft_plot <- pick_plotname(vft, plotname)
+  one_stem_per_treeid <- pick_largest_hom_dbh(vft_plot)
+  stems <- pick_stem_size(one_stem_per_treeid)
+  table_byyr(stems)
 }
 
 # Standardize basal area by total plot-hectares.
@@ -74,22 +54,27 @@ standardize_ba <- function(ba, denominator) {
   standardize_at(in_he, years, denominator)
 }
 
-path_iss59 <- function(path) {
-  here::here("inst/issues/59_abund_tables", path)
+create_all_tables <- function(vft, plotname, denominator) {
+  tree_abund <- create_table(vft, plotname, pick_trees, abundance_byyr)
+  sapling_abund <- create_table(vft, plotname, pick_saplings, abundance_byyr)
+  tree_basal <- create_table(vft, plotname, pick_trees, basal_area_byyr) %>% 
+    standardize_ba(denominator)
+  sapling_basal <- create_table(vft, plotname, pick_saplings, basal_area_byyr) %>% 
+    standardize_ba(denominator)
+  
+  list(
+    tree_abundance = tree_abund,
+    tree_basal_area = tree_basal,
+    sapling_abundance = sapling_abund,
+    sapling_basal_area = sapling_basal
+  )
 }
 
-write_tables <- function(vft, plot_nm, denominator) {
-  pick <- pick_vft(vft, plot_nm)
-  
-  abun <- abundance_byyr(pick)
-  readr::write_csv(abun, path_iss59(paste0("tbl/", plot_nm, "_abundance.csv")))
-  
-  ba <- standardize_ba(basal_area_byyr(pick), denominator)
-  readr::write_csv(ba, path_iss59(paste0("tbl/", plot_nm, "_basal_area.csv")))
+write_all_tables <- function(vft, plotname, dir, denominator) {
+  tables <- create_all_tables(vft, plotname, denominator)
+  fgeo.tool::dfs_to_csv(tables, dir, prefix = paste0(plotname, "_"))
 }
 ```
-
-Now I'm ready to read the data and crete the tables -- which I save locally:
 
 * Read ViewFullTables.
 
@@ -103,20 +88,22 @@ path_sc <- here::here("inst/issues/59_abund_tables/vft_sc.csv")
 vft_sc <- readr::read_csv(path_sc)
 ```
 
-* Write tables of abundance and basal area.
+```{r, message=FALSE, warning=FALSE}
+dir <- here::here("inst/issues/59_abund_tables/out")
+vft <- bci <- sample_n(vft_bci, 10)
+write_all_tables(bci, plotname = "bci", dir, denominator = 50)
 
-```{r}
-write_tables(vft_sc, "sherman", denominator = 5.96)
-write_tables(vft_sc, "cocoli", denominator = 4)
-write_tables(vft_bci, "bci", denominator = 50)
+vft <- sc <- sample_n(vft_sc, 10)
+write_all_tables(sc, plotname = "sherman", dir, 5.96)
+write_all_tables(sc, plotname = "cocoli", dir, denominator = 4)
 ```
 
 Les't visualize the output.
 
 ```{r, message=FALSE, eval=TRUE}
-folder <- here::here("inst/issues/59_abund_tables/tbl")
+folder <- here::here("inst/issues/59_abund_tables/out")
 dfs <- csv_to_dfs(folder)
-dfs
+str(dfs, give.attr = FALSE)
 ```
 
 For comparison see: 
