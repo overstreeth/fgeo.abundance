@@ -1,26 +1,6 @@
-# TODO: Review byyr in debugger to identidy potential refactorings.
-
-library(fgeo)
-
-has_dead <- function(vft) {
-  any("dead" %in% unique(vft[["Status"]]))
-}
-
-vft <- fgeo.data::luquillo_vft_4quad
-has_dead(vft)
-
-vft_plot <- pick_plotname(vft, "luquillo")
-has_dead(vft_plot)
-
-one_stem_per_treeid <- pick_largest_hom_dbh(vft_plot)
-has_dead(one_stem_per_treeid)
-
-# This filters on dbh, so it'll remove missing dbh and therefore dead trees
-stems <- pick_trees(one_stem_per_treeid)
-has_dead(stems)
-
-abundance_byyr(stems)
-
+# TODO: Replace byyr with byyr2: 
+# * Write references
+# * Replace and adapt tests
 
 
 

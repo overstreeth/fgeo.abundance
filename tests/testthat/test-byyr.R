@@ -19,6 +19,7 @@ test_that("outputs as expected", {
   
   # Collapse treeid
   vft <- pick_largest_hom_dbh(vft)
+  
   out <- abundance_byyr(vft)
   expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
   expect_equal(out$`2001`, 2)

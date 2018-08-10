@@ -1,9 +1,11 @@
-abundance_byyr2 <- function(vft) {
+# @param ... passed to pick_woods(). Expression are case-insensitive
+
+abundance_byyr2 <- function(vft, ...) {
   crucial <- c("plotname", "tag")
   vft %>%
     set_names(tolower) %>%
     check_crucial_names(crucial) %>%
-    prepare_byyr2() %>%
+    prepare_byyr2(...) %>%
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>%
     count_distinct_treeid() %>%
     ungroup() %>%
@@ -14,10 +16,10 @@ abundance_byyr2 <- function(vft) {
     rename_matches(vft)
 }
 
-basal_area_byyr2 <- function(vft) {
+basal_area_byyr2 <- function(vft, ...) {
   vft %>%
     set_names(tolower) %>%
-    prepare_byyr2() %>%
+    prepare_byyr2(...) %>%
     group_by(.data$species, .data$family, .data$year) %>%
     basal_area(dbh = .data$dbh) %>%
     arrange(.data$species, .data$family, .data$year) %>%
@@ -26,11 +28,17 @@ basal_area_byyr2 <- function(vft) {
     rename_matches(vft)
 }
 
-prepare_byyr2 <- function(vft) {
+prepare_byyr2 <- function(vft, ...) {
+  tolower_exprs <- function(x) {
+    rlang::parse_expr(tolower(rlang::expr_deparse(x)))
+  }
+  dots <- lapply(exprs(...), tolower_exprs)
+  
   vft %>%
     check_prepare_byyr() %>%
     
-    # pick_largest_hom_dbh() %>% 
+    pick_largest_hom_dbh() %>%
+    pick_woods(!!! dots) %>% 
     
     drop_if_missing_dates() %>%
     mean_years() %>%

@@ -21,15 +21,14 @@ test_that("byyr2 outputs the same as byyr during refactoring", {
 
   # This filters on dbh, so it removes missing dbh and therefore all non-alive
   # stems (alive stems are the only ones which a non-missing value of dbh)
-  stems <- pick_trees(vft_plot)
-  out_abund <- abundance_byyr2(stems)
+  out_abund <- abundance_byyr2(vft_plot, dbh >= 100)
   
   expect_known_output(
     as.data.frame(out_abund), 
     "ref-composed-abundance-byyr", print = TRUE, update = FALSE
   )
   
-  out_ba <- basal_area_byyr2(stems)
+  out_ba <- basal_area_byyr2(vft_plot, dbh >= 100)
   expect_known_output(
     as.data.frame(out_ba), 
     "ref-composed-basal-area-byyr", print = TRUE, update = FALSE
