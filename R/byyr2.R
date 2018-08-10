@@ -14,7 +14,7 @@ abundance_byyr2 <- function(vft) {
     rename_matches(vft)
 }
 
-basal_area_byyr2 <- function(vft, status_a = "alive", status_d = "dead") {
+basal_area_byyr2 <- function(vft) {
   vft %>%
     set_names(tolower) %>%
     prepare_byyr2() %>%
@@ -29,6 +29,9 @@ basal_area_byyr2 <- function(vft, status_a = "alive", status_d = "dead") {
 prepare_byyr2 <- function(vft) {
   vft %>%
     check_prepare_byyr() %>%
+    
+    # pick_largest_hom_dbh() %>% 
+    
     drop_if_missing_dates() %>%
     mean_years() %>%
     fgeo.base::drop_if_na("year") %>%
