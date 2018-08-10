@@ -21,7 +21,6 @@ Data: Creating a dataset with one sapling (dbh >= 10 mm & dbh < 100 mm) and one 
 
 ```{r}
 census <- tibble(
-    stringsAsFactors = FALSE,
     sp = c("sp1", "sp1", "sp2", "sp2", "sp2"),
     treeID = c("1", "1", "2", "2", "2"),
     stemID = c("1.1", "1.2", "2.1", "2.2", "2.3"),
@@ -52,7 +51,7 @@ saplings_bad %>%
   count_distinct(treeID)
 ```
 
-The solution is to collapse the table to a single row per tree -- choosing the one of the stem with the largest `dbh`.
+The solution is to collapse the table to a single row per tree -- choosing the row corresponding to the stem with the largest `dbh`.
 
 ```{r}
 largest <- census %>% pick_largest_hom_dbh()
@@ -105,7 +104,7 @@ census %>% count_woods(dbh >= 10, dbh < 100)
 
 census %>%
   group_by(sp) %>%
-  count_woods(dbh >= 100)
+  count_woods(dbh >= 10, dbh < 100)
 ```
 
 * Trees

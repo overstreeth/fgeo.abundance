@@ -21,7 +21,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(fgeo)
-#> -- Attaching packages ---------------------------------------------- fgeo 0.0.0.9000 --
+#> -- Attaching packages ------------------------------------------------------------- fgeo 0.0.0.9000 --
 #> v fgeo.abundance  0.0.0.9004     v fgeo.demography 0.0.0.9000
 #> v fgeo.base       0.0.0.9001     v fgeo.habitat    0.0.0.9006
 #> v fgeo.data       0.0.0.9002     v fgeo.map        0.0.0.9204
@@ -35,7 +35,6 @@ mm) and one tree (dbh \>= 100 mm). The tree has two stems, of 20 mm and
 
 ``` r
 census <- tibble(
-    stringsAsFactors = FALSE,
     sp = c("sp1", "sp1", "sp2", "sp2", "sp2"),
     treeID = c("1", "1", "2", "2", "2"),
     stemID = c("1.1", "1.2", "2.1", "2.2", "2.3"),
@@ -43,14 +42,14 @@ census <- tibble(
     hom = c(130, 130, 130, 130, 130)
 )
 census
-#> # A tibble: 5 x 6
-#>   stringsAsFactors sp    treeID stemID   dbh   hom
-#>   <lgl>            <chr> <chr>  <chr>  <dbl> <dbl>
-#> 1 FALSE            sp1   1      1.1       20   130
-#> 2 FALSE            sp1   1      1.2      120   130
-#> 3 FALSE            sp2   2      2.1       22   130
-#> 4 FALSE            sp2   2      2.2       99   130
-#> 5 FALSE            sp2   2      2.3       NA   130
+#> # A tibble: 5 x 5
+#>   sp    treeID stemID   dbh   hom
+#>   <chr> <chr>  <chr>  <dbl> <dbl>
+#> 1 sp1   1      1.1       20   130
+#> 2 sp1   1      1.2      120   130
+#> 3 sp2   2      2.1       22   130
+#> 4 sp2   2      2.2       99   130
+#> 5 sp2   2      2.3       NA   130
 ```
 
 If we count distinct `treeID`s directly we get a wrong output. The
@@ -64,13 +63,13 @@ saplings_bad <- census %>%
   pick_dbh_min(10) %>% 
   pick_dbh_under(100)
 saplings_bad
-#> # A tibble: 4 x 6
-#>   stringsAsFactors sp    treeID stemID   dbh   hom
-#>   <lgl>            <chr> <chr>  <chr>  <dbl> <dbl>
-#> 1 FALSE            sp1   1      1.1       20   130
-#> 2 FALSE            sp2   2      2.1       22   130
-#> 3 FALSE            sp2   2      2.2       99   130
-#> 4 FALSE            sp2   2      2.3       NA   130
+#> # A tibble: 4 x 5
+#>   sp    treeID stemID   dbh   hom
+#>   <chr> <chr>  <chr>  <dbl> <dbl>
+#> 1 sp1   1      1.1       20   130
+#> 2 sp2   2      2.1       22   130
+#> 3 sp2   2      2.2       99   130
+#> 4 sp2   2      2.3       NA   130
 
 count_distinct(saplings_bad, treeID)
 #> # A tibble: 1 x 1
@@ -95,25 +94,25 @@ saplings_bad %>%
 ```
 
 The solution is to collapse the table to a single row per tree –
-choosing the one of the stem with the largest `dbh`.
+choosing the row corresponding to the stem with the largest `dbh`.
 
 ``` r
 largest <- census %>% pick_largest_hom_dbh()
 largest
-#> # A tibble: 2 x 6
-#>   stringsAsFactors sp    treeID stemID   dbh   hom
-#>   <lgl>            <chr> <chr>  <chr>  <dbl> <dbl>
-#> 1 FALSE            sp1   1      1.2      120   130
-#> 2 FALSE            sp2   2      2.2       99   130
+#> # A tibble: 2 x 5
+#>   sp    treeID stemID   dbh   hom
+#>   <chr> <chr>  <chr>  <dbl> <dbl>
+#> 1 sp1   1      1.2      120   130
+#> 2 sp2   2      2.2       99   130
 
 saplings_good <- largest %>% 
   filter(dbh >= 10) %>% 
   filter(dbh < 100)
 saplings_good
-#> # A tibble: 1 x 6
-#>   stringsAsFactors sp    treeID stemID   dbh   hom
-#>   <lgl>            <chr> <chr>  <chr>  <dbl> <dbl>
-#> 1 FALSE            sp2   2      2.2       99   130
+#> # A tibble: 1 x 5
+#>   sp    treeID stemID   dbh   hom
+#>   <chr> <chr>  <chr>  <dbl> <dbl>
+#> 1 sp2   2      2.2       99   130
 ```
 
 Now the output is as expected.
@@ -196,13 +195,13 @@ census %>% count_woods(dbh >= 10, dbh < 100)
 
 census %>%
   group_by(sp) %>%
-  count_woods(dbh >= 100)
+  count_woods(dbh >= 10, dbh < 100)
 #> # A tibble: 2 x 2
 #> # Groups:   sp [2]
 #>   sp        n
 #>   <chr> <int>
-#> 1 sp1       1
-#> 2 sp2       0
+#> 1 sp1       0
+#> 2 sp2       1
 ```
 
   - Trees
