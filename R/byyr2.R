@@ -2,30 +2,33 @@
 
 abundance_byyr2 <- function(vft, ...) {
   crucial <- c("plotname", "tag")
-  vft %>%
-    set_names(tolower) %>%
-    check_crucial_names(crucial) %>%
-    prepare_byyr2(...) %>%
+  low_nms  <- check_crucial_names(set_names(vft, tolower), crucial)
+  prep <- prepare_byyr2(low_nms, ...)
+  
+  out <- prep %>% 
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>%
     count_distinct_treeid() %>%
     ungroup() %>%
     select(-.data$plotname) %>%
     select(.data$species, .data$family, dplyr::everything()) %>%
     tidyr::spread(.data$year, n, fill = 0) %>%
-    arrange(.data$species, .data$family) %>%
-    rename_matches(vft)
+    arrange(.data$species, .data$family)
+  
+  rename_matches(out, vft)
 }
 
 basal_area_byyr2 <- function(vft, ...) {
-  vft %>%
-    set_names(tolower) %>%
-    prepare_byyr2(...) %>%
+  low_nms <- set_names(vft, tolower)
+  prep <- prepare_byyr2(low_nms, ...)
+  
+  out <- prep %>% 
     group_by(.data$species, .data$family, .data$year) %>%
     basal_area(dbh = .data$dbh) %>%
     arrange(.data$species, .data$family, .data$year) %>%
     ungroup() %>%
-    tidyr::spread(.data$year, basal_area, fill = 0) %>%
-    rename_matches(vft)
+    tidyr::spread(.data$year, basal_area, fill = 0)
+  
+  rename_matches(out, vft)
 }
 
 prepare_byyr2 <- function(vft, ...) {
