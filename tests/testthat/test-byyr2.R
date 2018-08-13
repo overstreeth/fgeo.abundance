@@ -1,15 +1,31 @@
 context("byyr2")
 
-library(rlang)
-library(fgeo.abundance)
-library(fgeo.tool)
-library(fgeo.base)
-
 describe("abundance_byyr2", {
+  skip_if_not_installed("readr")
+  
+  vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+  it("lowercases dbh and only dbh from the expression passed to ...", {
+    expect_silent(
+      out <- abundance_byyr2(vft, dbh >= min(vft$DBH, na.rm = TRUE))
+    )
+    expect_equal(out, abundance_byyr2(vft, dbh > 0))
+  })
+  
+  
+  
+  it("is sensitive to DBH, so outputs none date-column if dbh is too big ", {
+    too_big <- max(vft$DBH, na.rm = TRUE) + 1
+    out <- abundance_byyr2(vft, dbh > !! too_big)
+    expect_named(rlang::set_names(out, tolower), c("species", "family"))
+    expect_is(out, "tbl_df")
+
+    # Upper case DBH
+    expect_equal(out, abundance_byyr2(vft, DBH > !! too_big))
+  })
+  
+  
   
   it("outputs as expected", {
-    skip_if_not_installed("fgeo.tool")
-    skip_if_not_installed("readr")
     
     # All trees are of the same species. There are two trees, each with two
     # stems. In census 1, the count of alive trees should be 2 because both
@@ -21,16 +37,11 @@ describe("abundance_byyr2", {
     vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
     
     out <- abundance_byyr2(vft, dbh > 0)
+    expect_is(out, "tbl_df")
     expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
     expect_equal(out$`2001`, 2)
     expect_equal(out$`2002`, 1)
   })
-  
-  
-  
-  
-  
-  
   
   it("fails if parsed dates are all missing", {
     vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))

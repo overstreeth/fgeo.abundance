@@ -32,16 +32,17 @@ basal_area_byyr2 <- function(vft, ...) {
 }
 
 prepare_byyr2 <- function(vft, ...) {
-  tolower_exprs <- function(x) {
-    rlang::parse_expr(tolower(rlang::expr_deparse(x)))
+  lowercase_dbh <- function(x) {
+    x <- gsub("dbh", "dbh", rlang::expr_deparse(x), ignore.case = TRUE)
+    rlang::parse_expr(x)
   }
-  dots <- lapply(exprs(...), tolower_exprs)
+  dots <- lapply(exprs(...), lowercase_dbh)
   
   vft %>%
     check_prepare_byyr() %>%
     
-    pick_largest_hom_dbh() %>%
-    pick_woods(!!! dots) %>% 
+    fgeo.tool::pick_largest_hom_dbh() %>%
+    fgeo.tool::pick_woods(!!! dots) %>% 
     
     drop_if_missing_dates() %>%
     mean_years() %>%

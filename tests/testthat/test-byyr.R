@@ -5,29 +5,6 @@ library(rlang)
 library(fgeo.tool)
 library(fgeo.base)
 
-test_that("works with luquillo", {
-  skip_if_not_installed("luquillo")
-  suppressMessages(
-    suppressWarnings({
-      luq <- luquillo::ViewFullTable_luquillo %>%
-        sample_n(10) %>%
-        pick_plotname("luquillo") %>%
-        pick_largest_hom_dbh() %>%
-        pick_dbh_min(2)
-      out <- abundance_byyr(luq)
-    })
-  )
-  expect_is(out, "data.frame")
-})
-
-
-
-
-
-
-
-
-
 vft <- tibble::tibble(
   TreeID = rep(c("0001", "0002", "0003", "0004"), 2),
   Tag = rep(c("0001", "0002", "0003", "0004"), 2),
@@ -186,7 +163,7 @@ test_that("counts multi-stem trees correctly", {
   # year 2002: B b = 0
   out <- vft %>% 
     pick_dbh_min(10) %>% 
-    pick_largest_hom_dbh() %>% 
+    fgeo.tool::pick_largest_hom_dbh() %>% 
     abundance_byyr()
   expect_equal(out$`2001`, c(1, 1))
   expect_equal(out$`2002`, c(1, 0))

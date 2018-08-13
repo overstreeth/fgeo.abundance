@@ -15,14 +15,14 @@ Imports:
     dplyr,
     fgeo.base,
     fgeo.tool,
+    glue,
     lubridate,
     magrittr,
     rlang (>= 0.1.2),
     splancs,
     stats,
     tibble,
-    tidyr,
-    glue
+    tidyr
 Suggests: 
     covr,
     fgeo.data,
