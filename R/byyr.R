@@ -101,8 +101,8 @@ check_prepare_byyr <- function(vft) {
     )
   }
   
-  too_early <- lubridate::ymd(dates) > lubridate::ymd("1980-01-01")
-  too_late <- lubridate::ymd(dates) < lubridate::today()
+  too_early <- lubridate::ymd(dates) < lubridate::ymd("1980-01-01")
+  too_late <- lubridate::ymd(dates) > lubridate::today()
   if (any(too_early || too_late)) {
     warn("Dates should be from 1980-present and have format yyy-mm-dd.")
   }

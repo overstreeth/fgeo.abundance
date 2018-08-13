@@ -5,35 +5,6 @@ library(rlang)
 library(fgeo.tool)
 library(fgeo.base)
 
-test_that("outputs as expected", {
-  skip_if_not_installed("fgeo.tool")
-  skip_if_not_installed("readr")
-  vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-
-  # All trees are of the same species. There are two trees, each with two stems.
-  # In census 1, the count of alive trees should be 2 because both trees are
-  # alive, but note that one stem is dead (StemID = 1.2). In census 2 the count
-  # of alive trees should be 1:
-  #   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
-  #   * One tree is dead (TreeID = 2) because both its stems are dead.
-  
-  # Collapse treeid
-  vft <- pick_largest_hom_dbh(vft)
-  
-  out <- abundance_byyr(vft)
-  expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
-  expect_equal(out$`2001`, 2)
-  expect_equal(out$`2002`, 1)
-})
-
-
-
-
-
-
-
-
-
 test_that("works with luquillo", {
   skip_if_not_installed("luquillo")
   suppressMessages(
@@ -48,6 +19,14 @@ test_that("works with luquillo", {
   )
   expect_is(out, "data.frame")
 })
+
+
+
+
+
+
+
+
 
 vft <- tibble::tibble(
   TreeID = rep(c("0001", "0002", "0003", "0004"), 2),

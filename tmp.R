@@ -1,6 +1,8 @@
 # TODO: Replace byyr with byyr2: 
-# * Write references
-# * Replace and adapt tests
+# * Continue moving and adapting tests from byy2 to byyr 2
+# * Remove byyr and test-byyr
+# * Rename byyr2 to byyr
+
 
 
 

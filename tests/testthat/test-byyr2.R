@@ -7,28 +7,9 @@ library(fgeo.base)
 
 describe("abundance_byyr2", {
   
-  it("fails if parsed dates are all missing", {
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-    bad <- mutate(vft[1, ], ExactDate = as.character("1/1/2001"))
-    msg <- "Can't parse `exactdates`"
-    expect_warning(expect_error(abundance_byyr2(bad), msg))
-    
-    bad <- mutate(vft[1, ], ExactDate = NA)
-    msg <- "Can't parse `exactdates`"
-    expect_error(abundance_byyr2(bad), msg)
-  })
-  
-  it("warns if parsed dates are not from 1980 to present", {
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-    bad <- mutate(vft[1, ], ExactDate = as.character("1970-01-01"))
-    msg <- "Dates should be"
-    expect_warning(abundance_byyr2(bad), msg)
-  })
-  
   it("outputs as expected", {
     skip_if_not_installed("fgeo.tool")
     skip_if_not_installed("readr")
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
     
     # All trees are of the same species. There are two trees, each with two
     # stems. In census 1, the count of alive trees should be 2 because both
@@ -37,14 +18,44 @@ describe("abundance_byyr2", {
     #   * One tree is alive (TreeID = 1) although one stem is gone 
     #     (StemID = 1.2);
     #   * One tree is dead (TreeID = 2) because both its stems are dead.
-    
-    # Collapse treeid
-    vft <- pick_largest_hom_dbh(vft)
+    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
     
     out <- abundance_byyr2(vft, dbh > 0)
     expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
     expect_equal(out$`2001`, 2)
     expect_equal(out$`2002`, 1)
+  })
+  
+  
+  
+  
+  
+  
+  
+  it("fails if parsed dates are all missing", {
+    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    bad <- mutate(vft[1, ], ExactDate = NA)
+    msg <- "Can't parse `exactdates`"
+    expect_error(abundance_byyr2(bad), msg)
+    
+    # Wrong format: Expecting yyy-mm-dd, so parsing results in NA
+    bad <- mutate(vft[1, ], ExactDate = as.character("1/1/2001"))
+    msg <- "Can't parse `exactdates`"
+    expect_warning(expect_error(abundance_byyr2(bad), msg))
+  })
+  
+  it("warns if parsed dates are not from 1980 to present", {
+    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    early <- mutate(vft[1, ], ExactDate = "1970-01-01")
+    msg <- "Dates should be"
+    expect_warning(abundance_byyr2(early), msg)
+    
+    late <- mutate(vft[1, ], ExactDate = lubridate::today() + 1)
+    msg <- "Dates should be"
+    expect_warning(abundance_byyr2(late), msg)
+    
+    good <- mutate(vft[1, ], ExactDate = lubridate::today())
+    expect_silent(abundance_byyr2(good))
   })
 })
 
