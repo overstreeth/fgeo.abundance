@@ -26,6 +26,14 @@ test_that("outputs as expected", {
   expect_equal(out$`2002`, 1)
 })
 
+
+
+
+
+
+
+
+
 test_that("works with luquillo", {
   skip_if_not_installed("luquillo")
   suppressMessages(
