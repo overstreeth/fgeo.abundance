@@ -19,16 +19,18 @@ vft <- tibble::tibble(
   Family = "fmly"
 )
 
-test_that("has expected structure", {
-  out <- suppressWarnings(suppressMessages(abundance_byyr(vft)))
-  expect_is(out, "data.frame")
-  expect_named(out, c("species", "Family", "2000", "2001"))
-})
 
 test_that("fails with informative error", {
   expect_error(abundance_byyr(1))
   expect_error(abundance_byyr())
 })
+
+
+
+
+
+
+
 
 tiny <- tibble::tibble(
   Tag = c("0001", "0001", "0002", "0002", "0003", "0003"),

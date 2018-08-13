@@ -1,6 +1,8 @@
 # @param ... passed to pick_woods(). Expression are case-insensitive
 
 abundance_byyr2 <- function(vft, ...) {
+  stopifnot(is.data.frame(vft))
+  
   crucial <- c("plotname", "tag")
   low_nms  <- check_crucial_names(set_names(vft, tolower), crucial)
   prep <- prepare_byyr2(low_nms, ...)
@@ -18,6 +20,8 @@ abundance_byyr2 <- function(vft, ...) {
 }
 
 basal_area_byyr2 <- function(vft, ...) {
+  stopifnot(is.data.frame(vft))
+  
   low_nms <- set_names(vft, tolower)
   prep <- prepare_byyr2(low_nms, ...)
   
@@ -37,6 +41,10 @@ prepare_byyr2 <- function(vft, ...) {
     rlang::parse_expr(x)
   }
   dots <- lapply(exprs(...), lowercase_dbh)
+  warn_if_not_expression_of_dbh(dots)
+  
+  
+  
   
   vft %>%
     check_prepare_byyr() %>%
@@ -48,4 +56,16 @@ prepare_byyr2 <- function(vft, ...) {
     mean_years() %>%
     fgeo.base::drop_if_na("year") %>%
     ungroup()
+}
+
+warn_if_not_expression_of_dbh <- function(x) {
+  x <- rlang::expr_deparse(x)
+  if (!any(grepl("dbh", x))) {
+    msg <- glue(
+      "The argument '...' should contain an expression of `dbh`.
+      Did you forget to pick a specific dbh range?"
+    )
+    rlang::warn(msg)
+  }
+  invisible(x)
 }

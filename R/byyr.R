@@ -87,7 +87,6 @@ prepare_byyr <- function(vft, status_a, status_d) {
 }
 
 check_prepare_byyr <- function(vft) {
-  stopifnot(is.data.frame(vft))
   crucial <- c(
     "genus", "speciesname", "family", "status", "dbh", "exactdate",
     "plotcensusnumber"
