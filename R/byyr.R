@@ -93,6 +93,20 @@ check_prepare_byyr <- function(vft) {
     "plotcensusnumber"
   )
   check_crucial_names(vft, crucial)
+  
+  dates <- unique(vft$exactdate)
+  if (all(is.na(lubridate::ymd(dates)))) {
+    abort(
+      "Can't parse `exactdates`. Try parsing dates with `lubridate::ymd()`."
+    )
+  }
+  
+  too_early <- lubridate::ymd(dates) > lubridate::ymd("1980-01-01")
+  too_late <- lubridate::ymd(dates) < lubridate::today()
+  if (any(too_early || too_late)) {
+    warn("Dates should be from 1980-present and have format yyy-mm-dd.")
+  }
+  
   invisible(vft)
 }
 
