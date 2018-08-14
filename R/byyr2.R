@@ -43,15 +43,10 @@ prepare_byyr2 <- function(vft, ...) {
   dots <- lapply(exprs(...), lowercase_dbh)
   warn_if_not_expression_of_dbh(dots)
   
-  
-  
-  
   vft %>%
     check_prepare_byyr() %>%
-    
     fgeo.tool::pick_largest_hom_dbh() %>%
     fgeo.tool::pick_woods(!!! dots) %>% 
-    
     drop_if_missing_dates() %>%
     mean_years() %>%
     fgeo.base::drop_if_na("year") %>%

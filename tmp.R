@@ -22,8 +22,7 @@ create_all_tables <- function(vft, plotname, denominator) {
     standardize_ba(denominator)
 
 
-
-# TODO: Use or remove fix_status_if_bad_or_err().
+  
 # TODO: Think how to deal with status in combination with the pick() functions. It looks like I should first determine the status of a tree. Then remove dead stems, then pick, etc.
 
 Use internal used in building pick_dhh_largest() to write fun to pick_hom_largest() by census is treeid by stemid. Err if multiple plots are detected.

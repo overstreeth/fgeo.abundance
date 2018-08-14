@@ -126,51 +126,6 @@ mean_years <- function(vft) {
     arrange(.data$year)
 }
 
-inform_if_bad_status <- function(vft, .valid_status) {
-  .vft <- set_names(vft, tolower)
-  status_ok <- all(sort(unique(.vft$status)) %in% .valid_status)
-  if (!status_ok) {
-    message(
-      "Unique values of status and argument `valid_status` ",
-      "should match:\n",
-      "* Status col: ", commas(sort(unique(.valid_status))), ".\n",
-      "* valid_status arg: ", commas(sort(unique(.vft$status))), "."
-    )
-  }
-  invisible(rename_matches(.vft, vft))
-}
-
-fix_status_if_bad_or_err <- function(vft, .valid_status) {
-  .vft <- set_names(vft, tolower)
-  status_ok <- all(sort(unique(.vft$status)) %in% .valid_status)
-  if (!status_ok) {
-    message("Fixing status automatically.")
-    .vft <- fix_bad_status(
-      .vft,
-      status_col = .vft$status, status_arg = .valid_status
-    )
-
-    tryCatch(
-      testthat::expect_silent(inform_if_bad_status(.vft, .valid_status)),
-      error = function(cond) {
-        stop(
-          "Tried but failed to fix status automatically.\n",
-          "* Fix status manually and retry.",
-          call. = FALSE
-        )
-      },
-      warning = function(cond) "Failed to fix status automatically."
-    )
-  }
-  invisible(rename_matches(.vft, vft))
-}
-
-fix_bad_status <- function(vft, status_col, status_arg) {
-  vft$status <- sub("^.*dead.*$", "dead", vft$status)
-  vft$status <- sub("^.*alive.*$", "alive", vft$status)
-  vft
-}
-
 drop_if_missing_dates <- function(x) {
   missing_dates <- is.na(insensitive(x)$exactdate)
   if (any(missing_dates)) {
