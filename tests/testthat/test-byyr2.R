@@ -1,5 +1,69 @@
 context("byyr2")
 
+library(dplyr)
+library(fgeo.base)
+
+describe("basal_area_byyr2 and abundance_byyr2", {
+  # DRY helpers
+  byyr <- function(.data, plot, .f) {
+    luq <- suppressMessages(pick_plotname(.data, plot))
+    # Fix seed to reproduce random-sampling
+    out <- withr::with_seed(123, sample_n(luq, 10))
+    .f(out, dbh > 0)
+  }
+  
+  expect_dataframe <- function(x) expect_is(x, "data.frame")
+  
+  expect_named_year <- function(x, year) {
+    # Test only 1 year-column to avoid errors as data grows
+    expect_named(x[1:3], c("species", "Family", year))
+  }
+  
+  it("works with data from from bci", {
+    skip_if_not_installed("bciex")
+    # Unexpected name
+    vft <- bciex::bci12vft_mini %>% rename(PlotName = Plot)
+    plot <- "bci"
+    out_basal <- byyr(vft, plot, basal_area_byyr2)
+    expect_dataframe(out_basal)
+    expect_named_year(out_basal, "2005")
+    
+    out_abund <- byyr(vft, plot, abundance_byyr2)
+    expect_dataframe(out_abund)
+    expect_named_year(out_abund, "2005")
+  })
+  
+  it("works with data from from Bukit Timah", {
+    skip_if_not_installed("bukittimah")
+    vft <- bukittimah::ViewFullTable_bukit
+    plot <- "Bukit Timah Big Trees"
+    
+    out_basal <-  byyr(vft, plot, basal_area_byyr2)
+    expect_dataframe(out_basal)
+    expect_named_year(out_basal, "2006")
+    
+    out_abund <- byyr(vft, plot, abundance_byyr2)
+    expect_dataframe(out_basal)
+    expect_named_year(out_basal, "2006")
+  })
+  
+  it("works with data from from Ngel Niaky", {
+    skip_if_not_installed("ngel")
+    
+    vft <- ngel::ViewFullTable_ngel
+    plot <- "ngelnyaki"
+    out_basal <-  byyr(vft, plot, basal_area_byyr2)
+    expect_dataframe(out_basal)
+    expect_named_year(out_basal, "2015")
+    
+    out_abund <- byyr(vft, plot, abundance_byyr2)
+    expect_dataframe(out_basal)
+    expect_named_year(out_basal, "2015")
+  })
+})
+
+
+
 describe("abundance_byyr2", {
   skip_if_not_installed("readr")
   
