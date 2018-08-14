@@ -41,11 +41,9 @@ library(fgeo)
 [Notes on code development](https://github.com/forestgeo/fgeo.abundance/blob/master/inst/issues/59_abund_tables/count_samplings.md#creating-tables-of-abundance-and-basal-area).
 
 ```{r}
-create_table <- function(vft, plotname, pick_stem_size, table_byyr) {
+create_table <- function(vft, plotname, table_byyr, ...) {
   vft_plot <- pick_plotname(vft, plotname)
-  one_stem_per_treeid <- pick_largest_hom_dbh(vft_plot)
-  stems <- pick_stem_size(one_stem_per_treeid)
-  table_byyr(stems)
+  table_byyr(vft_plot, ...)
 }
 
 # Standardize basal area by total plot-hectares.
@@ -56,18 +54,18 @@ standardize_ba <- function(ba, denominator) {
 }
 
 create_all_tables <- function(vft, plotname, denominator) {
-  tree_abund <- create_table(vft, plotname, pick_trees, abundance_byyr)
-  sapling_abund <- create_table(vft, plotname, pick_saplings, abundance_byyr)
-  tree_basal <- create_table(vft, plotname, pick_trees, basal_area_byyr) %>% 
+  tree_abund <- create_table(vft, plotname, abundance_byyr, dbh >= 100)
+  sap_tree_abund <- create_table(vft, plotname, abundance_byyr, dbh >= 10)
+  tree_basal <- create_table(vft, plotname, basal_area_byyr, dbh >= 100) %>% 
     standardize_ba(denominator)
-  sapling_basal <- create_table(vft, plotname, pick_saplings, basal_area_byyr) %>% 
+  sap_tree_basal <- create_table(vft, plotname, basal_area_byyr, dbh >= 10) %>% 
     standardize_ba(denominator)
   
   list(
     tree_abundance = tree_abund,
     tree_basal_area = tree_basal,
-    sapling_abundance = sapling_abund,
-    sapling_basal_area = sapling_basal
+    sapling_tree_abundance = sap_tree_abund,
+    sapling_tree_basal_area = sap_tree_basal
   )
 }
 
