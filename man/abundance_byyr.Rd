@@ -5,20 +5,14 @@
 \alias{basal_area_byyr}
 \title{Create tables of abundance and basal area by (round mean) year.}
 \usage{
-abundance_byyr(vft, status_a = "alive", status_d = "dead")
+abundance_byyr(vft, ...)
 
-basal_area_byyr(vft, status_a = "alive", status_d = "dead")
+basal_area_byyr(vft, ...)
 }
 \arguments{
 \item{vft}{A ForestGEO-like dataframe; particularly a ViewFullTable.}
 
-\item{status_a}{Sting to match alive and dead stems; it corresponds
-to the values of the variable \code{status} (in census tables) or \code{Status} (with
-capital "S" in ViewFull tables).}
-
-\item{status_d}{Sting to match alive and dead stems; it corresponds
-to the values of the variable \code{status} (in census tables) or \code{Status} (with
-capital "S" in ViewFull tables).}
+\item{...}{An expressoin of dbh to pick woods of a specific range.}
 }
 \value{
 A dataframe.

@@ -1,6 +1,7 @@
 #' Create tables of abundance and basal area by (round mean) year.
 #'
 #' @param vft A ForestGEO-like dataframe; particularly a ViewFullTable.
+#' @param ... An expressoin of dbh to pick woods of a specific range.
 #' @inheritParams fgeo.tool::add_status_tree
 #'
 #' @return A dataframe.
@@ -45,45 +46,72 @@
 #' years <- c("2001", "2002")
 #' in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
 #' standardize_at(in_he, .at = years, denominator = 50)
-abundance_byyr <- function(vft, status_a = "alive", status_d = "dead") {
+abundance_byyr <- function(vft, ...) {
+  stopifnot(is.data.frame(vft))
+  
   crucial <- c("plotname", "tag")
-  vft %>%
-    set_names(tolower) %>%
-    check_crucial_names(crucial) %>%
-    prepare_byyr(status_a, status_d) %>%
+  low_nms  <- check_crucial_names(set_names(vft, tolower), crucial)
+  prep <- prepare_byyr(low_nms, ...)
+  
+  out <- prep %>% 
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>%
     count_distinct_treeid() %>%
     ungroup() %>%
     select(-.data$plotname) %>%
     select(.data$species, .data$family, dplyr::everything()) %>%
     tidyr::spread(.data$year, n, fill = 0) %>%
-    arrange(.data$species, .data$family) %>%
-    rename_matches(vft)
+    arrange(.data$species, .data$family)
+  
+  rename_matches(out, vft)
 }
 
 #' @rdname abundance_byyr
 #' @export
-basal_area_byyr <- function(vft, status_a = "alive", status_d = "dead") {
-  vft %>%
-    set_names(tolower) %>%
-    prepare_byyr(status_a, status_d) %>%
+basal_area_byyr <- function(vft, ...) {
+  stopifnot(is.data.frame(vft))
+  
+  low_nms <- set_names(vft, tolower)
+  prep <- prepare_byyr(low_nms, ...)
+  
+  out <- prep %>% 
     group_by(.data$species, .data$family, .data$year) %>%
     basal_area(dbh = .data$dbh) %>%
     arrange(.data$species, .data$family, .data$year) %>%
     ungroup() %>%
-    tidyr::spread(.data$year, basal_area, fill = 0) %>%
-    rename_matches(vft)
+    tidyr::spread(.data$year, basal_area, fill = 0)
+  
+  rename_matches(out, vft)
 }
 
-prepare_byyr <- function(vft, status_a, status_d) {
+prepare_byyr <- function(vft, ...) {
+  dots <- lapply(exprs(...), lowercase_dbh)
+  warn_if_not_expression_of_dbh(dots)
+  
   vft %>%
     check_prepare_byyr() %>%
-    fgeo.tool::add_status_tree(status_a, status_d) %>%
-    fgeo.tool::drop_dead_tree(status_d) %>%
+    fgeo.tool::pick_largest_hom_dbh() %>%
+    fgeo.tool::pick_woods(!!! dots) %>% 
     drop_if_missing_dates() %>%
     mean_years() %>%
     fgeo.base::drop_if_na("year") %>%
     ungroup()
+}
+
+lowercase_dbh <- function(x) {
+  x <- gsub("dbh", "dbh", rlang::expr_deparse(x), ignore.case = TRUE)
+  rlang::parse_expr(x)
+}
+
+warn_if_not_expression_of_dbh <- function(x) {
+  x <- rlang::expr_deparse(x)
+  if (!any(grepl("dbh", x))) {
+    msg <- glue(
+      "The argument '...' should contain an expression of `dbh`.
+      Did you forget to pick a specific dbh range?"
+    )
+    rlang::warn(msg)
+  }
+  invisible(x)
 }
 
 check_prepare_byyr <- function(vft) {

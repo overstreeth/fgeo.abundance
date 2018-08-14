@@ -1,12 +1,4 @@
-# TODO: Replace byyr with byyr2: 
-# * Continue moving and adapting tests from byy2 to byyr 2
-# * Remove byyr and test-byyr
-# * Rename byyr2 to byyr
-# * Test cases with different datasets
-
-
-
-
+# TODO Clean todo and FIXME
 
 # Standardize basal area by total plot-hectares.
 standardize_ba <- function(ba, denominator) {
