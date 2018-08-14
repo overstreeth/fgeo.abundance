@@ -1,73 +1,14 @@
 context("abundance_byyr")
 
+# All moved to byyr2().
+
+context("basal_area_byyr")
+
 library(dplyr)
 library(rlang)
 library(fgeo.tool)
 library(fgeo.base)
 
-vft <- tibble::tibble(
-  TreeID = rep(c("0001", "0002", "0003", "0004"), 2),
-  Tag = rep(c("0001", "0002", "0003", "0004"), 2),
-  PlotName = rep("pnm", 8),
-  Status = rep(c("dead", "alive", "broken below", "missing"), 2),
-  DBH = 1:8,
-  ExactDate = paste0(rep(c(2000, 2001), each = 4), "-01-01"),
-  PlotCensusNumber = rep(1:2, each = 4),
-  CensusID = PlotCensusNumber,
-  Genus = LETTERS[1:8],
-  SpeciesName = letters[1:8],
-  Family = "fmly"
-)
-
-
-test_that("fails with informative error", {
-  expect_error(abundance_byyr(1))
-  expect_error(abundance_byyr())
-})
-
-
-
-
-
-
-
-
-tiny <- tibble::tibble(
-  Tag = c("0001", "0001", "0002", "0002", "0003", "0003"),
-  TreeID = c("0001", "0001", "0002", "0002", "0003", "0003"),
-  PlotName = c("p", "p", "p", "p", "p", "p"),
-  Status = c("alive", "alive", "alive", "alive", "alive", "alive"),
-  DBH = c(1L, 5L, 2L, 6L, 2L, 6L),
-  ExactDate = c(
-    "2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01", "2000-01-01",
-    "2001-01-01"
-  ),
-  PlotCensusNumber = c(1L, 2L, 1L, 2L, 1L, 2L),
-  CensusID = c(1L, 2L, 1L, 2L, 1L, 2L),
-  Genus = c("A", "A", "B", "B", "B", "B"),
-  SpeciesName = c("a", "a", "b", "b", "b", "b"),
-  Family = c("f", "f", "f", "f", "f", "f")
-)
-
-test_that("known output", {
-  out1 <- suppressWarnings(suppressMessages(abundance_byyr(tiny)))
-  expect_equal(out1$`2000`, c(1, 2))
-  expect_equal(out1$`2001`, c(1, 2))
-
-  tiny2 <- tiny[1:4, ]
-  out2 <- suppressWarnings(suppressMessages(abundance_byyr(tiny2)))
-  expect_equal(out2$`2000`, c(1, 1))
-  expect_equal(out2$`2001`, c(1, 1))
-
-  tiny3 <- tiny[c(1, 3, 4), ]
-  out3 <- suppressWarnings(suppressMessages(abundance_byyr(tiny3)))
-  expect_equal(out3$`2000`, c(1, 1))
-  expect_equal(out3$`2001`, c(0, 1))
-})
-
-
-
-context("basal_area_byyr")
 
 test_that("works with data from site Luquillo", {
   suppressMessages(

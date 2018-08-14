@@ -3,6 +3,39 @@ context("byyr2")
 describe("abundance_byyr2", {
   skip_if_not_installed("readr")
   
+  it("outputs equal to known output", {
+    tiny <- tibble::tibble(
+      Tag = c("0001", "0001", "0002", "0002", "0003", "0003"),
+      TreeID = c("0001", "0001", "0002", "0002", "0003", "0003"),
+      PlotName = c("p", "p", "p", "p", "p", "p"),
+      Status = c("alive", "alive", "alive", "alive", "alive", "alive"),
+      DBH = c(1L, 5L, 2L, 6L, 2L, 6L),
+      ExactDate = c(
+        "2000-01-01", "2001-01-01", "2000-01-01", "2001-01-01", "2000-01-01",
+        "2001-01-01"
+      ),
+      PlotCensusNumber = c(1L, 2L, 1L, 2L, 1L, 2L),
+      CensusID = c(1L, 2L, 1L, 2L, 1L, 2L),
+      Genus = c("A", "A", "B", "B", "B", "B"),
+      SpeciesName = c("a", "a", "b", "b", "b", "b"),
+      Family = c("f", "f", "f", "f", "f", "f"),
+      StemID = 1,
+      HOM = 130
+    )
+    out1 <- suppressWarnings(suppressMessages(abundance_byyr2(tiny, dbh > 0)))
+    expect_equal(out1$`2000`, c(1, 2))
+    expect_equal(out1$`2001`, c(1, 2))
+    
+    tiny2 <- tiny[1:4, ]
+    out2 <- suppressWarnings(suppressMessages(abundance_byyr2(tiny2, dbh > 0)))
+    expect_equal(out2$`2000`, c(1, 1))
+    expect_equal(out2$`2001`, c(1, 1))
+    
+    tiny3 <- tiny[c(1, 3, 4), ]
+    out3 <- suppressWarnings(suppressMessages(abundance_byyr2(tiny3, dbh > 0)))
+    expect_equal(out3$`2000`, c(1, 1))
+    expect_equal(out3$`2001`, c(0, 1))
+  })
   
   it("fails with common inputs with informative error", {
     expect_error(abundance_byyr2(1), "data.frame.*is not TRUE")
@@ -18,8 +51,6 @@ describe("abundance_byyr2", {
       "object.*not found"
     )
   })
-  
-  
   
   it("lowercases dbh and only dbh from the expression passed to ...", {
     vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
@@ -39,8 +70,6 @@ describe("abundance_byyr2", {
     # Upper case DBH
     expect_equal(out, abundance_byyr2(vft, DBH > !! too_big))
   })
-  
-  
   
   it("outputs as expected", {
     # All trees are of the same species. There are two trees, each with two
