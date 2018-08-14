@@ -1,6 +1,21 @@
 # TODO 
 # Clean TODO and FIXME
 # Document intrnal behaviour of byyr
+
+Details:
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Rerun Suzanne's funcitons
 # Make tests shorter to run
 

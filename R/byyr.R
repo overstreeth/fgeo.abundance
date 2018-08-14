@@ -1,8 +1,24 @@
-#' Create tables of abundance and basal area by (round mean) year.
-#'
-#' @param vft A ForestGEO-like dataframe; particularly a ViewFullTable.
+#' Create tables of abundance and basal area by year.
+#' 
+#' Both of these functions input a ViewFullTable (`vft`) and any number of
+#' expressions to pick stems within a specific dbh range. For each census they
+#' first pick a single stem per tree, choosing the top one listed by descending
+#' order of `HOM` then by descending order of `DBH` (see
+#' ?[fgeo.tool::pick_largest_hom_dbh()]). Then they pick only the trees in the
+#' `DBH` range specified by the expressions passed to the `...` argument (see
+#' ?[fgeo.tool::pick_woods()]). Finally, for each species and each (round mean)
+#' year of measurement, `abundance_byyr()` counts the number of trees and
+#' `basal_area_byyr()` calculates the total basal area.
+#' 
+#' @param vft A ForestGEO-like dataframe; particularly a ViewFullTable. As such,
+#'   it should contain columns `PlotName`, `CensusID`, `TreeID`, `StemID`,
+#'   `Status`, `DBH`, `Genus`, `SpeciesName`, `ExactDate`, `PlotCensusNumber`,
+#'   `Family`, `Tag`, and `HOM`. `ExactDate` should contain dates from
+#'   1980-01-01 to the present day in the format yyyy-mm-dd.
 #' @param ... An expression of dbh to pick woods of a specific range.
 #' @inheritParams fgeo.tool::add_status_tree
+#' 
+#' @seealso [fgeo.tool::pick_woods()], [fgeo.tool::pick_largest_hom_dbh()].
 #'
 #' @return A dataframe.
 #' 
@@ -32,6 +48,7 @@ abundance_byyr <- function(vft, ...) {
     count_distinct_treeid() %>%
     ungroup() %>%
     select(-.data$plotname) %>%
+    # TODO: Check if instead of everything() I can simply use .data$year
     select(.data$species, .data$family, dplyr::everything()) %>%
     tidyr::spread(.data$year, n, fill = 0) %>%
     arrange(.data$species, .data$family)

@@ -3,14 +3,18 @@
 \name{abundance_byyr}
 \alias{abundance_byyr}
 \alias{basal_area_byyr}
-\title{Create tables of abundance and basal area by (round mean) year.}
+\title{Create tables of abundance and basal area by year.}
 \usage{
 abundance_byyr(vft, ...)
 
 basal_area_byyr(vft, ...)
 }
 \arguments{
-\item{vft}{A ForestGEO-like dataframe; particularly a ViewFullTable.}
+\item{vft}{A ForestGEO-like dataframe; particularly a ViewFullTable. As such,
+it should contain columns \code{PlotName}, \code{CensusID}, \code{TreeID}, \code{StemID},
+\code{Status}, \code{DBH}, \code{Genus}, \code{SpeciesName}, \code{ExactDate}, \code{PlotCensusNumber},
+\code{Family}, \code{Tag}, and \code{HOM}. \code{ExactDate} should contain dates from
+1980-01-01 to the present day in the format yyyy-mm-dd.}
 
 \item{...}{An expression of dbh to pick woods of a specific range.}
 }
@@ -18,7 +22,15 @@ basal_area_byyr(vft, ...)
 A dataframe.
 }
 \description{
-Create tables of abundance and basal area by (round mean) year.
+Both of these functions input a ViewFullTable (\code{vft}) and any number of
+expressions to pick stems within a specific dbh range. For each census they
+first pick a single stem per tree, choosing the top one listed by descending
+order of \code{HOM} then by descending order of \code{DBH} (see
+?\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}). Then they pick only the trees in the
+\code{DBH} range specified by the expressions passed to the \code{...} argument (see
+?\code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}}). Finally, for each species and each (round mean)
+year of measurement, \code{abundance_byyr()} counts the number of trees and
+\code{basal_area_byyr()} calculates the total basal area.
 }
 \examples{
 library(fgeo.tool)
@@ -32,4 +44,7 @@ basal <- basal_area_byyr(vft, DBH >= 10)
 years <- c("2001", "2002")
 in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
+}
+\seealso{
+\code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}}, \code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
 }
