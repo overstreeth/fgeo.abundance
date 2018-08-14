@@ -9,40 +9,6 @@ library(rlang)
 library(fgeo.tool)
 library(fgeo.base)
 
-
-test_that("works with data from site Luquillo", {
-  suppressMessages(
-    suppressWarnings({
-      luq <- fgeo.data::luquillo_vft_4quad %>%
-        sample_n(10) %>%
-        pick_plotname("luquillo") %>%
-        pick_dbh_min(2)
-      out <- basal_area_byyr(luq)
-    })
-  )
-  expect_is(out, "data.frame")
-})
-
-vft <- tibble::tibble(
-  Tag = rep(c("0001", "0002", "0003", "0004"), 2),
-  TreeID = rep(c("0001", "0002", "0003", "0004"), 2),
-  PlotName = rep("pnm", 8),
-  Status = rep(c("dead", "alive", "broken below", "missing"), 2),
-  DBH = 1:8,
-  ExactDate = paste0(rep(c(2000, 2001), each = 4), "-01-01"),
-  PlotCensusNumber = rep(1:2, each = 4),
-  CensusID = PlotCensusNumber,
-  Genus = LETTERS[1:8],
-  SpeciesName = letters[1:8],
-  Family = "fmly"
-)
-
-test_that("has expected structure", {
-  out <- suppressWarnings(suppressMessages(basal_area_byyr(vft)))
-  expect_is(out, "data.frame")
-  expect_named(out, c("species", "Family", "2000", "2001"))
-})
-
 test_that("fails with informative error", {
   expect_error(basal_area_byyr(1))
   expect_error(basal_area_byyr())

@@ -3,7 +3,34 @@ context("byyr2")
 library(dplyr)
 library(fgeo.base)
 
-describe("basal_area_byyr2 and abundance_byyr2", {
+test_that("basal_area_byyr2 and abundance_byyr2 fail with informative errors", {
+  expect_error(abundance_byyr2(1), "data.frame.*is not TRUE")
+  expect_error(abundance_byyr2(), "is missing")
+  
+  vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+  expect_silent(abundance_byyr2(vft, DBH > 0))
+  expect_warning(abundance_byyr2(vft, exactdate > 0), "forget.*dbh range?")
+  expect_silent(abundance_byyr2(vft, exactdate > 0, dbh > 0))
+  expect_warning(abundance_byyr2(vft), "forget to pick a specific dbh range?")
+  expect_error(
+    expect_warning(abundance_byyr2(vft, invalid > 0)), 
+    "object.*not found"
+  )
+  
+  expect_error(basal_area_byyr2(1), "data.frame.*is not TRUE")
+  expect_error(basal_area_byyr2(), "is missing")
+  
+  expect_silent(basal_area_byyr2(vft, DBH > 0))
+  expect_warning(basal_area_byyr2(vft, exactdate > 0), "forget.*dbh range?")
+  expect_silent(basal_area_byyr2(vft, exactdate > 0, dbh > 0))
+  expect_warning(basal_area_byyr2(vft), "forget to pick a specific dbh range?")
+  expect_error(
+    expect_warning(basal_area_byyr2(vft, invalid > 0)), 
+    "object.*not found"
+  )
+})
+
+describe("basal_area_byyr2 and abundance_byyr2 work with different datasets", {
   # DRY helpers
   byyr <- function(.data, plot, .f) {
     luq <- suppressMessages(pick_plotname(.data, plot))
@@ -64,6 +91,11 @@ describe("basal_area_byyr2 and abundance_byyr2", {
 
 
 
+
+
+
+
+
 describe("abundance_byyr2", {
   skip_if_not_installed("readr")
   
@@ -99,21 +131,6 @@ describe("abundance_byyr2", {
     out3 <- suppressWarnings(suppressMessages(abundance_byyr2(tiny3, dbh > 0)))
     expect_equal(out3$`2000`, c(1, 1))
     expect_equal(out3$`2001`, c(0, 1))
-  })
-  
-  it("fails with common inputs with informative error", {
-    expect_error(abundance_byyr2(1), "data.frame.*is not TRUE")
-    expect_error(abundance_byyr2(), "is missing")
-    
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-    expect_silent(abundance_byyr2(vft, DBH > 0))
-    expect_warning(abundance_byyr2(vft, exactdate > 0), "forget.*dbh range?")
-    expect_silent(abundance_byyr2(vft, exactdate > 0, dbh > 0))
-    expect_warning(abundance_byyr2(vft), "forget to pick a specific dbh range?")
-    expect_error(
-      expect_warning(abundance_byyr2(vft, invalid > 0)), 
-      "object.*not found"
-    )
   })
   
   it("lowercases dbh and only dbh from the expression passed to ...", {
