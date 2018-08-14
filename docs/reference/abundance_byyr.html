@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create tables of abundance and basal area by (round mean) year. — abundance_byyr • fgeo.abundance</title>
+<title>Create tables of abundance and basal area by year. — abundance_byyr • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,17 @@
 
 
 
-<meta property="og:title" content="Create tables of abundance and basal area by (round mean) year. — abundance_byyr" />
+<meta property="og:title" content="Create tables of abundance and basal area by year. — abundance_byyr" />
 
-<meta property="og:description" content="Create tables of abundance and basal area by (round mean) year." />
+<meta property="og:description" content="Both of these functions input a ViewFullTable (vft) and any number of
+expressions to pick stems within a specific dbh range. For each census they
+first pick a single stem per tree, choosing the top one listed by descending
+order of HOM then by descending order of DBH (see
+?fgeo.tool::pick_largest_hom_dbh()). Then they pick only the trees in the
+DBH range specified by the expressions passed to the ... argument (see
+?fgeo.tool::pick_woods()). Finally, for each species and each (round mean)
+year of measurement, abundance_byyr() counts the number of trees and
+basal_area_byyr() calculates the total basal area." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,39 +114,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create tables of abundance and basal area by (round mean) year.</h1>
+    <h1>Create tables of abundance and basal area by year.</h1>
     <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/byyr.R'><code>R/byyr.R</code></a></small>
     <div class="hidden name"><code>abundance_byyr.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create tables of abundance and basal area by (round mean) year.</p>
+    <p>Both of these functions input a ViewFullTable (<code>vft</code>) and any number of
+expressions to pick stems within a specific dbh range. For each census they
+first pick a single stem per tree, choosing the top one listed by descending
+order of <code>HOM</code> then by descending order of <code>DBH</code> (see
+?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>fgeo.tool::pick_largest_hom_dbh()</a></code>). Then they pick only the trees in the
+<code>DBH</code> range specified by the expressions passed to the <code>...</code> argument (see
+?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_woods'>fgeo.tool::pick_woods()</a></code>). Finally, for each species and each (round mean)
+year of measurement, <code>abundance_byyr()</code> counts the number of trees and
+<code>basal_area_byyr()</code> calculates the total basal area.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='kw'>status_a</span> <span class='kw'>=</span> <span class='st'>"alive"</span>, <span class='kw'>status_d</span> <span class='kw'>=</span> <span class='st'>"dead"</span>)
+    <pre class="usage"><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='no'>...</span>)
 
-<span class='fu'>basal_area_byyr</span>(<span class='no'>vft</span>, <span class='kw'>status_a</span> <span class='kw'>=</span> <span class='st'>"alive"</span>, <span class='kw'>status_d</span> <span class='kw'>=</span> <span class='st'>"dead"</span>)</pre>
+<span class='fu'>basal_area_byyr</span>(<span class='no'>vft</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>vft</th>
-      <td><p>A ForestGEO-like dataframe; particularly a ViewFullTable.</p></td>
+      <td><p>A ForestGEO-like dataframe; particularly a ViewFullTable. As such,
+it should contain columns <code>PlotName</code>, <code>CensusID</code>, <code>TreeID</code>, <code>StemID</code>,
+<code>Status</code>, <code>DBH</code>, <code>Genus</code>, <code>SpeciesName</code>, <code>ExactDate</code>, <code>PlotCensusNumber</code>,
+<code>Family</code>, <code>Tag</code>, and <code>HOM</code>. <code>ExactDate</code> should contain dates from
+1980-01-01 to the present day in the format yyyy-mm-dd.</p></td>
     </tr>
     <tr>
-      <th>status_a</th>
-      <td><p>Sting to match alive and dead stems; it corresponds
-to the values of the variable <code>status</code> (in census tables) or <code>Status</code> (with
-capital "S" in ViewFull tables).</p></td>
-    </tr>
-    <tr>
-      <th>status_d</th>
-      <td><p>Sting to match alive and dead stems; it corresponds
-to the values of the variable <code>status</code> (in census tables) or <code>Status</code> (with
-capital "S" in ViewFull tables).</p></td>
+      <th>...</th>
+      <td><p>An expression of dbh to pick woods of a specific range.</p></td>
     </tr>
     </table>
     
@@ -146,63 +158,43 @@ capital "S" in ViewFull tables).</p></td>
 
     <p>A dataframe.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_woods'>fgeo.tool::pick_woods()</a></code>, <code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>fgeo.tool::pick_largest_hom_dbh()</a></code>.</p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>fgeo.tool</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: 'fgeo.tool'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter</span></div><div class='input'>
-<span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/reexports'>tibble</a></span>(
-  <span class='kw'>PlotName</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"luq"</span>, <span class='st'>"luq"</span>, <span class='st'>"luq"</span>, <span class='st'>"luq"</span>, <span class='st'>"luq"</span>, <span class='st'>"luq"</span>, <span class='st'>"luq"</span>, <span class='st'>"luq"</span>),
-  <span class='kw'>CensusID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
-  <span class='kw'>TreeID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
-  <span class='kw'>StemID</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1.1</span>, <span class='fl'>1.2</span>, <span class='fl'>2.1</span>, <span class='fl'>2.2</span>, <span class='fl'>1.1</span>, <span class='fl'>1.2</span>, <span class='fl'>2.1</span>, <span class='fl'>2.2</span>),
-  <span class='kw'>Status</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"alive"</span>, <span class='st'>"dead"</span>, <span class='st'>"alive"</span>, <span class='st'>"alive"</span>, <span class='st'>"alive"</span>, <span class='st'>"gone"</span>,
-    <span class='st'>"dead"</span>, <span class='st'>"dead"</span>),
-  <span class='kw'>DBH</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>NA</span>, <span class='fl'>2L</span>, <span class='fl'>3L</span>, <span class='fl'>2L</span>, <span class='fl'>NA</span>, <span class='fl'>3L</span>, <span class='fl'>4L</span>),
-  <span class='kw'>Genus</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>, <span class='st'>"Gn"</span>),
-  <span class='kw'>SpeciesName</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"spp"</span>, <span class='st'>"spp"</span>, <span class='st'>"spp"</span>, <span class='st'>"spp"</span>, <span class='st'>"spp"</span>, <span class='st'>"spp"</span>, <span class='st'>"spp"</span>, <span class='st'>"spp"</span>),
-  <span class='kw'>ExactDate</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"2001-01-01"</span>, <span class='st'>"2001-01-01"</span>, <span class='st'>"2001-01-01"</span>, <span class='st'>"2001-01-01"</span>,
-    <span class='st'>"2002-01-01"</span>, <span class='st'>"2002-01-01"</span>, <span class='st'>"2002-01-01"</span>,
-    <span class='st'>"2002-01-01"</span>),
-  <span class='kw'>PlotCensusNumber</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
-  <span class='kw'>Family</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>, <span class='st'>"f"</span>),
-  <span class='kw'>Tag</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>1L</span>, <span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>),
-  <span class='kw'>HOM</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>130</span>, <span class='fl'>8</span>)
-)
+<span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='no'>example_byyr</span>
 <span class='no'>vft</span></div><div class='output co'>#&gt; # A tibble: 8 x 13
-#&gt;   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate
-#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;    
-#&gt; 1 luq             1      1    1.1 alive      1 Gn    spp         2001-01-~
-#&gt; 2 luq             1      1    1.2 dead      NA Gn    spp         2001-01-~
-#&gt; 3 luq             1      2    2.1 alive      2 Gn    spp         2001-01-~
-#&gt; 4 luq             1      2    2.2 alive      3 Gn    spp         2001-01-~
-#&gt; 5 luq             2      1    1.1 alive      2 Gn    spp         2002-01-~
-#&gt; 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-~
-#&gt; 7 luq             2      2    2.1 dead       3 Gn    spp         2002-01-~
-#&gt; 8 luq             2      2    2.2 dead       4 Gn    spp         2002-01-~
+#&gt;   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate 
+#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;date&gt;    
+#&gt; 1 luq             1      1    1.1 alive     10 Gn    spp         2001-01-01
+#&gt; 2 luq             1      1    1.2 dead      NA Gn    spp         2001-01-01
+#&gt; 3 luq             1      2    2.1 alive     20 Gn    spp         2001-01-01
+#&gt; 4 luq             1      2    2.2 alive     30 Gn    spp         2001-01-01
+#&gt; 5 luq             2      1    1.1 alive     20 Gn    spp         2002-01-01
+#&gt; 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-01
+#&gt; 7 luq             2      2    2.1 dead      NA Gn    spp         2002-01-01
+#&gt; 8 luq             2      2    2.2 dead      NA Gn    spp         2002-01-01
 #&gt; # ... with 4 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;, Tag &lt;int&gt;,
-#&gt; #   HOM &lt;dbl&gt;</div><div class='input'>
-<span class='co'># All trees are of the same species. There are two trees, each with two stems.</span>
-<span class='co'># In census 1, the count of alive trees should be 2 because both trees are</span>
-<span class='co'>#   alive, but note that one stem is dead (StemID = 1.2).</span>
-<span class='co'># In census 2 the count of alive trees should be 1:</span>
-<span class='co'>#   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);</span>
-<span class='co'>#   * One tree is dead (TreeID = 2) because both its stems are dead.</span>
-<span class='no'>largest_stems</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>pick_largest_hom_dbh</a></span>(<span class='no'>vft</span>)
-<span class='fu'>abundance_byyr</span>(<span class='no'>largest_stems</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
+#&gt; #   HOM &lt;int&gt;</div><div class='input'><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>, <span class='no'>DBH</span> <span class='kw'>&lt;</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt;   species Family `2001`
+#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
+#&gt; 1 Gn spp  f           1</div><div class='input'><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
 #&gt;   species Family `2001` `2002`
 #&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 Gn spp  f           2      1</div><div class='input'>
-<span class='no'>ba</span> <span class='kw'>&lt;-</span> <span class='fu'>basal_area_byyr</span>(<span class='no'>largest_stems</span>)
-
+#&gt; 1 Gn spp  f           2      1</div><div class='input'><span class='no'>basal</span> <span class='kw'>&lt;-</span> <span class='fu'>basal_area_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)
 <span class='co'># Convert units and standardize by plot size in hectares</span>
 <span class='no'>years</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"2001"</span>, <span class='st'>"2002"</span>)
-<span class='no'>in_he</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/convert_unit'>convert_unit_at</a></span>(<span class='no'>ba</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"mm2"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"hectare"</span>)
+<span class='no'>in_he</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/convert_unit'>convert_unit_at</a></span>(<span class='no'>basal</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"mm2"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"hectare"</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/standardize_at'>standardize_at</a></span>(<span class='no'>in_he</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='fl'>50</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;   species Family   `2001`   `2002`
-#&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 Gn spp  f      1.57e-11 6.28e-12</div></pre>
+#&gt;   species Family        `2001`   `2002`
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 Gn spp  f      0.00000000157 6.28e-10</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -210,6 +202,8 @@ capital "S" in ViewFull tables).</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
