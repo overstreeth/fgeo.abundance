@@ -21,12 +21,12 @@ A dataframe.
 Create tables of abundance and basal area by (round mean) year.
 }
 \examples{
+library(fgeo.tool)
+
 vft <- example_byyr
 vft
-
 abundance_byyr(vft, DBH >= 10, DBH < 20)
 abundance_byyr(vft, DBH >= 10)
-
 basal <- basal_area_byyr(vft, DBH >= 10)
 # Convert units and standardize by plot size in hectares
 years <- c("2001", "2002")

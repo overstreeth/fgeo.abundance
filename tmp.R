@@ -1,8 +1,8 @@
 # TODO 
-# Clean todo and FIXME
+# Clean TODO and FIXME
 # Document intrnal behaviour of byyr
 # Rerun Suzanne's funcitons
-
+# Make tests shorter to run
 
 
 # TODO: Think how to deal with status in combination with the pick() functions. It looks like I should first determine the status of a tree. Then remove dead stems, then pick, etc.
