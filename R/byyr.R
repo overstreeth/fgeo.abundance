@@ -48,7 +48,6 @@ abundance_byyr <- function(vft, ...) {
     count_distinct_treeid() %>%
     ungroup() %>%
     select(-.data$plotname) %>%
-    # TODO: Check if instead of everything() I can simply use .data$year
     select(.data$species, .data$family, dplyr::everything()) %>%
     tidyr::spread(.data$year, n, fill = 0) %>%
     arrange(.data$species, .data$family)
