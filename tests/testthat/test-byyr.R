@@ -9,11 +9,6 @@ library(rlang)
 library(fgeo.tool)
 library(fgeo.base)
 
-test_that("fails with informative error", {
-  expect_error(basal_area_byyr(1))
-  expect_error(basal_area_byyr())
-})
-
 tiny <- tibble::tibble(
   Tag = c("0001", "0001", "0002", "0002"),
   TreeID = c("0001", "0001", "0002", "0002"),
