@@ -1,20 +1,10 @@
-# TODO Clean todo and FIXME
-
-# Standardize basal area by total plot-hectares.
-standardize_ba <- function(ba, denominator) {
-  years <- setdiff(names(ba), c("species", "Family"))
-  in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "m2")
-  standardize_at(in_he, years, denominator)
-}
-
-create_all_tables <- function(vft, plotname, denominator) {
-  tree_abund <- create_table(vft, plotname, pick_trees, abundance_byyr)
-  sapling_abund <- create_table(vft, plotname, pick_saplings, abundance_byyr)
-  tree_basal <- create_table(vft, plotname, pick_trees, basal_area_byyr) %>% 
-    standardize_ba(denominator)
+# TODO 
+# Clean todo and FIXME
+# Document intrnal behaviour of byyr
+# Rerun Suzanne's funcitons
 
 
-  
+
 # TODO: Think how to deal with status in combination with the pick() functions. It looks like I should first determine the status of a tree. Then remove dead stems, then pick, etc.
 
 Use internal used in building pick_dhh_largest() to write fun to pick_hom_largest() by census is treeid by stemid. Err if multiple plots are detected.

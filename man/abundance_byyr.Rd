@@ -12,7 +12,7 @@ basal_area_byyr(vft, ...)
 \arguments{
 \item{vft}{A ForestGEO-like dataframe; particularly a ViewFullTable.}
 
-\item{...}{An expressoin of dbh to pick woods of a specific range.}
+\item{...}{An expression of dbh to pick woods of a specific range.}
 }
 \value{
 A dataframe.
@@ -21,41 +21,15 @@ A dataframe.
 Create tables of abundance and basal area by (round mean) year.
 }
 \examples{
-library(fgeo.tool)
-
-vft <- tibble(
-  PlotName = c("luq", "luq", "luq", "luq", "luq", "luq", "luq", "luq"),
-  CensusID = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
-  TreeID = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L),
-  StemID = c(1.1, 1.2, 2.1, 2.2, 1.1, 1.2, 2.1, 2.2),
-  Status = c("alive", "dead", "alive", "alive", "alive", "gone",
-    "dead", "dead"),
-  DBH = c(1L, NA, 2L, 3L, 2L, NA, 3L, 4L),
-  Genus = c("Gn", "Gn", "Gn", "Gn", "Gn", "Gn", "Gn", "Gn"),
-  SpeciesName = c("spp", "spp", "spp", "spp", "spp", "spp", "spp", "spp"),
-  ExactDate = c("2001-01-01", "2001-01-01", "2001-01-01", "2001-01-01",
-    "2002-01-01", "2002-01-01", "2002-01-01",
-    "2002-01-01"),
-  PlotCensusNumber = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
-  Family = c("f", "f", "f", "f", "f", "f", "f", "f"),
-  Tag = c(1L, 1L, 2L, 2L, 1L, 1L, 2L, 2L),
-  HOM = rep(130, 8)
-)
+vft <- example_byyr
 vft
 
-# All trees are of the same species. There are two trees, each with two stems.
-# In census 1, the count of alive trees should be 2 because both trees are
-#   alive, but note that one stem is dead (StemID = 1.2).
-# In census 2 the count of alive trees should be 1:
-#   * One tree is alive (TreeID = 1) although one stem is gone (StemID = 1.2);
-#   * One tree is dead (TreeID = 2) because both its stems are dead.
-largest_stems <- pick_largest_hom_dbh(vft)
-abundance_byyr(largest_stems)
+abundance_byyr(vft, DBH >= 10, DBH < 20)
+abundance_byyr(vft, DBH >= 10)
 
-ba <- basal_area_byyr(largest_stems)
-
+basal <- basal_area_byyr(vft, DBH >= 10)
 # Convert units and standardize by plot size in hectares
 years <- c("2001", "2002")
-in_he <- convert_unit_at(ba, .at = years, from = "mm2", to = "hectare")
+in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
 }
