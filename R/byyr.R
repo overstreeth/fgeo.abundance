@@ -86,7 +86,6 @@ prepare_byyr <- function(vft, ...) {
   
   vft %>%
     check_prepare_byyr() %>%
-    fgeo.tool::pick_largest_hom_dbh() %>%
     fgeo.tool::pick_woods(!!! dots) %>% 
     drop_if_missing_dates() %>%
     mean_years() %>%
