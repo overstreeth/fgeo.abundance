@@ -18,6 +18,7 @@
 #'   refers to the largest stem of each tree.
 #'
 #' @family functions for fgeo census and vft.
+#' @aliases abundance
 #'
 #' @return A dataframe with preserved groups (if any).
 #' 

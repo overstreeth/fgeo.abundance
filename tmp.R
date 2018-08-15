@@ -2,14 +2,10 @@
 
 # Reuse code and documentation from *byyr() in count_woods().
 
-# In *byyr(), enforce every expresison to contain dbh.
-
 # In count_woods() incorporate code and lessons learned from *byr().
 # * correct for buttressess.
 # * enforce `...` to take expressions of dbh.
 
-# Ensure abundance is an alias of count_woods().
-# 
 # Once the code now in byyr() is incorporated into count_woods() then I can use
 # count_woods() directly into byyr().
 

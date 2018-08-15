@@ -2,6 +2,7 @@
 % Please edit documentation in R/count_woods.R
 \name{count_woods}
 \alias{count_woods}
+\alias{abundance}
 \alias{count_trees}
 \alias{count_saplings}
 \alias{count_saplings_and_trees}
