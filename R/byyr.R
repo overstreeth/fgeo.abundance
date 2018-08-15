@@ -1,20 +1,20 @@
 #' Create tables of abundance and basal area by year.
 #' 
-#' Both of these functions input a ViewFullTable (`vft`) and any number of
-#' expressions to pick stems within a specific dbh range. For each census they
-#' first pick a single stem per tree, choosing the top one listed by descending
-#' order of `HOM`, then by descending order of `DBH` -- this corrects the effect
-#' of buttresses and picks the main stem (see
-#' ?[fgeo.tool::pick_largest_hom_dbh()]). Then they pick only the trees in the
-#' `DBH` range specified by the expressions passed to the `...` argument (see
-#' ?[fgeo.tool::pick_woods()]). Finally, for each species and each (round mean)
-#' year of measurement, `abundance_byyr()` counts the number of trees and
-#' `basal_area_byyr()` calculates the total basal area.
 #' 
-#' Before feeding data to these functions. makes no difference you don't need to
-#' pick stems by status. Doing so is good practice but should make no
-#' difference. This is because the expressions passed to `...` pick data by
-#' `DBH` and exclude missing the `DBH` values associated to non-alive stems,
+#' These functions work on two steps:
+#' 1. For each census, they automatically pick a single stem per `treeid`, and
+#' then they pick the stems within the `dbh` range you specify. This first step
+#' is implemented via [fgeo.tool::pick_woods()] -- see that function for
+#' details.
+#' 2. For each species and each (round mean) year of measurement, these
+#' functions do different things:
+#'     * `abundance_byyr()` counts the number of trees.
+#'     * `basal_area_byyr()` calculates the total basal area.
+#' 
+#' You don't need to pick stems by status before feeding data to these
+#' functions. Doing so may make your code more readable but it should not affect
+#' the result. This is because the expressions passed to `...` pick data by
+#' `dbh` and exclude missing the `dbh` values associated to non-alive stems,
 #' including dead, missing, and gone.
 #' 
 #' @param vft A ForestGEO-like dataframe; particularly a ViewFullTable. As such,
@@ -25,7 +25,7 @@
 #' @param ... An expression of dbh to pick woods of a specific range.
 #' @inheritParams fgeo.tool::add_status_tree
 #' 
-#' @seealso [fgeo.tool::pick_woods()], [fgeo.tool::pick_largest_hom_dbh()].
+#' @seealso [fgeo.tool::pick_woods()].
 #'
 #' @return A dataframe.
 #' 

@@ -22,22 +22,25 @@ it should contain columns \code{PlotName}, \code{CensusID}, \code{TreeID}, \code
 A dataframe.
 }
 \description{
-Both of these functions input a ViewFullTable (\code{vft}) and any number of
-expressions to pick stems within a specific dbh range. For each census they
-first pick a single stem per tree, choosing the top one listed by descending
-order of \code{HOM}, then by descending order of \code{DBH} -- this corrects the effect
-of buttresses and picks the main stem (see
-?\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}). Then they pick only the trees in the
-\code{DBH} range specified by the expressions passed to the \code{...} argument (see
-?\code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}}). Finally, for each species and each (round mean)
-year of measurement, \code{abundance_byyr()} counts the number of trees and
-\code{basal_area_byyr()} calculates the total basal area.
+These functions work on two steps:
+\enumerate{
+\item For each census, they automatically pick a single stem per \code{treeid}, and
+then they pick the stems within the \code{dbh} range you specify. This first step
+is implemented via \code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}} -- see that function for
+details.
+\item For each species and each (round mean) year of measurement, these
+functions do different things:
+\itemize{
+\item \code{abundance_byyr()} counts the number of trees.
+\item \code{basal_area_byyr()} calculates the total basal area.
+}
+}
 }
 \details{
-Before feeding data to these functions. makes no difference you don't need to
-pick stems by status. Doing so is good practice but should make no
-difference. This is because the expressions passed to \code{...} pick data by
-\code{DBH} and exclude missing the \code{DBH} values associated to non-alive stems,
+You don't need to pick stems by status before feeding data to these
+functions. Doing so may make your code more readable but it should not affect
+the result. This is because the expressions passed to \code{...} pick data by
+\code{dbh} and exclude missing the \code{dbh} values associated to non-alive stems,
 including dead, missing, and gone.
 }
 \examples{
@@ -54,5 +57,5 @@ in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
 }
 \seealso{
-\code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}}, \code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
+\code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}}.
 }
