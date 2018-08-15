@@ -1,5 +1,6 @@
 # TODO
-# In byyr() document why it's unnecessary to first pick status.
+
+# Reuse code and documentation from *byyr() in count_woods().
 
 # In *byyr(), enforce every expresison to contain dbh.
 

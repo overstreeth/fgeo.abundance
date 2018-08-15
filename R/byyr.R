@@ -82,7 +82,7 @@ basal_area_byyr <- function(vft, ...) {
 
 prepare_byyr <- function(vft, ...) {
   dots <- lapply(exprs(...), lowercase_dbh)
-  warn_if_not_expression_of_dbh(dots)
+  flag_if_not_expression_of_dbh(dots, .flag = rlang::abort, .var = "dbh")
   
   vft %>%
     check_prepare_byyr() %>%
@@ -99,16 +99,15 @@ lowercase_dbh <- function(x) {
   rlang::parse_expr(x)
 }
 
-warn_if_not_expression_of_dbh <- function(x) {
-  x <- rlang::expr_deparse(x)
-  if (!any(grepl("dbh", x))) {
-    msg <- glue(
-      "The argument '...' should contain an expression of `dbh`.
-      Did you forget to pick a specific dbh range?"
-    )
-    rlang::warn(msg)
+flag_if_not_expression_of_dbh <- function(dots, .flag, .var) {
+  dots <- rlang::expr_deparse(dots)
+  if (!any(grepl(.var, dots))) {
+    flag_is_abort <- identical(.flag, rlang::abort)
+    request <- ifelse(flag_is_abort, "must", "should")
+    msg <- glue("All expressions passed to `...` {request} refer to `{.var}`.")
+    .flag(msg)
   }
-  invisible(x)
+  invisible(dots)
 }
 
 check_prepare_byyr <- function(vft) {

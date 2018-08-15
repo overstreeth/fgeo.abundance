@@ -18,26 +18,24 @@ test_that("basal_area_byyr and abundance_byyr fail with informative errors", {
   expect_error(abundance_byyr(), "is missing")
   
   vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+  msg <-  "All expressions.*must refer to `dbh`"
+  
+  expect_error(abundance_byyr(vft, exactdate > 0), msg)
   expect_silent(abundance_byyr(vft, DBH > 0))
-  expect_warning(abundance_byyr(vft, exactdate > 0), "forget.*dbh range?")
   expect_silent(abundance_byyr(vft, exactdate > 0, dbh > 0))
-  expect_warning(abundance_byyr(vft), "forget to pick a specific dbh range?")
-  expect_error(
-    expect_warning(abundance_byyr(vft, invalid > 0)), 
-    "object.*not found"
-  )
+  
+  expect_error(abundance_byyr(vft), msg)
+  expect_error(abundance_byyr(vft, invalid > 0), msg)
   
   expect_error(basal_area_byyr(1), "data.frame.*is not TRUE")
   expect_error(basal_area_byyr(), "is missing")
   
   expect_silent(basal_area_byyr(vft, DBH > 0))
-  expect_warning(basal_area_byyr(vft, exactdate > 0), "forget.*dbh range?")
   expect_silent(basal_area_byyr(vft, exactdate > 0, dbh > 0))
-  expect_warning(basal_area_byyr(vft), "forget to pick a specific dbh range?")
-  expect_error(
-    expect_warning(basal_area_byyr(vft, invalid > 0)), 
-    "object.*not found"
-  )
+  
+  expect_error(basal_area_byyr(vft), msg)
+  expect_error(basal_area_byyr(vft, exactdate > 0), msg)
+  expect_error(basal_area_byyr(vft, invalid > 0), msg)
 })
 
 describe("basal_area_byyr and abundance_byyr work with different datasets", {
