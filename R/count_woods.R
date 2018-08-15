@@ -51,6 +51,10 @@
 #' count_woods(by_sp, dbh > 10, dbh < 100)
 #' # Same
 #' count_saplings(by_sp)
+#' 
+#' count_woods(by_sp, dbh >= 10)
+#' # Same
+#' count_saplings_and_trees(by_sp)
 count_woods <- fgeo.tool::pick_woods_f(count_distinct_treeid)
 
 #' @rdname count_woods
@@ -63,4 +67,10 @@ count_trees <- function(.data) {
 #' @export
 count_saplings <- function(.data) {
   count_woods(.data, .data$dbh >= 10, .data$dbh < 100)
+}
+
+#' @rdname count_woods
+#' @export
+count_saplings_and_trees <- function(.data) {
+  count_woods(.data, .data$dbh >= 10)
 }

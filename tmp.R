@@ -1,9 +1,21 @@
-# TODO 
-# Clean TODO and FIXME
-# Document intrnal behaviour of byyr
+# TODO
+# In byyr() document why it's unnecessary to first pick status.
 
-Details:
+# In *byyr(), enforce every expresison to contain dbh.
 
+# In count_woods() incorporate code and lessons learned from *byr().
+# * correct for buttressess.
+# * enforce `...` to take expressions of dbh.
+
+# Ensure abundance is an alias of count_woods().
+# 
+# Once the code now in byyr() is incorporated into count_woods() then I can use
+# count_woods() directly into byyr().
+
+# Clearly document that count_wods() is the way to calculate abundance.
+
+# Think if basal_area() needs to internally count_woods() (the aspirational,
+# improved version)
 
 
 

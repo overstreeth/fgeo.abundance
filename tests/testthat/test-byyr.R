@@ -3,6 +3,16 @@ context("byyr")
 library(dplyr)
 library(fgeo.base)
 
+describe("*byyr()", {
+  it("makes no difference if status is picked before *byyr()", {
+    skip_if_not_installed("readr")
+    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    raw <- abundance_byyr(vft, dbh > 0)
+    picked <- abundance_byyr(filter(vft, Status == "alive"), dbh > 0)
+    expect_equal(picked, raw)
+  })
+})
+
 test_that("basal_area_byyr and abundance_byyr fail with informative errors", {
   expect_error(abundance_byyr(1), "data.frame.*is not TRUE")
   expect_error(abundance_byyr(), "is missing")

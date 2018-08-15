@@ -4,6 +4,7 @@
 \alias{count_woods}
 \alias{count_trees}
 \alias{count_saplings}
+\alias{count_saplings_and_trees}
 \title{Count unique trees based on the dbh of their largest stem.}
 \usage{
 count_woods(.data, ...)
@@ -11,6 +12,8 @@ count_woods(.data, ...)
 count_trees(.data)
 
 count_saplings(.data)
+
+count_saplings_and_trees(.data)
 }
 \arguments{
 \item{.data}{A dataframe; particularly a ForestGEO census or ViewFullTable.}
@@ -63,6 +66,10 @@ count_trees(by_sp)
 count_woods(by_sp, dbh > 10, dbh < 100)
 # Same
 count_saplings(by_sp)
+
+count_woods(by_sp, dbh >= 10)
+# Same
+count_saplings_and_trees(by_sp)
 }
 \seealso{
 Other functions for fgeo census and vft.: \code{\link{count_distinct_treeid}}
