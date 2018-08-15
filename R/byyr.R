@@ -81,8 +81,8 @@ basal_area_byyr <- function(vft, ...) {
 }
 
 prepare_byyr <- function(vft, ...) {
-  dots <- lapply(exprs(...), lowercase_dbh)
-  flag_if_not_expression_of_dbh(dots, .flag = rlang::abort, .var = "dbh")
+  dots <- lowercase_var(..., .var = "dbh")
+  flag_if_not_expression_of_var(dots, .flag = rlang::abort, .var = "dbh")
   
   vft %>%
     check_prepare_byyr() %>%
@@ -92,22 +92,6 @@ prepare_byyr <- function(vft, ...) {
     mean_years() %>%
     fgeo.base::drop_if_na("year") %>%
     ungroup()
-}
-
-lowercase_dbh <- function(x) {
-  x <- gsub("dbh", "dbh", rlang::expr_deparse(x), ignore.case = TRUE)
-  rlang::parse_expr(x)
-}
-
-flag_if_not_expression_of_dbh <- function(dots, .flag, .var) {
-  dots <- rlang::expr_deparse(dots)
-  if (!any(grepl(.var, dots))) {
-    flag_is_abort <- identical(.flag, rlang::abort)
-    request <- ifelse(flag_is_abort, "must", "should")
-    msg <- glue("All expressions passed to `...` {request} refer to `{.var}`.")
-    .flag(msg)
-  }
-  invisible(dots)
 }
 
 check_prepare_byyr <- function(vft) {
