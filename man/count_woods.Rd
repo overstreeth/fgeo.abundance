@@ -26,18 +26,20 @@ refers to the largest stem of each tree.}
 A dataframe with preserved groups (if any).
 }
 \description{
+\code{count_woods()} is a general function that takes any dataframe and any number
+of expressions to filter that dataframe. The other functions are shortcuts:
+\itemize{
+\item \code{count_trees()} picks stems of 100 mm dbh and above.
+\item \code{count_saplings()} picks stems between 10 mm dbh inclusive and 100 mm dbh
+exclusive.
+\item \code{count_saplings_and_trees()} picks stems of 10 mm dbh and above.
+}
+}
+\details{
 This functions count unique treeid by censusid (automatically) and any number
 of additional grouping variables (via \code{dplyr::group_by()}. Data with
 multi-stem trees is first collapsed by picking the stem (of each treeid) with
 maximum dbh.
-\itemize{
-\item \code{count_woods()} is general and allows filtering data using any number of
-expressions passed via the argument \code{...} to \code{dplyr::filter()}.
-\item \code{count_trees()} is a shortcut that defines tress as stems of dbh of 100 mm
-and above.
-\item \code{count_samplings()} is a shortcut that defines saplings as stems of dbh of
-between 10 mm inclusive and 100 mm exclusive.
-}
 }
 \examples{
 library(dplyr)

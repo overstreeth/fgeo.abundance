@@ -6,13 +6,15 @@
 #' of additional grouping variables (via `dplyr::group_by()`. Data with
 #' multi-stem trees is first collapsed by picking the stem (of each treeid) with
 #' maximum dbh.
-#' * `count_woods()` is general and allows filtering data using any number of
-#' expressions passed via the argument `...` to `dplyr::filter()`.
-#' * `count_trees()` is a shortcut that defines tress as stems of dbh of 100 mm
-#' and above.
-#' * `count_samplings()` is a shortcut that defines saplings as stems of dbh of
-#' between 10 mm inclusive and 100 mm exclusive.
-#'   
+#' 
+#' @description
+#' `count_woods()` is a general function that takes any dataframe and any number
+#' of expressions to filter that dataframe. The other functions are shortcuts:
+#' * `count_trees()` picks stems of 100 mm dbh and above.
+#' * `count_saplings()` picks stems between 10 mm dbh inclusive and 100 mm dbh 
+#' exclusive.
+#' * `count_saplings_and_trees()` picks stems of 10 mm dbh and above.
+#' 
 #' @param .data A dataframe; particularly a ForestGEO census or ViewFullTable.
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
 #'   refers to the largest stem of each tree.

@@ -1,10 +1,15 @@
 # TODO
 
-# Reuse code and documentation from *byyr() in count_woods().
+# Make count_distinct_treeid internal?
+
+# Reuse code and documentation from fgeo.tool::pick_largest_hom_dbh in
+# fgeo.tool::pick_woods (document them together?), and in
+# fgeo.abundance::*byyr() in fgeo.abundance::count_woods().
+
 
 # In count_woods() incorporate code and lessons learned from *byr().
 # * correct for buttressess.
-# * enforce `...` to take expressions of dbh.
+# * enforce `...` to take expressions of dbh. Reflect this in the documentation.
 
 # Once the code now in byyr() is incorporated into count_woods() then I can use
 # count_woods() directly into byyr().
