@@ -1,11 +1,4 @@
-# TODO
-
-# Do tests pass if  replace pick_woods_f with filter()?
-
 # Test this is all true. (From Suzanne). Maybe add test of unique stem id by censuid and tree id after output of pick_largest_hom_dbh
-
-# It seems that I can remove count_woods and simply use filter() after pick_largest_hom_dbh().
-
 
 # In each census (plotcensusnumber):
 #   
@@ -22,24 +15,23 @@
 
 
 
+# TODO
+
+# byyr could be simpler if I expect class "main_stem" built with main_stem() or 
+# as_main_stem(), which should construct objects based on pick_largest_hom_dbh()
+
+# In pick_woods(), force expressions to be of dbh: Add something like:
+# (From fgeo.abundance)
+# Then remove it from elsewhere downstream.
+dots <- lowercase_var(..., .var = "dbh")
+flag_if_not_expression_of_var(dots, .flag = rlang::abort, .var = "dbh")
 
 
 
 
-
-
-
-
-
-
+# Bring pick_woods_f to fgeo.abundance and refactor if necessary.
 
 # Make count_distinct_treeid internal?
-
-# Reuse code and documentation from fgeo.tool::pick_largest_hom_dbh in
-# fgeo.tool::pick_woods (document them together?), and in
-# fgeo.abundance::*byyr() in fgeo.abundance::count_woods().
-
-
 # In count_woods() incorporate code and lessons learned from *byr().
 # * correct for buttressess.
 # * enforce `...` to take expressions of dbh. Reflect this in the documentation.

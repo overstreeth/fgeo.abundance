@@ -1,15 +1,9 @@
 #' Create tables of abundance and basal area by year.
 #' 
-#' 
-#' These functions work on two steps:
-#' 1. For each census, they automatically pick a single stem per `treeid`, and
-#' then they pick the stems within the `dbh` range you specify. This first step
-#' is implemented via [fgeo.tool::pick_woods()] -- see that function for
-#' details.
-#' 2. For each species and each (round mean) year of measurement, these
-#' functions do different things:
-#'     * `abundance_byyr()` counts the number of trees.
-#'     * `basal_area_byyr()` calculates the total basal area.
+#' These functions first automatically pick the main stem (see
+#' ?[fgeo.tool::pick_largest_hom_dbh()]). Then, f or each species and each
+#' (round mean) year of measurement, `abundance_byyr()` counts the number of
+#' trees, and ` basal_area_byyr()` calculates the total basal area.
 #' 
 #' You don't need to pick stems by status before feeding data to these
 #' functions. Doing so may make your code more readable but it should not affect
@@ -25,7 +19,7 @@
 #' @param ... An expression of dbh to pick woods of a specific range.
 #' @inheritParams fgeo.tool::add_status_tree
 #' 
-#' @seealso [fgeo.tool::pick_woods()].
+#' @seealso [fgeo.tool::pick_largest_hom_dbh()].
 #'
 #' @return A dataframe.
 #' 
@@ -86,7 +80,8 @@ prepare_byyr <- function(vft, ...) {
   
   vft %>%
     check_prepare_byyr() %>%
-    fgeo.tool::pick_woods(!!! dots) %>% 
+    fgeo.tool::pick_largest_hom_dbh() %>% 
+    dplyr::filter(!!! dots) %>% 
     drop_if_missing_dates() %>%
     mean_years() %>%
     fgeo.base::drop_if_na("year") %>%

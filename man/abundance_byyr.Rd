@@ -22,19 +22,10 @@ it should contain columns \code{PlotName}, \code{CensusID}, \code{TreeID}, \code
 A dataframe.
 }
 \description{
-These functions work on two steps:
-\enumerate{
-\item For each census, they automatically pick a single stem per \code{treeid}, and
-then they pick the stems within the \code{dbh} range you specify. This first step
-is implemented via \code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}} -- see that function for
-details.
-\item For each species and each (round mean) year of measurement, these
-functions do different things:
-\itemize{
-\item \code{abundance_byyr()} counts the number of trees.
-\item \code{basal_area_byyr()} calculates the total basal area.
-}
-}
+These functions first automatically pick the main stem (see
+?\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}). Then, f or each species and each
+(round mean) year of measurement, \code{abundance_byyr()} counts the number of
+trees, and \code{basal_area_byyr()} calculates the total basal area.
 }
 \details{
 You don't need to pick stems by status before feeding data to these
@@ -57,5 +48,5 @@ in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
 }
 \seealso{
-\code{\link[fgeo.tool:pick_woods]{fgeo.tool::pick_woods()}}.
+\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
 }
