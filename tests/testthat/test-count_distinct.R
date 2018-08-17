@@ -2,6 +2,7 @@ context("count_distinct")
 
 library(dplyr)
 library(tibble)
+library(datasets)
 
 census <- tibble(
   treeID = c(1, 1, 2, 3, 3, 3),
