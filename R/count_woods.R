@@ -1,11 +1,10 @@
 # fgeo.abundance ----------------------------------------------------------
 
-#' Count unique trees based on the dbh of their largest stem.
+#' Count main stems of a given dbh range.
 #' 
-#' This functions count unique treeid by censusid (automatically) and any number
-#' of additional grouping variables (via `dplyr::group_by()`. Data with
-#' multi-stem trees is first collapsed by picking the stem (of each treeid) with
-#' maximum dbh.
+#' These functions count main stems by censusid (automatically) and any number
+#' of additional grouping variables specified via `dplyr::group_by()`.
+#' Main stems are automatically picked via [fgeo.tool::pick_largest_hom_dbh()].
 #' 
 #' @description
 #' `count_woods()` is a general function that takes any dataframe and any number
@@ -18,7 +17,8 @@
 #' @param .data A dataframe; particularly a ForestGEO census or ViewFullTable.
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
 #'   refers to the largest stem of each tree.
-#'
+#' 
+#' @seealso [fgeo.tool::pick_largest_hom_dbh()].
 #' @family functions for fgeo census and vft.
 #' @aliases abundance
 #'
@@ -58,6 +58,14 @@
 #' count_woods(by_sp, dbh >= 10)
 #' # Same
 #' count_saplings_and_trees(by_sp)
+#' 
+#' # If data contains multiple censuses, the resulting counts are by census
+#' census$CensusID <- 1
+#' census2 <- mutate(census, CensusID = 2, dbh = dbh + 10)
+#' censuses <- bind_rows(census, census2)
+#' censuses
+#' 
+#' count_woods(censuses, dbh >= 10)
 count_woods <- fgeo.tool::pick_woods_f(count_distinct_treeid)
 
 #' @rdname count_woods

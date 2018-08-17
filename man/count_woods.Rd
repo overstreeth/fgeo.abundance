@@ -6,7 +6,7 @@
 \alias{count_trees}
 \alias{count_saplings}
 \alias{count_saplings_and_trees}
-\title{Count unique trees based on the dbh of their largest stem.}
+\title{Count main stems of a given dbh range.}
 \usage{
 count_woods(.data, ...)
 
@@ -36,10 +36,9 @@ exclusive.
 }
 }
 \details{
-This functions count unique treeid by censusid (automatically) and any number
-of additional grouping variables (via \code{dplyr::group_by()}. Data with
-multi-stem trees is first collapsed by picking the stem (of each treeid) with
-maximum dbh.
+These functions count main stems by censusid (automatically) and any number
+of additional grouping variables specified via \code{dplyr::group_by()}.
+Main stems are automatically picked via \code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
 }
 \examples{
 library(dplyr)
@@ -73,8 +72,18 @@ count_saplings(by_sp)
 count_woods(by_sp, dbh >= 10)
 # Same
 count_saplings_and_trees(by_sp)
+
+# If data contains multiple censuses, the resulting counts are by census
+census$CensusID <- 1
+census2 <- mutate(census, CensusID = 2, dbh = dbh + 10)
+censuses <- bind_rows(census, census2)
+censuses
+
+count_woods(censuses, dbh >= 10)
 }
 \seealso{
+\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
+
 Other functions for fgeo census and vft.: \code{\link{count_distinct_treeid}}
 }
 \concept{functions for fgeo census and vft.}
