@@ -16,7 +16,7 @@ it should contain columns \code{PlotName}, \code{CensusID}, \code{TreeID}, \code
 \code{Family}, \code{Tag}, and \code{HOM}. \code{ExactDate} should contain dates from
 1980-01-01 to the present day in the format yyyy-mm-dd.}
 
-\item{...}{An expression of dbh to pick woods of a specific range.}
+\item{...}{Expressions to pick main stems of a specific \code{dbh} range.}
 }
 \value{
 A dataframe.

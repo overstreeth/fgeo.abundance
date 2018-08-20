@@ -16,8 +16,7 @@
 #'   `Status`, `DBH`, `Genus`, `SpeciesName`, `ExactDate`, `PlotCensusNumber`,
 #'   `Family`, `Tag`, and `HOM`. `ExactDate` should contain dates from
 #'   1980-01-01 to the present day in the format yyyy-mm-dd.
-#' @param ... An expression of dbh to pick woods of a specific range.
-#' @inheritParams fgeo.tool::add_status_tree
+#' @param ... Expressions to pick main stems of a specific `dbh` range.
 #' 
 #' @seealso [fgeo.tool::pick_largest_hom_dbh()].
 #'
@@ -78,13 +77,15 @@ prepare_byyr <- function(vft, ...) {
   dots <- lowercase_var(..., .var = "dbh")
   flag_if_not_expression_of_var(dots, .flag = rlang::abort, .var = "dbh")
   
-  vft %>%
-    check_prepare_byyr() %>%
-    fgeo.tool::pick_largest_hom_dbh() %>% 
-    dplyr::filter(!!! dots) %>% 
-    drop_if_missing_dates() %>%
+  vft <- check_prepare_byyr(vft)
+  
+  main_stems <- fgeo.tool::pick_largest_hom_dbh(vft)
+  picked_dbh <- dplyr::filter(main_stems, !!! dots)
+  
+  years <- drop_if_missing_dates(picked_dbh) %>% 
     mean_years() %>%
     fgeo.base::drop_if_na("year")
+  years
 }
 
 check_prepare_byyr <- function(vft) {
