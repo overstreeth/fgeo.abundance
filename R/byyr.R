@@ -84,8 +84,7 @@ prepare_byyr <- function(vft, ...) {
     dplyr::filter(!!! dots) %>% 
     drop_if_missing_dates() %>%
     mean_years() %>%
-    fgeo.base::drop_if_na("year") %>%
-    ungroup()
+    fgeo.base::drop_if_na("year")
 }
 
 check_prepare_byyr <- function(vft) {
