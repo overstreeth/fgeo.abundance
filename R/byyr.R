@@ -1,7 +1,7 @@
 #' Create tables of abundance and basal area by year.
 #' 
 #' These functions first automatically pick the main stem (see
-#' ?[fgeo.tool::pick_largest_hom_dbh()]). Then, f or each species and each
+#' ?[fgeo.tool::pick_main_stem()]). Then, f or each species and each
 #' (round mean) year of measurement, `abundance_byyr()` counts the number of
 #' trees, and ` basal_area_byyr()` calculates the total basal area.
 #' 
@@ -18,7 +18,7 @@
 #'   1980-01-01 to the present day in the format yyyy-mm-dd.
 #' @param ... Expressions to pick main stems of a specific `dbh` range.
 #' 
-#' @seealso [fgeo.tool::pick_largest_hom_dbh()].
+#' @seealso [fgeo.tool::pick_main_stem()].
 #'
 #' @return A dataframe.
 #' 
@@ -79,7 +79,7 @@ prepare_byyr <- function(vft, ...) {
   
   vft <- check_prepare_byyr(vft)
   
-  main_stems <- fgeo.tool::pick_largest_hom_dbh(vft)
+  main_stems <- fgeo.tool::pick_main_stem(vft)
   picked_dbh <- dplyr::filter(main_stems, !!! dots)
   
   years <- drop_if_missing_dates(picked_dbh) %>% 

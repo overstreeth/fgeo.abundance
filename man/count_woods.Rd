@@ -38,7 +38,7 @@ exclusive.
 \details{
 These functions count main stems by censusid (automatically) and any number
 of additional grouping variables specified via \code{dplyr::group_by()}.
-Main stems are automatically picked via \code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
+Main stems are automatically picked via \code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}.
 }
 \examples{
 library(dplyr)
@@ -82,7 +82,7 @@ censuses
 count_woods(censuses, dbh >= 10)
 }
 \seealso{
-\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
+\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}.
 
 Other functions for fgeo census and vft.: \code{\link{count_distinct_treeid}}
 }

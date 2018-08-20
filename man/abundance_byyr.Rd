@@ -23,7 +23,7 @@ A dataframe.
 }
 \description{
 These functions first automatically pick the main stem (see
-?\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}). Then, f or each species and each
+?\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}). Then, f or each species and each
 (round mean) year of measurement, \code{abundance_byyr()} counts the number of
 trees, and \code{basal_area_byyr()} calculates the total basal area.
 }
@@ -48,5 +48,5 @@ in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
 }
 \seealso{
-\code{\link[fgeo.tool:pick_largest_hom_dbh]{fgeo.tool::pick_largest_hom_dbh()}}.
+\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}.
 }

@@ -5,16 +5,16 @@
 # be the way to calculate abundance. It sould be closely related to basal_area.
 # The implementaion should look like:
 # for grouped data:
-# pick_largest_hom_dbh()
+# pick_main_stem()
 # filter()
 # count_distinct_treeid() or basal_area()
 
 
 
-# Refactoring to pick_largest_hom_dbh().
+# Refactoring to pick_main_stem().
 
 # byyr could be simpler if I expect class "main_stem" built with main_stem() or 
-# as_main_stem(), which should construct objects based on pick_largest_hom_dbh()
+# as_main_stem(), which should construct objects based on pick_main_stem()
 
 
 # Deliver to Suzanne
@@ -23,7 +23,7 @@
 
 # SUZANNE REQUESTS
 
-# Test this is all true. (From Suzanne). Maybe add test of unique stem id by censuid and tree id after output of pick_largest_hom_dbh
+# Test this is all true. (From Suzanne). Maybe add test of unique stem id by censuid and tree id after output of pick_main_stem
 
 # In each census (plotcensusnumber):
 #   

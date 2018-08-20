@@ -4,7 +4,7 @@
 #' 
 #' These functions count main stems by censusid (automatically) and any number
 #' of additional grouping variables specified via `dplyr::group_by()`.
-#' Main stems are automatically picked via [fgeo.tool::pick_largest_hom_dbh()].
+#' Main stems are automatically picked via [fgeo.tool::pick_main_stem()].
 #' 
 #' @description
 #' `count_woods()` is a general function that takes any dataframe and any number
@@ -18,7 +18,7 @@
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
 #'   refers to the largest stem of each tree.
 #' 
-#' @seealso [fgeo.tool::pick_largest_hom_dbh()].
+#' @seealso [fgeo.tool::pick_main_stem()].
 #' @family functions for fgeo census and vft.
 #' @aliases abundance
 #'

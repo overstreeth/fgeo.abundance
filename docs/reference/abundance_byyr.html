@@ -32,15 +32,10 @@
 
 <meta property="og:title" content="Create tables of abundance and basal area by year. — abundance_byyr" />
 
-<meta property="og:description" content="Both of these functions input a ViewFullTable (vft) and any number of
-expressions to pick stems within a specific dbh range. For each census they
-first pick a single stem per tree, choosing the top one listed by descending
-order of HOM then by descending order of DBH (see
-?fgeo.tool::pick_largest_hom_dbh()). Then they pick only the trees in the
-DBH range specified by the expressions passed to the ... argument (see
-?fgeo.tool::pick_woods()). Finally, for each species and each (round mean)
-year of measurement, abundance_byyr() counts the number of trees and
-basal_area_byyr() calculates the total basal area." />
+<meta property="og:description" content="These functions first automatically pick the main stem (see
+?fgeo.tool::pick_main_stem()). Then, f or each species and each
+(round mean) year of measurement, abundance_byyr() counts the number of
+trees, and basal_area_byyr() calculates the total basal area." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,15 +116,10 @@ basal_area_byyr() calculates the total basal area." />
 
     <div class="ref-description">
     
-    <p>Both of these functions input a ViewFullTable (<code>vft</code>) and any number of
-expressions to pick stems within a specific dbh range. For each census they
-first pick a single stem per tree, choosing the top one listed by descending
-order of <code>HOM</code> then by descending order of <code>DBH</code> (see
-?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>fgeo.tool::pick_largest_hom_dbh()</a></code>). Then they pick only the trees in the
-<code>DBH</code> range specified by the expressions passed to the <code>...</code> argument (see
-?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_woods'>fgeo.tool::pick_woods()</a></code>). Finally, for each species and each (round mean)
-year of measurement, <code>abundance_byyr()</code> counts the number of trees and
-<code>basal_area_byyr()</code> calculates the total basal area.</p>
+    <p>These functions first automatically pick the main stem (see
+?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_main_stem'>fgeo.tool::pick_main_stem()</a></code>). Then, f or each species and each
+(round mean) year of measurement, <code>abundance_byyr()</code> counts the number of
+trees, and <code>basal_area_byyr()</code> calculates the total basal area.</p>
     
     </div>
 
@@ -150,7 +140,7 @@ it should contain columns <code>PlotName</code>, <code>CensusID</code>, <code>Tr
     </tr>
     <tr>
       <th>...</th>
-      <td><p>An expression of dbh to pick woods of a specific range.</p></td>
+      <td><p>Expressions to pick main stems of a specific <code>dbh</code> range.</p></td>
     </tr>
     </table>
     
@@ -158,9 +148,17 @@ it should contain columns <code>PlotName</code>, <code>CensusID</code>, <code>Tr
 
     <p>A dataframe.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>You don't need to pick stems by status before feeding data to these
+functions. Doing so may make your code more readable but it should not affect
+the result. This is because the expressions passed to <code>...</code> pick data by
+<code>dbh</code> and exclude missing the <code>dbh</code> values associated to non-alive stems,
+including dead, missing, and gone.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_woods'>fgeo.tool::pick_woods()</a></code>, <code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_largest_hom_dbh'>fgeo.tool::pick_largest_hom_dbh()</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_main_stem'>fgeo.tool::pick_main_stem()</a></code>.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -202,6 +200,8 @@ it should contain columns <code>PlotName</code>, <code>CensusID</code>, <code>Tr
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

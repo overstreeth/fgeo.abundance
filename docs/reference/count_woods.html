@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count unique trees based on the dbh of their largest stem. — count_woods • fgeo.abundance</title>
+<title>Count main stems of a given dbh range. — count_woods • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,18 +30,14 @@
 
 
 
-<meta property="og:title" content="Count unique trees based on the dbh of their largest stem. — count_woods" />
+<meta property="og:title" content="Count main stems of a given dbh range. — count_woods" />
 
-<meta property="og:description" content="This functions count unique treeid by censusid (automatically) and any number
-of additional grouping variables (via dplyr::group_by(). Data with
-multi-stem trees is first collapsed by picking the stem (of each treeid) with
-maximum dbh.
-count_woods() is general and allows filtering data using any number of
-expressions passed via the argument ... to dplyr::filter().
-count_trees() is a shortcut that defines tress as stems of dbh of 100 mm
-and above.
-count_samplings() is a shortcut that defines saplings as stems of dbh of
-between 10 mm inclusive and 100 mm exclusive.
+<meta property="og:description" content="count_woods() is a general function that takes any dataframe and any number
+of expressions to filter that dataframe. The other functions are shortcuts:
+count_trees() picks stems of 100 mm dbh and above.
+count_saplings() picks stems between 10 mm dbh inclusive and 100 mm dbh
+exclusive.
+count_saplings_and_trees() picks stems of 10 mm dbh and above.
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -116,23 +112,19 @@ between 10 mm inclusive and 100 mm exclusive.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count unique trees based on the dbh of their largest stem.</h1>
+    <h1>Count main stems of a given dbh range.</h1>
     <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/count_woods.R'><code>R/count_woods.R</code></a></small>
     <div class="hidden name"><code>count_woods.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This functions count unique treeid by censusid (automatically) and any number
-of additional grouping variables (via <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code>. Data with
-multi-stem trees is first collapsed by picking the stem (of each treeid) with
-maximum dbh.</p><ul>
-<li><p><code>count_woods()</code> is general and allows filtering data using any number of
-expressions passed via the argument <code>...</code> to <code><a href='http://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>.</p></li>
-<li><p><code>count_trees()</code> is a shortcut that defines tress as stems of dbh of 100 mm
-and above.</p></li>
-<li><p><code>count_samplings()</code> is a shortcut that defines saplings as stems of dbh of
-between 10 mm inclusive and 100 mm exclusive.</p></li>
+    <p><code>count_woods()</code> is a general function that takes any dataframe and any number
+of expressions to filter that dataframe. The other functions are shortcuts:</p><ul>
+<li><p><code>count_trees()</code> picks stems of 100 mm dbh and above.</p></li>
+<li><p><code>count_saplings()</code> picks stems between 10 mm dbh inclusive and 100 mm dbh
+exclusive.</p></li>
+<li><p><code>count_saplings_and_trees()</code> picks stems of 10 mm dbh and above.</p></li>
 </ul>
     
     </div>
@@ -141,7 +133,9 @@ between 10 mm inclusive and 100 mm exclusive.</p></li>
 
 <span class='fu'>count_trees</span>(<span class='no'>.data</span>)
 
-<span class='fu'>count_saplings</span>(<span class='no'>.data</span>)</pre>
+<span class='fu'>count_saplings</span>(<span class='no'>.data</span>)
+
+<span class='fu'>count_saplings_and_trees</span>(<span class='no'>.data</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,9 +155,16 @@ refers to the largest stem of each tree.</p></td>
 
     <p>A dataframe with preserved groups (if any).</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>These functions count main stems by censusid (automatically) and any number
+of additional grouping variables specified via <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code>.
+Main stems are automatically picked via <code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_main_stem'>fgeo.tool::pick_main_stem()</a></code>.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other functions for fgeo census and vft.: <code><a href='count_distinct_treeid.html'>count_distinct_treeid</a></code></p></div>
+    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_main_stem'>fgeo.tool::pick_main_stem()</a></code>.</p>
+<p>Other functions for fgeo census and vft.: <code><a href='count_distinct_treeid.html'>count_distinct_treeid</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -220,7 +221,41 @@ refers to the largest stem of each tree.</p></td>
 #&gt;   sp        n
 #&gt;   &lt;chr&gt; &lt;int&gt;
 #&gt; 1 sp1       0
-#&gt; 2 sp2       1</div></pre>
+#&gt; 2 sp2       1</div><div class='input'>
+<span class='fu'>count_woods</span>(<span class='no'>by_sp</span>, <span class='no'>dbh</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
+#&gt; # Groups:   sp [2]
+#&gt;   sp        n
+#&gt;   &lt;chr&gt; &lt;int&gt;
+#&gt; 1 sp1       1
+#&gt; 2 sp2       1</div><div class='input'><span class='co'># Same</span>
+<span class='fu'>count_saplings_and_trees</span>(<span class='no'>by_sp</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
+#&gt; # Groups:   sp [2]
+#&gt;   sp        n
+#&gt;   &lt;chr&gt; &lt;int&gt;
+#&gt; 1 sp1       1
+#&gt; 2 sp2       1</div><div class='input'>
+<span class='co'># If data contains multiple censuses, the resulting counts are by census</span>
+<span class='no'>census</span>$<span class='no'>CensusID</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>
+<span class='no'>census2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='no'>census</span>, <span class='kw'>CensusID</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>dbh</span> <span class='kw'>=</span> <span class='no'>dbh</span> + <span class='fl'>10</span>)
+<span class='no'>censuses</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span>(<span class='no'>census</span>, <span class='no'>census2</span>)
+<span class='no'>censuses</span></div><div class='output co'>#&gt; # A tibble: 10 x 6
+#&gt;    sp    treeID stemID   hom   dbh CensusID
+#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;  1 sp1   1      1.1      130    10        1
+#&gt;  2 sp1   1      1.2      130   100        1
+#&gt;  3 sp2   2      2.1      130    22        1
+#&gt;  4 sp2   2      2.2      130    99        1
+#&gt;  5 sp2   2      2.3      130    NA        1
+#&gt;  6 sp1   1      1.1      130    20        2
+#&gt;  7 sp1   1      1.2      130   110        2
+#&gt;  8 sp2   2      2.1      130    32        2
+#&gt;  9 sp2   2      2.2      130   109        2
+#&gt; 10 sp2   2      2.3      130    NA        2</div><div class='input'>
+<span class='fu'>count_woods</span>(<span class='no'>censuses</span>, <span class='no'>dbh</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 2
+#&gt;   CensusID     n
+#&gt;      &lt;dbl&gt; &lt;int&gt;
+#&gt; 1        1     2
+#&gt; 2        2     2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -228,6 +263,8 @@ refers to the largest stem of each tree.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
