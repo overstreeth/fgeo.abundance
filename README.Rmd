@@ -68,7 +68,7 @@ largest_stems
 # Then count treeIDs
 count_distinct_treeid(largest_stems)
 
-# It's not an error if duplicated treeIDs belong to different groups of data.
+# It is not an error if duplicated treeIDs belong to different groups of data.
 vft <- tibble::tibble(CensusID = c(1, 1, 2, 2), TreeID = c(1, 2, 1, 2))
 vft
 

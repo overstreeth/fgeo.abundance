@@ -50,14 +50,14 @@ census <- tibble(
 )
 census
 #> # A tibble: 6 x 5
-#>   treeID stemID quadrat sp        dbh
-#>    <dbl>  <dbl> <chr>   <chr>   <dbl>
-#> 1      1      1 0001    sp1    7.24  
-#> 2      1      2 0001    sp1   10.6   
-#> 3      2      3 0001    sp2    4.93  
-#> 4      3      4 0002    sp3    0.0697
-#> 5      3      5 0002    sp3    4.99  
-#> 6      3      6 0002    sp3    8.04
+#>   treeID stemID quadrat sp      dbh
+#>    <dbl>  <dbl> <chr>   <chr> <dbl>
+#> 1      1      1 0001    sp1    9.65
+#> 2      1      2 0001    sp1    3.07
+#> 3      2      3 0001    sp2   14.0 
+#> 4      3      4 0002    sp3   13.8 
+#> 5      3      5 0002    sp3    1.10
+#> 6      3      6 0002    sp3    2.18
 
 # `count_distinct() ` is general: works with any data and has few restrictions.
 count_distinct(census, treeID)
@@ -90,8 +90,7 @@ count_distinct_treeid(by_quad)
 
 # First, pick the stem of maximum dbh per treeID
 largest_stems <- fgeo.tool::pick_largest_hom_dbh(census)
-#> Error: Ensure your data set has these variables:
-#> stemid, hom
+#> Error: 'pick_largest_hom_dbh' is not an exported object from 'namespace:fgeo.tool'
 largest_stems
 #> Error in eval(expr, envir, enclos): object 'largest_stems' not found
 
@@ -99,7 +98,7 @@ largest_stems
 count_distinct_treeid(largest_stems)
 #> Error in typeof(x) %in% atomic_types: object 'largest_stems' not found
 
-# It's not an error if duplicated treeIDs belong to different groups of data.
+# It is not an error if duplicated treeIDs belong to different groups of data.
 vft <- tibble::tibble(CensusID = c(1, 1, 2, 2), TreeID = c(1, 2, 1, 2))
 vft
 #> # A tibble: 4 x 2
