@@ -31,10 +31,9 @@ Each individual calculation is simply the area of a circle given its
 diameter; thus the unit of the returned value is the square of the input
 units unit (i.e. for input in mm, output is mm^2; for input in cm, output is
 cm^2, and so on).
-\itemize{
-\item \code{basal_area.numeric()}: A numeric vector giving the basal area of each
-individual.
-}
+The structure of the output is the same as the input, i.e. a numeric vector
+or a dataframe. If the input is a grouped dataframe, the output has one
+grouping variable less than the input (as in \code{\link[dplyr:summarize]{dplyr::summarize()}}).
 }
 \description{
 Basal area of each individual:
@@ -55,17 +54,19 @@ stem <- tibble(
   dbh = abs(sample(rnorm(100), 6) * 10)
 )
 stem
+
 basal_area(stem$dbh)
-add_basal_area(stem)
 
 # Sum across all rows
 basal_area(stem)
+add_basal_area(stem)
 
 # Sum across rows by groups
-basal_area(
-  group_by(stem, quadrat, sp)
-)
-# Same but returns all rows
+by_quadrat_sp <- group_by(stem, quadrat, sp)
+basal_area(by_quadrat_sp)
+
+add_basal_area(by_quadrat_sp)
+# Same
 add_basal_area(stem, quadrat, sp)
 
 # Dealing with missing values

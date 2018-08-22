@@ -22,33 +22,16 @@ This function works with grouped data (via
 \examples{
 library(dplyr)
 
-# Compare to dplyr::summarize() and dplyr::n_distinct()
-library(dplyr)
-
 by_cyl <- group_by(mtcars, cyl)
 count_distinct(by_cyl, mpg)
 # Same
 summarize(by_cyl, n = n_distinct(mpg))
-
-n_distinct(mtcars)
-# Same
-nrow(mtcars)
-
-\dontrun{
-# Fails; you must supply `.var` to count distinct values if that variable
-count_distinct(mtcars)
-}
 
 count_distinct(mtcars, cyl)
 # Same
 n_distinct(mtcars$cyl)
 # Same
 length(unique(mtcars$cyl))
-
-\dontrun{
-# Fails because it expect not column names but additional vectors (via `...`)
-dplyr::n_distinct(mtcars, cyl)
-}
 }
 \seealso{
 \code{\link[dplyr:group_by]{dplyr::group_by()}}, \code{\link[dplyr:summarise]{dplyr::summarise()}}, \code{\link[=drop_dead_tree]{drop_dead_tree()}},

@@ -23,10 +23,10 @@ specifically for counting distinct occurrences of the variables \code{stemID} an
 tree in ForestGEO-like datasets. They work with data grouped with
 \code{dplyr::group_by()}.
 
-\code{count_unique_treeid()} throws an error if each data-group contains more
+\code{count_distinct_treeid()} throws an error if each data-group contains more
 than one value of treeid (i.e. if it contains multiple stems). You should
 first collapse treeid by picking a single stem per treeid per group. Both
-\code{count_unique_treeid()} and \code{count_unique_stemid()} warn if the dataset
+\code{count_distinct_treeid()} and \code{count_distinct_stemid()} warn if the dataset
 contains multiple censusid.
 
 Opinions vary on what \emph{abundance} means. For example, to calculate the

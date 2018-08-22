@@ -20,33 +20,16 @@
 #' @examples
 #' library(dplyr)
 #' 
-#' # Compare to dplyr::summarize() and dplyr::n_distinct()
-#' library(dplyr)
-#' 
 #' by_cyl <- group_by(mtcars, cyl)
 #' count_distinct(by_cyl, mpg)
 #' # Same
 #' summarize(by_cyl, n = n_distinct(mpg))
-#' 
-#' n_distinct(mtcars)
-#' # Same
-#' nrow(mtcars)
-#' 
-#' \dontrun{
-#' # Fails; you must supply `.var` to count distinct values if that variable
-#' count_distinct(mtcars)
-#' }
 #' 
 #' count_distinct(mtcars, cyl)
 #' # Same
 #' n_distinct(mtcars$cyl)
 #' # Same
 #' length(unique(mtcars$cyl))
-#' 
-#' \dontrun{
-#' # Fails because it expect not column names but additional vectors (via `...`)
-#' dplyr::n_distinct(mtcars, cyl)
-#' }
 count_distinct <- function(.data, .var) {
   .var <- enquo(.var)
   count_distinct_impl(.data, .var)
@@ -82,10 +65,10 @@ count_distinct_impl <- function(.data, .var) {
 #' `dplyr::group_by()`.
 #'  
 #' @description 
-#' `count_unique_treeid()` throws an error if each data-group contains more
+#' `count_distinct_treeid()` throws an error if each data-group contains more
 #' than one value of treeid (i.e. if it contains multiple stems). You should
 #' first collapse treeid by picking a single stem per treeid per group. Both
-#' `count_unique_treeid()` and `count_unique_stemid()` warn if the dataset
+#' `count_distinct_treeid()` and `count_distinct_stemid()` warn if the dataset
 #' contains multiple censusid.
 #' 
 #' Opinions vary on what _abundance_ means. For example, to calculate the
@@ -147,7 +130,7 @@ count_distinct_treeid <- function(.data) {
   fgeo.tool::flag_duplicated_var(abort, .data$treeid)(.x)
   
   if ("censusid" %in% names(.x)) {
-    warn_duplicated_censusid_by_group(.x)
+    warn_multiple_censusid_by_group(.x)
   }
   
   out <- count_distinct(.x, .data$treeid)
@@ -162,7 +145,7 @@ count_distinct_stemid <- function(.data) {
     groups_lower()
   
   if ("censusid" %in% names(.x)) {
-    warn_duplicated_censusid_by_group(.x)
+    warn_multiple_censusid_by_group(.x)
   }
 
   check_crucial_names(.x, "stemid")
@@ -190,7 +173,7 @@ invalid_var <- function(.data, .var) {
   !.var %in% names(.data)
 }
 
-warn_duplicated_censusid_by_group <- function(.x) {
+warn_multiple_censusid_by_group <- function(.x) {
   n_censusid <- dplyr::summarize(.x, n = dplyr::n_distinct(.data$censusid))
   multiple_censusid <- any(n_censusid$n > 1)
   if (multiple_censusid) {
@@ -202,3 +185,4 @@ warn_duplicated_censusid_by_group <- function(.x) {
   
   invisible(.x)
 }
+

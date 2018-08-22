@@ -1,5 +1,8 @@
 # TODO
 
+# * Make interface equal for count_distinct() and basal_area().
+# * Implement add_ via left_join()
+
 # Add a progress bar to pick_main_stem()?
 # Speed pick_main_stem() with data.table()?
 

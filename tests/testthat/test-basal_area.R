@@ -63,14 +63,11 @@ test_that("tricky objects in global environment cause no scoping issues", {
   expect_false("status" %in% nms)
 })
 
-test_that("never returns grouped df", {
+test_that("removes one grouping layer, as expected from summarize()", {
   # basal_area.data.frame() calls dplyr::summarize() which removes grouping
-  expect_false(
-    is_grouped_df(basal_area(group_by(df, quadrat)))
-  )
+  expect_true(is_grouped_df(basal_area(group_by(df, quadrat, sp))))
+  expect_false(is_grouped_df(basal_area(group_by(df, quadrat))))
 })
-
-
 
 context("add_basal_area")
 
