@@ -20,6 +20,13 @@ groups_restore <- function(x, ref) {
   dplyr::grouped_df(x, dplyr::group_vars(ref))
 }
 
+
+warn_multiple_censusid_by_group <- 
+  fgeo.tool::flag_multiple_by_group_f("censusid", warn)
+
+
+
+
 #' Get the correct grouping variables.
 #' 
 #' This funciton is useful when working inside a function that works with
