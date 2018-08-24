@@ -128,7 +128,7 @@ count_distinct_treeid <- function(.data) {
     check_crucial_names("treeid")
     
   abort_duplicated_treeid_by_group(.x)
-  if (hasName(.x, "censusid")) warn_multiple_censusid_by_group(.x)
+  if (has_name(.x, "censusid")) warn_multiple_censusid_by_group(.x)
   
   out <- count_distinct(.x, .data$treeid)
   restore_input_names_output_groups(out, .data)
@@ -144,7 +144,7 @@ count_distinct_stemid <- function(.data) {
     check_count_distinct() %>% 
     groups_lower()
   
-  if (hasName(.x, "censusid")) warn_multiple_censusid_by_group(.x)
+  if (has_name(.x, "censusid")) warn_multiple_censusid_by_group(.x)
   check_crucial_names(.x, "stemid")
   
   out <- .x %>% count_distinct(.data$stemid)
@@ -168,6 +168,6 @@ check_count_distinct <- function(.data) {
 invalid_var <- function(.data, .var) {
   .var <- pull_name(rlang::expr_name(rlang::get_expr(.var)))
   !.var %in% names(.data)
-  !hasName(.data, .var)
+  !has_name(.data, .var)
 }
 

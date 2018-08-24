@@ -3,7 +3,7 @@
 #' @importFrom dplyr group_by ungroup filter select mutate summarize arrange
 #' @importFrom dplyr count
 #' @importFrom glue glue glue_collapse
-#' @importFrom rlang set_names %||% abort warn inform
+#' @importFrom rlang set_names %||% abort warn inform has_name
 NULL
 
 #' Tidy eval helpers
