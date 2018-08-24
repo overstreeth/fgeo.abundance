@@ -65,10 +65,7 @@ describe("count_distinct_treeid()", {
   
   it("errs if detects multiple treeid", {
     census <- tibble(treeID = c(1, 1), stemID = c(1, 2))
-    expect_error(
-      count_distinct_treeid(census),
-      "Detected duplicated values"
-    )
+    expect_error(count_distinct_treeid(census), "Duplicated values")
   })
   
   it("counts as expected with unique values per group", {

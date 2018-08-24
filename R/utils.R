@@ -20,10 +20,6 @@ groups_restore <- function(x, ref) {
   dplyr::grouped_df(x, dplyr::group_vars(ref))
 }
 
-warn_duplicated_treeid <- fgeo.tool::flag_duplicated_var(warning, treeid)
-
-warn_duplicated_censusid <- fgeo.tool::flag_duplicated_var(warning, censusid)
-
 #' Get the correct grouping variables.
 #' 
 #' This funciton is useful when working inside a function that works with
