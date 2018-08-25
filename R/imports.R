@@ -1,5 +1,6 @@
-#' @importFrom fgeo.tool by_group
+#' @importFrom fgeo.tool by_group flag_if_group
 #' @importFrom fgeo.base check_crucial_names insensitive rename_matches
+#' @importFrom fgeo.base is_duplicated is_multiple
 #' @importFrom dplyr group_by ungroup filter select mutate summarize arrange
 #' @importFrom dplyr count
 #' @importFrom glue glue glue_collapse

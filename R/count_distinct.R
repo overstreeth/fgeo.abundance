@@ -127,15 +127,12 @@ count_distinct_treeid <- function(.data) {
     groups_lower() %>% 
     check_crucial_names("treeid")
     
-  abort_duplicated_treeid_by_group(.x)
-  if (has_name(.x, "censusid")) warn_multiple_censusid_by_group(.x)
+  flag_if_group(.x, "treeid", is_duplicated, abort)
+  if (has_name(.x, "censusid")) flag_if_group(.x, "censusid", is_multiple)
   
   out <- count_distinct(.x, .data$treeid)
   restore_input_names_output_groups(out, .data)
 }
-
-abort_duplicated_treeid_by_group <- 
-  fgeo.tool::flag_duplicated_by_group_f("treeid", abort)
 
 #' @rdname count_distinct_treeid
 #' @export
@@ -144,7 +141,7 @@ count_distinct_stemid <- function(.data) {
     check_count_distinct() %>% 
     groups_lower()
   
-  if (has_name(.x, "censusid")) warn_multiple_censusid_by_group(.x)
+  if (has_name(.x, "censusid")) flag_if_group(.x, "censusid", is_multiple)
   check_crucial_names(.x, "stemid")
   
   out <- .x %>% count_distinct(.data$stemid)

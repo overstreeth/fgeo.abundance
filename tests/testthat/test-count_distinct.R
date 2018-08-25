@@ -65,7 +65,7 @@ describe("count_distinct_treeid()", {
   
   it("errs if detects multiple treeid", {
     census <- tibble(treeID = c(1, 1), stemID = c(1, 2))
-    expect_error(count_distinct_treeid(census), "Duplicated values")
+    expect_error(count_distinct_treeid(census), "Flagged values")
   })
   
   it("counts as expected with unique values per group", {
@@ -77,13 +77,13 @@ describe("count_distinct_treeid()", {
   
   it("warns if detects multiple censusid", {
     census <- tibble(CensusID = c(1, 2), treeID = c(1, 2))
-    expect_warning(count_distinct_treeid(census), "Multiple values")
+    expect_warning(count_distinct_treeid(census), "Flagged values")
   })
   
   it("silent if censusid is unique within each group", {
     census <- tibble(CensusID = c(1, 2), treeID = c(1, 2))
     by_censusid <- group_by(census, CensusID)
-    expect_warning(count_distinct_treeid(census), "censusid: Multiple")
+    expect_warning(count_distinct_treeid(census), "censusid: Flagged")
     expect_silent(count_distinct_treeid(by_censusid))
   })
   

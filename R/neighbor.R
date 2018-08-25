@@ -112,13 +112,10 @@ check_neighbor <- function(.data, .subset) {
     prepend_crucial_nm_msg(.subset, crucial_sub, "Invalid `.subset`. ")
   }
   
-  warn_duplicated_treeid_by_group(.data)
+  flag_if_group(.data, "treeid", is_duplicated, warn)
   
   invisible(.data)
 }
-
-warn_duplicated_treeid_by_group <- 
-  fgeo.tool::flag_duplicated_by_group_f("treeid", warn)
 
 prepend_crucial_nm_msg <- function(x, nm, msg) {
   tryCatch(
