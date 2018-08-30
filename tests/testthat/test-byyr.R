@@ -5,6 +5,8 @@ library(dplyr)
 library(fgeo.base)
 
 vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+ba_10 <- basal_area(10)
+ba_100 <- basal_area(100)
 
 test_that("basal_area_byyr and abundance_byyr fail with informative errors", {
   expect_error(abundance_byyr(1), "data.frame.*is not TRUE")
@@ -117,8 +119,8 @@ describe("abundance_byyr and basa_area_byyr return expected output", {
     
     tiny2 <- mutate(tiny, DBH = 10)
     basal <- basal_area_byyr(tiny2, dbh > 0)
-    expect_equal(basal$`2000`, basal_area(10) * abund$`2000`)
-    expect_equal(basal$`2001`, basal_area(10) * abund$`2001`)
+    expect_equal(basal$`2000`, ba_10 * abund$`2000`)
+    expect_equal(basal$`2001`, ba_10 * abund$`2001`)
   })
   
   it("outputs equal to known output", {
@@ -215,21 +217,65 @@ describe("*byyr()", {
 })
 
 describe("basal_area_byyr()", {
-  it("sums the basal area of all stems which dbh is in the chosen range", {
-    # Minimum dataset that looks something like this (with more variables).
-    # Expecting total basal area equal the sum of that of two stems
-    # tibble::tribble(
-    #   ~TreeID, ~StemID, ~DBH,
-    #        1L,     1.1,    1,
-    #        1L,     1.2,    1
-    # )
+  it("sums basal area of all stems which dbh is in the chosen range", {
+    vft_simple <- mutate(vft, Status = "alive", DBH = 1)
     
-    vft_one_tree <- vft %>% 
-      mutate(Status = "alive", DBH = 1) %>% 
-      filter(CensusID == 1, TreeID == 1)
-    expected <- basal_area(1) * nrow(vft_one_tree)
-    actual <- basal_area_byyr(vft_one_tree, dbh >= 1)$`2001`
+    # One census; one tree with two stems.
+    vft_c1_t1_s2 <- filter(vft_simple, CensusID == 1, TreeID == 1)
+    expected <- basal_area(1) * nrow(vft_c1_t1_s2)
+    actual <- basal_area_byyr(vft_c1_t1_s2, dbh >= 1)$`2001`
     expect_equal(actual, expected)
+    
+    # Trees and saplings
+    out <- basal_area_byyr(mutate(vft_c1_t1_s2, DBH = c(10, 100)), DBH >= 10)
+    expect_equal(ba_10 + ba_100, out$`2001`)
+    
+    # Edge
+    out <- basal_area_byyr(mutate(vft_c1_t1_s2, DBH = c(10, 100)), DBH > 10)
+    expect_equal(ba_100, out$`2001`)
+    
+    # One census; two trees, each with two stems.
+    vft_c1_t2_s4 <- filter(vft_simple, CensusID == 1)
+    expected <- basal_area(1) * nrow(vft_c1_t2_s4)
+    actual <- basal_area_byyr(vft_c1_t2_s4, dbh >= 1)$`2001`
+    expect_equal(actual, expected)
+    
+    # Trees and samplings
+    out <- basal_area_byyr(
+      mutate(vft_c1_t2_s4, DBH = rep(c(10, 100), 2)), 
+      DBH >= 10
+    )
+    expect_equal(2 * ba_10 + 2 * ba_100, out$`2001`)
+    # Trees
+    out <- basal_area_byyr(
+      mutate(vft_c1_t2_s4, DBH = rep(c(10, 100), 2)), 
+      DBH >= 100
+    )
+    expect_equal(2 * ba_100, out$`2001`)
+
+    # Two censuses, with one tree in each
+    vft_c2_t1_s4 <- filter(vft_simple, TreeID == 1)
+    expected_total <- basal_area(1) * nrow(vft_c2_t1_s4)
+    actual_2001 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2001`
+    actual_2002 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2002`
+    expect_equal(actual_2001 + actual_2002, expected_total)
+    
+    # Trees and samplings
+    out <- basal_area_byyr(
+      mutate(vft_c2_t1_s4, DBH = c(10, 100, 10, 100)), 
+      DBH >= 10
+    )
+    both <- ba_10 + ba_100
+    expect_equal(both, out$`2001`)
+    expect_equal(both, out$`2002`)
+    
+    # Trees
+    out <- basal_area_byyr(
+      mutate(vft_c2_t1_s4, DBH = c(10, 100, 10, 100)), 
+      DBH >= 100
+    )
+    expect_equal(ba_100, out$`2001`)
+    expect_equal(ba_100, out$`2002`)
   })
 })
 
