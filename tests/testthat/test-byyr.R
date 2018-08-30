@@ -252,7 +252,7 @@ describe("basal_area_byyr()", {
       DBH >= 100
     )
     expect_equal(2 * ba_100, out$`2001`)
-
+    
     # Two censuses, with one tree in each
     vft_c2_t1_s4 <- filter(vft_simple, TreeID == 1)
     expected_total <- basal_area(1) * nrow(vft_c2_t1_s4)
