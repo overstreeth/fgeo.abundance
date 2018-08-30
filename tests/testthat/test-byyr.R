@@ -215,21 +215,35 @@ describe("*byyr()", {
 })
 
 describe("basal_area_byyr()", {
-  it("sums the basal area of all stems which dbh is in the chosen range", {
-    # Minimum dataset that looks something like this (with more variables).
-    # Expecting total basal area equal the sum of that of two stems
-    # tibble::tribble(
-    #   ~TreeID, ~StemID, ~DBH,
-    #        1L,     1.1,    1,
-    #        1L,     1.2,    1
-    # )
+  it("sums basal area of all stems which dbh is in the chosen range", {
+    # DRY helper
+    actual_equals_expected <- function(vft) {
+      vft <- mutate(vft, Status = "alive", DBH = 1)
+      expected <- basal_area(1) * nrow(vft)
+      actual <- basal_area_byyr(vft, dbh >= 1)$`2001`
+      expect_equal(actual, expected)
+    }
     
-    vft_one_tree <- vft %>% 
-      mutate(Status = "alive", DBH = 1) %>% 
-      filter(CensusID == 1, TreeID == 1)
-    expected <- basal_area(1) * nrow(vft_one_tree)
-    actual <- basal_area_byyr(vft_one_tree, dbh >= 1)$`2001`
+    # One census; one tree with two stems.
+    vft_simple <- mutate(vft, Status = "alive", DBH = 1)
+    
+    vft_c1_t1_s2 <- filter(vft_simple, CensusID == 1, TreeID == 1)
+    expected <- basal_area(1) * nrow(vft_c1_t1_s2)
+    actual <- basal_area_byyr(vft_c1_t1_s2, dbh >= 1)$`2001`
     expect_equal(actual, expected)
+    
+    # One census; two trees, each with two stems.
+    vft_c1_t2_s4 <- filter(vft_simple, CensusID == 1)
+    expected <- basal_area(1) * nrow(vft_c1_t2_s4)
+    actual <- basal_area_byyr(vft_c1_t2_s4, dbh >= 1)$`2001`
+    expect_equal(actual, expected)
+    
+    # Two censuses, with one tree in each
+    vft_c2_t1_s4 <- filter(vft_simple, TreeID == 1)
+    expected_total <- basal_area(1) * nrow(vft_c2_t1_s4)
+    actual_2001 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2001`
+    actual_2002 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2002`
+    expect_equal(actual_2001 + actual_2002, expected_total)
   })
 })
 
