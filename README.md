@@ -19,8 +19,8 @@ status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-proj
 step](https://forestgeo.github.io/fgeo/index.html#installation)
 
 ``` r
-# install.packages("remotes")
-remotes::install_github(repo = "forestgeo/fgeo.abundance")
+# install.packages("devtools")
+devtools::install_github(repo = "forestgeo/fgeo.abundance")
 ```
 
 For details on how to install packages from GitHub, see [this
@@ -50,14 +50,14 @@ census <- tibble(
 )
 census
 #> # A tibble: 6 x 5
-#>   treeID stemID quadrat sp      dbh
-#>    <dbl>  <dbl> <chr>   <chr> <dbl>
-#> 1      1      1 0001    sp1    9.65
-#> 2      1      2 0001    sp1    3.07
-#> 3      2      3 0001    sp2   14.0 
-#> 4      3      4 0002    sp3   13.8 
-#> 5      3      5 0002    sp3    1.10
-#> 6      3      6 0002    sp3    2.18
+#>   treeID stemID quadrat sp       dbh
+#>    <dbl>  <dbl> <chr>   <chr>  <dbl>
+#> 1      1      1 0001    sp1   14.9  
+#> 2      1      2 0001    sp1    0.454
+#> 3      2      3 0001    sp2    4.93 
+#> 4      3      4 0002    sp3   13.4  
+#> 5      3      5 0002    sp3    2.90 
+#> 6      3      6 0002    sp3    8.77
 
 # `count_distinct() ` is general: works with any data and has few restrictions.
 count_distinct(census, treeID)
@@ -85,8 +85,7 @@ count_distinct_stemid(by_quad)
 # `count_distinct_treeid()` is also specialized and has some safety features.
 # If treeID is duplicated, counting distinct treeid is an (intentional) error.
 count_distinct_treeid(by_quad)
-#> Error:   Detected duplicated values of .data$treeid.
-#>     Expected unique values of .data$treeid within each data-group (if any)
+#> Error: treeid: Flagged values were detected.
 
 # First, pick the stem of maximum dbh per treeID
 largest_stems <- fgeo.tool::pick_largest_hom_dbh(census)

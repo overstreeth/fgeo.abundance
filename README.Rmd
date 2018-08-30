@@ -26,8 +26,8 @@ __fgeo.abundance__ calculates abundance, basal area and diversity.
 [Install all __fgeo__ packages in one step](https://forestgeo.github.io/fgeo/index.html#installation)
 
 ```R
-# install.packages("remotes")
-remotes::install_github(repo = "forestgeo/fgeo.abundance")
+# install.packages("devtools")
+devtools::install_github(repo = "forestgeo/fgeo.abundance")
 ```
 
 For details on how to install packages from GitHub, see [this article](https://goo.gl/dQKEeg).
