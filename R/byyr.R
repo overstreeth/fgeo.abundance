@@ -37,13 +37,14 @@
 #' in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 #' standardize_at(in_he, .at = years, denominator = 50)
 abundance_byyr <- function(vft, ...) {
-  stopifnot(is.data.frame(vft))
-  
+  low_nms  <- check_byyr(set_names(vft, tolower))
   crucial <- c("plotname", "tag")
-  low_nms  <- check_crucial_names(set_names(vft, tolower), crucial)
-  prep <- prepare_byyr(low_nms, ...)
+  low_nms  <- check_crucial_names(low_nms, crucial)
   
-  out <- prep %>% 
+  main_stems <- fgeo.tool::pick_main_stem(low_nms)
+  
+  with_years <- add_years(pick_byyr(main_stems, ...))
+  out <- with_years %>% 
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>%
     count_distinct_treeid() %>%
     ungroup() %>%
@@ -58,12 +59,10 @@ abundance_byyr <- function(vft, ...) {
 #' @rdname abundance_byyr
 #' @export
 basal_area_byyr <- function(vft, ...) {
-  stopifnot(is.data.frame(vft))
+  low_nms <- check_byyr(set_names(vft, tolower))
   
-  low_nms <- set_names(vft, tolower)
-  prep <- prepare_byyr(low_nms, ...)
-  
-  out <- prep %>% 
+  with_years <- add_years(pick_byyr(low_nms, ...))
+  out <- with_years %>% 
     group_by(.data$species, .data$family, .data$year) %>%
     basal_area(dbh = .data$dbh) %>%
     arrange(.data$species, .data$family, .data$year) %>%
@@ -73,22 +72,20 @@ basal_area_byyr <- function(vft, ...) {
   rename_matches(out, vft)
 }
 
-prepare_byyr <- function(vft, ...) {
+pick_byyr <- function(vft, ...) {
   dots <- lowercase_var(..., .var = "dbh")
   flag_if_not_expression_of_var(dots, .flag = rlang::abort, .var = "dbh")
-  
-  vft <- check_prepare_byyr(vft)
-  
-  main_stems <- fgeo.tool::pick_main_stem(vft)
-  picked_dbh <- dplyr::filter(main_stems, !!! dots)
-  
-  years <- drop_if_missing_dates(picked_dbh) %>% 
-    mean_years() %>%
-    fgeo.base::drop_if_na("year")
-  years
+  dplyr::filter(vft, !!! dots)
 }
 
-check_prepare_byyr <- function(vft) {
+add_years <- function(x) {
+  drop_if_missing_dates(x) %>% 
+    mean_years() %>%
+    fgeo.base::drop_if_na("year")
+}
+
+check_byyr <- function(vft) {
+  stopifnot(is.data.frame(vft))
   crucial <- c(
     "genus", "speciesname", "family", "status", "dbh", "exactdate",
     "plotcensusnumber"

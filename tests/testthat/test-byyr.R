@@ -1,23 +1,15 @@
 context("byyr")
 
+library(tibble)
 library(dplyr)
 library(fgeo.base)
 
-describe("*byyr()", {
-  it("makes no difference if status is picked before *byyr()", {
-    skip_if_not_installed("readr")
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-    raw <- abundance_byyr(vft, dbh > 0)
-    picked <- abundance_byyr(filter(vft, Status == "alive"), dbh > 0)
-    expect_equal(picked, raw)
-  })
-})
+vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
 
 test_that("basal_area_byyr and abundance_byyr fail with informative errors", {
   expect_error(abundance_byyr(1), "data.frame.*is not TRUE")
   expect_error(abundance_byyr(), "is missing")
   
-  vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
   msg <-  "All expressions.*must refer to `dbh`"
   
   expect_error(abundance_byyr(vft, exactdate > 0), msg)
@@ -70,14 +62,14 @@ describe("basal_area_byyr and abundance_byyr work with different datasets", {
   
   it("works with data from from Bukit Timah", {
     skip_if_not_installed("bukittimah")
-    vft <- bukittimah::ViewFullTable_bukit
+    bukit <- bukittimah::ViewFullTable_bukit
     plot <- "Bukit Timah Big Trees"
     
-    out_basal <-  byyr(vft, plot, basal_area_byyr)
+    out_basal <-  byyr(bukit, plot, basal_area_byyr)
     expect_dataframe(out_basal)
     expect_named_year(out_basal, "2006")
     
-    out_abund <- byyr(vft, plot, abundance_byyr)
+    out_abund <- byyr(bukit, plot, abundance_byyr)
     expect_dataframe(out_basal)
     expect_named_year(out_basal, "2006")
   })
@@ -85,13 +77,13 @@ describe("basal_area_byyr and abundance_byyr work with different datasets", {
   it("works with data from from Ngel Niaky", {
     skip_if_not_installed("ngel")
     
-    vft <- ngel::ViewFullTable_ngel
+    ngel <- ngel::ViewFullTable_ngel
     plot <- "ngelnyaki"
-    out_basal <-  byyr(vft, plot, basal_area_byyr)
+    out_basal <-  byyr(ngel, plot, basal_area_byyr)
     expect_dataframe(out_basal)
     expect_named_year(out_basal, "2015")
     
-    out_abund <- byyr(vft, plot, abundance_byyr)
+    out_abund <- byyr(ngel, plot, abundance_byyr)
     expect_dataframe(out_basal)
     expect_named_year(out_basal, "2015")
   })
@@ -150,7 +142,7 @@ describe("abundance_byyr", {
   skip_if_not_installed("readr")
   
   it("lowercases dbh and only dbh from the expression passed to ...", {
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    
     expect_silent(
       out <- abundance_byyr(vft, dbh >= min(vft$DBH, na.rm = TRUE))
     )
@@ -158,7 +150,7 @@ describe("abundance_byyr", {
   })
   
   it("is sensitive to DBH, so outputs none date-column if dbh is too big ", {
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    
     too_big <- max(vft$DBH, na.rm = TRUE) + 1
     out <- abundance_byyr(vft, dbh > !! too_big)
     expect_named(rlang::set_names(out, tolower), c("species", "family"))
@@ -176,7 +168,7 @@ describe("abundance_byyr", {
     #   * One tree is alive (TreeID = 1) although one stem is gone 
     #     (StemID = 1.2);
     #   * One tree is dead (TreeID = 2) because both its stems are dead.
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    
     
     out <- abundance_byyr(vft, dbh > 0)
     expect_is(out, "tbl_df")
@@ -186,7 +178,7 @@ describe("abundance_byyr", {
   })
   
   it("fails if parsed dates are all missing", {
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    
     bad <- mutate(vft[1, ], ExactDate = NA)
     msg <- "Can't parse `exactdates`"
     expect_error(abundance_byyr(bad, dbh > 0), msg)
@@ -199,7 +191,7 @@ describe("abundance_byyr", {
   })
   
   it("warns if parsed dates are not from 1980 to present", {
-    vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
+    
     early <- mutate(vft[1, ], ExactDate = "1970-01-01")
     msg <- "Dates should be"
     expect_warning(abundance_byyr(early, dbh > 0), msg)
@@ -212,3 +204,32 @@ describe("abundance_byyr", {
     expect_silent(abundance_byyr(good, dbh > 0))
   })
 })
+
+describe("*byyr()", {
+  it("makes no difference if status is picked before *byyr()", {
+    skip_if_not_installed("readr")
+    raw <- abundance_byyr(vft, dbh > 0)
+    picked <- abundance_byyr(filter(vft, Status == "alive"), dbh > 0)
+    expect_equal(picked, raw)
+  })
+})
+
+describe("basal_area_byyr()", {
+  it("sums the basal area of all stems which dbh is in the chosen range", {
+    # Minimum dataset that looks something like this (with more variables).
+    # Expecting total basal area equal the sum of that of two stems
+    # tibble::tribble(
+    #   ~TreeID, ~StemID, ~DBH,
+    #        1L,     1.1,    1,
+    #        1L,     1.2,    1
+    # )
+    
+    vft_one_tree <- vft %>% 
+      mutate(Status = "alive", DBH = 1) %>% 
+      filter(CensusID == 1, TreeID == 1)
+    expected <- basal_area(1) * nrow(vft_one_tree)
+    actual <- basal_area_byyr(vft_one_tree, dbh >= 1)$`2001`
+    expect_equal(actual, expected)
+  })
+})
+
