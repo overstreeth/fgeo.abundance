@@ -22,10 +22,16 @@ it should contain columns \code{PlotName}, \code{CensusID}, \code{TreeID}, \code
 A dataframe.
 }
 \description{
-These functions first automatically pick the main stem (see
-?\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}). Then, f or each species and each
-(round mean) year of measurement, \code{abundance_byyr()} counts the number of
-trees, and \code{basal_area_byyr()} calculates the total basal area.
+\itemize{
+\item \code{abundance_byyr()} first picks the main stem of each tree (see
+?\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}} and then, for each species and each
+(round mean) year of measurement, counts the number of
+trees. The result includes \strong{main stems} within a given dbh range.
+\item \code{basal_area_byyr()} first sums the basal basal area of all stems of each
+tree, and then, for each species and each (round mean) year of measurement,
+sums the basal area of all trees. The result includes all stems within a
+given dbh range (notice the difference with \code{abundance_byyr()}).
+}
 }
 \details{
 You don't need to pick stems by status before feeding data to these

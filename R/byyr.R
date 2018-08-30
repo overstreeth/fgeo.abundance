@@ -1,9 +1,13 @@
 #' Create tables of abundance and basal area by year.
 #' 
-#' These functions first automatically pick the main stem (see
-#' ?[fgeo.tool::pick_main_stem()]). Then, f or each species and each
-#' (round mean) year of measurement, `abundance_byyr()` counts the number of
-#' trees, and ` basal_area_byyr()` calculates the total basal area.
+#' * `abundance_byyr()` first picks the main stem of each tree (see
+#' ?[fgeo.tool::pick_main_stem()] and then, for each species and each
+#' (round mean) year of measurement, counts the number of
+#' trees. The result includes __main stems__ within a given dbh range.
+#' * `basal_area_byyr()` first sums the basal basal area of all stems of each
+#' tree, and then, for each species and each (round mean) year of measurement,
+#' sums the basal area of all trees. The result includes all stems within a
+#' given dbh range (notice the difference with `abundance_byyr()`).
 #' 
 #' You don't need to pick stems by status before feeding data to these
 #' functions. Doing so may make your code more readable but it should not affect

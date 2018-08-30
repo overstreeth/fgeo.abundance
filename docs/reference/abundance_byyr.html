@@ -32,10 +32,16 @@
 
 <meta property="og:title" content="Create tables of abundance and basal area by year. — abundance_byyr" />
 
-<meta property="og:description" content="These functions first automatically pick the main stem (see
-?fgeo.tool::pick_main_stem()). Then, f or each species and each
-(round mean) year of measurement, abundance_byyr() counts the number of
-trees, and basal_area_byyr() calculates the total basal area." />
+<meta property="og:description" content="
+abundance_byyr() first picks the main stem of each tree (see
+?fgeo.tool::pick_main_stem() and then, for each species and each
+(round mean) year of measurement, counts the number of
+trees. The result includes main stems within a given dbh range.
+basal_area_byyr() first sums the basal basal area of all stems of each
+tree, and then, for each species and each (round mean) year of measurement,
+sums the basal area of all trees. The result includes all stems within a
+given dbh range (notice the difference with abundance_byyr()).
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,10 +122,16 @@ trees, and basal_area_byyr() calculates the total basal area." />
 
     <div class="ref-description">
     
-    <p>These functions first automatically pick the main stem (see
-?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_main_stem'>fgeo.tool::pick_main_stem()</a></code>). Then, f or each species and each
-(round mean) year of measurement, <code>abundance_byyr()</code> counts the number of
-trees, and <code>basal_area_byyr()</code> calculates the total basal area.</p>
+    <ul>
+<li><p><code>abundance_byyr()</code> first picks the main stem of each tree (see
+?<code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/pick_main_stem'>fgeo.tool::pick_main_stem()</a></code> and then, for each species and each
+(round mean) year of measurement, counts the number of
+trees. The result includes <strong>main stems</strong> within a given dbh range.</p></li>
+<li><p><code>basal_area_byyr()</code> first sums the basal basal area of all stems of each
+tree, and then, for each species and each (round mean) year of measurement,
+sums the basal area of all trees. The result includes all stems within a
+given dbh range (notice the difference with <code>abundance_byyr()</code>).</p></li>
+</ul>
     
     </div>
 
@@ -192,7 +204,7 @@ including dead, missing, and gone.</p>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/standardize_at'>standardize_at</a></span>(<span class='no'>in_he</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='fl'>50</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
 #&gt;   species Family        `2001`   `2002`
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 Gn spp  f      0.00000000157 6.28e-10</div></pre>
+#&gt; 1 Gn spp  f      0.00000000220 6.28e-10</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
