@@ -32,13 +32,29 @@ describe("basal_area2", {
       ba_ctfs(tree, split1 = tree$sp) * offset
     )
     
-    
-    
   })
   
+  it("warns duplicated stemid", {
+    # basal_area warns not treeid but stemid
+    expect_warning(
+      basal_area2(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.1"))),
+      "stemid.*Duplicated values.*Do you need to pick largest.*hom.*values?"
+    )
+    expect_silent(basal_area2(tree_id(c(1, 1))))
+  })
   
+  it("warns multiple plotname and censusid", {
+    expect_warning(
+      basal_area2(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
+      "plotname.*Multiple values.*Do you need to pick a single plot?"
+    )
+    
+    expect_warning(
+      basal_area2(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
+      "censusid.*Multiple values.*Do you need to group by.*censusid?"
+    )
+  })
 })
-  
 
 
 
@@ -94,22 +110,9 @@ describe("abundance", {
     )
   })
     
-  it("warns duplicated stemids", {
-    # basal_area warns not treeid but stemid
-    expect_warning(
-      basal_area2(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.1"))),
-      "stemid.*Duplicated values.*Do you need to pick largest.*hom.*values?"
-    )
-    expect_silent(basal_area2(tree_id(c(1, 1))))
-  })
-  
   it("warns multiple censusid", {
     expect_warning(
       abundance(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
-      "censusid.*Multiple values.*Do you need to group by.*censusid?"
-    )
-    expect_warning(
-       basal_area2(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
       "censusid.*Multiple values.*Do you need to group by.*censusid?"
     )
   })
@@ -117,10 +120,6 @@ describe("abundance", {
   it("warns multiple plotname", {
     expect_warning(
       abundance(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
-      "plotname.*Multiple values.*Do you need to pick a single plot?"
-    )
-    expect_warning(
-      basal_area2(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
       "plotname.*Multiple values.*Do you need to pick a single plot?"
     )
   })

@@ -4,7 +4,7 @@
 \alias{with_anycase_group_df}
 \title{Abundance.}
 \usage{
-with_anycase_group_df(.f, .warn)
+with_anycase_group_df(.f, side_effects)
 }
 \description{
 \itemize{

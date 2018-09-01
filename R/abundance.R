@@ -1,6 +1,14 @@
-#' Abundance.
+#' Abundance and basal area
 #' 
-#' * Similar to [dplyr::count()] but simpler. It keeps only main argument.
+#' 
+#' Both functions warn if they detect multiple censusid and multiple plots
+#' 
+#' `basal_area2()`: FIXME output is similar to ctfs::ba() but 1000000 higher.
+#' * Warns if it detects duplicated stemid
+#' 
+#' Abundance:
+#' * Warns if it detects duplicated treeid
+#' * Similar to [dplyr::n()]
 #' * Supports groups only via group_by() not via `...`
 #' * Returns 0 when fed with a 0-row dataframe.
 #' 
@@ -35,20 +43,46 @@
 #   warn_if_needed_plotname_censusid(low_nms)
 #   restore_input_names_output_groups(dplyr::count(low_nms), x)
 # }
-with_anycase_group_df <- function(.f, .warn) {
+with_anycase_group_df <- function(.summary, side_effects) {
   function(x) {
     low_nms <- groups_lower(set_names(x, tolower))
-    # FIXME: basal_area2() should warn if duplicated stemid and not treeid
-    .warn(low_nms)
-    warn_if_needed_plotname_censusid(low_nms)
-    restore_input_names_output_groups(.f(low_nms), x)
+    lapply(side_effects, function(.f) .f(low_nms))
+    result <- .summary(low_nms)
+    restore_input_names_output_groups(result, x)
   }
 }
-abundance <- with_anycase_group_df(dplyr::count, warn_if_needed_treeid)
-basal_area2 <- with_anycase_group_df(ba_df, warn_if_needed_stemid)
+abundance <- with_anycase_group_df(
+  abundance_df, list(warn_if_needed_treeid, warn_if_needed_plotname_censusid)
+)
+basal_area2 <- with_anycase_group_df(
+  basal_area_df, list(warn_if_needed_stemid, warn_if_needed_plotname_censusid)
+)
 
 
-T
+
+# Implementations ---------------------------------------------------------
+
+abundance_df <- function(x) {
+  g <- dplyr::group_vars(x)
+  out <- summarize(x, n = n())
+  dplyr::grouped_df(out, g)
+}
+
+basal_area_df <- function(x) {
+  g <- dplyr::group_vars(x)
+  out <- summarize(x, basal_area = sum(basal_area_dbl(dbh), na.rm = TRUE))
+  dplyr::grouped_df(out, g)
+}
+
+basal_area_dbl <- function(x) {
+  stopifnot(length(x) > 0)
+  1 / 4 * pi * (x)^2
+}
+
+
+
+# Warnings ----------------------------------------------------------------
+
 # Only if data contains specific `name`s.
 warn_if_needed_plotname_censusid <- function(.x) {
   warn_if_has_var(
