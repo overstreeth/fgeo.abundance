@@ -19,11 +19,10 @@
 #' tools for data analysis (e.g. __ggplot2__ and __dplyr__).
 #' 
 #' @section Flags:
-#' Trows warning if detects multiple
-#' stems, TODO
-#' censuses,  TODO
-#' plots,  TODO
-#' 
+#' Warns if it detects:
+#' * duplicated values of treeis.
+#' * multiple values of censusid.
+#' * multiple values of plotname.
 #' 
 #' @section Warning:
 #' To pick specific rows (e.g. to pick "alive" stems or `dbh` within some range)
@@ -36,12 +35,16 @@ NULL
 
 #' @rdname abundance
 abundance <- function(x, ...) {
-  .x <- set_names(x, tolower)
-  warn_if_needed(.x)
-  dplyr::count(x, ...)
+  .x <- groups_lower(set_names(x, tolower))
+  warn_abundance_if_needed(.x)
+  
+  .n <- dplyr::count(.x, ...)
+  
+  restore_input_names_output_groups(.n, x)
 }
 
-warn_if_needed <- function(.x) {
+# Only if data contains specific `name`s.
+warn_abundance_if_needed <- function(.x) {
   warn_if_has_var(
     .x, name = "treeid", predicate = is_duplicated,
     problem = "Duplicated", hint = "Do you need to pick main stems?"
@@ -54,6 +57,8 @@ warn_if_needed <- function(.x) {
     .x, name = "plotname", predicate = is_multiple,
     problem = "Multiple", hint = "Do you need to pick a single plot?"
   )
+  
+  invisible(.x)
 }
 
 warn_if_has_var <- function(.x, name, predicate, problem, hint) {

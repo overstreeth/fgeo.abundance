@@ -33,10 +33,12 @@ tools for data analysis (e.g. \strong{ggplot2} and \strong{dplyr}).
 }
 \section{Flags}{
 
-Trows warning if detects multiple
-stems, TODO
-censuses,  TODO
-plots,  TODO
+Warns if it detects:
+\itemize{
+\item duplicated values of treeis.
+\item multiple values of censusid.
+\item multiple values of plotname.
+}
 }
 
 \section{Warning}{

@@ -1,9 +1,4 @@
-# flags multiple stems
-# flags multiple censusid
-# flags multiple plot
-
-# counts by groups
-# returns a grouped dataset
+# doesn't change case of input names
 # returns one group less than the main input
 # input and output groups have the same case
 
@@ -67,11 +62,19 @@ describe("abundance", {
     )
   })
   
-    it("warns multiple plotname", {
+  it("warns multiple plotname", {
     expect_warning(
       abundance(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
       "plotname.*Multiple values.*Do you need to pick a single plot?"
     )
   })
+    
+  it("doesn't change the case of input names that make it to the output", {
+    # Grouped summaries return similar (but are implemented diferently)
+    tree <- mutate(tree_id(1:2), CensusID = 1:2)
+    expect_named(abundance(group_by(tree, CensusID)), c("CensusID", "n"))
+  })  
+    
+    
 })
 
