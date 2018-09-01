@@ -1,7 +1,7 @@
 #' Abundance.
 #' 
-#' * Copy of [dplyr::count()].
-#' * Supports groups.
+#' * Similar to [dplyr::count()] but simpler. It keeps only main argument.
+#' * Supports groups only via group_by() not via `...`
 #' * Returns 0 when fed with a 0-row dataframe.
 #' 
 #' [fgeo.abundance::abundance()] versus ctfs::abundance():
@@ -30,25 +30,27 @@
 #' _before_ using `abundance()`. (Notice the difference with `ctfs::abundance`,
 #' which includes arguments to deal with `dbh` and `status`).
 #' 
-#' @name abundance
-NULL
-
-#' @rdname abundance
-abundance <- function(x, ...) {
-  .x <- groups_lower(set_names(x, tolower))
-  warn_abundance_if_needed(.x)
-  
-  .n <- dplyr::count(.x, ...)
-  
-  restore_input_names_output_groups(.n, x)
+# abundance <- function(x) {
+#   low_nms <- groups_lower(set_names(x, tolower))
+#   warn_if_needed_plotname_censusid(low_nms)
+#   restore_input_names_output_groups(dplyr::count(low_nms), x)
+# }
+with_anycase_group_df <- function(.f, .warn) {
+  function(x) {
+    low_nms <- groups_lower(set_names(x, tolower))
+    # FIXME: basal_area2() should warn if duplicated stemid and not treeid
+    .warn(low_nms)
+    warn_if_needed_plotname_censusid(low_nms)
+    restore_input_names_output_groups(.f(low_nms), x)
+  }
 }
+abundance <- with_anycase_group_df(dplyr::count, warn_if_needed_treeid)
+basal_area2 <- with_anycase_group_df(ba_df, warn_if_needed_stemid)
 
+
+T
 # Only if data contains specific `name`s.
-warn_abundance_if_needed <- function(.x) {
-  warn_if_has_var(
-    .x, name = "treeid", predicate = is_duplicated,
-    problem = "Duplicated", hint = "Do you need to pick main stems?"
-  )
+warn_if_needed_plotname_censusid <- function(.x) {
   warn_if_has_var(
     .x, name = "censusid", predicate = is_multiple,
     problem = "Multiple", hint = "Do you need to group by censusid?"
@@ -58,6 +60,22 @@ warn_abundance_if_needed <- function(.x) {
     problem = "Multiple", hint = "Do you need to pick a single plot?"
   )
   
+  invisible(.x)
+}
+
+warn_if_needed_treeid <- function(.x) {
+  warn_if_has_var(
+    .x, name = "treeid", predicate = is_duplicated,
+    problem = "Duplicated", hint = "Do you need to pick main stems?"
+  )
+  invisible(.x)
+}
+
+warn_if_needed_stemid <- function(.x) {
+  warn_if_has_var(
+    .x, name = "stemid", predicate = is_duplicated,
+    problem = "Duplicated", hint = "Do you need to pick largest `hom` values?"
+  )
   invisible(.x)
 }
 

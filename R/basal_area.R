@@ -116,3 +116,4 @@ check_basal_area_tally <- function(x) {
   }
   invisible(x)
 }
+
