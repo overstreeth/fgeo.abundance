@@ -4,7 +4,7 @@
 \alias{abundance}
 \title{Abundance.}
 \usage{
-abundance(x, ..., wt = NULL, sort = FALSE)
+abundance(x, ...)
 }
 \description{
 \itemize{

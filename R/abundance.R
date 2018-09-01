@@ -35,5 +35,30 @@
 NULL
 
 #' @rdname abundance
-abundance <- dplyr::count
+abundance <- function(x, ...) {
+  .x <- set_names(x, tolower)
+  warn_if_needed(.x)
+  dplyr::count(x, ...)
+}
 
+warn_if_needed <- function(.x) {
+  warn_if_has_var(
+    .x, name = "treeid", predicate = is_duplicated,
+    problem = "Duplicated", hint = "Do you need to pick main stems?"
+  )
+  warn_if_has_var(
+    .x, name = "censusid", predicate = is_multiple,
+    problem = "Multiple", hint = "Do you need to group by censusid?"
+  )
+  warn_if_has_var(
+    .x, name = "plotname", predicate = is_multiple,
+    problem = "Multiple", hint = "Do you need to pick a single plot?"
+  )
+}
+
+warn_if_has_var <- function(.x, name, predicate, problem, hint) {
+  if (hasName(.x, name)) {
+    msg <- glue("`{name}`: {problem} values were detected. {hint}")
+    flag_if_group(.x, name, predicate, warn, msg)
+  }
+}

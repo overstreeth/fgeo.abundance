@@ -53,10 +53,25 @@ describe("abundance", {
     )
   })
   
-  it("warns multiple stems", {
+  it("warns duplicated treeid", {
     expect_warning(
-      abundance(mutate(tree_id(1:2), stemID = c("1.1", "1.2"))),
-      "Multiple.*stemid"
+      abundance(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.2"))),
+      "treeid.*Duplicated values.*Do you need to pick main stems?"
+    )
+  })
+  
+  it("warns multiple censusid", {
+    expect_warning(
+      abundance(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
+      "censusid.*Multiple values.*Do you need to group by.*censusid?"
+    )
+  })
+  
+    it("warns multiple plotname", {
+    expect_warning(
+      abundance(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
+      "plotname.*Multiple values.*Do you need to pick a single plot?"
     )
   })
 })
+
