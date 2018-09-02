@@ -1,5 +1,10 @@
 # TODO
 
+# * Check TODO and FIXME
+# * Remove add_basal_area() ? and tally...()? to keep things simple or implement
+#   it via join?
+
+
 # * Make interface equal for count_distinct() and basal_area().
 # * Implement add_ via left_join()
 

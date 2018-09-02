@@ -10,7 +10,7 @@ df <- data.frame(
 )
 
 test_that("retuns a numeric vector", {
-  result <- basal_area(df$dbh)
+  result <- basal_area_dbl(df$dbh)
   expect_type(result, "double")
   expect_true(rlang::is_vector(result))
 })
@@ -20,15 +20,7 @@ test_that("returns the expected data structure", {
   expect_type(result, "list")
   expect_true(is.data.frame(basal_area(df)))
 
-  expect_type(basal_area(df$dbh), "double")
-})
-
-test_that("returns the same as basal_area.numeric if data has only one row.", {
-  df1 <- df[1, ] %>%
-    group_by(status)
-  expected <- basal_area(df1$dbh)
-  actual <- basal_area(df1)$basal_area
-  expect_equal(actual, expected)
+  expect_type(basal_area_dbl(df$dbh), "double")
 })
 
 test_that("returns the correct sum", {
@@ -38,7 +30,7 @@ test_that("returns the correct sum", {
     quadrat = 1:6,
     dbh = rnorm(6)
   )
-  df$ba <- basal_area(df$dbh)
+  df$ba <- basal_area_dbl(df$dbh)
 
   actual <- df %>%
     group_by(quadrat) %>%
@@ -63,11 +55,7 @@ test_that("tricky objects in global environment cause no scoping issues", {
   expect_false("status" %in% nms)
 })
 
-test_that("removes one grouping layer, as expected from summarize()", {
-  # basal_area.data.frame() calls dplyr::summarize() which removes grouping
-  expect_true(is_grouped_df(basal_area(group_by(df, quadrat, sp))))
-  expect_false(is_grouped_df(basal_area(group_by(df, quadrat))))
-})
+
 
 context("add_basal_area")
 

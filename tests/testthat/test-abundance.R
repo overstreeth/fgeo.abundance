@@ -1,8 +1,8 @@
 library(dplyr)
 
-context("basal_area2")
+context("basal_area")
 
-describe("basal_area2", {
+describe("basal_area", {
   skip_if_not_installed("ctfs")
   ba_ctfs <- function(x, type = "ba", ...) ctfs::abundance(x, type, ...)$ba$all
   tree_id <- function(x) {
@@ -18,17 +18,17 @@ describe("basal_area2", {
     # FIXME: Why is this offset? Why it does not to appear in basal_area_byyr?
     offset <- 1000000
     # numeric
-    expect_equal(basal_area2(tree_id(1))$basal_area, ba_ctfs(tree_id(1)) * offset)
+    expect_equal(basal_area(tree_id(1))$basal_area, ba_ctfs(tree_id(1)) * offset)
     # data.frame
     expect_equal(
-      basal_area2(tree_id(1:2))$basal_area, 
+      basal_area(tree_id(1:2))$basal_area, 
       ba_ctfs(tree_id(1:2)) * offset
     )
 
     # Grouped summaries return similar (but are implemented diferently)
     tree <- mutate(tree_id(1:2), sp = letters[1:2])
     expect_equal(
-      basal_area2(group_by(tree, sp))$basal_area,
+      basal_area(group_by(tree, sp))$basal_area,
       ba_ctfs(tree, split1 = tree$sp) * offset
     )
     
@@ -37,20 +37,20 @@ describe("basal_area2", {
   it("warns duplicated stemid", {
     # basal_area warns not treeid but stemid
     expect_warning(
-      basal_area2(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.1"))),
+      basal_area(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.1"))),
       "stemid.*Duplicated values.*Do you need to pick largest.*hom.*values?"
     )
-    expect_silent(basal_area2(tree_id(c(1, 1))))
+    expect_silent(basal_area(tree_id(c(1, 1))))
   })
   
   it("warns multiple plotname and censusid", {
     expect_warning(
-      basal_area2(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
+      basal_area(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
       "plotname.*Multiple values.*Do you need to pick a single plot?"
     )
     
     expect_warning(
-      basal_area2(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
+      basal_area(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
       "censusid.*Multiple values.*Do you need to group by.*censusid?"
     )
   })
@@ -134,7 +134,7 @@ describe("abundance", {
   it("returns groups of grouped data", {
     tree <- mutate(tree_id(1:2), CensusID = 1:2)
     expect_true(is_grouped_df(abundance(group_by(tree, CensusID))))
-    expect_true(is_grouped_df(basal_area2(group_by(tree, CensusID))))
+    expect_true(is_grouped_df(basal_area(group_by(tree, CensusID))))
   })
   
 })

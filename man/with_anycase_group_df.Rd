@@ -2,18 +2,27 @@
 % Please edit documentation in R/abundance.R
 \name{with_anycase_group_df}
 \alias{with_anycase_group_df}
-\title{Abundance.}
+\title{Abundance and basal area}
 \usage{
-with_anycase_group_df(.f, side_effects)
+with_anycase_group_df(.summary, side_effects)
 }
 \description{
+Both functions warn if they detect multiple censusid and multiple plots
+}
+\details{
+\code{basal_area2()}: FIXME output is similar to ctfs::ba() but 1000000 higher.
 \itemize{
-\item Similar to \code{\link[dplyr:count]{dplyr::count()}} but simpler. It keeps only main argument.
+\item Warns if it detects duplicated stemid
+}
+
+Abundance:
+\itemize{
+\item Warns if it detects duplicated treeid
+\item Similar to \code{\link[dplyr:n]{dplyr::n()}}
 \item Supports groups only via group_by() not via \code{...}
 \item Returns 0 when fed with a 0-row dataframe.
 }
-}
-\details{
+
 \code{\link[fgeo.abundance:abundance]{fgeo.abundance::abundance()}} versus ctfs::abundance():
 \itemize{
 \item When fed with a 0-row dataframe,

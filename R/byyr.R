@@ -68,7 +68,7 @@ basal_area_byyr <- function(vft, ...) {
   with_years <- add_years(pick_byyr(low_nms, ...))
   out <- with_years %>% 
     group_by(.data$species, .data$family, .data$year) %>%
-    basal_area(dbh = .data$dbh) %>%
+    basal_area() %>%
     arrange(.data$species, .data$family, .data$year) %>%
     ungroup() %>%
     tidyr::spread(.data$year, basal_area, fill = 0)

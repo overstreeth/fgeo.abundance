@@ -5,8 +5,8 @@ library(dplyr)
 library(fgeo.base)
 
 vft <- readr::read_csv(test_path("data-byyr_toy_vft.csv"))
-ba_10 <- basal_area(10)
-ba_100 <- basal_area(100)
+ba_10 <- basal_area_dbl(10)
+ba_100 <- basal_area_dbl(100)
 
 test_that("basal_area_byyr and abundance_byyr fail with informative errors", {
   expect_error(abundance_byyr(1), "data.frame.*is not TRUE")
@@ -113,12 +113,16 @@ describe("abundance_byyr and basa_area_byyr return expected output", {
   
   it("outputs basal area multiplied by the abundance", {
     abund <- abundance_byyr(tiny, dbh > 0)
-    basal <- basal_area_byyr(tiny, dbh > 0)
-    expect_equal(basal$`2000`, basal_area(1) * abund$`2000`)
-    expect_equal(basal$`2001`, basal_area(1) * abund$`2001`)
+    expect_warning(
+      basal <- basal_area_byyr(tiny, dbh > 0), "stemid.*Duplicated values"
+    )
+    expect_equal(basal$`2000`, basal_area_dbl(1) * abund$`2000`)
+    expect_equal(basal$`2001`, basal_area_dbl(1) * abund$`2001`)
     
     tiny2 <- mutate(tiny, DBH = 10)
-    basal <- basal_area_byyr(tiny2, dbh > 0)
+    expect_warning(basal <- basal_area_byyr(
+      tiny2, dbh > 0), "stemid.*Duplicated"
+    )
     expect_equal(basal$`2000`, ba_10 * abund$`2000`)
     expect_equal(basal$`2001`, ba_10 * abund$`2001`)
   })
@@ -222,7 +226,7 @@ describe("basal_area_byyr()", {
     
     # One census; one tree with two stems.
     vft_c1_t1_s2 <- filter(vft_simple, CensusID == 1, TreeID == 1)
-    expected <- basal_area(1) * nrow(vft_c1_t1_s2)
+    expected <- basal_area_dbl(1) * nrow(vft_c1_t1_s2)
     actual <- basal_area_byyr(vft_c1_t1_s2, dbh >= 1)$`2001`
     expect_equal(actual, expected)
     
@@ -236,7 +240,7 @@ describe("basal_area_byyr()", {
     
     # One census; two trees, each with two stems.
     vft_c1_t2_s4 <- filter(vft_simple, CensusID == 1)
-    expected <- basal_area(1) * nrow(vft_c1_t2_s4)
+    expected <- basal_area_dbl(1) * nrow(vft_c1_t2_s4)
     actual <- basal_area_byyr(vft_c1_t2_s4, dbh >= 1)$`2001`
     expect_equal(actual, expected)
     
@@ -255,7 +259,7 @@ describe("basal_area_byyr()", {
     
     # Two censuses, with one tree in each
     vft_c2_t1_s4 <- filter(vft_simple, TreeID == 1)
-    expected_total <- basal_area(1) * nrow(vft_c2_t1_s4)
+    expected_total <- basal_area_dbl(1) * nrow(vft_c2_t1_s4)
     actual_2001 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2001`
     actual_2002 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2002`
     expect_equal(actual_2001 + actual_2002, expected_total)

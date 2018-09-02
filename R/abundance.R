@@ -51,10 +51,12 @@ with_anycase_group_df <- function(.summary, side_effects) {
     restore_input_names_output_groups(result, x)
   }
 }
+
 abundance <- with_anycase_group_df(
   abundance_df, list(warn_if_needed_treeid, warn_if_needed_plotname_censusid)
 )
-basal_area2 <- with_anycase_group_df(
+
+basal_area <- with_anycase_group_df(
   basal_area_df, list(warn_if_needed_stemid, warn_if_needed_plotname_censusid)
 )
 
