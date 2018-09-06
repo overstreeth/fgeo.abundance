@@ -1,5 +1,11 @@
 # TODO
 
+# * Explore issue rose by Suzanne by which species with buttresses are higher
+#   than she expected (and calculated), particularly for census 3, and also from
+#   census 3 onwards.
+# * Check if regression test of output of _byyr is the same before and after
+#   refactoring `basal_area()` (notice that the formula changed).
+# * Why is the formula of basal area different in my code and Condit's code?
 # * Check TODO and FIXME
 # * Remove add_basal_area() ? and tally...()? to keep things simple or implement
 #   it via join?
