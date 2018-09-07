@@ -18,9 +18,8 @@
 #' @param ... Expressions to pick stems of specific `dbh` -- where _stems_
 #'   refers to the largest stem of each tree.
 #' 
-#' @seealso [fgeo.tool::pick_main_stem()].
+#' @seealso [fgeo.tool::pick_main_stem()], [abundance()].
 #' @family functions for fgeo census and vft.
-#' @aliases abundance
 #'
 #' @return A dataframe with preserved groups (if any).
 #' 

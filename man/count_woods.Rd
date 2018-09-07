@@ -2,7 +2,6 @@
 % Please edit documentation in R/count_woods.R
 \name{count_woods}
 \alias{count_woods}
-\alias{abundance}
 \alias{count_trees}
 \alias{count_saplings}
 \alias{count_saplings_and_trees}
@@ -82,7 +81,7 @@ censuses
 count_woods(censuses, dbh >= 10)
 }
 \seealso{
-\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}.
+\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}, \code{\link[=abundance]{abundance()}}.
 
 Other functions for fgeo census and vft.: \code{\link{count_distinct_treeid}}
 }

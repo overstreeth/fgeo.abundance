@@ -21,6 +21,9 @@
 #' which includes arguments to deal with `dbh` and `status`).
 #' 
 #' @examples
+#' library(dplyr)
+#' library(fgeo.tool)
+#' 
 #' # abundance() -------------------------------------------------------------
 #' 
 #' # Similar to dplyr::n()
@@ -60,6 +63,7 @@
 #' )
 #' 
 #' # You can compute by groups
+#' by_census <- group_by(vft3, CensusID)
 #' (main_stems_by_census <- pick_main_stem(by_census))
 #' abundance(main_stems_by_census)
 #' 
@@ -77,7 +81,6 @@
 #' basal_area(main_stemids)
 #' 
 #' # You can compute by groups
-#' by_census <- group_by(vft3, CensusID)
 #' basal_area(by_census)
 #' 
 #' # To convert units see ?convert_unit()
@@ -117,7 +120,7 @@ abundance_df <- function(x) {
 
 basal_area_df <- function(x) {
   g <- dplyr::group_vars(x)
-  out <- summarize(x, basal_area = sum(basal_area_dbl(dbh), na.rm = TRUE))
+  out <- summarize(x, basal_area = sum(basal_area_dbl(.data$dbh), na.rm = TRUE))
   dplyr::grouped_df(out, g)
 }
 
@@ -159,7 +162,7 @@ warn_if_needed_stemid <- function(.x) {
 }
 
 warn_if_has_var <- function(.x, name, predicate, problem, hint) {
-  if (hasName(.x, name)) {
+  if (utils::hasName(.x, name)) {
     msg <- glue("`{name}`: {problem} values were detected. {hint}")
     flag_if_group(.x, name, predicate, warn, msg)
   }

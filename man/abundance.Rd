@@ -41,6 +41,9 @@ which includes arguments to deal with \code{dbh} and \code{status}).
 }
 
 \examples{
+library(dplyr)
+library(fgeo.tool)
+
 # abundance() -------------------------------------------------------------
 
 # Similar to dplyr::n()
@@ -80,6 +83,7 @@ vft3 <- tibble::tribble(
 )
 
 # You can compute by groups
+by_census <- group_by(vft3, CensusID)
 (main_stems_by_census <- pick_main_stem(by_census))
 abundance(main_stems_by_census)
 
@@ -97,7 +101,6 @@ basal_area(vft)
 basal_area(main_stemids)
 
 # You can compute by groups
-by_census <- group_by(vft3, CensusID)
 basal_area(by_census)
 
 # To convert units see ?convert_unit()

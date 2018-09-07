@@ -186,14 +186,14 @@ trees to be included, remove them first (see <code><a href='http://www.rdocument
   <span class='kw'>hom</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>130</span>, <span class='fl'>6</span>)
 )
 <span class='no'>census</span></div><div class='output co'>#&gt; # A tibble: 6 x 6
-#&gt;   treeID stemID quadrat sp      dbh   hom
-#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1      1      1 0001    sp1   18.8    130
-#&gt; 2      1      2 0001    sp1    1.08   130
-#&gt; 3      2      3 0001    sp2    7.96   130
-#&gt; 4      3      4 0002    sp3    8.95   130
-#&gt; 5      3      5 0002    sp3    5.58   130
-#&gt; 6      3      6 0002    sp3   15.3    130</div><div class='input'>
+#&gt;   treeID stemID quadrat sp        dbh   hom
+#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1      1      1 0001    sp1    1.12     130
+#&gt; 2      1      2 0001    sp1    0.381    130
+#&gt; 3      2      3 0001    sp2    3.63     130
+#&gt; 4      3      4 0002    sp3    0.0557   130
+#&gt; 5      3      5 0002    sp3   16.3      130
+#&gt; 6      3      6 0002    sp3   13.0      130</div><div class='input'>
 <span class='fu'>count_distinct_stemid</span>(<span class='no'>census</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;       n
 #&gt;   &lt;int&gt;
@@ -206,9 +206,9 @@ trees to be included, remove them first (see <code><a href='http://www.rdocument
 <span class='no'>largest_stem</span></div><div class='output co'>#&gt; # A tibble: 3 x 6
 #&gt;   treeID stemID quadrat sp      dbh   hom
 #&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1      1      1 0001    sp1   18.8    130
-#&gt; 2      2      3 0001    sp2    7.96   130
-#&gt; 3      3      6 0002    sp3   15.3    130</div><div class='input'><span class='fu'>count_distinct_treeid</span>(<span class='no'>largest_stem</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
+#&gt; 1      1      1 0001    sp1    1.12   130
+#&gt; 2      2      3 0001    sp2    3.63   130
+#&gt; 3      3      5 0002    sp3   16.3    130</div><div class='input'><span class='fu'>count_distinct_treeid</span>(<span class='no'>largest_stem</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;       n
 #&gt;   &lt;int&gt;
 #&gt; 1     3</div><div class='input'>
