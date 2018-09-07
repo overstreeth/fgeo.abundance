@@ -1,3 +1,5 @@
+# FIXME: Integrate documentation of abundance and basal_area
+
 #' Abundance and basal area
 #' 
 #' 
@@ -56,6 +58,7 @@ abundance <- with_anycase_group_df(
   abundance_df, list(warn_if_needed_treeid, warn_if_needed_plotname_censusid)
 )
 
+#' @rdname abundance
 basal_area <- with_anycase_group_df(
   basal_area_df, list(warn_if_needed_stemid, warn_if_needed_plotname_censusid)
 )

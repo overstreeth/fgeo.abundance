@@ -65,7 +65,8 @@ abundance_byyr <- function(vft, ...) {
 basal_area_byyr <- function(vft, ...) {
   low_nms <- check_byyr(set_names(vft, tolower))
   
-  with_years <- add_years(pick_byyr(low_nms, ...))
+  main_stemids <- fgeo.tool::pick_main_stemid(low_nms)
+  with_years <- add_years(pick_byyr(main_stemids, ...))
   out <- with_years %>% 
     group_by(.data$species, .data$family, .data$year) %>%
     basal_area() %>%

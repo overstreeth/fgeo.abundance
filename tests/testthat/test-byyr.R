@@ -220,6 +220,7 @@ describe("*byyr()", {
   })
 })
 
+
 describe("basal_area_byyr()", {
   it("sums basal area of all stems which dbh is in the chosen range", {
     vft_simple <- mutate(vft, Status = "alive", DBH = 1)
@@ -280,6 +281,27 @@ describe("basal_area_byyr()", {
     )
     expect_equal(ba_100, out$`2001`)
     expect_equal(ba_100, out$`2002`)
+  })
+  
+  it("deals with buttresses: Includes only one stem per stemid", {
+    vft_hom <- vft %>% 
+      filter(CensusID == 1) %>% 
+      slice(1:2) %>% 
+      select(TreeID, StemID, HOM, DBH, everything()) %>% 
+      mutate(
+        DBH = c(10, 100),
+        HOM = c(140, 130),
+        Status = "alive",
+    )
+    
+    # Adapt the data to clearly expose this specific problem
+    vft_hom2 <- vft_hom %>% mutate(StemID = c("1.1", "1.1"))
+    # TreeID StemID   HOM   DBH  
+    #  <int>  <dbl>  <dbl> <dbl>
+    #      1    1.1   140    10  # Main stem defined by largest HOM
+    #      1    1.1   130   100  # This should be removed
+    sapl_and_tree <- basal_area_byyr(vft_hom2,  dbh >= 10)
+    expect_equal(sapl_and_tree$`2001`, basal_area_dbl(10))
   })
 })
 

@@ -3,9 +3,18 @@
 # * Explore issue rose by Suzanne by which species with buttresses are higher
 #   than she expected (and calculated), particularly for census 3, and also from
 #   census 3 onwards.
+
+# * Why is the formula of basal area different in my code and Condit's code?
+
+ctfs::basum
+1 /  (2000)^2 * pi * (x)^2  
+
+fgeo.abundance::basal_area
+1 / 4        * pi * (x)^2
+
+
 # * Check if regression test of output of _byyr is the same before and after
 #   refactoring `basal_area()` (notice that the formula changed).
-# * Why is the formula of basal area different in my code and Condit's code?
 # * Check TODO and FIXME
 # * Remove add_basal_area() ? and tally...()? to keep things simple or implement
 #   it via join?

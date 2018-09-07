@@ -23,9 +23,6 @@
 #'
 #' @family functions that quote one or more arguments using tidy eval.
 #'
-#' @export
-#' @rdname basal_area
-#'
 #' @examples
 #' library(dplyr)
 #'
@@ -67,28 +64,8 @@
 #' basal_area(group_by(stem2, quadrat, sp))
 #' # Missing dbh is ignored, and `basal_area` refers to the group not each row.
 #' add_basal_area(stem2, quadrat, sp)
-#' @name 
+#' @name basal_area
 NULL
-
-#' @rdname basal_area
-#' @export
-#' basal_area.default <- function(x, ...) {
-#'   abort(paste("Can't deal with objects of class", class(x)))
-#' }
-#' 
-#' #' @rdname basal_area
-#' #' @export
-#' basal_area.data.frame <- function(x, dbh = dbh, ...) {
-#'   dbh <- enquo(dbh)
-#'   summarize(x, basal_area = sum(basal_area.numeric(!!dbh), na.rm = TRUE))
-#' }
-#' 
-#' #' @rdname basal_area
-#' #' @export
-#' basal_area.numeric <- function(x, ...) {
-#'   stopifnot(length(x) > 0)
-#'   1 / 4 * pi * (x)^2
-#' }
 
 #' @rdname basal_area
 #' @export
