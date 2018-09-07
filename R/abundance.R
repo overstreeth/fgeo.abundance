@@ -1,8 +1,3 @@
-# FIXME: Integrate documentation of abundance and basal_area
-
-
-
-
 #' Abundance and basal area.
 #' 
 #' * `abundance()` and `basal_area()`:

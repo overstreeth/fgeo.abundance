@@ -3,7 +3,6 @@
 export("%>%")
 export(abundance)
 export(abundance_byyr)
-export(add_basal_area)
 export(basal_area)
 export(basal_area_byyr)
 export(basal_area_neighbor)

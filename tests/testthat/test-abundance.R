@@ -97,7 +97,6 @@ describe("basal_area", {
   }
   
   it("behaves as ctfs::abundance(type = 'ba')", {
-    # FIXME: Why is this offset? Why it does not to appear in basal_area_byyr?
     # The reason for an offset is that Condit's funciton outputs basal area in
     # squared meters. Instead, basal_area() does not convert units so the output
     # is in the units of the input -- i.e. generally mm.
