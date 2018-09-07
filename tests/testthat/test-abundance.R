@@ -2,6 +2,10 @@ context("abundance")
 
 library(dplyr)
 
+test_that("with cero-lenght dataframe returns a dataframe and result it 0", {
+  expect_equal(abundance(tibble()), tibble::tibble(n = 0L))
+})
+
 describe("abundance", {
   skip_if_not_installed("ctfs")
   abun_ctfs <- function(x, ...) ctfs::abundance(x, ...)$abund$all
@@ -192,3 +196,8 @@ test_that("tricky objects in global environment cause no scoping issues", {
     names()
   expect_false("status" %in% nms)
 })
+
+test_that("with cero-lenght dataframe returns a dataframe and result it 0", {
+  expect_equal(abundance(tibble()), tibble::tibble(n = 0L))
+})
+

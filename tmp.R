@@ -1,11 +1,6 @@
 # TODO
 
 # * Check TODO and FIXME
-# * Check for problems in other packages, after removing add_abundance() and
-#   add_basal_area()
-
-# * basal_area(data.frame()) should return a tibble where basal_area = 0.
-
 # * Make interface equal for count_distinct() and basal_area().
 # * Remove count_woods() or raplace it by a more direct function that uses checks
 #   for unique main stems, then uses filter, then count_unique_treeid(). It sould
