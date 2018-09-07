@@ -1,66 +1,6 @@
-library(dplyr)
-
-context("basal_area")
-
-describe("basal_area", {
-  skip_if_not_installed("ctfs")
-  ba_ctfs <- function(x, type = "ba", ...) ctfs::abundance(x, type, ...)$ba$all
-  tree_id <- function(x) {
-    tibble(
-      treeID = as.character(x), 
-      dbh = 1, 
-      status = "A", 
-      date = 800
-    )
-  }
-  
-  it("behaves as ctfs::abundance(type = 'ba')", {
-    # FIXME: Why is this offset? Why it does not to appear in basal_area_byyr?
-    offset <- 1000000
-    # numeric
-    expect_equal(basal_area(tree_id(1))$basal_area, ba_ctfs(tree_id(1)) * offset)
-    # data.frame
-    expect_equal(
-      basal_area(tree_id(1:2))$basal_area, 
-      ba_ctfs(tree_id(1:2)) * offset
-    )
-
-    # Grouped summaries return similar (but are implemented diferently)
-    tree <- mutate(tree_id(1:2), sp = letters[1:2])
-    expect_equal(
-      basal_area(group_by(tree, sp))$basal_area,
-      ba_ctfs(tree, split1 = tree$sp) * offset
-    )
-    
-  })
-  
-  it("warns duplicated stemid", {
-    # basal_area warns not treeid but stemid
-    expect_warning(
-      basal_area(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.1"))),
-      "stemid.*Duplicated values.*Do you need to pick largest.*hom.*values?"
-    )
-    expect_silent(basal_area(tree_id(c(1, 1))))
-  })
-  
-  it("warns multiple plotname and censusid", {
-    expect_warning(
-      basal_area(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
-      "plotname.*Multiple values.*Do you need to pick a single plot?"
-    )
-    
-    expect_warning(
-      basal_area(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
-      "censusid.*Multiple values.*Do you need to group by.*censusid?"
-    )
-  })
-})
-
-
-
-# abundance ---------------------------------------------------------------
-
 context("abundance")
+
+library(dplyr)
 
 describe("abundance", {
   skip_if_not_installed("ctfs")
@@ -139,3 +79,117 @@ describe("abundance", {
   
 })
 
+
+
+
+context("basal_area")
+
+describe("basal_area", {
+  skip_if_not_installed("ctfs")
+  ba_ctfs <- function(x, type = "ba", ...) ctfs::abundance(x, type, ...)$ba$all
+  tree_id <- function(x) {
+    tibble(
+      treeID = as.character(x), 
+      dbh = 1, 
+      status = "A", 
+      date = 800
+    )
+  }
+  
+  it("behaves as ctfs::abundance(type = 'ba')", {
+    # FIXME: Why is this offset? Why it does not to appear in basal_area_byyr?
+    # The reason for an offset is that Condit's funciton outputs basal area in
+    # squared meters. Instead, basal_area() does not convert units so the output
+    # is in the units of the input -- i.e. generally mm.
+    offset <- 1000000
+    # numeric
+    expect_equal(basal_area(tree_id(1))$basal_area, ba_ctfs(tree_id(1)) * offset)
+    # data.frame
+    expect_equal(
+      basal_area(tree_id(1:2))$basal_area, 
+      ba_ctfs(tree_id(1:2)) * offset
+    )
+    
+    # Grouped summaries return similar (but are implemented diferently)
+    tree <- mutate(tree_id(1:2), sp = letters[1:2])
+    expect_equal(
+      basal_area(group_by(tree, sp))$basal_area,
+      ba_ctfs(tree, split1 = tree$sp) * offset
+    )
+    
+  })
+  
+  it("warns duplicated stemid", {
+    # basal_area warns not treeid but stemid
+    expect_warning(
+      basal_area(mutate(tree_id(c(1, 1)), stemID = c("1.1", "1.1"))),
+      "stemid.*Duplicated values.*Do you need to pick largest.*hom.*values?"
+    )
+    expect_silent(basal_area(tree_id(c(1, 1))))
+  })
+  
+  it("warns multiple plotname and censusid", {
+    expect_warning(
+      basal_area(mutate(tree_id(c(1, 1)), PlotName = c("a", "b"))),
+      "plotname.*Multiple values.*Do you need to pick a single plot?"
+    )
+    
+    expect_warning(
+      basal_area(mutate(tree_id(c(1, 1)), CensusID = c("1", "2"))),
+      "censusid.*Multiple values.*Do you need to group by.*censusid?"
+    )
+  })
+})
+
+df <- data.frame(
+  sp = rep(letters[1:3], each = 2),
+  status = rep(c("A", "D"), 3),
+  quadrat = 1:6,
+  dbh = rnorm(6)
+)
+
+test_that("retuns a numeric vector", {
+  result <- basal_area_dbl(df$dbh)
+  expect_type(result, "double")
+  expect_true(rlang::is_vector(result))
+})
+
+test_that("returns the expected data structure", {
+  result <- basal_area(df)
+  expect_type(result, "list")
+  expect_true(is.data.frame(basal_area(df)))
+  
+  expect_type(basal_area_dbl(df$dbh), "double")
+})
+
+test_that("returns the correct sum", {
+  df <- data.frame(
+    sp = rep(letters[1:3], each = 2),
+    status = rep(c("A", "D"), 3),
+    quadrat = 1:6,
+    dbh = rnorm(6)
+  )
+  df$ba <- basal_area_dbl(df$dbh)
+  
+  actual <- df %>%
+    group_by(quadrat) %>%
+    basal_area() %>%
+    pull(basal_area) %>%
+    sum()
+  
+  expected <- sum(df$ba)
+  expect_equal(actual, expected)
+})
+
+test_that("weird arguments throw error", {
+  expect_error(basal_area(NULL))
+  expect_error(basal_area(NA))
+})
+
+test_that("tricky objects in global environment cause no scoping issues", {
+  group_by <- c("status") # this should be ignored
+  nms <- basal_area(df) %>%
+    as_tibble() %>%
+    names()
+  expect_false("status" %in% nms)
+})

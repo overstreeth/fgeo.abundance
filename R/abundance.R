@@ -1,38 +1,23 @@
 # FIXME: Integrate documentation of abundance and basal_area
 
-#' Abundance and basal area
+
+
+
+#' Abundance and basal area.
 #' 
+#' * `abundance()` and `basal_area()`:
+#'     * Warn if they detect multiple censusid and multiple plots.
+#'     * Can compute by groups of data created with [group_by()].
+#' * `abundance()`:
+#'     * Is similar to [dplyr::n()].
+#'     * Warns if it detects duplicated values of treeid.
+#' * `basal_area()`:
+#'     * Warns if it detects duplicated values of stemid.
+#'     * Does not convert units. For that see [convert_unit()].
 #' 
-#' Both functions warn if they detect multiple censusid and multiple plots
-#' 
-#' `basal_area2()`: FIXME output is similar to ctfs::ba() but 1000000 higher.
-#' * Warns if it detects duplicated stemid
-#' 
-#' Abundance:
-#' * Warns if it detects duplicated treeid
-#' * Similar to [dplyr::n()]
-#' * Supports groups only via group_by() not via `...`
-#' * Returns 0 when fed with a 0-row dataframe.
-#' 
-#' [fgeo.abundance::abundance()] versus ctfs::abundance():
-#' * When fed with a 0-row dataframe, 
-#'     * `ctfs::abundance` returns a dataframe with zero rows and zero columns. 
-#'     * [fgeo.abundance::abundance()] returns a dataframe column `n = 0`.
-#' * `ctfs::abundance` handles only two grouping variables, via arguments
-#' `split1` and `split2`.
-#' * [fgeo.abundance::abundance()] handles any number of grouping variables via
-#' [dplyr::group_by()].
-#' 
-#' * `ctfs::abundance` returns a list, which is difficult to visualize and use.
-#' * [fgeo.abundance::abundance()] returns a dataframe subclass tibble, which
-#' prints well even with large datasets and works well with a larger number of
-#' tools for data analysis (e.g. __ggplot2__ and __dplyr__).
-#' 
-#' @section Flags:
-#' Warns if it detects:
-#' * duplicated values of treeis.
-#' * multiple values of censusid.
-#' * multiple values of plotname.
+#' @param x A dataframe. `basal_area()` requires a column named `dbh` (case
+#'   insensitive).
+#' @seealso [dplyr::n()], [group_by()], [convert_unit()].
 #' 
 #' @section Warning:
 #' To pick specific rows (e.g. to pick "alive" stems or `dbh` within some range)
@@ -40,11 +25,72 @@
 #' _before_ using `abundance()`. (Notice the difference with `ctfs::abundance`,
 #' which includes arguments to deal with `dbh` and `status`).
 #' 
-# abundance <- function(x) {
-#   low_nms <- groups_lower(set_names(x, tolower))
-#   warn_if_needed_plotname_censusid(low_nms)
-#   restore_input_names_output_groups(dplyr::count(low_nms), x)
-# }
+#' @examples
+#' # abundance() -------------------------------------------------------------
+#' 
+#' # Similar to dplyr::n()
+#' abundance(data.frame(1))
+#' 
+#' vft <- tibble::tribble(
+#'   ~PlotName, ~CensusID, ~TreeID, ~StemID, ~DBH,
+#'   "p",         1,     "1",   "1.1",   10,
+#'   "q",         2,     "1",   "1.1",   10
+#' )
+#' 
+#' # * Warns if it detects multiple values of censusid or plotname
+#' # * Also warns if it detects duplicated values of treeid
+#' abundance(vft)
+#' 
+#' # You should probably work with a single plotname. 
+#' # Yet your data may have multiple stems per treeid and even multiple measures
+#' # per stemid (when trees have buttressess).
+#' vft2 <- tibble::tribble(
+#'   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
+#'   1,     "1",   "1.1",   88,  130,
+#'   1,     "1",   "1.1",   10,  160,
+#'   1,     "2",   "2.1",   20,  130,
+#'   1,     "2",   "2.2",   30,  130,
+#' )
+#' 
+#' # You should count only the main stem of each tree
+#' (main_stem <- pick_main_stem(vft2))
+#' abundance(main_stem)
+#' 
+#' vft3 <- tibble::tribble(
+#'   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
+#'   1,     "1",   "1.1",   20,  130,
+#'   1,     "1",   "1.2",   10,  160,  # Main stem
+#'   2,     "1",   "1.1",   12,  130,
+#'   2,     "1",   "1.2",   22,  130   # Main stem
+#' )
+#' 
+#' # You can compute by groups
+#' (main_stems_by_census <- pick_main_stem(by_census))
+#' abundance(main_stems_by_census)
+#' 
+#' # basal_area() ------------------------------------------------------------
+#' 
+#' # Data must have a column named dbh (case insensitive)
+#' basal_area(data.frame(dbh = 1))
+#' 
+#' # * Warns if it detects multiple values of censusid or plotname
+#' # * Also warns if it detects duplicated values of stemid
+#' basal_area(vft)
+#' 
+#' # First you may pick the main stemid of each stem
+#' (main_stemids <- pick_main_stemid(vft2))
+#' basal_area(main_stemids)
+#' 
+#' # You can compute by groups
+#' by_census <- group_by(vft3, CensusID)
+#' basal_area(by_census)
+#' 
+#' # To convert units see ?convert_unit()
+#' ba <- basal_area(by_census)
+#' convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
+#' @name abundance
+NULL
+
 with_anycase_group_df <- function(.summary, side_effects) {
   function(x) {
     low_nms <- groups_lower(set_names(x, tolower))
@@ -54,18 +100,19 @@ with_anycase_group_df <- function(.summary, side_effects) {
   }
 }
 
+#' @export
+#' @rdname abundance
 abundance <- with_anycase_group_df(
   abundance_df, list(warn_if_needed_treeid, warn_if_needed_plotname_censusid)
 )
 
+#' @export
 #' @rdname abundance
 basal_area <- with_anycase_group_df(
   basal_area_df, list(warn_if_needed_stemid, warn_if_needed_plotname_censusid)
 )
 
 
-
-# Implementations ---------------------------------------------------------
 
 abundance_df <- function(x) {
   g <- dplyr::group_vars(x)
@@ -85,8 +132,6 @@ basal_area_dbl <- function(x) {
 }
 
 
-
-# Warnings ----------------------------------------------------------------
 
 # Only if data contains specific `name`s.
 warn_if_needed_plotname_censusid <- function(.x) {

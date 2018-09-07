@@ -1,5 +1,7 @@
 # TODO
 
+# basal_area(data.frame()) should return a tibble where basal_area = 0.
+
 # * Explore issue rose by Suzanne by which species with buttresses are higher
 #   than she expected (and calculated), particularly for census 3, and also from
 #   census 3 onwards.
