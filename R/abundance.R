@@ -89,9 +89,15 @@ NULL
 
 with_anycase_group_df <- function(.summary, side_effects) {
   function(x) {
+    # Census and ViewFull tables have column names with different case. To 
+    # handle both kinds of dataset we lowercase column and group names.
     low_nms <- groups_lower(set_names(x, tolower))
+    # Allow multiple, different side effects for different summaries
     lapply(side_effects, function(.f) .f(low_nms))
+    
     result <- .summary(low_nms)
+    
+    # Restore the original case of names and relevant groups
     restore_input_names_output_groups(result, x)
   }
 }
