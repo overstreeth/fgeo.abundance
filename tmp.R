@@ -1,5 +1,19 @@
 # TODO
 
+# * Remove count_woods(), and instead show how to do it with pick_main_stem()
+# and abundance()?
+
+# * Test if anything brakes.
+
+# * Remove fgeo.tool::pick_woods_f()?
+
+# * Remove count_distinct() and friends? Or replace it by a form reusing code used in abundance() and basal_area()?
+
+
+
+
+
+
 # * Check TODO and FIXME
 # * Make interface equal for count_distinct() and basal_area().
 # * Remove count_woods() or raplace it by a more direct function that uses checks
