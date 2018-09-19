@@ -1,11 +1,7 @@
 # TODO
 
-# * Remove count_woods(), and instead show how to do it with pick_main_stem()
-# and abundance()?
-
-# * Test if anything brakes.
-
 # * Remove fgeo.tool::pick_woods_f()?
+# * Show abundance on the result of pick_woods()?
 
 # * Remove count_distinct() and friends? Or replace it by a form reusing code used in abundance() and basal_area()?
 

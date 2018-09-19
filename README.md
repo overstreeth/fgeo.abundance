@@ -38,83 +38,119 @@ library(dplyr)
 #> The following objects are masked from 'package:base':
 #> 
 #>     intersect, setdiff, setequal, union
+library(fgeo.tool)
+#> 
+#> Attaching package: 'fgeo.tool'
+#> The following object is masked from 'package:stats':
+#> 
+#>     filter
 library(fgeo.abundance)
+```
 
-# Example data.
-census <- tibble(
-  treeID = c(1, 1, 2, 3, 3, 3),
-  stemID = c(1, 2, 3, 4, 5, 6),
-  quadrat = paste0("000", rep(1:2, each = 3)),
-  sp = c(paste0("sp", c(1, 1, 2)), paste0("sp", c(3, 3, 3))),
-  dbh = abs(sample(rnorm(100), 6) * 10)
+Abundance
+
+``` r
+# Your data may have multiple stems per treeid and even multiple measures per
+# stemid (if trees have buttressess).
+vft <- tribble(
+  ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
+          1,     "1",   "1.1",   88,  130,
+          1,     "1",   "1.1",   10,  160,
+          1,     "2",   "2.1",   20,  130,
+          1,     "2",   "2.2",   30,  130,
 )
-census
-#> # A tibble: 6 x 5
-#>   treeID stemID quadrat sp       dbh
-#>    <dbl>  <dbl> <chr>   <chr>  <dbl>
-#> 1      1      1 0001    sp1   14.9  
-#> 2      1      2 0001    sp1    0.454
-#> 3      2      3 0001    sp2    4.93 
-#> 4      3      4 0002    sp3   13.4  
-#> 5      3      5 0002    sp3    2.90 
-#> 6      3      6 0002    sp3    8.77
 
-# `count_distinct() ` is general: works with any data and has few restrictions.
-count_distinct(census, treeID)
+# But you should count only the main stem of each tree
+(main_stem <- pick_main_stem(vft))
+#> # A tibble: 2 x 5
+#>   CensusID TreeID StemID   DBH   HOM
+#>      <dbl> <chr>  <chr>  <dbl> <dbl>
+#> 1        1 1      1.1       10   160
+#> 2        1 2      2.2       30   130
+abundance(main_stem)
 #> # A tibble: 1 x 1
 #>       n
 #>   <int>
-#> 1     3
+#> 1     2
 
-by_quad <- group_by(census, quadrat)
-count_distinct(by_quad, stemID)
+# You may have data from multiple censuses
+vft2 <- tibble::tribble(
+  ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
+          1,     "1",   "1.1",   20,  130,
+          1,     "1",   "1.2",   10,  160,  # Main stem
+          2,     "1",   "1.1",   12,  130,
+          2,     "1",   "1.2",   22,  130   # Main stem
+)
+
+# You can compute by groups
+by_census <- group_by(vft2, CensusID)
+(main_stems_by_census <- pick_main_stem(by_census))
+#> # A tibble: 2 x 5
+#> # Groups:   CensusID [2]
+#>   CensusID TreeID StemID   DBH   HOM
+#>      <dbl> <chr>  <chr>  <dbl> <dbl>
+#> 1        1 1      1.2       10   160
+#> 2        2 1      1.2       22   130
+abundance(main_stems_by_census)
 #> # A tibble: 2 x 2
-#>   quadrat     n
-#>   <chr>   <int>
-#> 1 0001        3
-#> 2 0002        3
-
-# `count_distinct_stemid()` is specialized.
-count_distinct_stemid(by_quad)
-#> # A tibble: 2 x 2
-#>   quadrat     n
-#>   <chr>   <int>
-#> 1 0001        3
-#> 2 0002        3
-
-# `count_distinct_treeid()` is also specialized and has some safety features.
-# If treeID is duplicated, counting distinct treeid is an (intentional) error.
-count_distinct_treeid(by_quad)
-#> Error: treeid: Flagged values were detected.
-
-# First, pick the stem of maximum dbh per treeID
-largest_stems <- fgeo.tool::pick_largest_hom_dbh(census)
-#> Error: 'pick_largest_hom_dbh' is not an exported object from 'namespace:fgeo.tool'
-largest_stems
-#> Error in eval(expr, envir, enclos): object 'largest_stems' not found
-
-# Then count treeIDs
-count_distinct_treeid(largest_stems)
-#> Error in typeof(x) %in% atomic_types: object 'largest_stems' not found
-
-# It is not an error if duplicated treeIDs belong to different groups of data.
-vft <- tibble::tibble(CensusID = c(1, 1, 2, 2), TreeID = c(1, 2, 1, 2))
-vft
-#> # A tibble: 4 x 2
-#>   CensusID TreeID
-#>      <dbl>  <dbl>
-#> 1        1      1
-#> 2        1      2
-#> 3        2      1
-#> 4        2      2
-
-by_censusid <- group_by(vft, CensusID)
-count_distinct_treeid(by_censusid)
-#> # A tibble: 2 x 2
+#> # Groups:   CensusID [2]
 #>   CensusID     n
 #>      <dbl> <int>
-#> 1        1     2
-#> 2        2     2
+#> 1        1     1
+#> 2        2     1
+
+# You may need to first subset data and then count
+over20 <- filter(main_stems_by_census, DBH > 20)
+abundance(over20)
+#> # A tibble: 1 x 2
+#> # Groups:   CensusID [1]
+#>   CensusID     n
+#>      <dbl> <int>
+#> 1        2     1
+```
+
+Basal area
+
+``` r
+vft <- tribble(
+  ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
+          1,     "1",   "1.1",   88,  130,
+          1,     "1",   "1.1",   10,  160,
+          1,     "2",   "2.1",   20,  130,
+          1,     "2",   "2.2",   30,  130,
+)
+
+# You may need to pick the main stemid of each stem (if trees have buttressess)
+(main_stemids <- pick_main_stemid(vft))
+#> # A tibble: 3 x 5
+#>   CensusID TreeID StemID   DBH   HOM
+#>      <dbl> <chr>  <chr>  <dbl> <dbl>
+#> 1        1 1      1.1       10   160
+#> 2        1 2      2.1       20   130
+#> 3        1 2      2.2       30   130
+basal_area(main_stemids)
+#> # A tibble: 1 x 1
+#>   basal_area
+#>        <dbl>
+#> 1      1100.
+
+# You can compute by groups
+basal_area(by_census)
+#> # A tibble: 2 x 2
+#> # Groups:   CensusID [2]
+#>   CensusID basal_area
+#>      <dbl>      <dbl>
+#> 1        1       393.
+#> 2        2       493.
+
+ten_to_twenty <- filter(by_census, DBH >= 10, DBH <= 20)
+basal_area(ten_to_twenty)
+#> # A tibble: 2 x 2
+#> # Groups:   CensusID [2]
+#>   CensusID basal_area
+#>      <dbl>      <dbl>
+#> 1        1       393.
+#> 2        2       113.
 ```
 
 [Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)
