@@ -114,28 +114,6 @@ basal_area <- with_anycase_group_df(
   basal_area_df, list(warn_if_needed_stemid, warn_if_needed_plotname_censusid)
 )
 
-
-
-
-# TODO: Remove?
-#' @export
-#' @rdname abundance
-count_distinct_treeid2 <- with_anycase_group_df(
-  count_distinct_treeid_df, 
-  list(warn_if_needed_treeid, warn_if_needed_plotname_censusid)
-)
-
-count_distinct_treeid_df <- function(x) {
-  g <- dplyr::group_vars(x)
-  out <- summarize(x, n = n_distinct(.data$treeid))
-  dplyr::grouped_df(out, g)
-}
-
-
-
-
-
-
 abundance_df <- function(x) {
   g <- dplyr::group_vars(x)
   out <- summarize(x, n = n())

@@ -162,6 +162,3 @@ saplings %>% abundance_byyr()
 saplings %>% basal_area_byyr()
 ```
 
-## TODO
-
-Think more about status. Now, the process by which dead trees are excluded is too obscure. 
