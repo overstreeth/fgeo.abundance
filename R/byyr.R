@@ -50,7 +50,7 @@ abundance_byyr <- function(vft, ...) {
   with_years <- add_years(pick_byyr(main_stems, ...))
   out <- with_years %>% 
     group_by(.data$plotname, .data$year, .data$family, .data$species) %>%
-    count_distinct_treeid() %>%
+    dplyr::summarize(n = dplyr::n_distinct(.data$treeid)) %>% 
     ungroup() %>%
     select(-.data$plotname) %>%
     select(.data$species, .data$family, dplyr::everything()) %>%
