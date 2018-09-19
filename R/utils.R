@@ -50,3 +50,9 @@ group_vars_restore <- function(x, y) {
     dplyr::group_vars(y)
   )
 }
+
+restore_input_names_output_groups <- function(out, .data) {
+  out <- rename_matches(out, .data)
+  g <- group_vars_restore(out, .data)
+  dplyr::grouped_df(ungroup(out), g)
+}
