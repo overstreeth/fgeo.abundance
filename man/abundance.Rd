@@ -3,14 +3,11 @@
 \name{abundance}
 \alias{abundance}
 \alias{basal_area}
-\alias{count_distinct_treeid2}
 \title{Abundance and basal area, optionally by groups.}
 \usage{
 abundance(x)
 
 basal_area(x)
-
-count_distinct_treeid2(x)
 }
 \arguments{
 \item{x}{A dataframe. \code{basal_area()} requires a column named \code{dbh} (case
