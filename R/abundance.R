@@ -1,24 +1,22 @@
-#' Abundance and basal area.
+#' Abundance and basal area, optionally by groups.
 #' 
-#' * `abundance()` and `basal_area()`:
-#'     * Warn if they detect multiple censusid and multiple plots.
-#'     * Can compute by groups of data created with [group_by()].
-#' * `abundance()`:
-#'     * Is similar to [dplyr::n()].
-#'     * Warns if it detects duplicated values of treeid.
-#' * `basal_area()`:
-#'     * Warns if it detects duplicated values of stemid.
-#'     * Does not convert units. For that see [convert_unit()].
+#' `abundance()` counts woods by counting the number of rows in a dataset,
+#' optionally by groups created with [group_by()] (similar to [dplyr::n()]). It
+#' warns if it detects duplicated values of treeid. `basal_area()` sums the
+#' basal area of all woods in a dataset, optionally by groups created with
+#' [group_by()]. It warns if it detects duplicated values of stemid. It does not
+#' convert units (but see [fgeo.tool::convert_unit()]). Both `abundance()` and
+#' `basal_area()` warn if they detect multiple censusid and multiple plots.
+#' 
+#' You may want to calculate the abundance or basal area for a specific subset
+#' of data (e.g. "alive" stems or stems which `dbh` is within some range).
+#' Subsetting data is not the job of these functions. Instead see [subset()],
+#' [dplyr::filter()], or `[`.
 #' 
 #' @param x A dataframe. `basal_area()` requires a column named `dbh` (case
 #'   insensitive).
+#'
 #' @seealso [dplyr::n()], [group_by()], [convert_unit()].
-#' 
-#' @section Warning:
-#' To pick specific rows (e.g. to pick "alive" stems or `dbh` within some range)
-#' you should use functions such as `[`, [subset()], or [dplyr::filter()]
-#' _before_ using `abundance()`. (Notice the difference with `ctfs::abundance`,
-#' which includes arguments to deal with `dbh` and `status`).
 #' 
 #' @examples
 #' library(dplyr)

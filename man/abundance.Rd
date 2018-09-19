@@ -3,7 +3,7 @@
 \name{abundance}
 \alias{abundance}
 \alias{basal_area}
-\title{Abundance and basal area.}
+\title{Abundance and basal area, optionally by groups.}
 \usage{
 abundance(x)
 
@@ -14,32 +14,20 @@ basal_area(x)
 insensitive).}
 }
 \description{
-\itemize{
-\item \code{abundance()} and \code{basal_area()}:
-\itemize{
-\item Warn if they detect multiple censusid and multiple plots.
-\item Can compute by groups of data created with \code{\link[=group_by]{group_by()}}.
+\code{abundance()} counts woods by counting the number of rows in a dataset,
+optionally by groups created with \code{\link[=group_by]{group_by()}} (similar to \code{\link[dplyr:n]{dplyr::n()}}). It
+warns if it detects duplicated values of treeid. \code{basal_area()} sums the
+basal area of all woods in a dataset, optionally by groups created with
+\code{\link[=group_by]{group_by()}}. It warns if it detects duplicated values of stemid. It does not
+convert units (but see \code{\link[fgeo.tool:convert_unit]{fgeo.tool::convert_unit()}}). Both \code{abundance()} and
+\code{basal_area()} warn if they detect multiple censusid and multiple plots.
 }
-\item \code{abundance()}:
-\itemize{
-\item Is similar to \code{\link[dplyr:n]{dplyr::n()}}.
-\item Warns if it detects duplicated values of treeid.
+\details{
+You may want to calculate the abundance or basal area for a specific subset
+of data (e.g. "alive" stems or stems which \code{dbh} is within some range).
+Subsetting data is not the job of these functions. Instead see \code{\link[=subset]{subset()}},
+\code{\link[dplyr:filter]{dplyr::filter()}}, or \code{[}.
 }
-\item \code{basal_area()}:
-\itemize{
-\item Warns if it detects duplicated values of stemid.
-\item Does not convert units. For that see \code{\link[=convert_unit]{convert_unit()}}.
-}
-}
-}
-\section{Warning}{
-
-To pick specific rows (e.g. to pick "alive" stems or \code{dbh} within some range)
-you should use functions such as \code{[}, \code{\link[=subset]{subset()}}, or \code{\link[dplyr:filter]{dplyr::filter()}}
-\emph{before} using \code{abundance()}. (Notice the difference with \code{ctfs::abundance},
-which includes arguments to deal with \code{dbh} and \code{status}).
-}
-
 \examples{
 library(dplyr)
 library(fgeo.tool)

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Abundance and basal area. — abundance • fgeo.abundance</title>
+<title>Abundance and basal area, optionally by groups. — abundance • fgeo.abundance</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,22 +30,15 @@
 
 
 
-<meta property="og:title" content="Abundance and basal area. — abundance" />
+<meta property="og:title" content="Abundance and basal area, optionally by groups. — abundance" />
 
-<meta property="og:description" content="
-abundance() and basal_area():
-Warn if they detect multiple censusid and multiple plots.
-Can compute by groups of data created with group_by().
-
-abundance():
-Is similar to dplyr::n().
-Warns if it detects duplicated values of treeid.
-
-basal_area():
-Warns if it detects duplicated values of stemid.
-Does not convert units. For that see convert_unit().
-
-" />
+<meta property="og:description" content="abundance() counts woods by counting the number of rows in a dataset,
+optionally by groups created with group_by() (similar to dplyr::n()). It
+warns if it detects duplicated values of treeid. basal_area() sums the
+basal area of all woods in a dataset, optionally by groups created with
+group_by(). It warns if it detects duplicated values of stemid. It does not
+convert units (but see fgeo.tool::convert_unit()). Both abundance() and
+basal_area() warn if they detect multiple censusid and multiple plots." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,27 +112,20 @@ Does not convert units. For that see convert_unit().
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Abundance and basal area.</h1>
+    <h1>Abundance and basal area, optionally by groups.</h1>
     <small class="dont-index">Source: <a href='https://github.com/forestgeo/fgeo.abundance/blob/master/R/abundance.R'><code>R/abundance.R</code></a></small>
     <div class="hidden name"><code>abundance.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <ul>
-<li><p><code>abundance()</code> and <code>basal_area()</code>:</p><ul>
-<li><p>Warn if they detect multiple censusid and multiple plots.</p></li>
-<li><p>Can compute by groups of data created with <code>group_by()</code>.</p></li>
-</ul></li>
-<li><p><code>abundance()</code>:</p><ul>
-<li><p>Is similar to <code><a href='http://dplyr.tidyverse.org/reference/n.html'>dplyr::n()</a></code>.</p></li>
-<li><p>Warns if it detects duplicated values of treeid.</p></li>
-</ul></li>
-<li><p><code>basal_area()</code>:</p><ul>
-<li><p>Warns if it detects duplicated values of stemid.</p></li>
-<li><p>Does not convert units. For that see <code>convert_unit()</code>.</p></li>
-</ul></li>
-</ul>
+    <p><code>abundance()</code> counts woods by counting the number of rows in a dataset,
+optionally by groups created with <code>group_by()</code> (similar to <code><a href='http://dplyr.tidyverse.org/reference/n.html'>dplyr::n()</a></code>). It
+warns if it detects duplicated values of treeid. <code>basal_area()</code> sums the
+basal area of all woods in a dataset, optionally by groups created with
+<code>group_by()</code>. It warns if it detects duplicated values of stemid. It does not
+convert units (but see <code><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/convert_unit'>fgeo.tool::convert_unit()</a></code>). Both <code>abundance()</code> and
+<code>basal_area()</code> warn if they detect multiple censusid and multiple plots.</p>
     
     </div>
 
@@ -157,13 +143,12 @@ insensitive).</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="warning"><a class="anchor" href="#warning"></a>Warning</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-    <p>To pick specific rows (e.g. to pick "alive" stems or <code>dbh</code> within some range)
-you should use functions such as <code>[</code>, <code>subset()</code>, or <code><a href='http://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>
-<em>before</em> using <code>abundance()</code>. (Notice the difference with <code><a href='http://www.rdocumentation.org/packages/ctfs/topics/abundance'>ctfs::abundance</a></code>,
-which includes arguments to deal with <code>dbh</code> and <code>status</code>).</p>
+    <p>You may want to calculate the abundance or basal area for a specific subset
+of data (e.g. "alive" stems or stems which <code>dbh</code> is within some range).
+Subsetting data is not the job of these functions. Instead see <code>subset()</code>,
+<code><a href='http://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>, or <code>[</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -284,7 +269,7 @@ which includes arguments to deal with <code>dbh</code> and <code>status</code>).
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#warning">Warning</a></li>
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
