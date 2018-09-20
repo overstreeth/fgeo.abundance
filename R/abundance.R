@@ -29,8 +29,8 @@
 #' 
 #' vft <- tibble::tribble(
 #'   ~PlotName, ~CensusID, ~TreeID, ~StemID, ~DBH,
-#'   "p",         1,     "1",   "1.1",   10,
-#'   "q",         2,     "1",   "1.1",   10
+#'         "p",         1,     "1",   "1.1",   10,
+#'         "q",         2,     "1",   "1.1",   10
 #' )
 #' 
 #' # * Warns if it detects multiple values of censusid or plotname
@@ -42,10 +42,10 @@
 #' # per stemid (when trees have buttressess).
 #' vft2 <- tibble::tribble(
 #'   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
-#'   1,     "1",   "1.1",   88,  130,
-#'   1,     "1",   "1.1",   10,  160,
-#'   1,     "2",   "2.1",   20,  130,
-#'   1,     "2",   "2.2",   30,  130,
+#'           1,     "1",   "1.1",   88,  130,
+#'           1,     "1",   "1.1",   10,  160,
+#'           1,     "2",   "2.1",   20,  130,
+#'           1,     "2",   "2.2",   30,  130,
 #' )
 #' 
 #' # You should count only the main stem of each tree
@@ -54,10 +54,10 @@
 #' 
 #' vft3 <- tibble::tribble(
 #'   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
-#'   1,     "1",   "1.1",   20,  130,
-#'   1,     "1",   "1.2",   10,  160,  # Main stem
-#'   2,     "1",   "1.1",   12,  130,
-#'   2,     "1",   "1.2",   22,  130   # Main stem
+#'           1,     "1",   "1.1",   20,  130,
+#'           1,     "1",   "1.2",   10,  160,  # Main stem
+#'           2,     "1",   "1.1",   12,  130,
+#'           2,     "1",   "1.2",   22,  130   # Main stem
 #' )
 #' 
 #' # You can compute by groups

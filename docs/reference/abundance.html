@@ -174,8 +174,8 @@ Subsetting data is not the job of these functions. Instead see <code>subset()</c
 #&gt; 1     1</div><div class='input'>
 <span class='no'>vft</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span>(
   ~<span class='no'>PlotName</span>, ~<span class='no'>CensusID</span>, ~<span class='no'>TreeID</span>, ~<span class='no'>StemID</span>, ~<span class='no'>DBH</span>,
-  <span class='st'>"p"</span>,         <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>10</span>,
-  <span class='st'>"q"</span>,         <span class='fl'>2</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>10</span>
+        <span class='st'>"p"</span>,         <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>10</span>,
+        <span class='st'>"q"</span>,         <span class='fl'>2</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>10</span>
 )
 
 <span class='co'># * Warns if it detects multiple values of censusid or plotname</span>
@@ -189,10 +189,10 @@ Subsetting data is not the job of these functions. Instead see <code>subset()</c
 <span class='co'># per stemid (when trees have buttressess).</span>
 <span class='no'>vft2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span>(
   ~<span class='no'>CensusID</span>, ~<span class='no'>TreeID</span>, ~<span class='no'>StemID</span>, ~<span class='no'>DBH</span>, ~<span class='no'>HOM</span>,
-  <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>88</span>,  <span class='fl'>130</span>,
-  <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>10</span>,  <span class='fl'>160</span>,
-  <span class='fl'>1</span>,     <span class='st'>"2"</span>,   <span class='st'>"2.1"</span>,   <span class='fl'>20</span>,  <span class='fl'>130</span>,
-  <span class='fl'>1</span>,     <span class='st'>"2"</span>,   <span class='st'>"2.2"</span>,   <span class='fl'>30</span>,  <span class='fl'>130</span>,
+          <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>88</span>,  <span class='fl'>130</span>,
+          <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>10</span>,  <span class='fl'>160</span>,
+          <span class='fl'>1</span>,     <span class='st'>"2"</span>,   <span class='st'>"2.1"</span>,   <span class='fl'>20</span>,  <span class='fl'>130</span>,
+          <span class='fl'>1</span>,     <span class='st'>"2"</span>,   <span class='st'>"2.2"</span>,   <span class='fl'>30</span>,  <span class='fl'>130</span>,
 )
 
 <span class='co'># You should count only the main stem of each tree</span>
@@ -206,10 +206,10 @@ Subsetting data is not the job of these functions. Instead see <code>subset()</c
 #&gt; 1     2</div><div class='input'>
 <span class='no'>vft3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span>(
   ~<span class='no'>CensusID</span>, ~<span class='no'>TreeID</span>, ~<span class='no'>StemID</span>, ~<span class='no'>DBH</span>, ~<span class='no'>HOM</span>,
-  <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>20</span>,  <span class='fl'>130</span>,
-  <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.2"</span>,   <span class='fl'>10</span>,  <span class='fl'>160</span>,  <span class='co'># Main stem</span>
-  <span class='fl'>2</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>12</span>,  <span class='fl'>130</span>,
-  <span class='fl'>2</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.2"</span>,   <span class='fl'>22</span>,  <span class='fl'>130</span>   <span class='co'># Main stem</span>
+          <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>20</span>,  <span class='fl'>130</span>,
+          <span class='fl'>1</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.2"</span>,   <span class='fl'>10</span>,  <span class='fl'>160</span>,  <span class='co'># Main stem</span>
+          <span class='fl'>2</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.1"</span>,   <span class='fl'>12</span>,  <span class='fl'>130</span>,
+          <span class='fl'>2</span>,     <span class='st'>"1"</span>,   <span class='st'>"1.2"</span>,   <span class='fl'>22</span>,  <span class='fl'>130</span>   <span class='co'># Main stem</span>
 )
 
 <span class='co'># You can compute by groups</span>
