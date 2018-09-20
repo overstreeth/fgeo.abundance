@@ -143,35 +143,36 @@ describe("neighbor_*() outputs", {
     expect_equal(nrow(out), nrow(.subset) * length(unique(.data$sp)))
   })
   
-  it("FIXME: outputs zero consp and zero heterosp if data has one row (#68)", {
-    # tree <- tibble::tribble(
-    #   ~treeID, ~stemID,  ~gx,  ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-    #   "01",    "01",   10,   11,  "a", "sp1",     5,     "A",
-    # )
-    # 
-    # one_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
-    # expect_equal(one_n$conspecific, 0)
-    # expect_equal(one_n$heterospecific, 0)
-    # 
-    # one_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
-    # expect_equal(one_b$conspecific, 0)
-    # expect_equal(one_b$heterospecific, 0)
-    # 
-    # tree <- tibble::tribble(
-    #   ~treeID, ~stemID,  ~gx,  ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-    #   "01",    "01",   10,   11,  "a", "sp1",     5,     "A",
-    #   "02",    "01",   30,   31,  "b", "sp1",     5,     "A"
-    # )
-    # 
-    # two_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
-    # expect_equal(two_n$conspecific, c(1, 1))
-    # expect_equal(two_n$heterospecific, c(0, 0))
-    # 
-    # two_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
-    # ba_1 <- basal_area_dbl(1)
-    # expect_equal(two_b$conspecific, c(ba_1, ba_1))
-    # expect_equal(two_b$heterospecific, c(0, 0))
-  })
+  # # I'm not sure if this is the expected output. I'm talking to Dan Jhonson.
+  # it("FIXME: outputs zero consp and zero heterosp if data has one row (#68)", {
+  #   tree <- tibble::tribble(
+  #     ~treeID, ~stemID,  ~gx,  ~gy, ~tag,   ~sp,  ~dbh, ~status,
+  #     "01",    "01",   10,   11,  "a", "sp1",     5,     "A",
+  #   )
+  # 
+  #   one_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
+  #   expect_equal(one_n$conspecific, 0)
+  #   expect_equal(one_n$heterospecific, 0)
+  # 
+  #   one_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
+  #   expect_equal(one_b$conspecific, 0)
+  #   expect_equal(one_b$heterospecific, 0)
+  # 
+  #   tree <- tibble::tribble(
+  #     ~treeID, ~stemID,  ~gx,  ~gy, ~tag,   ~sp,  ~dbh, ~status,
+  #     "01",    "01",   10,   11,  "a", "sp1",     5,     "A",
+  #     "02",    "01",   30,   31,  "b", "sp1",     5,     "A"
+  #   )
+  # 
+  #   two_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
+  #   expect_equal(two_n$conspecific, c(1, 1))
+  #   expect_equal(two_n$heterospecific, c(0, 0))
+  # 
+  #   two_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
+  #   ba_1 <- basal_area_dbl(1)
+  #   expect_equal(two_b$conspecific, c(ba_1, ba_1))
+  #   expect_equal(two_b$heterospecific, c(0, 0))
+  # })
 })
 
 describe("neighbor_*() side effects", {
