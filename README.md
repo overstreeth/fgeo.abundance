@@ -47,49 +47,99 @@ library(fgeo.tool)
 library(fgeo.abundance)
 ```
 
-Abundance
+### Abundance
+
+Your data may have multiple stems per treeid and even multiple measures
+per stemid (if trees have
+buttresses).
 
 ``` r
-# Your data may have multiple stems per treeid and even multiple measures per
-# stemid (if trees have buttressess).
+# Trees with buttresses may have multiple measurements of a single stem. 
+# Main stems have highest `HOM`, then largest `DBH`.
 vft <- tribble(
   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
           1,     "1",   "1.1",   88,  130,
-          1,     "1",   "1.1",   10,  160,
+          1,     "1",   "1.1",   10,  160,  # Main stem
           1,     "2",   "2.1",   20,  130,
-          1,     "2",   "2.2",   30,  130,
+          1,     "2",   "2.2",   30,  130,  # Main stem
 )
+```
 
-# But you should count only the main stem of each tree
-(main_stem <- pick_main_stem(vft))
+Fundamentally, `abundance()` counts rows. All of these results are the
+same:
+
+``` r
+nrow(vft)
+#> [1] 4
+dplyr::count(vft)
+#> # A tibble: 1 x 1
+#>       n
+#>   <int>
+#> 1     4
+dplyr::summarize(vft, n = n())
+#> # A tibble: 1 x 1
+#>       n
+#>   <int>
+#> 1     4
+abundance(vft)
+#> Warning: `treeid`: Duplicated values were detected. Do you need to pick
+#> main stems?
+#> # A tibble: 1 x 1
+#>       n
+#>   <int>
+#> 1     4
+```
+
+But that result is likely not what you expect. Instead, you likely
+expect this:
+
+``` r
+summarize(vft, n = n_distinct(TreeID))
+#> # A tibble: 1 x 1
+#>       n
+#>   <int>
+#> 1     2
+```
+
+A shown above, you can get a correct result by combining `summarize()`
+and `n_distinct()` (from the **dplyr** package). But `abundance()`
+includes some useful additional features (see `?abundance()`). This code
+more clearly conveys your intention, i.e.g to calculate tree abundance
+by counting the number of main stems:
+
+``` r
+(main_stems <- pick_main_stem(vft))
 #> # A tibble: 2 x 5
 #>   CensusID TreeID StemID   DBH   HOM
 #>      <dbl> <chr>  <chr>  <dbl> <dbl>
 #> 1        1 1      1.1       10   160
 #> 2        1 2      2.2       30   130
-abundance(main_stem)
+abundance(main_stems)
 #> # A tibble: 1 x 1
 #>       n
 #>   <int>
 #> 1     2
+```
 
-# You may have data from multiple censuses
+If you have data from multiple censuses, you can compute by census (or
+any other group).
+
+``` r
 vft2 <- tibble::tribble(
   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
-          1,     "1",   "1.1",   20,  130,
-          1,     "1",   "1.2",   10,  160,  # Main stem
+          1,     "1",   "1.1",   10,  130,
+          1,     "1",   "1.2",   20,  130,  # Main stem
           2,     "1",   "1.1",   12,  130,
           2,     "1",   "1.2",   22,  130   # Main stem
 )
 
-# You can compute by groups
 by_census <- group_by(vft2, CensusID)
 (main_stems_by_census <- pick_main_stem(by_census))
 #> # A tibble: 2 x 5
 #> # Groups:   CensusID [2]
 #>   CensusID TreeID StemID   DBH   HOM
 #>      <dbl> <chr>  <chr>  <dbl> <dbl>
-#> 1        1 1      1.2       10   160
+#> 1        1 1      1.2       20   130
 #> 2        2 1      1.2       22   130
 abundance(main_stems_by_census)
 #> # A tibble: 2 x 2
@@ -98,8 +148,12 @@ abundance(main_stems_by_census)
 #>      <dbl> <int>
 #> 1        1     1
 #> 2        2     1
+```
 
-# You may need to first subset data and then count
+Often you will need to first subset data (e.g. by `status` or `DBH`) and
+then count.
+
+``` r
 over20 <- filter(main_stems_by_census, DBH > 20)
 abundance(over20)
 #> # A tibble: 1 x 2
@@ -109,48 +163,96 @@ abundance(over20)
 #> 1        2     1
 ```
 
-Basal area
+### Basal area
+
+If trees have buttresses, you may need to pick the main stemid of each
+stem so you don’t count the same stem more than once.
 
 ``` r
-vft <- tribble(
+vft3 <- tribble(
   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
           1,     "1",   "1.1",   88,  130,
-          1,     "1",   "1.1",   10,  160,
+          1,     "1",   "1.1",   10,  160,  # Main stem
           1,     "2",   "2.1",   20,  130,
-          1,     "2",   "2.2",   30,  130,
+          1,     "2",   "2.2",   30,  130,  # Main stem
+
+          2,     "1",   "1.1",   98,  130,
+          2,     "1",   "1.1",   20,  160,  # Main stem
+          2,     "2",   "2.1",   30,  130,
+          2,     "2",   "2.2",   40,  130,  # Main stem
 )
 
-# You may need to pick the main stemid of each stem (if trees have buttressess)
-(main_stemids <- pick_main_stemid(vft))
-#> # A tibble: 3 x 5
+(main_stemids <- pick_main_stemid(vft3))
+#> # A tibble: 6 x 5
 #>   CensusID TreeID StemID   DBH   HOM
 #>      <dbl> <chr>  <chr>  <dbl> <dbl>
 #> 1        1 1      1.1       10   160
 #> 2        1 2      2.1       20   130
 #> 3        1 2      2.2       30   130
+#> 4        2 1      1.1       20   160
+#> 5        2 2      2.1       30   130
+#> 6        2 2      2.2       40   130
+main_stemids
+#> # A tibble: 6 x 5
+#>   CensusID TreeID StemID   DBH   HOM
+#>      <dbl> <chr>  <chr>  <dbl> <dbl>
+#> 1        1 1      1.1       10   160
+#> 2        1 2      2.1       20   130
+#> 3        1 2      2.2       30   130
+#> 4        2 1      1.1       20   160
+#> 5        2 2      2.1       30   130
+#> 6        2 2      2.2       40   130
+
 basal_area(main_stemids)
+#> Warning: `stemid`: Duplicated values were detected. Do you need to pick
+#> largest `hom` values?
+#> Warning: `censusid`: Multiple values were detected. Do you need to group by
+#> censusid?
 #> # A tibble: 1 x 1
 #>   basal_area
 #>        <dbl>
-#> 1      1100.
+#> 1      3377.
+```
 
-# You can compute by groups
+`basal_area()` also allows you to compute by groups.
+
+``` r
+by_census <- group_by(main_stemids, CensusID)
 basal_area(by_census)
 #> # A tibble: 2 x 2
 #> # Groups:   CensusID [2]
 #>   CensusID basal_area
 #>      <dbl>      <dbl>
-#> 1        1       393.
-#> 2        2       493.
+#> 1        1      1100.
+#> 2        2      2278.
+```
 
+But if you want to compute on a subset of data, you need to first pick
+the data.
+
+``` r
 ten_to_twenty <- filter(by_census, DBH >= 10, DBH <= 20)
-basal_area(ten_to_twenty)
+ba <- basal_area(ten_to_twenty)
+ba
 #> # A tibble: 2 x 2
 #> # Groups:   CensusID [2]
 #>   CensusID basal_area
 #>      <dbl>      <dbl>
 #> 1        1       393.
-#> 2        2       113.
+#> 2        2       314.
+```
+
+And if you need to convert units, you can do so after the fact with
+`fgeo.tool::convert_unit_at()`.
+
+``` r
+convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
+#> # A tibble: 2 x 2
+#> # Groups:   CensusID [2]
+#>   CensusID   basal_area
+#>      <dbl>        <dbl>
+#> 1        1 0.0000000393
+#> 2        2 0.0000000314
 ```
 
 [Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)

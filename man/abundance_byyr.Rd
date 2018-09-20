@@ -54,5 +54,5 @@ in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 standardize_at(in_he, .at = years, denominator = 50)
 }
 \seealso{
-\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}.
+\code{\link[fgeo.tool:pick_main_stem]{fgeo.tool::pick_main_stem()}}, \code{\link[fgeo.tool:convert_unit]{fgeo.tool::convert_unit()}}.
 }

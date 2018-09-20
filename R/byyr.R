@@ -22,7 +22,7 @@
 #'   1980-01-01 to the present day in the format yyyy-mm-dd.
 #' @param ... Expressions to pick main stems of a specific `dbh` range.
 #' 
-#' @seealso [fgeo.tool::pick_main_stem()].
+#' @seealso [fgeo.tool::pick_main_stem()], [fgeo.tool::convert_unit()].
 #'
 #' @return A dataframe.
 #' 

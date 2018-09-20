@@ -53,9 +53,11 @@ not result in zero conspecific neighbors
 
 \examples{
 tree <- fgeo.data::luquillo_tree5_random
+
 # Guess `plotdim`
 count_neighbor(tree, r = 20)
 
+# Explicit `plotdim`
 count_neighbor(tree, r = 20, plotdim = c(320, 500))
 
 basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
@@ -70,23 +72,22 @@ tree <- tibble::tribble(
      "04",    "01",   5,   5, "04", "sp2",     5,     "A"
 )
 
-# `.subset = NULL`, ungrouped `.data`
-count_neighbor(.data = tree, .subset = NULL, r = 20, plotdim = c(320, 500))
-
-# `.subset = NULL`, grouped `.data`
+# ungrouped `.data`, `.subset = NULL`, 
 count_neighbor(tree, .subset = NULL, r = 20, plotdim = c(320, 500))
+
+# grouped `.data`, `.subset = NULL`
 by_sp <- dplyr::group_by(tree, sp)
-count_neighbor(.data = by_sp, .subset = NULL, r = 20, plotdim = c(320, 500))
+count_neighbor(by_sp, .subset = NULL, r = 20, plotdim = c(320, 500))
 
 subset <- tibble::tribble(
   ~gx, ~gy, ~tag,   ~sp, 
   3,   3, "99", "sp1"
 )
 
-# `.subset` not `NULL`, ungrouped `.data`
-count_neighbor(.data = tree, .subset = subset, r = 20, plotdim = c(320, 500))
+# ungrouped `.data`, `.subset` not `NULL`
+count_neighbor(tree, .subset = subset, r = 20, plotdim = c(320, 500))
 
-# `.subset` not `NULL`, ungrouped `.data`
+# grouped `.data`, `.subset` not `NULL`
 by_sp <- dplyr::group_by(tree, sp)
-count_neighbor(.data = by_sp, .subset = subset, r = 20, plotdim = c(320, 500))
+count_neighbor(by_sp, .subset = subset, r = 20, plotdim = c(320, 500))
 }

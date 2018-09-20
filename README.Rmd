@@ -40,64 +40,112 @@ library(fgeo.tool)
 library(fgeo.abundance)
 ```
 
-Abundance
+### Abundance
+
+Your data may have multiple stems per treeid and even multiple measures per
+stemid (if trees have buttresses).
 
 ```{r}
-# Your data may have multiple stems per treeid and even multiple measures per
-# stemid (if trees have buttressess).
+# Trees with buttresses may have multiple measurements of a single stem. 
+# Main stems have highest `HOM`, then largest `DBH`.
 vft <- tribble(
   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
           1,     "1",   "1.1",   88,  130,
-          1,     "1",   "1.1",   10,  160,
+          1,     "1",   "1.1",   10,  160,  # Main stem
           1,     "2",   "2.1",   20,  130,
-          1,     "2",   "2.2",   30,  130,
+          1,     "2",   "2.2",   30,  130,  # Main stem
 )
+```
 
-# But you should count only the main stem of each tree
-(main_stem <- pick_main_stem(vft))
-abundance(main_stem)
+Fundamentally, `abundance()` counts rows. All of these results are the same:
 
-# You may have data from multiple censuses
+```{r}
+nrow(vft)
+dplyr::count(vft)
+dplyr::summarize(vft, n = n())
+abundance(vft)
+```
+
+But that result is likely not what you expect. Instead, you likely expect this:
+
+```{r}
+summarize(vft, n = n_distinct(TreeID))
+```
+
+A shown above, you can get a correct result by combining `summarize()` and `n_distinct()` (from the __dplyr__ package). But `abundance()` includes some useful additional features (see `?abundance()`). This code more clearly conveys your intention, i.e.g to calculate tree abundance by counting the number of main stems:
+
+```{r}
+(main_stems <- pick_main_stem(vft))
+abundance(main_stems)
+```
+
+If you have data from multiple censuses, you can compute by census (or any other group).
+
+```{r}
 vft2 <- tibble::tribble(
   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
-          1,     "1",   "1.1",   20,  130,
-          1,     "1",   "1.2",   10,  160,  # Main stem
+          1,     "1",   "1.1",   10,  130,
+          1,     "1",   "1.2",   20,  130,  # Main stem
           2,     "1",   "1.1",   12,  130,
           2,     "1",   "1.2",   22,  130   # Main stem
 )
 
-# You can compute by groups
 by_census <- group_by(vft2, CensusID)
 (main_stems_by_census <- pick_main_stem(by_census))
 abundance(main_stems_by_census)
+```
 
-# You may need to first subset data and then count
+Often you will need to first subset data (e.g. by `status` or `DBH`) and then count.
+
+```{r}
 over20 <- filter(main_stems_by_census, DBH > 20)
 abundance(over20)
 ```
 
-Basal area
+### Basal area
+
+If trees have buttresses, you may need to pick the main stemid of each stem so you don't count the same stem more than once.
 
 ```{r}
-vft <- tribble(
+vft3 <- tribble(
   ~CensusID, ~TreeID, ~StemID, ~DBH, ~HOM,
           1,     "1",   "1.1",   88,  130,
-          1,     "1",   "1.1",   10,  160,
+          1,     "1",   "1.1",   10,  160,  # Main stem
           1,     "2",   "2.1",   20,  130,
-          1,     "2",   "2.2",   30,  130,
+          1,     "2",   "2.2",   30,  130,  # Main stem
+
+          2,     "1",   "1.1",   98,  130,
+          2,     "1",   "1.1",   20,  160,  # Main stem
+          2,     "2",   "2.1",   30,  130,
+          2,     "2",   "2.2",   40,  130,  # Main stem
 )
 
-# You may need to pick the main stemid of each stem (if trees have buttressess)
-(main_stemids <- pick_main_stemid(vft))
+(main_stemids <- pick_main_stemid(vft3))
+main_stemids
+
 basal_area(main_stemids)
-
-# You can compute by groups
-basal_area(by_census)
-
-ten_to_twenty <- filter(by_census, DBH >= 10, DBH <= 20)
-basal_area(ten_to_twenty)
 ```
 
+`basal_area()` also allows you to compute by groups.
+
+```{r}
+by_census <- group_by(main_stemids, CensusID)
+basal_area(by_census)
+```
+
+But if you want to compute on a subset of data, you need to first pick the data.
+
+```{r}
+ten_to_twenty <- filter(by_census, DBH >= 10, DBH <= 20)
+ba <- basal_area(ten_to_twenty)
+ba
+```
+
+And if you need to convert units, you can do so after the fact with `fgeo.tool::convert_unit_at()`.
+
+```{r}
+convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
+```
 
 
 [Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)
