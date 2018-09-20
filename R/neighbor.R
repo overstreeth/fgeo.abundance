@@ -1,15 +1,20 @@
-#' Count and basal area of neighboring stems.
-#'
-#' Includes all values of `status` and `dbh`. You should pick the values you
-#' want before using these functions (e.g. to drop dead stems).
+#' Count and basal area of neighboring stems, optionally by groups.
+#' 
+#' `count_neighbour()` and `basal_area_neighbour()` output the same result as
+#' `NeighborDensities()` from the CTFS-R package with the argument `type =
+#' "count"` and `type = "basal"`, respectively. Compared to
+#' `NeighborDensities()`, the main difference is that these functions throw more
+#' informative warnings and error messages, and have simpler interfaces. They
+#' don't deal with dbh or status, meaning that you should pick the values you
+#' want before using these functions. And they allow you to compute by groups
+#' created with [dplyr::group_by()].
 #' 
 #' @section Warning:
 #' This function has a pending issue by which a dataset with a single row does
 #' not result in zero conspecific neighbors
 #' (<https://github.com/forestgeo/fgeo.abundance/issues/68>).
 #'
-#' @param .data A Dataframe; particularly  a ForestGEO census table (tree or
-#'   stem).
+#' @param .data A Dataframe; particularly  a ForestGEO tree table.
 #' @param .subset An optional dataframe giving the (`gx`, `gy`) coordinates of
 #'   specific individuals (`tag` and `sp`) for which to count neighbors. For
 #'   example, `.subset` may be a subset of only one species; or seedling that
@@ -62,7 +67,7 @@
 #' 
 #' subset <- tibble::tribble(
 #'   ~gx, ~gy, ~tag,   ~sp, 
-#'   3,   3, "99", "sp1"
+#'     3,   3, "99", "sp1"
 #' )
 #' 
 #' # ungrouped `.data`, `.subset` not `NULL`

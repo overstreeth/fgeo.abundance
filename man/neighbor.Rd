@@ -5,15 +5,14 @@
 \alias{abundance_neighbor}
 \alias{count_neighbor}
 \alias{basal_area_neighbor}
-\title{Count and basal area of neighboring stems.}
+\title{Count and basal area of neighboring stems, optionally by groups.}
 \usage{
 count_neighbor(.data, .subset = NULL, r, plotdim = NULL)
 
 basal_area_neighbor(.data, .subset = NULL, r, plotdim = NULL)
 }
 \arguments{
-\item{.data}{A Dataframe; particularly  a ForestGEO census table (tree or
-stem).}
+\item{.data}{A Dataframe; particularly  a ForestGEO tree table.}
 
 \item{.subset}{An optional dataframe giving the (\code{gx}, \code{gy}) coordinates of
 specific individuals (\code{tag} and \code{sp}) for which to count neighbors. For
@@ -41,8 +40,13 @@ of rows that equals that of \code{.subset} multiplied by the number of groups.
 }
 }
 \description{
-Includes all values of \code{status} and \code{dbh}. You should pick the values you
-want before using these functions (e.g. to drop dead stems).
+\code{count_neighbour()} and \code{basal_area_neighbour()} output the same result as
+\code{NeighborDensities()} from the CTFS-R package with the argument \code{type = "count"} and \code{type = "basal"}, respectively. Compared to
+\code{NeighborDensities()}, the main difference is that these functions throw more
+informative warnings and error messages, and have simpler interfaces. They
+don't deal with dbh or status, meaning that you should pick the values you
+want before using these functions. And they allow you to compute by groups
+created with \code{\link[dplyr:group_by]{dplyr::group_by()}}.
 }
 \section{Warning}{
 
@@ -81,7 +85,7 @@ count_neighbor(by_sp, .subset = NULL, r = 20, plotdim = c(320, 500))
 
 subset <- tibble::tribble(
   ~gx, ~gy, ~tag,   ~sp, 
-  3,   3, "99", "sp1"
+    3,   3, "99", "sp1"
 )
 
 # ungrouped `.data`, `.subset` not `NULL`
