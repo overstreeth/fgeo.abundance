@@ -55,8 +55,6 @@ neighbor_densities <- function(.data,
               splancs::spoints(rbind(focal$gx, focal$gy))
             )) <= r
           
-          # FIXME: Is it here that I have to say:
-          # nn <- use[incircle & !focal$tag]????
           nn <- use[incircle]
           consp <- spd$sp[nn] == focal$sp
           
@@ -109,8 +107,6 @@ neighbor_densities <- function(.data,
               splancs::spoints(rbind(focal$gx, focal$gy))
             )) <= r
           
-          # FIXME: Is it here that I have to say:
-          # nn <- use[incircle & !focal$tag]????
           nn <- use[incircle]
           
           focal_coords <- data.frame(gx = focal$gx, gy = focal$gy)
