@@ -11,114 +11,129 @@ neighbor_densities <- function(.data,
                                type,
                                include = unique(.data$status)) {
   ptm <- proc.time()
-  if (is.null(.subset)) {
-    .subset <- .data
-  }
+  
+  if (is.null(.subset)) .subset <- .data
   n <- nrow(.subset)
   output <- matrix(NA, ncol = 2, nrow = n)
   dimnames(output)[[2]] <- c("conspecific", "heterospecific")
+  
   if (type == "count") {
-    cond_1 <- !is.na(.data$gx) & !is.na(.data$gy) &
-      !duplicated(.data$tag) & .data$dbh >= mindbh &
+    count_data_is_good <- 
+      !is.na(.data$gx) & 
+      !is.na(.data$gy) &
+      !duplicated(.data$tag) & 
+      .data$dbh >= mindbh &
       .data$status %in% include
-    spd <- .data[cond_1, , drop = FALSE]
+    spd <- .data[count_data_is_good, , drop = FALSE]
     spd <- rm_na_row(spd)
+    
     for (i in 1:n) {
       focal <- .subset[i, ]
       
-      if (is.na(focal$gx) | is.na(focal$gy) | duplicated(focal$tag)) {
+      focal_is_bad <- is.na(focal$gx) | is.na(focal$gy) | duplicated(focal$tag)
+      if (focal_is_bad) {
         output[i, 1:2] <- NA
       } else {
-        # FIXME: DON'T USE WITH
-        poly <- with(focal, splancs::spoints(c(
-          gx - r,
-          gy - r, gx - r, gy + r, gx + r, gy + r, gx +
-            r, gy - r
-        )))
+        around_focal <- c(
+          focal$gx - r,
+          focal$gy - r,
+          focal$gx - r,
+          focal$gy + r,
+          focal$gx + r,
+          focal$gy + r,
+          focal$gx + r,
+          focal$gy - r
+        )
+        poly <- splancs::spoints(around_focal)
         use <- splancs::inpip(splancs::spoints(rbind(spd$gx, spd$gy)), poly)
+        
         if (length(use) == 0) {
           output[i, 1:2] <- 0
         } else {
-          incircle <- sqrt(splancs::dsquare(splancs::spoints(rbind(
-            spd$gx[use],
-            spd$gy[use]
-          )), splancs::spoints(rbind(
-            focal$gx,
-            focal$gy
-          )))) <= r
+          incircle <- sqrt(splancs::dsquare(
+              splancs::spoints(rbind(spd$gx[use], spd$gy[use])), 
+              splancs::spoints(rbind(focal$gx, focal$gy))
+            )) <= r
+          
+          # FIXME: Is it here that I have to say:
+          # nn <- use[incircle & !focal$tag]????
           nn <- use[incircle]
           consp <- spd$sp[nn] == focal$sp
-          area <- CalcRingArea(data.frame(
-            gx = focal$gx,
-            gy = focal$gy
-          ), r, plotdim)$each
+          
+          focal_coords <- data.frame(gx = focal$gx, gy = focal$gy)
+          area <- CalcRingArea(focal_coords, r, plotdim)$each
           
           output[i, 1] <- length(nn[consp]) * (pi * r^2 / area)
           output[i, 2] <- length(nn[!consp]) * (pi * r^2 / area)
         }
       }
+      
       if (i %in% seq(5000, n + 5000, 5000)) {
-        message(space(
-          i, "of", n, " elapsed time ~", (round((proc.time() - ptm), 3))[3], "seconds", "\n"
-        ))
+        message(space(i, "of", n, " elapsed time ~", elapsed(ptm), "seconds", "\n"))
       }
     }
   }
   if (type == "basal") {
-    cond_2 <- !is.na(.data$gx) & !is.na(.data$gy) &
-      !is.na(.data$dbh) & .data$dbh >= mindbh & .data$status %in%
-      include
-    spd <- .data[cond_2, , drop = FALSE]
+    basal_data_is_good <- 
+      !is.na(.data$gx) & 
+      !is.na(.data$gy) &
+      !is.na(.data$dbh) & 
+      .data$dbh >= mindbh & 
+      .data$status %in% include
+    spd <- .data[basal_data_is_good, , drop = FALSE]
     spd <- rm_na_row(spd)
     for (i in 1:n) {
       focal <- .subset[i, ]
       if (is.na(focal$gx) | is.na(focal$gy)) {
         output[i, 1:2] <- NA
       } else {
-        poly <- with(focal, splancs::spoints(c(
-          gx - r,
-          gy - r, gx - r, gy + r, gx + r, gy + r, gx +
-            r, gy - r
-        )))
-        use <- splancs::inpip(splancs::spoints(rbind(
-          spd$gx,
-          spd$gy
-        )), poly)
+        around_focal <- c(
+          focal$gx - r,
+          focal$gy - r,
+          focal$gx - r,
+          focal$gy + r,
+          focal$gx + r,
+          focal$gy + r,
+          focal$gx + r,
+          focal$gy - r
+        )
+        poly <- splancs::spoints(around_focal)
+        use <- splancs::inpip(splancs::spoints(rbind(spd$gx, spd$gy)), poly)
+        
         if (length(use) == 0) {
           output[i, 1:2] <- 0
         } else {
-          incircle <- sqrt(splancs::dsquare(splancs::spoints(rbind(
-            spd$gx[use],
-            spd$gy[use]
-          )), splancs::spoints(rbind(
-            focal$gx,
-            focal$gy
-          )))) <= r
+          incircle <- sqrt(
+            splancs::dsquare(
+              splancs::spoints(rbind(spd$gx[use], spd$gy[use])), 
+              splancs::spoints(rbind(focal$gx, focal$gy))
+            )) <= r
+          
+          # FIXME: Is it here that I have to say:
+          # nn <- use[incircle & !focal$tag]????
           nn <- use[incircle]
-          area <- CalcRingArea(data.frame(
-            gx = focal$gx,
-            gy = focal$gy
-          ), r, plotdim)$each
+          
+          focal_coords <- data.frame(gx = focal$gx, gy = focal$gy)
+          area <- CalcRingArea(focal_coords, r, plotdim)$each
+          
           BA <- circlearea(spd$dbh[nn] / 20)
           consp <- spd$sp[nn] == focal$sp
-          output[i, 1] <- sum(BA[consp], na.rm = TRUE) *
-            (pi * r^2 / area)
-          output[i, 2] <- sum(BA[!consp], na.rm = TRUE) *
-            (pi * r^2 / area)
+          output[i, 1] <- sum(BA[consp], na.rm = TRUE) * (pi * r^2 / area)
+          output[i, 2] <- sum(BA[!consp], na.rm = TRUE) * (pi * r^2 / area)
         }
       }
       if (i %in% seq(5000, n + 5000, 5000)) {
-        message(space(
-          i, "of", n, " elapsed time ~", (round((proc.time() - ptm), 3))[3], "seconds", "\n"
-        ))
+        message(space(i, "of", n, " elapsed time ~", elapsed(ptm), "seconds", "\n"))
       }
     }
   }
-  message(space(
-    "Total elapsed time ~", (round((proc.time() - ptm), 3))[3], "seconds", "\n"
-  ))
+  message(space("Total elapsed time ~", elapsed(ptm), "seconds", "\n"))
 
   tibble::as.tibble(output)
+}
+
+elapsed <- function(ptm) {
+  round((proc.time() - ptm), 3)[3]
 }
 
 #' Internal.
