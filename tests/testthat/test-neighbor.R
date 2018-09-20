@@ -144,17 +144,17 @@ describe("neighbor_*() outputs", {
   })
   
   it("FIXME: outputs zero consp and zero heterosp if data has one row (#68)", {
-    # tree <- tibble::tribble(
-    #   ~gx, ~gy, ~tag,   ~sp,  ~dbh, ~status, 
-    #     5,   5,  "a", "sp1",    20,     "A"
-    # )
-    # 
-    # one_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
-    # expect_equal(one_n$conspecific, 0)
-    # expect_equal(one_n$heterospecific, 0)
-    # one_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
-    # expect_equal(one_b$conspecific, 0)
-    # expect_equal(one_b$heterospecific, 0)
+    tree <- tibble::tribble(
+      ~treeID, ~stemID,  ~gx,  ~gy, ~tag,   ~sp,  ~dbh, ~status, 
+         "01",    "01",   25,   25,  "a", "sp1",     5,     "A"
+    )
+    
+    one_n <- count_neighbor(tree, r = 20, plotdim = c(320, 500))
+    expect_equal(one_n$conspecific, 0)
+    expect_equal(one_n$heterospecific, 0)
+    one_b <- basal_area_neighbor(tree, r = 20, plotdim = c(320, 500))
+    expect_equal(one_b$conspecific, 0)
+    expect_equal(one_b$heterospecific, 0)
   })
 })
 
