@@ -137,7 +137,7 @@ mean_years <- function(vft) {
 drop_if_missing_dates <- function(x) {
   missing_dates <- is.na(insensitive(x)$exactdate)
   if (any(missing_dates)) {
-    warning("Detected and ignoring missing dates.")
+    warn("Detected and ignoring missing dates.")
   }
   x <- x[!missing_dates, , drop = FALSE]
   invisible(x)
