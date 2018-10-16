@@ -255,6 +255,64 @@ convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
 #> 2        2 0.0000000314
 ```
 
+### Summaries aggregated by year
+
+Example data
+
+``` r
+vft <- example_byyr
+vft
+#> # A tibble: 8 x 13
+#>   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate 
+#>   <chr>       <int>  <int>  <dbl> <chr>  <int> <chr> <chr>       <date>    
+#> 1 luq             1      1    1.1 alive     10 Gn    spp         2001-01-01
+#> 2 luq             1      1    1.2 dead      NA Gn    spp         2001-01-01
+#> 3 luq             1      2    2.1 alive     20 Gn    spp         2001-01-01
+#> 4 luq             1      2    2.2 alive     30 Gn    spp         2001-01-01
+#> 5 luq             2      1    1.1 alive     20 Gn    spp         2002-01-01
+#> 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-01
+#> 7 luq             2      2    2.1 dead      NA Gn    spp         2002-01-01
+#> 8 luq             2      2    2.2 dead      NA Gn    spp         2002-01-01
+#> # ... with 4 more variables: PlotCensusNumber <int>, Family <chr>,
+#> #   Tag <int>, HOM <int>
+```
+
+Abundance by year.
+
+``` r
+abundance_byyr(vft, DBH >= 10, DBH < 20)
+#> # A tibble: 1 x 3
+#>   species family yr_2001
+#>   <chr>   <chr>    <dbl>
+#> 1 Gn spp  f            1
+
+abundance_byyr(vft, DBH >= 10)
+#> # A tibble: 1 x 4
+#>   species family yr_2001 yr_2002
+#>   <chr>   <chr>    <dbl>   <dbl>
+#> 1 Gn spp  f            2       1
+```
+
+Basal area by year.
+
+``` r
+basal <- basal_area_byyr(vft, DBH >= 10)
+basal
+#> # A tibble: 1 x 4
+#>   species family yr_2001 yr_2002
+#>   <chr>   <chr>    <dbl>   <dbl>
+#> 1 Gn spp  f        1100.    314.
+
+# Convert units and standardize by plot size in hectares
+years <- c("yr_2001", "yr_2002")
+in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
+standardize_at(in_he, .at = years, denominator = 50)
+#> # A tibble: 1 x 4
+#>   species family       yr_2001  yr_2002
+#>   <chr>   <chr>          <dbl>    <dbl>
+#> 1 Gn spp  f      0.00000000220 6.28e-10
+```
+
 [Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)
 
 ## Information

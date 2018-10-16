@@ -37,7 +37,7 @@
 #' abundance_byyr(vft, DBH >= 10)
 #' basal <- basal_area_byyr(vft, DBH >= 10)
 #' # Convert units and standardize by plot size in hectares
-#' years <- c("2001", "2002")
+#' years <- c("yr_2001", "yr_2002")
 #' in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
 #' standardize_at(in_he, .at = years, denominator = 50)
 abundance_byyr <- function(vft, ...) {

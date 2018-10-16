@@ -267,6 +267,54 @@
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;      &lt;dbl&gt;        &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 1        1 0.0000000393</span></a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; 2        2 0.0000000314</span></a></code></pre></div>
+</div>
+<div id="summaries-aggregated-by-year" class="section level3">
+<h3 class="hasAnchor">
+<a href="#summaries-aggregated-by-year" class="anchor"></a>Summaries aggregated by year</h3>
+<p>Example data.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">vft &lt;-<span class="st"> </span>example_byyr</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">vft</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; # A tibble: 8 x 13</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate </span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;date&gt;    </span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 1 luq             1      1    1.1 alive     10 Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 2 luq             1      1    1.2 dead      NA Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 3 luq             1      2    2.1 alive     20 Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; 4 luq             1      2    2.2 alive     30 Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; 5 luq             2      1    1.1 alive     20 Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 7 luq             2      2    2.1 dead      NA Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; 8 luq             2      2    2.2 dead      NA Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; # ... with 4 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; #   Tag &lt;int&gt;, HOM &lt;int&gt;</span></a></code></pre></div>
+<p>Abundance by year.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="reference/abundance_byyr.html">abundance_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, DBH <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   species family yr_2001</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1 Gn spp  f            1</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw"><a href="reference/abundance_byyr.html">abundance_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt;   species family yr_2001 yr_2002</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 1 Gn spp  f            2       1</span></a></code></pre></div>
+<p>Basal area by year.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">basal &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance_byyr.html">basal_area_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">basal</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt;   species family yr_2001 yr_2002</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt; 1 Gn spp  f        1100.    314.</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co"># Convert units and standardize by plot size in hectares</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">years &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"yr_2001"</span>, <span class="st">"yr_2002"</span>)</a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">in_he &lt;-<span class="st"> </span><span class="kw">convert_unit_at</span>(basal, <span class="dt">.at =</span> years, <span class="dt">from =</span> <span class="st">"mm2"</span>, <span class="dt">to =</span> <span class="st">"hectare"</span>)</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="kw">standardize_at</span>(in_he, <span class="dt">.at =</span> years, <span class="dt">denominator =</span> <span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt;   species family       yr_2001  yr_2002</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; 1 Gn spp  f      0.00000000220 6.28e-10</span></a></code></pre></div>
 <p><a href="https://forestgeo.github.io/fgeo/articles/fgeo.html">Get started</a></p>
 </div>
 </div>

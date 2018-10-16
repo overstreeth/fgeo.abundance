@@ -147,6 +147,36 @@ And if you need to convert units, you can do so after the fact with `fgeo.tool::
 convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
 ```
 
+### Summaries aggregated by year
+
+Example data.
+
+```{r}
+vft <- example_byyr
+vft
+```
+
+Abundance by year.
+
+```{r}
+abundance_byyr(vft, DBH >= 10, DBH < 20)
+
+abundance_byyr(vft, DBH >= 10)
+```
+
+Basal area by year.
+
+```{r}
+basal <- basal_area_byyr(vft, DBH >= 10)
+basal
+
+# Convert units and standardize by plot size in hectares
+years <- c("yr_2001", "yr_2002")
+in_he <- convert_unit_at(basal, .at = years, from = "mm2", to = "hectare")
+standardize_at(in_he, .at = years, denominator = 50)
+```
+
+
 
 [Get started](https://forestgeo.github.io/fgeo/articles/fgeo.html)
 

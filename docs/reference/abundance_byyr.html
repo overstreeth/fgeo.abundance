@@ -190,17 +190,17 @@ including dead, missing, and gone.</p>
 #&gt; 8 luq             2      2    2.2 dead      NA Gn    spp         2002-01-01
 #&gt; # ... with 4 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;, Tag &lt;int&gt;,
 #&gt; #   HOM &lt;int&gt;</div><div class='input'><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>, <span class='no'>DBH</span> <span class='kw'>&lt;</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;   species Family `2001`
-#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;
-#&gt; 1 Gn spp  f           1</div><div class='input'><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;   species Family `2001` `2002`
-#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 Gn spp  f           2      1</div><div class='input'><span class='no'>basal</span> <span class='kw'>&lt;-</span> <span class='fu'>basal_area_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)
+#&gt;   species family yr_2001
+#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;
+#&gt; 1 Gn spp  f            1</div><div class='input'><span class='fu'>abundance_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
+#&gt;   species family yr_2001 yr_2002
+#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+#&gt; 1 Gn spp  f            2       1</div><div class='input'><span class='no'>basal</span> <span class='kw'>&lt;-</span> <span class='fu'>basal_area_byyr</span>(<span class='no'>vft</span>, <span class='no'>DBH</span> <span class='kw'>&gt;=</span> <span class='fl'>10</span>)
 <span class='co'># Convert units and standardize by plot size in hectares</span>
-<span class='no'>years</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"2001"</span>, <span class='st'>"2002"</span>)
+<span class='no'>years</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"yr_2001"</span>, <span class='st'>"yr_2002"</span>)
 <span class='no'>in_he</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/convert_unit'>convert_unit_at</a></span>(<span class='no'>basal</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"mm2"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"hectare"</span>)
 <span class='fu'><a href='http://www.rdocumentation.org/packages/fgeo.tool/topics/standardize_at'>standardize_at</a></span>(<span class='no'>in_he</span>, <span class='kw'>.at</span> <span class='kw'>=</span> <span class='no'>years</span>, <span class='kw'>denominator</span> <span class='kw'>=</span> <span class='fl'>50</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;   species Family        `2001`   `2002`
+#&gt;   species family       yr_2001  yr_2002
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
 #&gt; 1 Gn spp  f      0.00000000220 6.28e-10</div></pre>
   </div>

@@ -185,7 +185,7 @@ not result in zero conspecific neighbors
     <pre class="examples"><div class='input'><span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fgeo.data</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/fgeo.data/topics/census_luquillo'>luquillo_tree5_random</a></span>
 
 <span class='co'># Guess `plotdim`</span>
-<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='message'>Gessing: plotdim = c(320, 500)</span></div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='message'>Gessing: plotdim = c(320, 500)</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1        1.23           6.15
@@ -198,9 +198,9 @@ not result in zero conspecific neighbors
 #&gt;  8        2              6   
 #&gt;  9        1              3   
 #&gt; 10        2              7   
-#&gt; # ... with 994 more rows</div><div class='input'>
+#&gt; # ... with 990 more rows</div><div class='input'>
 <span class='co'># Explicit `plotdim`</span>
-<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+<span class='fu'>count_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; # A tibble: 1,000 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1        1.23           6.15
@@ -213,8 +213,8 @@ not result in zero conspecific neighbors
 #&gt;  8        2              6   
 #&gt;  9        1              3   
 #&gt; 10        2              7   
-#&gt; # ... with 994 more rows</div><div class='input'>
-<span class='fu'>basal_area_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; # A tibble: 1,004 x 2
+#&gt; # ... with 990 more rows</div><div class='input'>
+<span class='fu'>basal_area_neighbor</span>(<span class='no'>tree</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>plotdim</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>320</span>, <span class='fl'>500</span>))</div><div class='output co'>#&gt; # A tibble: 1,000 x 2
 #&gt;    conspecific heterospecific
 #&gt;          &lt;dbl&gt;          &lt;dbl&gt;
 #&gt;  1      360.             614.
@@ -227,7 +227,7 @@ not result in zero conspecific neighbors
 #&gt;  8      455.             200.
 #&gt;  9     2865.             412.
 #&gt; 10       68.5            386.
-#&gt; # ... with 994 more rows</div><div class='input'>
+#&gt; # ... with 990 more rows</div><div class='input'>
 <span class='co'># Notice how the number of rows of the output varies with the input -------</span>
 
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span>(
