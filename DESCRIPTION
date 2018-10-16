@@ -40,7 +40,7 @@ VignetteBuilder:
     knitr
 Remotes: 
     forestgeo/fgeo.base,
-    forestgeo/fgeo.data@*release,
+    forestgeo/fgeo.data,
     forestgeo/fgeo.tool
 Encoding: UTF-8
 LazyData: true
