@@ -45,7 +45,7 @@ describe("basal_area_byyr and abundance_byyr work with different datasets", {
   
   expect_named_year <- function(x, year) {
     # Test only 1 year-column to avoid errors as data grows
-    expect_named(x[1:3], c("species", "Family", year))
+    expect_named(x[1:3], c("species", "family", year))
   }
   
   it("works with data from from bci", {
@@ -55,11 +55,11 @@ describe("basal_area_byyr and abundance_byyr work with different datasets", {
     plot <- "bci"
     out_basal <- byyr(vft, plot, basal_area_byyr)
     expect_dataframe(out_basal)
-    expect_named_year(out_basal, "2005")
+    expect_named_year(out_basal, "yr_2005")
     
     out_abund <- byyr(vft, plot, abundance_byyr)
     expect_dataframe(out_abund)
-    expect_named_year(out_abund, "2005")
+    expect_named_year(out_abund, "yr_2005")
   })
   
   it("works with data from from Bukit Timah", {
@@ -69,11 +69,11 @@ describe("basal_area_byyr and abundance_byyr work with different datasets", {
     
     out_basal <-  byyr(bukit, plot, basal_area_byyr)
     expect_dataframe(out_basal)
-    expect_named_year(out_basal, "2006")
+    expect_named_year(out_basal, "yr_2006")
     
     out_abund <- byyr(bukit, plot, abundance_byyr)
     expect_dataframe(out_basal)
-    expect_named_year(out_basal, "2006")
+    expect_named_year(out_basal, "yr_2006")
   })
   
   it("works with data from from Ngel Niaky", {
@@ -83,11 +83,11 @@ describe("basal_area_byyr and abundance_byyr work with different datasets", {
     plot <- "ngelnyaki"
     out_basal <-  byyr(ngel, plot, basal_area_byyr)
     expect_dataframe(out_basal)
-    expect_named_year(out_basal, "2015")
+    expect_named_year(out_basal, "yr_2015")
     
     out_abund <- byyr(ngel, plot, abundance_byyr)
     expect_dataframe(out_basal)
-    expect_named_year(out_basal, "2015")
+    expect_named_year(out_basal, "yr_2015")
   })
 })
 
@@ -116,31 +116,31 @@ describe("abundance_byyr and basa_area_byyr return expected output", {
     expect_warning(
       basal <- basal_area_byyr(tiny, dbh > 0), "stemid.*Duplicated values"
     )
-    expect_equal(basal$`2000`, basal_area_dbl(1) * abund$`2000`)
-    expect_equal(basal$`2001`, basal_area_dbl(1) * abund$`2001`)
+    expect_equal(basal$yr_2000, basal_area_dbl(1) * abund$yr_2000)
+    expect_equal(basal$yr_2001, basal_area_dbl(1) * abund$yr_2001)
     
     tiny2 <- mutate(tiny, DBH = 10)
     expect_warning(basal <- basal_area_byyr(
       tiny2, dbh > 0), "stemid.*Duplicated"
     )
-    expect_equal(basal$`2000`, ba_10 * abund$`2000`)
-    expect_equal(basal$`2001`, ba_10 * abund$`2001`)
+    expect_equal(basal$yr_2000, ba_10 * abund$yr_2000)
+    expect_equal(basal$yr_2001, ba_10 * abund$yr_2001)
   })
   
   it("outputs equal to known output", {
     out1 <- suppressWarnings(suppressMessages(abundance_byyr(tiny, dbh > 0)))
-    expect_equal(out1$`2000`, c(1, 2))
-    expect_equal(out1$`2001`, c(1, 2))
+    expect_equal(out1$yr_2000, c(1, 2))
+    expect_equal(out1$yr_2001, c(1, 2))
     
     tiny2 <- tiny[1:4, ]
     out2 <- suppressWarnings(suppressMessages(abundance_byyr(tiny2, dbh > 0)))
-    expect_equal(out2$`2000`, c(1, 1))
-    expect_equal(out2$`2001`, c(1, 1))
+    expect_equal(out2$yr_2000, c(1, 1))
+    expect_equal(out2$yr_2001, c(1, 1))
     
     tiny3 <- tiny[c(1, 3, 4), ]
     out3 <- suppressWarnings(suppressMessages(abundance_byyr(tiny3, dbh > 0)))
-    expect_equal(out3$`2000`, c(1, 1))
-    expect_equal(out3$`2001`, c(0, 1))
+    expect_equal(out3$yr_2000, c(1, 1))
+    expect_equal(out3$yr_2001, c(0, 1))
   })
 })
 
@@ -178,9 +178,10 @@ describe("abundance_byyr", {
     
     out <- abundance_byyr(vft, dbh > 0)
     expect_is(out, "tbl_df")
-    expect_named(set_names(out, tolower), c("species", "family", "2001", "2002"))
-    expect_equal(out$`2001`, 2)
-    expect_equal(out$`2002`, 1)
+    nms <- c("species", "family", "yr_2001", "yr_2002")
+    expect_named(set_names(out, tolower), nms)
+    expect_equal(out$yr_2001, 2)
+    expect_equal(out$yr_2002, 1)
   })
   
   it("fails if parsed dates are all missing", {
@@ -228,21 +229,21 @@ describe("basal_area_byyr()", {
     # One census; one tree with two stems.
     vft_c1_t1_s2 <- filter(vft_simple, CensusID == 1, TreeID == 1)
     expected <- basal_area_dbl(1) * nrow(vft_c1_t1_s2)
-    actual <- basal_area_byyr(vft_c1_t1_s2, dbh >= 1)$`2001`
+    actual <- basal_area_byyr(vft_c1_t1_s2, dbh >= 1)$yr_2001
     expect_equal(actual, expected)
     
     # Trees and saplings
     out <- basal_area_byyr(mutate(vft_c1_t1_s2, DBH = c(10, 100)), DBH >= 10)
-    expect_equal(ba_10 + ba_100, out$`2001`)
+    expect_equal(ba_10 + ba_100, out$yr_2001)
     
     # Edge
     out <- basal_area_byyr(mutate(vft_c1_t1_s2, DBH = c(10, 100)), DBH > 10)
-    expect_equal(ba_100, out$`2001`)
+    expect_equal(ba_100, out$yr_2001)
     
     # One census; two trees, each with two stems.
     vft_c1_t2_s4 <- filter(vft_simple, CensusID == 1)
     expected <- basal_area_dbl(1) * nrow(vft_c1_t2_s4)
-    actual <- basal_area_byyr(vft_c1_t2_s4, dbh >= 1)$`2001`
+    actual <- basal_area_byyr(vft_c1_t2_s4, dbh >= 1)$yr_2001
     expect_equal(actual, expected)
     
     # Trees and samplings
@@ -250,19 +251,19 @@ describe("basal_area_byyr()", {
       mutate(vft_c1_t2_s4, DBH = rep(c(10, 100), 2)), 
       DBH >= 10
     )
-    expect_equal(2 * ba_10 + 2 * ba_100, out$`2001`)
+    expect_equal(2 * ba_10 + 2 * ba_100, out$yr_2001)
     # Trees
     out <- basal_area_byyr(
       mutate(vft_c1_t2_s4, DBH = rep(c(10, 100), 2)), 
       DBH >= 100
     )
-    expect_equal(2 * ba_100, out$`2001`)
+    expect_equal(2 * ba_100, out$yr_2001)
     
     # Two censuses, with one tree in each
     vft_c2_t1_s4 <- filter(vft_simple, TreeID == 1)
     expected_total <- basal_area_dbl(1) * nrow(vft_c2_t1_s4)
-    actual_2001 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2001`
-    actual_2002 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$`2002`
+    actual_2001 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$yr_2001
+    actual_2002 <- basal_area_byyr(vft_c2_t1_s4, dbh >= 1)$yr_2002
     expect_equal(actual_2001 + actual_2002, expected_total)
     
     # Trees and samplings
@@ -271,16 +272,16 @@ describe("basal_area_byyr()", {
       DBH >= 10
     )
     both <- ba_10 + ba_100
-    expect_equal(both, out$`2001`)
-    expect_equal(both, out$`2002`)
+    expect_equal(both, out$yr_2001)
+    expect_equal(both, out$yr_2002)
     
     # Trees
     out <- basal_area_byyr(
       mutate(vft_c2_t1_s4, DBH = c(10, 100, 10, 100)), 
       DBH >= 100
     )
-    expect_equal(ba_100, out$`2001`)
-    expect_equal(ba_100, out$`2002`)
+    expect_equal(ba_100, out$yr_2001)
+    expect_equal(ba_100, out$yr_2002)
   })
   
   it("deals with buttresses: Includes only one stem per stemid", {
@@ -301,7 +302,7 @@ describe("basal_area_byyr()", {
     #      1    1.1   140    10  # Main stem defined by largest HOM
     #      1    1.1   130   100  # This should be removed
     sapl_and_tree <- basal_area_byyr(vft_hom2,  dbh >= 10)
-    expect_equal(sapl_and_tree$`2001`, basal_area_dbl(10))
+    expect_equal(sapl_and_tree$yr_2001, basal_area_dbl(10))
   })
 })
 

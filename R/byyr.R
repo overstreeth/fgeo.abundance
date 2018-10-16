@@ -57,7 +57,7 @@ abundance_byyr <- function(vft, ...) {
     tidyr::spread(.data$year, n, fill = 0) %>%
     arrange(.data$species, .data$family)
   
-  rename_matches(out, vft)
+  tidy_byyr_names(rename_matches(out, vft))
 }
 
 #' @rdname abundance_byyr
@@ -74,7 +74,7 @@ basal_area_byyr <- function(vft, ...) {
     ungroup() %>%
     tidyr::spread(.data$year, basal_area, fill = 0)
   
-  rename_matches(out, vft)
+  tidy_byyr_names(rename_matches(out, vft))
 }
 
 pick_byyr <- function(vft, ...) {
@@ -137,4 +137,12 @@ drop_if_missing_dates <- function(x) {
   }
   x <- x[!missing_dates, , drop = FALSE]
   invisible(x)
+}
+
+tidy_byyr_names <- function(x) {
+  x <- rlang::set_names(x, tolower)
+  spp_family <- c("species", "family")
+  yr_nms <- setdiff(names(x), spp_family)
+  names(x) <- c(spp_family, glue("yr_{yr_nms}"))
+  x
 }
