@@ -1,5 +1,5 @@
 Package: fgeo.abundance
-Title: Calculate Abundance, Basal Area and Diversity
+Title: Calculate Abundance and Basal Area
 Version: 0.0.0.9005
 Authors@R: 
     c(person(given = "Mauro",
@@ -9,7 +9,7 @@ Authors@R:
       person(given = "CTFS-ForestGEO",
              role = c("cph", "fnd"),
              email = "ForestGEO@si.edu"))
-Description: Calculate abundance, basal area and diversity.
+Description: Calculate abundance and basal area.
 License: GPL-3
 URL: https://github.com/forestgeo/fgeo.abundance
 BugReports: https://github.com/forestgeo/fgeo.abundance/issues

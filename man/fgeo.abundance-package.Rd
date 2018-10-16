@@ -4,9 +4,9 @@
 \name{fgeo.abundance-package}
 \alias{fgeo.abundance}
 \alias{fgeo.abundance-package}
-\title{fgeo.abundance: Calculate Abundance, Basal Area and Diversity}
+\title{fgeo.abundance: Calculate Abundance and Basal Area}
 \description{
-Calculate abundance, basal area and diversity.
+Calculate abundance and basal area.
 }
 \seealso{
 Useful links:

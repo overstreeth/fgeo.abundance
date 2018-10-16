@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="https://i.imgur.com/vTLlhbp.png" align="right" height=88 /> Abundance, basal area and diversity
+# <img src="https://i.imgur.com/vTLlhbp.png" align="right" height=88 /> Abundance and basal area
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build
