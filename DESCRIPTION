@@ -1,16 +1,20 @@
 Package: fgeo.abundance
 Title: Calculate Abundance, Basal Area and Diversity
 Version: 0.0.0.9004
-Authors@R: c(
-    person("Mauro", "Lepore", , "leporem@si.edu", role = c("aut", "ctr", "cre")),
-    person("CTFS-ForestGEO", , , "ForestGEO@si.edu", role = c("cph", "fnd"))
-    )
+Authors@R: 
+    c(person(given = "Mauro",
+             family = "Lepore",
+             role = c("aut", "ctr", "cre"),
+             email = "leporem@si.edu"),
+      person(given = "CTFS-ForestGEO",
+             role = c("cph", "fnd"),
+             email = "ForestGEO@si.edu"))
 Description: Calculate abundance, basal area and diversity.
 License: GPL-3
 URL: https://github.com/forestgeo/fgeo.abundance
 BugReports: https://github.com/forestgeo/fgeo.abundance/issues
 Depends: 
-    R (>= 3.3)
+    R (>= 3.2)
 Imports: 
     dplyr,
     fgeo.base,
@@ -32,7 +36,8 @@ Suggests:
     readr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
 Remotes: 
     forestgeo/fgeo.base,
     forestgeo/fgeo.data,
