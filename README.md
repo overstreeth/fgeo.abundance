@@ -257,7 +257,7 @@ convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
 
 ### Summaries aggregated by year
 
-Example data
+Example data.
 
 ``` r
 vft <- example_byyr

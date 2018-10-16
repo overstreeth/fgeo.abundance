@@ -38,7 +38,6 @@ reference:
 
   - title: Summaries of abundance and basal area
     contents: 
-      - matches("count")
       - matches("abundance")
       - matches("basal_area")
     
