@@ -1,23 +1,9 @@
-has_class_df <- function(x) {
-  any(grepl("data.frame", class(x)))
-}
-
-commas <- function(...) {
-  paste0(..., collapse = ", ")
-}
-
 space <- function(...) {
   paste(unlist(list(...)), collapse = " ")
 }
 
-pull_name <- function(x) gsub(".*\\$", "", x)
-
 groups_lower <- function(x) {
   dplyr::grouped_df(x, tolower(dplyr::group_vars(x)))
-}
-
-groups_restore <- function(x, ref) {
-  dplyr::grouped_df(x, dplyr::group_vars(ref))
 }
 
 #' Get the correct grouping variables.
@@ -29,8 +15,6 @@ groups_restore <- function(x, ref) {
 #'
 #' @param x A dataframe which groups are ok but lowercase.
 #' @param y A reference dataframe which gropus are not ok but have correct case.
-#' @keywords internal
-#' @noRd
 #' 
 #' @examples 
 #' 
@@ -39,6 +23,8 @@ groups_restore <- function(x, ref) {
 #' 
 #' ref <- dplyr::grouped_df(rlang::set_names(out, toupper), c("X"))
 #' group_vars_restore(out, ref)
+#' @keywords internal
+#' @noRd
 group_vars_restore <- function(x, y) {
   in_ref <- fgeo.base::detect_insensitive(
     dplyr::group_vars(x), 
