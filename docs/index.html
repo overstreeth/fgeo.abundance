@@ -147,7 +147,7 @@
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;       n</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;int&gt;</span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1     2</span></a></code></pre></div>
-<p>A shown above, you can get a correct result by combining <code>summarize()</code> and <code>n_distinct()</code> (from the <strong>dplyr</strong> package). But <code><a href="reference/abundance.html">abundance()</a></code> includes some useful additional features (see <code>?abundance()</code>). This code more clearly conveys your intention, i.e.g to calculate tree abundance by counting the number of main stems:</p>
+<p>As shown above, you can get a correct result by combining <code>summarize()</code> and <code>n_distinct()</code> (from the <strong>dplyr</strong> package). But <code><a href="reference/abundance.html">abundance()</a></code> includes some useful additional features (see <code>?abundance()</code>). This code more clearly conveys your intention, i.e. to calculate tree abundance by counting the number of main stems:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">(main_stems &lt;-<span class="st"> </span><span class="kw">pick_main_stem</span>(vft))</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>

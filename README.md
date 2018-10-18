@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="https://i.imgur.com/vTLlhbp.png" align="right" height=88 /> Abundance and basal area
+# <img src="https://i.imgur.com/vTLlhbp.png" align="right" height=88 /> Calculate Abundance and basal area
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build
@@ -10,8 +10,6 @@ status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https
 status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/fgeo.abundance?branch=master)
 [![CRAN
 status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
-
-**fgeo.abundance** calculates abundance, basal area and diversity.
 
 ## Installation
 
@@ -101,11 +99,11 @@ summarize(vft, n = n_distinct(TreeID))
 #> 1     2
 ```
 
-A shown above, you can get a correct result by combining `summarize()`
+As shown above, you can get a correct result by combining `summarize()`
 and `n_distinct()` (from the **dplyr** package). But `abundance()`
 includes some useful additional features (see `?abundance()`). This code
-more clearly conveys your intention, i.e.g to calculate tree abundance
-by counting the number of main stems:
+more clearly conveys your intention, i.e. to calculate tree abundance by
+counting the number of main stems:
 
 ``` r
 (main_stems <- pick_main_stem(vft))

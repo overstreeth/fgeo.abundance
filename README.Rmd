@@ -70,7 +70,7 @@ But that result is likely not what you expect. Instead, you likely expect this:
 summarize(vft, n = n_distinct(TreeID))
 ```
 
-A shown above, you can get a correct result by combining `summarize()` and `n_distinct()` (from the __dplyr__ package). But `abundance()` includes some useful additional features (see `?abundance()`). This code more clearly conveys your intention, i.e.g to calculate tree abundance by counting the number of main stems:
+As shown above, you can get a correct result by combining `summarize()` and `n_distinct()` (from the __dplyr__ package). But `abundance()` includes some useful additional features (see `?abundance()`). This code more clearly conveys your intention, i.e. to calculate tree abundance by counting the number of main stems:
 
 ```{r}
 (main_stems <- pick_main_stem(vft))
