@@ -84,236 +84,240 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p><a href="https://forestgeo.github.io/fgeo/index.html#installation">Install all <strong>fgeo</strong> packages in one step</a></p>
+<p>Install the pre-release version of <strong>fgeo.abundance</strong>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"forestgeo/fgeo.abundance"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"forestgeo/fgeo.abundance@pre-release"</span>)</a></code></pre></div>
+<p>Or install the development version of <strong>fgeo.abundance</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"forestgeo/fgeo.abundance"</span>)</a></code></pre></div>
+<p>Or <a href="https://forestgeo.github.io/fgeo/index.html#installation">install all <strong>fgeo</strong> packages in one step</a>.</p>
 <p>For details on how to install packages from GitHub, see <a href="https://goo.gl/dQKEeg">this article</a>.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;     filter, lag</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw">library</span>(fgeo.tool)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; Attaching package: 'fgeo.tool'</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; The following object is masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;     filter</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="kw">library</span>(fgeo.abundance)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;     filter, lag</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; The following objects are masked from 'package:base':</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">library</span>(fgeo.tool)</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; Attaching package: 'fgeo.tool'</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; The following object is masked from 'package:stats':</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;     filter</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw">library</span>(fgeo.abundance)</a></code></pre></div>
 <div id="abundance" class="section level3">
 <h3 class="hasAnchor">
 <a href="#abundance" class="anchor"></a>Abundance</h3>
 <p>Your data may have multiple stems per treeid and even multiple measures per stemid (if trees have buttresses).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Trees with buttresses may have multiple measurements of a single stem. </span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># Main stems have highest `HOM`, then largest `DBH`.</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">vft &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="op">~</span>CensusID, <span class="op">~</span>TreeID, <span class="op">~</span>StemID, <span class="op">~</span>DBH, <span class="op">~</span>HOM,</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">88</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">10</span>,  <span class="dv">160</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.1"</span>,   <span class="dv">20</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.2"</span>,   <span class="dv">30</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Trees with buttresses may have multiple measurements of a single stem. </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># Main stems have highest `HOM`, then largest `DBH`.</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">vft &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="op">~</span>CensusID, <span class="op">~</span>TreeID, <span class="op">~</span>StemID, <span class="op">~</span>DBH, <span class="op">~</span>HOM,</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">88</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">10</span>,  <span class="dv">160</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.1"</span>,   <span class="dv">20</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.2"</span>,   <span class="dv">30</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">)</a></code></pre></div>
 <p>Fundamentally, <code><a href="reference/abundance.html">abundance()</a></code> counts rows. All of these results are the same:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">nrow</span>(vft)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] 4</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(vft)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;       n</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 1     4</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(vft, <span class="dt">n =</span> <span class="kw">n</span>())</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;       n</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 1     4</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(vft)</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; Warning: `treeid`: Duplicated values were detected. Do you need to pick</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; main stems?</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;       n</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 1     4</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">nrow</span>(vft)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] 4</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">count</a></span>(vft)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;       n</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 1     4</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(vft, <span class="dt">n =</span> <span class="kw">n</span>())</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;       n</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 1     4</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(vft)</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; Warning: `treeid`: Duplicated values were detected. Do you need to pick</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; main stems?</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;       n</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; 1     4</span></a></code></pre></div>
 <p>But that result is likely not what you expect. Instead, you likely expect this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">summarize</span>(vft, <span class="dt">n =</span> <span class="kw">n_distinct</span>(TreeID))</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;       n</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1     2</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">summarize</span>(vft, <span class="dt">n =</span> <span class="kw">n_distinct</span>(TreeID))</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;       n</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1     2</span></a></code></pre></div>
 <p>As shown above, you can get a correct result by combining <code>summarize()</code> and <code>n_distinct()</code> (from the <strong>dplyr</strong> package). But <code><a href="reference/abundance.html">abundance()</a></code> includes some useful additional features (see <code>?abundance()</code>). This code more clearly conveys your intention, i.e. to calculate tree abundance by counting the number of main stems:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">(main_stems &lt;-<span class="st"> </span><span class="kw">pick_main_stem</span>(vft))</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1        1 1      1.1       10   160</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2        1 2      2.2       30   130</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(main_stems)</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;       n</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 1     2</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">(main_stems &lt;-<span class="st"> </span><span class="kw">pick_main_stem</span>(vft))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1        1 1      1.1       10   160</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2        1 2      2.2       30   130</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(main_stems)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;       n</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;   &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; 1     2</span></a></code></pre></div>
 <p>If you have data from multiple censuses, you can compute by census (or any other group).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">vft2 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tribble">tribble</a></span>(</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="op">~</span>CensusID, <span class="op">~</span>TreeID, <span class="op">~</span>StemID, <span class="op">~</span>DBH, <span class="op">~</span>HOM,</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">10</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.2"</span>,   <span class="dv">20</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">12</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.2"</span>,   <span class="dv">22</span>,  <span class="dv">130</span>   <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">by_census &lt;-<span class="st"> </span><span class="kw">group_by</span>(vft2, CensusID)</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">(main_stems_by_census &lt;-<span class="st"> </span><span class="kw">pick_main_stem</span>(by_census))</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 1        1 1      1.2       20   130</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; 2        2 1      1.2       22   130</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(main_stems_by_census)</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;   CensusID     n</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;      &lt;dbl&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; 1        1     1</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; 2        2     1</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">vft2 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tribble">tribble</a></span>(</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="op">~</span>CensusID, <span class="op">~</span>TreeID, <span class="op">~</span>StemID, <span class="op">~</span>DBH, <span class="op">~</span>HOM,</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">10</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.2"</span>,   <span class="dv">20</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">12</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.2"</span>,   <span class="dv">22</span>,  <span class="dv">130</span>   <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">by_census &lt;-<span class="st"> </span><span class="kw">group_by</span>(vft2, CensusID)</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">(main_stems_by_census &lt;-<span class="st"> </span><span class="kw">pick_main_stem</span>(by_census))</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; 1        1 1      1.2       20   130</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; 2        2 1      1.2       22   130</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(main_stems_by_census)</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;   CensusID     n</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;      &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; 1        1     1</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; 2        2     1</span></a></code></pre></div>
 <p>Often you will need to first subset data (e.g. by <code>status</code> or <code>DBH</code>) and then count.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">over20 &lt;-<span class="st"> </span><span class="kw">filter</span>(main_stems_by_census, DBH <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(over20)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; # Groups:   CensusID [1]</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;   CensusID     n</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 1        2     1</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">over20 &lt;-<span class="st"> </span><span class="kw">filter</span>(main_stems_by_census, DBH <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="reference/abundance.html">abundance</a></span>(over20)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; # Groups:   CensusID [1]</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;   CensusID     n</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 1        2     1</span></a></code></pre></div>
 </div>
 <div id="basal-area" class="section level3">
 <h3 class="hasAnchor">
 <a href="#basal-area" class="anchor"></a>Basal area</h3>
 <p>If trees have buttresses, you may need to pick the main stemid of each stem so you don’t count the same stem more than once.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">vft3 &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="op">~</span>CensusID, <span class="op">~</span>TreeID, <span class="op">~</span>StemID, <span class="op">~</span>DBH, <span class="op">~</span>HOM,</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">88</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">10</span>,  <span class="dv">160</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.1"</span>,   <span class="dv">20</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.2"</span>,   <span class="dv">30</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">98</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">20</span>,  <span class="dv">160</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">          <span class="dv">2</span>,     <span class="st">"2"</span>,   <span class="st">"2.1"</span>,   <span class="dv">30</span>,  <span class="dv">130</span>,</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">          <span class="dv">2</span>,     <span class="st">"2"</span>,   <span class="st">"2.2"</span>,   <span class="dv">40</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">(main_stemids &lt;-<span class="st"> </span><span class="kw">pick_main_stemid</span>(vft3))</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; 1        1 1      1.1       10   160</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 2        1 2      2.1       20   130</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 3        1 2      2.2       30   130</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 4        2 1      1.1       20   160</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 5        2 2      2.1       30   130</span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 6        2 2      2.2       40   130</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24">main_stemids</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="co">#&gt; 1        1 1      1.1       10   160</span></a>
-<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="co">#&gt; 2        1 2      2.1       20   130</span></a>
-<a class="sourceLine" id="cb9-30" data-line-number="30"><span class="co">#&gt; 3        1 2      2.2       30   130</span></a>
-<a class="sourceLine" id="cb9-31" data-line-number="31"><span class="co">#&gt; 4        2 1      1.1       20   160</span></a>
-<a class="sourceLine" id="cb9-32" data-line-number="32"><span class="co">#&gt; 5        2 2      2.1       30   130</span></a>
-<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="co">#&gt; 6        2 2      2.2       40   130</span></a>
-<a class="sourceLine" id="cb9-34" data-line-number="34"></a>
-<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="kw"><a href="reference/abundance.html">basal_area</a></span>(main_stemids)</a>
-<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co">#&gt; Warning: `stemid`: Duplicated values were detected. Do you need to pick</span></a>
-<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="co">#&gt; largest `hom` values?</span></a>
-<a class="sourceLine" id="cb9-38" data-line-number="38"><span class="co">#&gt; Warning: `censusid`: Multiple values were detected. Do you need to group by</span></a>
-<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="co">#&gt; censusid?</span></a>
-<a class="sourceLine" id="cb9-40" data-line-number="40"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb9-41" data-line-number="41"><span class="co">#&gt;   basal_area</span></a>
-<a class="sourceLine" id="cb9-42" data-line-number="42"><span class="co">#&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-43" data-line-number="43"><span class="co">#&gt; 1      3377.</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">vft3 &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="op">~</span>CensusID, <span class="op">~</span>TreeID, <span class="op">~</span>StemID, <span class="op">~</span>DBH, <span class="op">~</span>HOM,</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">88</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">          <span class="dv">1</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">10</span>,  <span class="dv">160</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.1"</span>,   <span class="dv">20</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">          <span class="dv">1</span>,     <span class="st">"2"</span>,   <span class="st">"2.2"</span>,   <span class="dv">30</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">98</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">          <span class="dv">2</span>,     <span class="st">"1"</span>,   <span class="st">"1.1"</span>,   <span class="dv">20</span>,  <span class="dv">160</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">          <span class="dv">2</span>,     <span class="st">"2"</span>,   <span class="st">"2.1"</span>,   <span class="dv">30</span>,  <span class="dv">130</span>,</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">          <span class="dv">2</span>,     <span class="st">"2"</span>,   <span class="st">"2.2"</span>,   <span class="dv">40</span>,  <span class="dv">130</span>,  <span class="co"># Main stem</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">)</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">(main_stemids &lt;-<span class="st"> </span><span class="kw">pick_main_stemid</span>(vft3))</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; 1        1 1      1.1       10   160</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; 2        1 2      2.1       20   130</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; 3        1 2      2.2       30   130</span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt; 4        2 1      1.1       20   160</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt; 5        2 2      2.1       30   130</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt; 6        2 2      2.2       40   130</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24">main_stemids</a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt; # A tibble: 6 x 5</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt;   CensusID TreeID StemID   DBH   HOM</span></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-28" data-line-number="28"><span class="co">#&gt; 1        1 1      1.1       10   160</span></a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="co">#&gt; 2        1 2      2.1       20   130</span></a>
+<a class="sourceLine" id="cb10-30" data-line-number="30"><span class="co">#&gt; 3        1 2      2.2       30   130</span></a>
+<a class="sourceLine" id="cb10-31" data-line-number="31"><span class="co">#&gt; 4        2 1      1.1       20   160</span></a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"><span class="co">#&gt; 5        2 2      2.1       30   130</span></a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"><span class="co">#&gt; 6        2 2      2.2       40   130</span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb10-35" data-line-number="35"><span class="kw"><a href="reference/abundance.html">basal_area</a></span>(main_stemids)</a>
+<a class="sourceLine" id="cb10-36" data-line-number="36"><span class="co">#&gt; Warning: `stemid`: Duplicated values were detected. Do you need to pick</span></a>
+<a class="sourceLine" id="cb10-37" data-line-number="37"><span class="co">#&gt; largest `hom` values?</span></a>
+<a class="sourceLine" id="cb10-38" data-line-number="38"><span class="co">#&gt; Warning: `censusid`: Multiple values were detected. Do you need to group by</span></a>
+<a class="sourceLine" id="cb10-39" data-line-number="39"><span class="co">#&gt; censusid?</span></a>
+<a class="sourceLine" id="cb10-40" data-line-number="40"><span class="co">#&gt; # A tibble: 1 x 1</span></a>
+<a class="sourceLine" id="cb10-41" data-line-number="41"><span class="co">#&gt;   basal_area</span></a>
+<a class="sourceLine" id="cb10-42" data-line-number="42"><span class="co">#&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-43" data-line-number="43"><span class="co">#&gt; 1      3377.</span></a></code></pre></div>
 <p><code><a href="reference/abundance.html">basal_area()</a></code> also allows you to compute by groups.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">by_census &lt;-<span class="st"> </span><span class="kw">group_by</span>(main_stemids, CensusID)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="reference/abundance.html">basal_area</a></span>(by_census)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;   CensusID basal_area</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; 1        1      1100.</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; 2        2      2278.</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">by_census &lt;-<span class="st"> </span><span class="kw">group_by</span>(main_stemids, CensusID)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="reference/abundance.html">basal_area</a></span>(by_census)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;   CensusID basal_area</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; 1        1      1100.</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 2        2      2278.</span></a></code></pre></div>
 <p>But if you want to compute on a subset of data, you need to first pick the data.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">ten_to_twenty &lt;-<span class="st"> </span><span class="kw">filter</span>(by_census, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, DBH <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">ba &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance.html">basal_area</a></span>(ten_to_twenty)</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">ba</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;   CensusID basal_area</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 1        1       393.</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; 2        2       314.</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">ten_to_twenty &lt;-<span class="st"> </span><span class="kw">filter</span>(by_census, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, DBH <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">ba &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance.html">basal_area</a></span>(ten_to_twenty)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">ba</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;   CensusID basal_area</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; 1        1       393.</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; 2        2       314.</span></a></code></pre></div>
 <p>And if you need to convert units, you can do so after the fact with <code><a href="http://www.rdocumentation.org/packages/fgeo.tool/topics/convert_unit">fgeo.tool::convert_unit_at()</a></code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">convert_unit_at</span>(ba, <span class="dt">.at =</span> <span class="st">"basal_area"</span>, <span class="dt">from =</span> <span class="st">"mm2"</span>, <span class="dt">to =</span> <span class="st">"hectare"</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;   CensusID   basal_area</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;      &lt;dbl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 1        1 0.0000000393</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; 2        2 0.0000000314</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">convert_unit_at</span>(ba, <span class="dt">.at =</span> <span class="st">"basal_area"</span>, <span class="dt">from =</span> <span class="st">"mm2"</span>, <span class="dt">to =</span> <span class="st">"hectare"</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; # Groups:   CensusID [2]</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   CensusID   basal_area</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;      &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 1        1 0.0000000393</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 2        2 0.0000000314</span></a></code></pre></div>
 </div>
 <div id="summaries-aggregated-by-year" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summaries-aggregated-by-year" class="anchor"></a>Summaries aggregated by year</h3>
 <p>Example data.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">vft &lt;-<span class="st"> </span>example_byyr</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">vft</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; # A tibble: 8 x 13</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate </span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;date&gt;    </span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 1 luq             1      1    1.1 alive     10 Gn    spp         2001-01-01</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 2 luq             1      1    1.2 dead      NA Gn    spp         2001-01-01</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 3 luq             1      2    2.1 alive     20 Gn    spp         2001-01-01</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; 4 luq             1      2    2.2 alive     30 Gn    spp         2001-01-01</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; 5 luq             2      1    1.1 alive     20 Gn    spp         2002-01-01</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-01</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 7 luq             2      2    2.1 dead      NA Gn    spp         2002-01-01</span></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; 8 luq             2      2    2.2 dead      NA Gn    spp         2002-01-01</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; # ... with 4 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; #   Tag &lt;int&gt;, HOM &lt;int&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">vft &lt;-<span class="st"> </span>example_byyr</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">vft</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; # A tibble: 8 x 13</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   PlotName CensusID TreeID StemID Status   DBH Genus SpeciesName ExactDate </span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;       &lt;date&gt;    </span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 1 luq             1      1    1.1 alive     10 Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 2 luq             1      1    1.2 dead      NA Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; 3 luq             1      2    2.1 alive     20 Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; 4 luq             1      2    2.2 alive     30 Gn    spp         2001-01-01</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; 5 luq             2      1    1.1 alive     20 Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 6 luq             2      1    1.2 gone      NA Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; 7 luq             2      2    2.1 dead      NA Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; 8 luq             2      2    2.2 dead      NA Gn    spp         2002-01-01</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; # ... with 4 more variables: PlotCensusNumber &lt;int&gt;, Family &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt; #   Tag &lt;int&gt;, HOM &lt;int&gt;</span></a></code></pre></div>
 <p>Abundance by year.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="reference/abundance_byyr.html">abundance_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, DBH <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   species family yr_2001</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1 Gn spp  f            1</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw"><a href="reference/abundance_byyr.html">abundance_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt;   species family yr_2001 yr_2002</span></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 1 Gn spp  f            2       1</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="reference/abundance_byyr.html">abundance_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>, DBH <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt;   species family yr_2001</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; 1 Gn spp  f            1</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="kw"><a href="reference/abundance_byyr.html">abundance_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt;   species family yr_2001 yr_2002</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; 1 Gn spp  f            2       1</span></a></code></pre></div>
 <p>Basal area by year.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">basal &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance_byyr.html">basal_area_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">basal</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt;   species family yr_2001 yr_2002</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt; 1 Gn spp  f        1100.    314.</span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co"># Convert units and standardize by plot size in hectares</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">years &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"yr_2001"</span>, <span class="st">"yr_2002"</span>)</a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">in_he &lt;-<span class="st"> </span><span class="kw">convert_unit_at</span>(basal, <span class="dt">.at =</span> years, <span class="dt">from =</span> <span class="st">"mm2"</span>, <span class="dt">to =</span> <span class="st">"hectare"</span>)</a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="kw">standardize_at</span>(in_he, <span class="dt">.at =</span> years, <span class="dt">denominator =</span> <span class="dv">50</span>)</a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt;   species family       yr_2001  yr_2002</span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; 1 Gn spp  f      0.00000000220 6.28e-10</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">basal &lt;-<span class="st"> </span><span class="kw"><a href="reference/abundance_byyr.html">basal_area_byyr</a></span>(vft, DBH <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">basal</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;   species family yr_2001 yr_2002</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; 1 Gn spp  f        1100.    314.</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co"># Convert units and standardize by plot size in hectares</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">years &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"yr_2001"</span>, <span class="st">"yr_2002"</span>)</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">in_he &lt;-<span class="st"> </span><span class="kw">convert_unit_at</span>(basal, <span class="dt">.at =</span> years, <span class="dt">from =</span> <span class="st">"mm2"</span>, <span class="dt">to =</span> <span class="st">"hectare"</span>)</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="kw">standardize_at</span>(in_he, <span class="dt">.at =</span> years, <span class="dt">denominator =</span> <span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt;   species family       yr_2001  yr_2002</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; 1 Gn spp  f      0.00000000220 6.28e-10</span></a></code></pre></div>
 <p><a href="https://forestgeo.github.io/fgeo/articles/fgeo.html">Get started</a></p>
 </div>
 </div>
@@ -332,7 +336,7 @@
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
-<p>Thanks to all partners of ForestGEO, for sharing their ideas and code. Special thanks for inspiring ideas to David Kenfack and Jenny Bryan (<a href="https://twitter.com/JennyBryan">@JennyBryan</a>).</p>
+<p>Thanks to all partners of ForestGEO, for sharing their ideas and code.</p>
 </div>
 </div>
   </div>

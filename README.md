@@ -13,13 +13,22 @@ status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-proj
 
 ## Installation
 
-[Install all **fgeo** packages in one
-step](https://forestgeo.github.io/fgeo/index.html#installation)
+Install the pre-release version of **fgeo.abundance**:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github(repo = "forestgeo/fgeo.abundance")
+devtools::install_github("forestgeo/fgeo.abundance@pre-release")
 ```
+
+Or install the development version of **fgeo.abundance**:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("forestgeo/fgeo.abundance")
+```
+
+Or [install all **fgeo** packages in one
+step](https://forestgeo.github.io/fgeo/index.html#installation).
 
 For details on how to install packages from GitHub, see [this
 article](https://goo.gl/dQKEeg).
@@ -322,5 +331,3 @@ standardize_at(in_he, .at = years, denominator = 50)
 ## Acknowledgments
 
 Thanks to all partners of ForestGEO, for sharing their ideas and code.
-Special thanks for inspiring ideas to David Kenfack and Jenny Bryan
-([@JennyBryan](https://twitter.com/JennyBryan)).
