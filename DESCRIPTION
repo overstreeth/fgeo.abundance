@@ -1,6 +1,6 @@
 Package: fgeo.abundance
 Title: Calculate Abundance and Basal Area
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R: 
     c(person(given = "Mauro",
              family = "Lepore",
