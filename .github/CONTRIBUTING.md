@@ -1,6 +1,6 @@
 # Contributing to fgeo.abundance
 
-This outlines how to propose a change to __fgeo.abundance. For more detailed info about contributing to this, and other __fgeo.abundance packages, please see the [**development contributing guide of the tidyverse**](https://rstd.io/tidy-contrib) (wherever you read __tidyverse__ think __fgeo.abundance).
+This outlines how to propose a change to __fgeo.abundance__. For more detailed info about contributing to this, and other __fgeo.abundance__ packages, please see the [**development contributing guide of the tidyverse**](https://rstd.io/tidy-contrib) (wherever you read __tidyverse__ think __fgeo.abundance__).
 
 ### Fixing typos
 
@@ -28,4 +28,4 @@ You can use the [styler](https://CRAN.R-project.org/package=styler) package to a
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
-See tidyverse [development contributing guide](https://rstd.io/tidy-contrib) for further details (wherever you read __tidyverse__ think __fgeo.abundance).
+See tidyverse [development contributing guide](https://rstd.io/tidy-contrib) for further details (wherever you read __tidyverse__ think __fgeo.abundance__).
