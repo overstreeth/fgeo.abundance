@@ -9,7 +9,7 @@ status](https://travis-ci.org/forestgeo/fgeo.abundance.svg?branch=master)](https
 [![Coverage
 status](https://codecov.io/gh/forestgeo/fgeo.abundance/branch/master/graph/badge.svg)](https://codecov.io/github/forestgeo/fgeo.abundance?branch=master)
 [![CRAN
-status](http://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
+status](https://www.r-pkg.org/badges/version/fgeo.abundance)](https://cran.r-project.org/package=fgeo.abundance)
 
 ## Installation
 

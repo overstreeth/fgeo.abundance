@@ -23,8 +23,6 @@ Imports:
     lubridate,
     magrittr,
     rlang (>= 0.1.2),
-    splancs,
-    stats,
     tibble,
     tidyr
 Suggests: 
