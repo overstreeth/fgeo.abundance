@@ -1,3 +1,4 @@
-# Appveyor tag ------------------------------------------------------------
-
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/forestgeo/fgeo.abundance?branch=master&svg=true)](https://ci.appveyor.com/project/forestgeo/fgeo.abundance)
+for file in ../fgeo.base/ship.sh ../fgeo.data/ship.sh ../fgeo.demography/ship.sh ../fgeo.habitat/ship.sh ../fgeo.map/ship.sh ../fgeo.tool/ship.sh;
+do
+    cp ship.sh $file; 
+done
