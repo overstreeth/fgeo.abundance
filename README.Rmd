@@ -79,14 +79,14 @@ But that result is likely not what you expect. Instead, you likely expect this:
 summarize(vft, n = n_distinct(TreeID))
 ```
 
-As shown above, you can get a correct result by combining `summarize()` and `n_distinct()` (from the __dplyr__ package). But `abundance()` includes some useful additional features (see `?abundance()`). This code more clearly conveys your intention, i.e. to calculate tree abundance by counting the number of main stems:
+As shown above, you can get a correct result by combining `summarize()` and `n_distinct()` (from the __dplyr__ package). But `abundance()` includes some useful additional features (see `?abundance()`). This code conveys your intention more clearly, i.e. to calculate tree abundance by counting the number of main stems:
 
 ```{r}
 (main_stems <- pick_main_stem(vft))
 abundance(main_stems)
 ```
 
-If you have data from multiple censuses, you can compute by census (or any other group).
+If you have data from multiple censuses, then you can compute by census (or any other group).
 
 ```{r}
 vft2 <- tibble::tribble(
@@ -111,7 +111,7 @@ abundance(over20)
 
 ### Basal area
 
-If trees have buttresses, you may need to pick the main stemid of each stem so you don't count the same stem more than once.
+If trees have buttresses, then you may need to pick the main stemid of each stem so you do not count the same stem more than once.
 
 ```{r}
 vft3 <- tribble(
@@ -140,7 +140,7 @@ by_census <- group_by(main_stemids, CensusID)
 basal_area(by_census)
 ```
 
-But if you want to compute on a subset of data, you need to first pick the data.
+But if you want to compute on a subset of data, then you need to pick the data first.
 
 ```{r}
 ten_to_twenty <- filter(by_census, DBH >= 10, DBH <= 20)
@@ -148,7 +148,7 @@ ba <- basal_area(ten_to_twenty)
 ba
 ```
 
-And if you need to convert units, you can do so after the fact with `fgeo.tool::convert_unit_at()`.
+And if you need to convert units, then you can do so after the fact with `fgeo.tool::convert_unit_at()`.
 
 ```{r}
 convert_unit_at(ba, .at = "basal_area", from = "mm2", to = "hectare")
